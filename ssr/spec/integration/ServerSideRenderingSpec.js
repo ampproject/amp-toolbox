@@ -3,7 +3,7 @@ describe('AMP Server Side Rendering', () => {
   let transfomer
 
   beforeEach(() => {
-    transfomer = require('../index.js').createTransformer();
+    transfomer = require('../../index.js').createTransformer();
   });
 
   it('converts a simple AMP document', () => {

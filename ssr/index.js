@@ -1,5 +1,5 @@
-const DomTransfomer = require('./lib/dom-transfomer.js');
-const DocumentParser = require('./lib/document-parser.js');
+const DomTransfomer = require('./lib/DomTransformer.js');
+const DocumentParser = require('./lib/DocumentParser.js');
 
 module.exports = {
   createTransformer: function(config) {
