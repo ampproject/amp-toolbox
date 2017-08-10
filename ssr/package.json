@@ -1,0 +1,14 @@
+{
+  "name": "amp-toolbox-ssr",
+  "version": "0.0.1",
+  "description": "Server-side rendering for AMPs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "amp"
+  ],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0"
+}
