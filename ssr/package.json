@@ -4,11 +4,17 @@
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jasmine"
   },
   "keywords": [
     "amp"
   ],
   "author": "AMPHTML Team",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "jsdom": "^11.1.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.7.0"
+  }
 }
