@@ -1,17 +1,13 @@
 const DomTransfomer = require('./lib/DomTransformer.js');
-const DocumentParser = require('./lib/DocumentParser.js');
+const treeParser = require('./lib/TreeParser.js');
 const ServerSideRendering = require('./lib/transformers/ServerSideRendering.js');
+
+const defaultConfig = {
+  transformers: [new ServerSideRendering()]
+};
 
 module.exports = {
   createTransformer: config => {
-    const treeParser = new DocumentParser();
-    config = config || createDefaultConfig();
-    return new DomTransfomer(treeParser, config);
+    return new DomTransfomer(treeParser, Object.assign(defaultConfig, config));
   }
-}
-
-function createDefaultConfig() {
-  return {
-    transformers: [new ServerSideRendering()]
-  }
-}
+};

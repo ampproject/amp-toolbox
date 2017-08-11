@@ -1,7 +1,10 @@
+'use strict';
+
 class ServerSideRendering {
-  transform(document) {
-    const html = document.childNodes[0];
-    html.attrs.push({name: 'i-amphtml-no-boilerplate', value: ''});    
+  transform(tree) {
+    const html = tree.root.firstChildByTag('html');
+    html.attribs['i-amphtml-no-boilerplate'] = '';
+    delete html.attribs.amp;
   }
 }
 

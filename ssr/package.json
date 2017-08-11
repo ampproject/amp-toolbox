@@ -4,7 +4,9 @@
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
   },
   "keywords": [
     "amp"
@@ -15,6 +17,8 @@
     "parse5": "^3.0.2"
   },
   "devDependencies": {
+    "eslint": "^3.0.1",
+    "eslint-config-google": "^0.6.0",
     "jasmine": "^2.7.0"
   }
 }

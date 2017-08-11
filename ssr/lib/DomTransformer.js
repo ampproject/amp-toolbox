@@ -1,20 +1,21 @@
+'use strict';
+
 class DomTransformer {
 
-  constructor(documentParser, config) {
-    this._documentParser = documentParser;
+  constructor(treeParser, config) {
+    this._treeParser = treeParser;
     this._config = config;
-    this._transformers = this._config.transformers;
   }
 
   transform(html, params) {
-    const document = this._documentParser.parse(html);
-    this._transform(document, params);
-    return this._documentParser.serialize(document);
+    const tree = this._treeParser.parse(html);
+    this._runTransformers(tree, params);
+    return this._treeParser.serialize(tree);
   }
 
-  _transform(document, params) {
-    this._transformers.forEach(transformer => {
-      transformer.transform(document, params);
+  _runTransformers(tree, params) {
+    this._config.transformers.forEach(transformer => {
+      transformer.transform(tree, params);
     });
   }
 }
