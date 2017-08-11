@@ -12,7 +12,7 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "jsdom": "^11.1.0"
+    "parse5": "^3.0.2"
   },
   "devDependencies": {
     "jasmine": "^2.7.0"
