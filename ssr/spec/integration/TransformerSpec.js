@@ -1,26 +1,28 @@
-require('colors')
+const colors = require('colors/safe');
 const jsdiff = require('diff');
-const { basename, join } = require('path')
-const { getFileContents, getHtmlFiles, getDirectories } = require('../support/Utils.js')
+const {basename, join} = require('path');
+const {getFileContents, getDirectories} = require('../support/Utils.js');
 
-const treeParser = require('../../lib/TreeParser.js')
+const treeParser = require('../../lib/TreeParser.js');
 
 const TRANSFORMER_DIR = '../../lib/transformers';
 
 describe('Transfomers', () => {
-  loadTestConfigs().forEach(testConfig => {
-    describe(testConfig.name, () => {
-      getDirectories(testConfig.testDir).forEach(testDir => {
-        it(basename(testDir), () => {
-          const inputTree = parseTree(testDir, 'input.html');
-          const expectedOutputTree = parseTree(testDir, 'expected_output.html');
-          testConfig.transformer.transform(inputTree);
-          compare(inputTree, expectedOutputTree);
-        });
+  loadTestConfigs().forEach(createSpec);
+});
+
+function createSpec(testConfig) {
+  describe(testConfig.name, () => {
+    getDirectories(testConfig.testDir).forEach(testDir => {
+      it(basename(testDir), () => {
+        const inputTree = parseTree(testDir, 'input.html');
+        const expectedOutputTree = parseTree(testDir, 'expected_output.html');
+        testConfig.transformer.transform(inputTree);
+        compare(inputTree, expectedOutputTree);
       });
     });
   });
-});
+}
 
 function loadTestConfigs() {
   const transfomerTestDirs = getDirectories(join(__dirname, 'data'));
@@ -29,8 +31,8 @@ function loadTestConfigs() {
     return {
       name: transformerName,
       testDir: testDir,
-      transformer: require(join(TRANSFORMER_DIR, transformerName + '.js')),
-    }
+      transformer: require(join(TRANSFORMER_DIR, transformerName + '.js'))
+    };
   });
 }
 
@@ -44,10 +46,17 @@ function compare(actualTree, expectedTree) {
   const diff = jsdiff.diffChars(actualHtml, expectedHtml);
   let failed = false;
   const reason = diff.map(part => {
-    const color = part.added ? 'green' :
-      part.removed ? 'red' : 'reset';
-    failed = part.added || part.removed || failed;
-    return part.value[color];
+    let string;
+    if (part.added) {
+      string = colors.green(part.value);
+      failed = true;
+    } else if (part.removed) {
+      string = colors.red(part.value);
+      failed = true;
+    } else {
+      string = colors.reset(part.value);
+    }
+    return string;
   }).join('');
 
   if (failed) {

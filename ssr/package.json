@@ -4,7 +4,7 @@
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "jasmine && eslint .",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
