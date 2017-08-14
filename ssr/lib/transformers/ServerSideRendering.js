@@ -3,9 +3,8 @@
 class ServerSideRendering {
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
-    html.attribs['i-amphtml-no-boilerplate'] = '';
-    delete html.attribs.amp;
+    html.attribs['i-amphtml-layout'] = '';
   }
 }
 
-module.exports = ServerSideRendering;
+module.exports = new ServerSideRendering();
