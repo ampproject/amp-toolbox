@@ -27,17 +27,39 @@ Node.nextNode = function() {
   return null;
 };
 
+// Remove node from DOM
+Node.remove = function() {
+  htmlparser2.detachNode(this);
+};
+
 // Append child node
 Node.appendChild = function(childNode) {
+  if (!childNode) {
+    return;
+  }
   htmlparser2.appendChild(this, childNode);
+};
+
+// Append child node
+Node.appendAll = function(nodes) {
+  if (!nodes) {
+    return;
+  }
+  for (let i = 0, len = nodes.length; i < len; i++) {
+    this.appendChild(nodes[i]);
+  }
 };
 
 // First child by tag
 Node.firstChildByTag = function(tag) {
-  tag = tag.toLowerCase();
   return this.children.find(
     child => child.tagName && child.tagName.toLowerCase() === tag
   );
+};
+
+// First child by tag
+Node.hasAttribute = function(attribute) {
+  return attribute in this.attribs;
 };
 
 /**

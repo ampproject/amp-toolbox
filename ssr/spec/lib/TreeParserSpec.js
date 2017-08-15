@@ -14,8 +14,24 @@ describe('Tree Parser', () => {
     it('returns first child of tag', () => {
       expect(html.firstChildByTag('body').tagName).toEqual('body');
     });
-    it('ignores case', () => {
-      expect(html.firstChildByTag('BODY').tagName).toEqual('body');
+  });
+
+  describe('hasAttribute', () => {
+    let node;
+    beforeEach(() => {
+      const tree = treeParser.parse('<html></html>');
+      node = tree.root.firstChild;
+    });
+    it('false if no attribute with name', () => {
+      expect(node.hasAttribute('unknown')).toBe(false);
+    });
+    it('true if attribute with name', () => {
+      node.attribs.amp = 'there';
+      expect(node.hasAttribute('amp')).toBe(true);
+    });
+    it('true if empty attribute', () => {
+      node.attribs.amp = '';
+      expect(node.hasAttribute('amp')).toBe(true);
     });
   });
 

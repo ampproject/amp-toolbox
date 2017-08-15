@@ -1,5 +1,6 @@
 const colors = require('colors/safe');
 const jsdiff = require('diff');
+const minify = require('html-minifier').minify;
 const {basename, join} = require('path');
 const {getFileContents, getDirectories} = require('../support/Utils.js');
 
@@ -41,9 +42,9 @@ function parseTree(dir, file) {
 }
 
 function compare(actualTree, expectedTree) {
-  const actualHtml = treeParser.serialize(actualTree);
-  const expectedHtml = treeParser.serialize(expectedTree);
-  const diff = jsdiff.diffChars(actualHtml, expectedHtml);
+  const actualHtml = serialize(actualTree);
+  const expectedHtml = serialize(expectedTree);
+  const diff = jsdiff.diffChars(expectedHtml, actualHtml);
   let failed = false;
   const reason = diff.map(part => {
     let string;
@@ -62,4 +63,9 @@ function compare(actualTree, expectedTree) {
   if (failed) {
     fail('Trees do not match\n\n' + reason + '\n\n');
   }
+}
+
+function serialize(tree) {
+  const html = treeParser.serialize(tree);
+  return minify(html, {collapseWhitespace: true});
 }
