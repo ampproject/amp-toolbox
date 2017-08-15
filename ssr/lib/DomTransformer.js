@@ -8,6 +8,7 @@ class DomTransformer {
   }
 
   transform(html, params) {
+    params = params || {};
     const tree = this._treeParser.parse(html);
     this._runTransformers(tree, params);
     return this._treeParser.serialize(tree);

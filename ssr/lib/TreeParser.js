@@ -40,6 +40,14 @@ Node.appendChild = function(childNode) {
   htmlparser2.appendChild(this, childNode);
 };
 
+// Insert node before reference node
+Node.insertBefore = function(newNode, referenceNode) {
+  if (!newNode) {
+    return;
+  }
+  htmlparser2.insertBefore(this, newNode, referenceNode);
+};
+
 // Append child node
 Node.appendAll = function(nodes) {
   if (!nodes) {
@@ -59,6 +67,7 @@ Node.firstChildByTag = function(tag) {
 
 // First child by tag
 Node.hasAttribute = function(attribute) {
+  if (!this.attribs) return false;
   return attribute in this.attribs;
 };
 
@@ -80,10 +89,11 @@ class Tree {
    * Creates a new element
    *
    * @param {string} tagName
+   * @param {obj} [attribs={}]
    * @returns {Node} new node
    */
-  createElement(tagName) {
-    return this._htmlparser2.createElement(tagName, '', {});
+  createElement(tagName, attribs) {
+    return this._htmlparser2.createElement(tagName, '', attribs || {});
   }
 
   /**
@@ -93,7 +103,13 @@ class Tree {
    * @returns {Node} new node
    */
   createTextNode(value) {
-    return this._htmlparser2.createTextNode(value);
+    return Node.constructor({
+      type: 'text',
+      data: value,
+      parent: null,
+      prev: null,
+      next: null
+    });
   }
 }
 

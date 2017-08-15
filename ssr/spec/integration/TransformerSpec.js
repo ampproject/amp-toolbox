@@ -18,7 +18,7 @@ function createSpec(testConfig) {
       it(basename(testDir), () => {
         const inputTree = parseTree(testDir, 'input.html');
         const expectedOutputTree = parseTree(testDir, 'expected_output.html');
-        testConfig.transformer.transform(inputTree);
+        testConfig.transformer.transform(inputTree, {});
         compare(inputTree, expectedOutputTree);
       });
     });
