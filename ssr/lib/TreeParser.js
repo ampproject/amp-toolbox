@@ -93,7 +93,11 @@ class Tree {
    * @returns {Node} new node
    */
   createElement(tagName, attribs) {
-    return this._htmlparser2.createElement(tagName, '', attribs || {});
+    const result = this._htmlparser2.createElement(tagName, '', []);
+    if (attribs) {
+      result.attribs = attribs;
+    }
+    return result;
   }
 
   /**

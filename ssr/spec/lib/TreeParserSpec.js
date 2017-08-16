@@ -70,6 +70,23 @@ describe('Tree Parser', () => {
 });
 
 describe('Tree', () => {
+  let tree = treeParser.parse('<html><head></head></html>');
+  describe('createElement', () => {
+    it('works without attributes', () => {
+      const element = tree.createElement('test');
+      expect(element.tagName).toBe('test');
+    });
+    it('works with attributes', () => {
+      const element = tree.createElement('test', {myAttribute: 'hello'});
+      expect(element.attribs.myAttribute).toBe('hello');
+    });
+  });
+  describe('createTextNode', () => {
+    it('sets data', () => {
+      const textNode = tree.createTextNode('test');
+      expect(textNode.data).toBe('test');
+    });
+  });
   describe('appendChild', () => {
     let firstElement;
     let secondElement;
