@@ -8,6 +8,10 @@ const treeParser = require('../../lib/TreeParser.js');
 
 const TRANSFORMER_DIR = '../../lib/transformers';
 
+const TRANFORMER_PARAMS = {
+  ampUrlPrefix: '/amp'
+};
+
 describe('Transfomers', () => {
   loadTestConfigs().forEach(createSpec);
 });
@@ -18,7 +22,7 @@ function createSpec(testConfig) {
       it(basename(testDir), () => {
         const inputTree = parseTree(testDir, 'input.html');
         const expectedOutputTree = parseTree(testDir, 'expected_output.html');
-        testConfig.transformer.transform(inputTree, {});
+        testConfig.transformer.transform(inputTree, TRANFORMER_PARAMS);
         compare(inputTree, expectedOutputTree);
       });
     });
