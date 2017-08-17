@@ -9,7 +9,8 @@ const treeParser = require('../../lib/TreeParser.js');
 const TRANSFORMER_DIR = '../../lib/transformers';
 
 const TRANFORMER_PARAMS = {
-  ampUrlPrefix: '/amp'
+  ampUrlPrefix: '/amp',
+  ampUrl: 'https://example.com/amp-version.html'
 };
 
 describe('Transfomers', () => {
