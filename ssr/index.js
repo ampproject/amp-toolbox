@@ -1,18 +1,20 @@
 const DomTransfomer = require('./lib/DomTransformer.js');
 const treeParser = require('./lib/TreeParser.js');
-const serverSideRendering = require('./lib/transformers/ServerSideRendering.js');
-const ampBoilerplateTransformer = require('./lib/transformers/AmpBoilerplateTransformer.js');
-const reorderHead = require('./lib/transformers/ReorderHeadTransformer.js');
-const removeAmpAttribute = require('./lib/transformers/RemoveAmpAttribute.js');
 
 const defaultConfig = {
   transformers: [
-    serverSideRendering,
-    ampBoilerplateTransformer // need to run after serverSideRendering
-    removeAmpAttribute,
-    reorderHead // needs to run last
-  ]
+    'AddAmpLink',
+    'RewriteAmpUrls',
+    'ServerSideRendering',
+    'RemoveAmpAttribute',
+    'AmpBoilerplateTransformer', // needs to run after serverSideRendering
+    'ReorderHeadTransformer'    // needs to run last
+  ].map(loadTransformer)
 };
+
+function loadTransformer(name) {
+  return require('./lib/transformers/' + name + '.js');
+}
 
 module.exports = {
   createTransformer: config => {
