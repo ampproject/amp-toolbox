@@ -14,6 +14,11 @@ describe('Tree Parser', () => {
     it('returns first child of tag', () => {
       expect(html.firstChildByTag('body').tagName).toEqual('body');
     });
+
+    it('returns null if there are no children', () => {
+      const head = html.children[0];
+      expect(head.firstChildByTag('script')).toBe(undefined);
+    });
   });
 
   describe('hasAttribute', () => {
@@ -65,6 +70,35 @@ describe('Tree Parser', () => {
         'null-text'
       ];
       expect(traverse(tree)).toEqual(expectedNodes);
+    });
+  });
+
+  describe('insertBefore', () => {
+    let tree;
+    let body;
+    beforeEach(() => {
+      tree = treeParser.parse(`
+      <html>
+        <body>
+          <first-tag></first-tag>
+          <second-tag></second-tag>
+        </body>
+      </html>`);
+      const html = tree.root.firstChild;
+      body = html.firstChildByTag('body');
+    });
+
+    it('Inserts a node in the correct place', () => {
+      const newTag = tree.createElement('newtag');
+      const secondTag = body.firstChildByTag('second-tag');
+      body.insertBefore(newTag, secondTag);
+      expect(secondTag.prev.tagName).toEqual('newtag');
+    });
+
+    it('Inserts node at the end when secondTag is null', () => {
+      const newTag = tree.createElement('newtag');
+      body.insertBefore(newTag, null);
+      expect(body.lastChild.tagName).toEqual('newtag');
     });
   });
 });

@@ -45,6 +45,14 @@ Node.insertBefore = function(newNode, referenceNode) {
   if (!newNode) {
     return;
   }
+
+  // If referenceNode is null, the newNode is inserted at the end of the list of child nodes.
+  // https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore
+  if (referenceNode === null) {
+    this.appendChild(newNode);
+    return;
+  }
+
   htmlparser2.insertBefore(this, newNode, referenceNode);
 };
 
