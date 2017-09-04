@@ -45,15 +45,23 @@ class ServerSideRendering {
       // If these attributes are used on any AMP custom element tags within
       // the document, we can't remove the boilerplate - they require the
       // boilerplate.
-      if (node.attribs.height || node.attribs.media || node.attribs.sizes) {
+      if (node.attribs.heights || node.attribs.media || node.attribs.sizes) {
         canRemoveBoilerplate = false;
       }
 
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc. We check for that here rather than checking for the existence
       // of the amp-experiment script in IsRenderDelayingExtension below.
-      if (node.value() === 'amp-experiment') {
+      if (node.tagName === 'amp-experiment') {
         canRemoveBoilerplate = false;
+      }
+
+      // amp-audio requires knowing the dimensions of the browser. Do not
+      // remove the boilerplate or apply layout if amp-audio is present in the
+      // document.
+      if (node.tagName === 'amp-audio') {
+        canRemoveBoilerplate = false;
+        continue;
       }
 
       // Now apply the layout to the custom elements. If we encounter
