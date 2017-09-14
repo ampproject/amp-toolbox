@@ -32,7 +32,7 @@ class HeadNodes {
 
   _removeDuplicateCustomExtensions(extensions) {
     const nodesByName = new Map();
-    extensions.forEach(node => nodesByName.set(node.hasAttribute('custom-element'), node));
+    extensions.forEach(node => nodesByName.set(node.attribs['custom-element'], node));
     return Array.from(nodesByName.values());
   }
 
