@@ -1,5 +1,7 @@
 'use strict';
 
+const treeParser = require('./TreeParser.js');
+
 class DomTransformer {
 
   constructor(treeParser, config) {
@@ -7,18 +9,20 @@ class DomTransformer {
     this._config = config;
   }
 
-  transform(html, params) {
+  transformHtml(html, params) {
     params = params || {};
     const tree = this._treeParser.parse(html);
-    this._runTransformers(tree, params);
+    this.transformTree(tree, params);
     return this._treeParser.serialize(tree);
   }
 
-  _runTransformers(tree, params) {
+  transformTree(tree, params) {
     this._config.transformers.forEach(transformer => {
       transformer.transform(tree, params);
     });
   }
 }
 
-module.exports = DomTransformer;
+module.exports = {
+  create: config => new DomTransformer(treeParser, config)
+};
