@@ -1,5 +1,4 @@
 const DomTransfomer = require('./lib/DomTransformer.js');
-const treeParser = require('./lib/TreeParser.js');
 
 const defaultConfig = {
   transformers: [
@@ -19,7 +18,7 @@ function loadTransformer(name) {
 module.exports = {
   createTransformer: config => {
     config = Object.assign(defaultConfig, config);
-    return new DomTransfomer(treeParser, config);
+    return DomTransfomer.create(config);
   },
   defaultConfig: defaultConfig
 };
