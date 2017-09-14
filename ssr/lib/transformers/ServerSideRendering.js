@@ -5,7 +5,7 @@ const {applyLayout} = require('./ApplyLayout.js');
 
 class ServerSideRendering {
   // Determines whether the node |n| has an enclosing ancestor tag
-  // identified as |tagid|.
+  // identified as |tagname|.
   _hasAncestorWithTag(n, tagname) {
     for (let p = n.parent; p !== null; p = p.parent) {
       if (p.tagName === tagname) {
@@ -104,8 +104,7 @@ class ServerSideRendering {
 
     // Find the boilerplate and remove it.
     // The following code assumes that the <noscript>
-    // tag in the head is only ever used for boilerplate; the test
-    // AllNoScriptTagsInHeadEncloseBoilerplate covers this assumption.
+    // tag in the head is only ever used for boilerplate.
     const toRemove = [];
     for (let node = head.firstChild; node; node = node.nextSibling) {
       if (node.tagName === 'noscript' ||
