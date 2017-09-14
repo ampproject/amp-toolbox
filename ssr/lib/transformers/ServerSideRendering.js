@@ -7,7 +7,7 @@ class ServerSideRendering {
   // Determines whether the node |n| has an enclosing ancestor tag
   // identified as |tagid|.
   _hasAncestorWithTag(n, tagname) {
-    for (let p = n.parent(); p !== null; p = p.parent()) {
+    for (let p = n.parent; p !== null; p = p.parent) {
       if (p.tagName === tagname) {
         return true;
       }
@@ -87,8 +87,7 @@ class ServerSideRendering {
       return;
     }
 
-    let node = head.firstChild;
-    while (node) {
+    for (let node = head.firstChild; node; node = node.nextSibling) {
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc, which we checked for above.
       if (node.tagName === 'script' && node.hasAttribute('custom-element') &&
@@ -98,7 +97,6 @@ class ServerSideRendering {
       if (isRenderDelayingExtension(node)) {
         return;  // We can't remove the boilerplate.
       }
-      node = node.nextSibling;
     }
 
     // The boilerplate can be removed, note it on the <html> tag.
@@ -109,13 +107,11 @@ class ServerSideRendering {
     // tag in the head is only ever used for boilerplate; the test
     // AllNoScriptTagsInHeadEncloseBoilerplate covers this assumption.
     const toRemove = [];
-    node = head.firstChild;
-    while (node) {
+    for (let node = head.firstChild; node; node = node.nextSibling) {
       if (node.tagName === 'noscript' ||
           (node.tagName === 'style' && node.hasAttribute('amp-boilerplate'))) {
         toRemove.push(node);
       }
-      node = node.nextSibling;
     }
 
     for (let n of toRemove) {
