@@ -64,7 +64,7 @@ function compare(actualTree, expectedTree) {
   }).join('');
 
   if (failed) {
-    fail('Trees do not match\n\n' + reason + '\n\n' + actualHtml + '\n\n');
+    fail('Trees do not match\n\n' + reason + '\n\nActual output:\n\n' + actualHtml + '\n\n');
   }
 }
 

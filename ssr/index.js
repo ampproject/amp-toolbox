@@ -20,11 +20,11 @@ const DomTransfomer = require('./lib/DomTransformer.js');
 const defaultConfig = {
   transformers: [
     'AddAmpLink',
-    'RewriteAmpUrls',
     'ServerSideRendering',
     'RemoveAmpAttribute',
     'AmpBoilerplateTransformer', // needs to run after ServerSideRendering
-    'ReorderHeadTransformer'    // needs to run last
+    'ReorderHeadTransformer',    // needs to run last
+    'RewriteAmpUrls'            // needs to run after ReorderHeadTransformer
   ].map(loadTransformer)
 };
 
