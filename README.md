@@ -30,4 +30,4 @@ Please see [the CONTRIBUTING file](CONTRIBUTING.md) for information on contribut
 
 ## License
 
-See [LICENSE](./LICENSE) for more.
+AMP Toolbox is made by the [AMP Project](https://www.ampproject.org/), and is licensed under the [Apache License, Version 2.0](./LICENSE).
