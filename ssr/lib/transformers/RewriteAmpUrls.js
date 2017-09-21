@@ -41,7 +41,7 @@ class RewriteAmpUrls {
         node.attribs.src = this._replaceUrl(node.attribs.src, ampUrlPrefix);
         this._addPreload(tree, head, node, node.attribs.src, 'script');
       } else if (node.tagName === 'link' &&
-                  node.rel === 'stylesheet' &&
+                  node.attribs.rel === 'stylesheet' &&
                   this._usesAmpCacheUrl(node.attribs.href)) {
         node.attribs.href = this._replaceUrl(node.attribs.href, ampUrlPrefix);
         this._addPreload(tree, head, node, node.attribs.href, 'style');
