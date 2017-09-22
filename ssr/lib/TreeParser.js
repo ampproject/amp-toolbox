@@ -52,6 +52,7 @@ Node.appendChild = function(childNode) {
   if (!childNode) {
     return;
   }
+  childNode.nextSibling = null;
   htmlparser2.appendChild(this, childNode);
 };
 

@@ -149,6 +149,7 @@ describe('Tree', () => {
       head.appendChild(firstElement);
 
       secondElement = tree.createElement('script');
+      secondElement.nextSibling = firstElement;
       head.appendChild(secondElement);
     });
     it('appends child', () => {
@@ -159,6 +160,9 @@ describe('Tree', () => {
     });
     it('sets next', () => {
       expect(head.firstChild.next).toBe(secondElement);
+    });
+    it('clears next', () => {
+      expect(head.children[1].next).toBe(null);
     });
   });
 });
