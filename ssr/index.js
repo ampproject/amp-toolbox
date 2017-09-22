@@ -22,9 +22,12 @@ const defaultConfig = {
     'AddAmpLink',
     'ServerSideRendering',
     'RemoveAmpAttribute',
-    'AmpBoilerplateTransformer', // needs to run after ServerSideRendering
-    'ReorderHeadTransformer',    // needs to run last
-    'RewriteAmpUrls'            // needs to run after ReorderHeadTransformer
+    // needs to run after ServerSideRendering
+    'AmpBoilerplateTransformer',
+    // needs to run after ServerSideRendering
+    'ReorderHeadTransformer',
+    // needs to run after ReorderHeadTransformer
+    'RewriteAmpUrls'
   ].map(loadTransformer)
 };
 

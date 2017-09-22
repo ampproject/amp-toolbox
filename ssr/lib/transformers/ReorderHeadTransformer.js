@@ -21,6 +21,7 @@ class HeadNodes {
 
   constructor() {
     this._styleAmpRuntime = null;
+    this._linkStyleAmpRuntime = null;
     this._metaCharset = null;
     this._scriptAmpEngine = null;
     this._metaOther = [];
@@ -47,12 +48,16 @@ class HeadNodes {
 
   _removeDuplicateCustomExtensions(extensions) {
     const nodesByName = new Map();
-    extensions.forEach(node => nodesByName.set(node.attribs['custom-element'], node));
+    extensions.forEach(node => {
+      const name = this._getName(node);
+      nodesByName.set(name, node);
+    });
     return Array.from(nodesByName.values());
   }
 
   appendToHead(head) {
     head.appendChild(this._styleAmpRuntime);
+    head.appendChild(this._linkStyleAmpRuntime);
     head.appendChild(this._metaCharset);
     head.appendAll(this._metaOther);
     head.appendChild(this._scriptAmpEngine);
@@ -94,12 +99,10 @@ class HeadNodes {
     // Currently there are two amp engine tags: v0.js and
     // amp4ads-v0.js.  According to validation rules they are the
     // only script tags with a src attribute and do not have
-    // attributes custom-element or custom-template.  Record the
+    // attributes custom-element or custom-template. Record the
     // amp engine tag so it can be emitted first among script
     // tags.
-    if (node.hasAttribute('src') &&
-      !node.hasAttribute('custom-element') &&
-      !node.hasAttribute('custom-template')) {
+    if (node.hasAttribute('src') && !this._getName(node)) {
       this._scriptAmpEngine = node;
       return;
     }
@@ -108,6 +111,10 @@ class HeadNodes {
         this._scriptRenderDelayingExtensions.push(node);
         return;
       }
+      this._scriptNonRenderDelayingExtensions.push(node);
+      return;
+    }
+    if (node.hasAttribute('custom-template')) {
       this._scriptNonRenderDelayingExtensions.push(node);
       return;
     }
@@ -134,6 +141,10 @@ class HeadNodes {
   _registerLink(node) {
     const rel = node.attribs.rel;
     if (rel === 'stylesheet') {
+      if (node.attribs.href.endsWith('/v0.css')) {
+        this._linkStyleAmpRuntime = node;
+        return;
+      }
       if (!this._styleAmpCustom) { // We haven't seen amp-custom yet.
         this._linkStylesheetsBeforeAmpCustom.push(node);
         return;
@@ -147,6 +158,10 @@ class HeadNodes {
       return;
     }
     this._others.push(node);
+  }
+
+  _getName(node) {
+    return node.attribs['custom-element'] || node.attribs['custom-template'];
   }
 }
 

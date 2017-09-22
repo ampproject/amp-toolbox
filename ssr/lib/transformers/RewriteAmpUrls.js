@@ -35,8 +35,8 @@ class RewriteAmpUrls {
 
     const ampUrlPrefix = params.ampUrlPrefix || '';
 
-    for (let i = 0, len = head.children.length; i < len; i++) {
-      const node = head.children[i];
+    let node = head.firstChild;
+    while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, ampUrlPrefix);
         this._addPreload(tree, head, node, node.attribs.src, 'script');
@@ -46,6 +46,7 @@ class RewriteAmpUrls {
         node.attribs.href = this._replaceUrl(node.attribs.href, ampUrlPrefix);
         this._addPreload(tree, head, node, node.attribs.href, 'style');
       }
+      node = node.nextSibling;
     }
   }
 
