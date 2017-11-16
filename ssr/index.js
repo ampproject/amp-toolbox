@@ -28,18 +28,7 @@ const defaultConfig = {
     'ReorderHeadTransformer',
     // needs to run after ReorderHeadTransformer
     'RewriteAmpUrls'
-  ].map(loadTransformer)
+  ]
 };
 
-function loadTransformer(name) {
-  return require('./lib/transformers/' + name + '.js');
-}
-
-module.exports = {
-  createTransformer: config => {
-    config = Object.assign(defaultConfig, config);
-    return DomTransfomer.create(config);
-  },
-  defaultConfig: defaultConfig
-};
-
+module.exports = DomTransfomer.create(defaultConfig);

@@ -21,7 +21,7 @@ class DomTransformer {
 
   constructor(treeParser, config) {
     this._treeParser = treeParser;
-    this._config = config;
+    this.setConfig(config);
   }
 
   transformHtml(html, params) {
@@ -32,8 +32,18 @@ class DomTransformer {
   }
 
   transformTree(tree, params) {
-    this._config.transformers.forEach(transformer => {
+    this._transformers.forEach(transformer => {
       transformer.transform(tree, params);
+    });
+  }
+
+  setConfig(config) {
+    this._transformers = config.transformers.map(transformer => {
+      if (typeof transformer === 'string') {
+        return require('./transformers/' + transformer + '.js');
+      } else {
+        return transformer;
+      }
     });
   }
 }
