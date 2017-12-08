@@ -15,12 +15,23 @@
  */
 
 const createSpec = require('../helpers/TransformerRunner.js');
-const transformer = require('../../index.js').createTransformer();
+const ampSSR = require('../../index.js');
+
+ampSSR.setConfig({
+  transformers: [
+    'AddAmpLink',
+    'ServerSideRendering',
+    'RemoveAmpAttribute',
+    'AmpBoilerplateTransformer',
+    'ReorderHeadTransformer',
+    'RewriteAmpUrls'
+  ]
+});
 
 createSpec({
   name: 'End-to-End',
   testDir: __dirname,
   transformer: {
-    transform: (tree, params) => transformer.transformTree(tree, params)
+    transform: (tree, params) => ampSSR.transformTree(tree, params)
   }
 });

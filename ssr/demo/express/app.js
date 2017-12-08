@@ -19,8 +19,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-const ssr = require('../../index.js');
-ssr.setConfig({
+const ampSSR = require('amp-toolbox-ssr');
+ampSSR.setConfig({
   transformers: [
     'AddAmpLink',
     'ServerSideRendering',
@@ -83,7 +83,7 @@ const createTransformMiddleware = options => {
 
       const body = Buffer.concat(chunks).toString('utf8');
       const transformedBody =
-          ssr.transformHtml(body, {ampUrl: path.join(options.ampPath, req.originalUrl)});
+          ampSSR.transformHtml(body, {ampUrl: path.join(options.ampPath, req.originalUrl)});
 
       res.send(transformedBody);
     };

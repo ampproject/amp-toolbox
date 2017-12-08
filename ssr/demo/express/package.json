@@ -9,6 +9,7 @@
   "author": "AMPHTML team",
   "license": "Apache-2.0",
   "dependencies": {
+    "amp-toolbox-ssr": "*",
     "express": "^4.16.1"
   }
 }

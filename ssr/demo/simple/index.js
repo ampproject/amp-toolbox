@@ -20,11 +20,11 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const ampSSR = require('../../index.js');
+const ampSSR = require('amp-toolbox-ssr');
 
 // Transformers are easy to implement and integrate
 class CustomTransformer {
-  transform(tree, params) {
+  transform(tree /* optional: ', params' */) {
     const html = tree.root.firstChildByTag('html');
     if (!html) return;
     const head = html.firstChildByTag('head');
@@ -61,14 +61,18 @@ const DIST_DIR = 'dist';
 
 // Collect all files in the src dir.
 glob('/**/*.html', {root: SRC_DIR, nomount: true}, (err, files) => {
-  if (err) { throw err; }
+  if (err) {
+    throw err;
+  }
   files.forEach(copyAndTransform);
 });
 
 // Copy original and transformed AMP file into the dist dir.
 function copyAndTransform(file) {
   fs.readFile(path.join(SRC_DIR, file), 'utf8', (err, originalHtml) => {
-    if (err) { throw err; }
+    if (err) {
+      throw err;
+    }
     const ampFile = file.substring(1, file.length)
       .replace('.html', '.amp.html');
     // The transformer needs the path to the original AMP document
@@ -76,7 +80,7 @@ function copyAndTransform(file) {
     const ssrHtml = ampSSR.transformHtml(originalHtml, {
       ampUrl: ampFile
     });
-    // We change the path of the original AMP file to match the new 
+    // We change the path of the original AMP file to match the new
     // amphtml link and make the canonical link point to the transformed version.
     writeFile(ampFile, originalHtml);
     writeFile(file, ssrHtml);
@@ -86,12 +90,14 @@ function copyAndTransform(file) {
 function writeFile(filePath, content) {
   filePath = path.join(DIST_DIR, filePath);
   mkdirp(path.dirname(filePath), err => {
-    if (err) { throw err; }
+    if (err) {
+      throw err;
+    }
     fs.writeFile(filePath, content, err => {
-      if (err) { throw err; }
+      if (err) {
+        throw err;
+      }
     });
   });
 }
-
-
 

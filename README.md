@@ -16,11 +16,7 @@ limitations under the License.
 
 ## AMP Toolbox
 
-As the AMP Project is evolving, a few API's that give publishers control over the content are emerging. Integrating with each API can generate overhead for those publishers. Questions on how to use the APIs frequently come up at our support channels.
-
-The aim of this project is to provide tools that decrease the effort necessary for publishers to integrate with those API's. The concept is to provide re-usable component in the form of Node.js npm packages, that also contains CLI tools and allows developers to either integrate those packages in their backend or run the scripts from a command line.
-
-The current version contains amp-ssr, a node library implementing server-side-rendering for AMP pages
+A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
 - **[amp-ssr](./ssr):** A node library implementing server-side-rendering for AMP pages
 

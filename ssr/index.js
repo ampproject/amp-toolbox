@@ -19,15 +19,22 @@ const DomTransfomer = require('./lib/DomTransformer.js');
 
 const defaultConfig = {
   transformers: [
+    // Adds a link to the valid AMP version
     'AddAmpLink',
+    // Applies server-side-rendering optimizations
     'ServerSideRendering',
+    // Removes ⚡ or 'amp' from the html tag
     'RemoveAmpAttribute',
+    // Removes the boilerplate
     // needs to run after ServerSideRendering
     'AmpBoilerplateTransformer',
+    // Optimizes script import order
     // needs to run after ServerSideRendering
-    'ReorderHeadTransformer',
+    'ReorderHeadTransformer'
+    // Experimental: rewrites AMP runtime imports to same origin (disabled by default), e.g.:
+    // <script async src="https://cdn.ampproject.org/v0.js"></script>  -> <script async src="/v0.js"></script>
     // needs to run after ReorderHeadTransformer
-    'RewriteAmpUrls'
+    // 'RewriteAmpUrls'
   ]
 };
 

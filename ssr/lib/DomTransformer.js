@@ -41,9 +41,8 @@ class DomTransformer {
     this._transformers = config.transformers.map(transformer => {
       if (typeof transformer === 'string') {
         return require('./transformers/' + transformer + '.js');
-      } else {
-        return transformer;
       }
+      return transformer;
     });
   }
 }
