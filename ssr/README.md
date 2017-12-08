@@ -28,6 +28,12 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 
 ## Usage
 
+Install via:
+
+```
+npm install amp-toolbox-ssr
+```
+
 There are two sample implementations available:
 
 * [express](demo/express/): a sample express server serving server-side-rendered AMP pages.
@@ -134,7 +140,7 @@ The following valid AMPHTML:
 
 Will be transformed to:
 
-```
+```html
 <!DOCTYPE html>
 <html i-amphtml-layout="" i-amphtml-no-boilerplate="">
 <head>
