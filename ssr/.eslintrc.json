@@ -1,7 +1,6 @@
 {
   "extends": "google",
   "installedESLint": true,
-  // http://eslint.org/docs/rules/
   "rules": {
     "max-len": [2, 100, {
       "ignoreComments": true,
@@ -29,7 +28,6 @@
     "prefer-arrow-callback": 1,
     "no-var": 1
   },
-  // http://eslint.org/docs/user-guide/configuring#specifying-environments
   "env": {
     "node": true,
     "jasmine": true

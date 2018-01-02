@@ -24,7 +24,7 @@ class MaxAge {
    * @returns {MaxAge}
    */
   static zero() {
-    return new MaxAge(0, 0);
+    return new MaxAge(Date.now(), 0);
   }
 
   /**
@@ -34,11 +34,14 @@ class MaxAge {
    * @returns {MaxAge}
    */
   static parse(string) {
-    const match = string.match(/max-age=([0-9]+)[^0-9]?/i);
-    let maxAge = 0;
-    if (match) {
-      maxAge = parseInt(match[1], 10);
+    if (!string) {
+      return MaxAge.zero();
     }
+    const match = string.match(/max-age=([0-9]+)[^0-9]?/i);
+    if (!match) {
+      return MaxAge.zero();
+    }
+    const maxAge = parseInt(match[1], 10);
     return new MaxAge(Date.now(), maxAge);
   }
 

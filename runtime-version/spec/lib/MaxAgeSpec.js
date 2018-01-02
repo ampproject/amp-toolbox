@@ -22,6 +22,14 @@ describe('MaxAge', () => {
       const maxAge = MaxAge.parse('no-cache');
       expect(maxAge.value).toBe(0);
     });
+    it('0 if empty string', () => {
+      const maxAge = MaxAge.parse('');
+      expect(maxAge.value).toBe(0);
+    });
+    it('0 if null', () => {
+      const maxAge = MaxAge.parse(null);
+      expect(maxAge.value).toBe(0);
+    });
     it('0 if no number', () => {
       const maxAge = MaxAge.parse('max-age=string');
       expect(maxAge.value).toBe(0);
