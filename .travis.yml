@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "node"
+  - "6"
+  - "8"
+install:
+  - for d in runtime-version ssr ; do cd $d ; npm install ; cd - ; done
+script:
+  - for d in runtime-version ssr ; do cd $d ; npm test ; cd - ; done
