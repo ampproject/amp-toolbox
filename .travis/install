@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -ev
+
+DIRS=$(find . -depth 2 -name 'package.json' -exec dirname \{\} \;)
+
+for d in DIRS ; do
+  pushd $d
+  npm install
+  popd
+done

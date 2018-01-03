@@ -3,7 +3,5 @@ node_js:
   - "node"
   - "6"
   - "8"
-install:
-  - for d in runtime-version ssr ; do cd $d ; npm install || exit ; cd - ; done
-script:
-  - for d in runtime-version ssr ; do cd $d ; npm test || exit ; cd - ; done
+install: .travis/install
+script: .travis/script
