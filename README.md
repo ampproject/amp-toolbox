@@ -16,6 +16,8 @@ limitations under the License.
 
 ## AMP Toolbox
 
+[![Build Status](https://travis-ci.org/ampproject/amp-toolbox.svg?branch=master)](https://travis-ci.org/ampproject/amp-toolbox)
+
 A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
 - **[amp-ssr](./ssr):** a node library implementing server-side-rendering for AMP pages.
