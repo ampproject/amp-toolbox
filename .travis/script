@@ -2,9 +2,10 @@
 
 set -ev
 
-DIRS=$(find . -depth 2 -name 'package.json' -exec dirname \{\} \;)
-
-for d in DIRS ; do
+for d in * ; do
+  if [[ ! -d "$d" || ! -e "$d/package.json" ]]; then
+    continue
+  fi
   pushd $d
   npm test
   popd
