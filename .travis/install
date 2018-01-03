@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ev
+set -e
 
 for d in * ; do
   if [[ ! -d "$d" || ! -e "$d/package.json" ]]; then
