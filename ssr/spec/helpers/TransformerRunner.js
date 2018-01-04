@@ -22,7 +22,7 @@ const {getFileContents, getDirectories} = require('../helpers/Utils.js');
 
 const treeParser = require('../../lib/TreeParser.js');
 
-const TRANFORMER_PARAMS = {
+const TRANSFORMER_PARAMS = {
   ampUrlPrefix: '/amp',
   ampUrl: 'https://example.com/amp-version.html'
 };
@@ -33,7 +33,7 @@ module.exports = function(testConfig) {
       it(basename(testDir), () => {
         const inputTree = parseTree(testDir, 'input.html');
         const expectedOutputTree = parseTree(testDir, 'expected_output.html');
-        testConfig.transformer.transform(inputTree, TRANFORMER_PARAMS);
+        testConfig.transformer.transform(inputTree, TRANSFORMER_PARAMS);
         compare(inputTree, expectedOutputTree);
       });
     });
