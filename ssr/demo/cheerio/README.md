@@ -4,7 +4,7 @@ This example demonstrates the use of
 [Cheerio](https://github.com/cheeriojs/cheerio) to apply jQuery-like
 transformations to a DOM, as an alternative to the
 [domutils](https://github.com/fb55/domutils)-style transformations of the
-build-in transformers.
+built-in transformers.
 
 Usage:
 
