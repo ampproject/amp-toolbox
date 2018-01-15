@@ -19,22 +19,23 @@ const treeParser = require('./TreeParser.js');
 
 class DomTransformer {
 
-  constructor(treeParser, config) {
-    this._treeParser = treeParser;
+  constructor(config) {
     this.setConfig(config);
   }
 
   transformHtml(html, params) {
     params = params || {};
-    const tree = this._treeParser.parse(html);
-    this.transformTree(tree, params);
-    return this._treeParser.serialize(tree);
+    const tree = treeParser.parse(html);
+    return this.transformTree(tree, params)
+      .then(() => treeParser.serialize(tree));
   }
 
   transformTree(tree, params) {
-    this._transformers.forEach(transformer => {
-      transformer.transform(tree, params);
-    });
+    const sequentialTransformation = (result, transformer) => {
+      const next = Promise.resolve(transformer.transform(tree, params));
+      return result.then(next);
+    };
+    return this._transformers.reduce(sequentialTransformation, Promise.resolve());
   }
 
   setConfig(config) {
@@ -47,6 +48,4 @@ class DomTransformer {
   }
 }
 
-module.exports = {
-  create: config => new DomTransformer(treeParser, config)
-};
+module.exports = DomTransformer;

@@ -82,10 +82,8 @@ const createTransformMiddleware = options => {
       }
 
       const body = Buffer.concat(chunks).toString('utf8');
-      const transformedBody =
-          ampSSR.transformHtml(body, {ampUrl: path.join(options.ampPath, req.originalUrl)});
-
-      res.send(transformedBody);
+      ampSSR.transformHtml(body, {ampUrl: path.join(options.ampPath, req.originalUrl)})
+        .then(transformedBody => res.send(transformedBody));
     };
 
     next();

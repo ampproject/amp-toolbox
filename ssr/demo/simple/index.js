@@ -68,22 +68,29 @@ glob('/**/*.html', {root: SRC_DIR, nomount: true}, (err, files) => {
 });
 
 // Copy original and transformed AMP file into the dist dir.
-function copyAndTransform(file) {
-  fs.readFile(path.join(SRC_DIR, file), 'utf8', (err, originalHtml) => {
-    if (err) {
-      throw err;
-    }
-    const ampFile = file.substring(1, file.length)
-      .replace('.html', '.amp.html');
-    // The transformer needs the path to the original AMP document
-    // to correctly setup AMP to canonical linking
-    const ssrHtml = ampSSR.transformHtml(originalHtml, {
-      ampUrl: ampFile
+async function copyAndTransform(file) {
+  const originalHtml = await readFile(file);
+  const ampFile = file.substring(1, file.length)
+    .replace('.html', '.amp.html');
+  // The transformer needs the path to the original AMP document
+  // to correctly setup AMP to canonical linking
+  const ssrHtml = await ampSSR.transformHtml(originalHtml, {
+    ampUrl: ampFile
+  });
+  // We change the path of the original AMP file to match the new
+  // amphtml link and make the canonical link point to the transformed version.
+  writeFile(ampFile, originalHtml);
+  writeFile(file, ssrHtml);
+}
+
+function readFile(fileName) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path.join(SRC_DIR, fileName), 'utf8', (err, contents) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(contents);
     });
-    // We change the path of the original AMP file to match the new
-    // amphtml link and make the canonical link point to the transformed version.
-    writeFile(ampFile, originalHtml);
-    writeFile(file, ssrHtml);
   });
 }
 
