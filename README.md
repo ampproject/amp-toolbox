@@ -21,6 +21,7 @@ limitations under the License.
 A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
 - **[amp-ssr](./ssr):** a node library implementing server-side-rendering for AMP pages.
+- **[amp-ssr-express](./ssr-express)** an [express](http://expressjs.com/) middleware that transforms AMP pages on the fly.
 - **[amp-runtime-version](./runtime-version):** a node library for querying the current AMP runtime version.
 
 ## Contributing

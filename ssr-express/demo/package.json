@@ -1,7 +1,7 @@
 {
-  "name": "amp-toolbox-ssr-express",
+  "name": "amp-toolbox-ssr-express-demo",
   "version": "0.0.3",
-  "description": "Express middleware to for amp-toolbox-ssr",
+  "description": "Demo for the amp-toolbox-ssr-express component",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,15 +12,19 @@
   },
   "keywords": [
     "amp",
+    "amp-toolbox",
     "amp-ssr",
-    "amp-toolbox"
+    "express",
+    "demo"
   ],
-  "author": "AMPHTML Team",
+  "author": "The AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
+    "amp-toolbox-ssr": "*",
+    "express": "^4.16.2"
   }
 }

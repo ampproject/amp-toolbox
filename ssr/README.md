@@ -77,7 +77,7 @@ ampSSR.setConfig({
     // Removes the boilerplate
     // needs to run after ServerSideRendering
     'AmpBoilerplateTransformer',
-    // Optimizes script import order 
+    // Optimizes script import order
     // needs to run after ServerSideRendering
     'ReorderHeadTransformer',
     // Experimental: rewrites AMP runtime imports to same origin (disabled by default), e.g.:
@@ -102,7 +102,7 @@ const ssrHtml = ampSSR.transformHtml(originalHtml, {
 console.log(ssrHtml);
 ```
 
-You can find the currently supported transformations [here](lib/transformers). 
+You can find the currently supported transformations [here](lib/transformers).
 
 ### Options
 
@@ -191,10 +191,10 @@ transformations statically. For such cases it is possible to run the
 transformations after AMP pages are rendered, e.g. in an Express middleware.
 
 To achieve best performance, those transformations shouldn't be applied for
-every request. Instead, transformations should only be applied the *first time* 
+every request. Instead, transformations should only be applied the *first time*
 a page is requested, and the results then cached. Caching can happen on the CDN
 level, on the site's internal infrastructure (eg: Memcached), or even on the
-server itself, if the set of pages is small enough to fit in memory. 
+server itself, if the set of pages is small enough to fit in memory.
 
 ## Why is it faster?
 
@@ -211,7 +211,7 @@ Runtime is loaded.
 
 To improve this, AMP server-side rendering applies the same rules as the
 AMP Runtime on the server. This ensures that the reflow will not happen  and
-the AMP boilerplate is no longer needed. The first render no longer depends on the 
+the AMP boilerplate is no longer needed. The first render no longer depends on the
 AMP Runtime being loaded, which improves load times.
 
 ## Caveats
