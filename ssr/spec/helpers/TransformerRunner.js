@@ -30,11 +30,15 @@ const TRANSFORMER_PARAMS = {
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach(testDir => {
-      it(basename(testDir), () => {
+      it(basename(testDir), done => {
         const inputTree = parseTree(testDir, 'input.html');
         const expectedOutputTree = parseTree(testDir, 'expected_output.html');
-        testConfig.transformer.transform(inputTree, TRANSFORMER_PARAMS);
-        compare(inputTree, expectedOutputTree);
+        Promise.resolve(
+          testConfig.transformer.transform(inputTree, TRANSFORMER_PARAMS)
+        ).then(() => {
+          compare(inputTree, expectedOutputTree);
+          done();
+        });
       });
     });
   });

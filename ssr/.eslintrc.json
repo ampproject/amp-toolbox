@@ -28,6 +28,9 @@
     "prefer-arrow-callback": 1,
     "no-var": 1
   },
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
   "env": {
     "node": true,
     "jasmine": true

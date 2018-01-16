@@ -17,26 +17,50 @@
 
 const treeParser = require('./TreeParser.js');
 
+/**
+ * Applies a set of transformations to a DOM tree.
+ */
 class DomTransformer {
 
-  constructor(treeParser, config) {
-    this._treeParser = treeParser;
+  /**
+   * Create a DomTransformer.
+   * @param {Object} config - The config.
+   * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
+   */
+  constructor(config) {
     this.setConfig(config);
   }
 
+  /**
+   * Transforms an html string.
+   * @param {string} html - a string containing valid HTML.
+   * @param {Object} params - a dictionary containing transformer specific parameters.
+   */
   transformHtml(html, params) {
     params = params || {};
-    const tree = this._treeParser.parse(html);
-    this.transformTree(tree, params);
-    return this._treeParser.serialize(tree);
+    const tree = treeParser.parse(html);
+    return this.transformTree(tree, params)
+      .then(() => treeParser.serialize(tree));
   }
 
+  /**
+   * Transforms a DOM tree.
+   * @param {Tree} tree - a DOM tree.
+   * @param {Object} params - a dictionary containing transformer specific parameters.
+   */
   transformTree(tree, params) {
-    this._transformers.forEach(transformer => {
-      transformer.transform(tree, params);
-    });
+    const sequentialTransformation = (result, transformer) => {
+      const next = Promise.resolve(transformer.transform(tree, params));
+      return result.then(next);
+    };
+    return this._transformers.reduce(sequentialTransformation, Promise.resolve());
   }
 
+  /**
+   * Set the config.
+   * @param {Object} config - The config.
+   * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
+   */
   setConfig(config) {
     this._transformers = config.transformers.map(transformer => {
       if (typeof transformer === 'string') {
@@ -47,6 +71,4 @@ class DomTransformer {
   }
 }
 
-module.exports = {
-  create: config => new DomTransformer(treeParser, config)
-};
+module.exports = DomTransformer;

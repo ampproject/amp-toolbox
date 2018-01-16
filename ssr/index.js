@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const DomTransfomer = require('./lib/DomTransformer.js');
+const DomTransformer = require('./lib/DomTransformer.js');
 
 const defaultConfig = {
   transformers: [
@@ -38,4 +38,4 @@ const defaultConfig = {
   ]
 };
 
-module.exports = DomTransfomer.create(defaultConfig);
+module.exports = new DomTransformer(defaultConfig);
