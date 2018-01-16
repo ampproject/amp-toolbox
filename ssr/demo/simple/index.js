@@ -22,6 +22,8 @@ const mkdirp = require('mkdirp');
 
 const ampSSR = require('amp-toolbox-ssr');
 
+const runtimeVersion = require('amp-toolbox-runtime-version');
+
 // Transformers are easy to implement and integrate
 class CustomTransformer {
   transform(tree /* optional: ', params' */) {
@@ -59,23 +61,43 @@ ampSSR.setConfig({
 const SRC_DIR = 'src';
 const DIST_DIR = 'dist';
 
-// Collect all files in the src dir.
-glob('/**/*.html', {root: SRC_DIR, nomount: true}, (err, files) => {
-  if (err) {
-    throw err;
+runAmpSSRTransformations();
+
+async function runAmpSSRTransformations() {
+  // This is optional in case AMP runtime URLs should be versioned
+  const ampRuntimeVersion = await runtimeVersion.currentVersion();
+  const versionedRuntimePrefix = 'https://cdn.ampproject.org/rtv/' + ampRuntimeVersion + '/';
+  console.log(versionedRuntimePrefix);
+
+  // Collect input files and invoke the transformers
+  const files = await collectInputFiles('/**/*.html');
+  for (const file of files) {
+    copyAndTransform(file, versionedRuntimePrefix);
   }
-  files.forEach(copyAndTransform);
-});
+}
+
+// Collect all files in the src dir.
+function collectInputFiles(pattern) {
+  return new Promise((resolve, reject) => {
+    glob(pattern, {root: SRC_DIR, nomount: true}, (err, files) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(files);
+    });
+  });
+}
 
 // Copy original and transformed AMP file into the dist dir.
-async function copyAndTransform(file) {
+async function copyAndTransform(file, ampUrlPrefix) {
   const originalHtml = await readFile(file);
   const ampFile = file.substring(1, file.length)
     .replace('.html', '.amp.html');
   // The transformer needs the path to the original AMP document
   // to correctly setup AMP to canonical linking
   const ssrHtml = await ampSSR.transformHtml(originalHtml, {
-    ampUrl: ampFile
+    ampUrl: ampFile,
+    ampUrlPrefix: ampUrlPrefix
   });
   // We change the path of the original AMP file to match the new
   // amphtml link and make the canonical link point to the transformed version.

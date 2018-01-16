@@ -24,7 +24,7 @@ class MaxAge {
    * @returns {MaxAge}
    */
   static zero() {
-    return new MaxAge(Date.now(), 0);
+    return new MaxAge(0, 0);
   }
 
   /**

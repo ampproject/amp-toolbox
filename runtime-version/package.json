@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-runtime-version",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AMP Runtime versions",
   "main": "index.js",
   "scripts": {

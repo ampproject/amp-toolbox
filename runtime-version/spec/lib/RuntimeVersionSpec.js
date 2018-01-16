@@ -32,5 +32,17 @@ describe('RuntimeVersion', () => {
         done();
       });
     });
+    it('pads release version to 15 chars', done => {
+      runtimeVersion.currentVersion().then(version => {
+        expect(version.length).toBe(15);
+        done();
+      });
+    });
+    it('pads canary version to 15 chars', done => {
+      runtimeVersion.currentVersion({canary: true}).then(version => {
+        expect(version.length).toBe(15);
+        done();
+      });
+    });
   });
 });
