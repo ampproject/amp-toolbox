@@ -40,7 +40,8 @@ class RuntimeVersion {
    * Returns the version of the current AMP runtime release. Pass
    * <code>{canary: true}</code> to get the latest canary version.
    *
-   * @param {Object} options
+   * @param {Object} options - the options.
+   * @param {bool} options.canary - true if canary should be returned.
    * @returns {Promise<Number>} a promise containing the current version
    */
   currentVersion(options = {}) {
@@ -57,7 +58,7 @@ class RuntimeVersion {
       this.release_.version = axios.get(RELEASE_ENDPOINT)
         .then(response => {
           this.updateMaxAge_(this.release_, response);
-          return response.data.toString();
+          return this.padVersionString(response.data.toString());
         });
     }
     return staleValue || this.release_.version;
@@ -69,7 +70,7 @@ class RuntimeVersion {
       this.canary_.version = axios.get(CANARY_ENDPOINT)
         .then(response => {
           this.updateMaxAge_(this.canary_, response);
-          return response.data[0];
+          return this.padVersionString(response.data[0]);
         });
     }
     return staleValue || this.canary_.version;
@@ -77,6 +78,16 @@ class RuntimeVersion {
 
   updateMaxAge_(version, response) {
     version.maxAge = MaxAge.parse(response.headers['cache-control']);
+  }
+
+  padVersionString(version) {
+    return this.pad(version, 15, 0);
+  }
+
+  pad(n, width, z) {
+    z = z || '0';
+    n = String(n);
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
   }
 }
 
