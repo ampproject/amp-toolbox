@@ -31,7 +31,6 @@ class DomTransformer {
     this.setConfig(config);
   }
 
-
   /**
    * Transforms an html string.
    * @param {string} html - a string containing valid HTML.
