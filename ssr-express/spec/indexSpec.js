@@ -16,8 +16,8 @@
 
 const MockExpressRequest = require('mock-express-request');
 const MockExpressResponse = require('mock-express-response');
-const {URL} = require('url');
-const createTransformMiddleware = require('../index.js');
+const {URL} = require('whatwg-url');
+const createAmpSsrMiddleware = require('../index.js');
 
 class TestTransformer {
   transformHtml() {
@@ -38,7 +38,7 @@ function runMiddlewareForUrl(middleware, url) {
 
 describe('Express Middleware', () => {
   describe('Default configuration', () => {
-    const middleware = createTransformMiddleware(new TestTransformer());
+    const middleware = createAmpSsrMiddleware(new TestTransformer());
 
     it('Transforms URLs', () => {
       const result = runMiddlewareForUrl(middleware, '/stuff?q=thing');
@@ -58,16 +58,16 @@ describe('Express Middleware', () => {
       const parsedUrl = new URL(url, 'https://example.com');
       return parsedUrl.searchParams.has('amp');
     };
-    const ampUrl = url => {
+    const getAmpUrl = url => {
       // http://example.com is used as the second parameter,
       // as the URL constructor requires a valid domain.
       const parsedUrl = new URL(url, 'https://example.com');
       parsedUrl.searchParams.set('amp', '');
       return parsedUrl.pathname + parsedUrl.search;
     };
-    const middleware = createTransformMiddleware(new TestTransformer(), {
+    const middleware = createAmpSsrMiddleware(new TestTransformer(), {
       skipTransform: skipTransform,
-      ampUrl: ampUrl
+      getAmpUrl: getAmpUrl
     });
 
     it('Transforms URLs', () => {

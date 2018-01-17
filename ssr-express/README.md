@@ -34,10 +34,10 @@ middleware is used *before* the middleware or route that renders the page.
 
 The example bellow will transform HTML being loaded by express-static:
 ```javascript
-const transformMiddleware = createTransformMiddleware(ampSSR);
+const ampSsrMiddleware = createAmpSsrMiddleware(ampSsr);
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 
-app.use(transformMiddleware);
+app.use(ampSsrMiddleware);
 app.use(staticMiddleware);
 ```
 
@@ -58,10 +58,10 @@ Example configuration using the default configuration and a static middleware:
 const express = require('express');
 const path = require('path');
 const app = express();
-const createTransformMiddleware = require('amp-toolbox-ssr-express');
-const ampSSR = require('amp-toolbox-ssr');
+const createAmpSsrMiddleware = require('amp-toolbox-ssr-express');
+const ampSsr = require('amp-toolbox-ssr');
 
-ampSSR.setConfig({
+ampSsr.setConfig({
   transformers: [
     'AddAmpLink',
     'ServerSideRendering',
@@ -74,11 +74,11 @@ ampSSR.setConfig({
 });
 
 // Setup the AMP-SSR Transformer and pass along the path to build the link tag.
-const transformMiddleware = createTransformMiddleware(ampSSR);
+const ampSsrMiddleware = createAmpSsrMiddleware(ampSsr);
 
 // It's important that the transformMiddleware is added BEFORE the static middleware.
 // This allows us to replace the parts needed before static handles the request.
-app.use(transformMiddleware);
+app.use(ampSsrMiddleware);
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);
@@ -93,7 +93,7 @@ The example bellow transforms uses the `?amp` query parameter to indicate pages 
 AMPs. eg: `https://example.com/page.html` becomes `https://example.com/page.html?amp`.
 
 ```javascript
-// skipTransform receives a `string` containing an url as parameter, and returns a `boolean`.
+// skipTransform receives a `string` containing an URL as parameter, and returns a `boolean`.
 const skipTransform = url => {
   // http://example.com is used as the second parameter,
   // as the URL constructor requires a valid domain.
@@ -101,9 +101,9 @@ const skipTransform = url => {
   return parsedUrl.searchParams.has('amp');
 };
 
-// ampUrl receives a `string` containing an url as parameter, and returns a `string` indicating
-// the equivalent AMP url.
-const ampUrl = url => {
+// ampUrl receives a `string` containing an URL as parameter, and returns a `string` indicating
+// the equivalent AMP URL.
+const getAmpUrl = url => {
   // http://example.com is used as the second parameter,
   // as the URL constructor requires a valid domain.
   const parsedUrl = new URL(url, 'https://example.com');
@@ -112,9 +112,9 @@ const ampUrl = url => {
 };
 
 // Setup the AMP-SSR Transformer and pass along the path to build the link tag.
-const transformMiddleware = createTransformMiddleware(ampSSR, {
+const ampSsrMiddleware = createAmpSsrMiddleware(ampSsr, {
     skipTransform: skipTransform,
-    ampUrl: ampUrl
+    getAmpUrl: getAmpUrl
 });
 
 // It's important that the transformMiddleware is added BEFORE the static middleware.

@@ -14,34 +14,51 @@
  * limitations under the License.
  */
 'use strict';
+
 /**
-  * The transform middleware replaces the `res.write` method so that, instead of sending
-  * the content to the network, it is accumulated in a buffer. `res.end` is also replaced
-  * so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
-  * to the network.
-  */
+ * The transform middleware replaces the `res.write` method so that, instead of sending
+ * the content to the network, it is accumulated in a buffer. `res.end` is also replaced
+ * so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
+ * to the network.
+ */
 
 const DEFAULT_AMP_PREFIX = '/amp';
+
+/**
+ *  Returns true if middleware should skip the transformation for this URL.
+ *
+ *  @name skipTransform
+ *  @function
+ *  @param {string} url the URL that is triggered the middleware.
+ *  @returns {boolean} true if the transformation should be skipped.
+ */
+
+/**
+ *  Returns the equivalent AMP URL for the original URL.
+ *
+ *  @name getAmpUrl
+ *  @function
+ *  @param {string} url the URL that triggered the middleware.
+ *  @returns {string} the path to the AMP file to be transformed
+ */
+
 /**
  * Creates a new amp-server-side-rendering middleware, using the specified
  * ampSSR and options.
  *
- * There are 2 parameters available for options:
- * - skipTransform: a `function(url: string): boolean` indicating if the transformation
- *                  should be applied to the url.
- * - ampUrl: a `function(url: string): string` that receives a url to be transformed and
- *           returns the equivalent AMP url.
- *
- * @param {*} ampSSR the ampSSR instance to be used by this transformer.
- * @param {*} options an optional object containing custom configureations for
- * the transformer.
+ * @param {string} ampSsr the ampSsr instance to be used by this transformer.
+ * @param {Object} options an optional object containing custom configurations for
+ * the middleware.
+ * @param {skipTransform} options.skipTransform indicates if the transformation
+  * should be applied to the URL.
+ * @param {getAmpUrl} options.getAmpUrl returns the equivalent AMP to be transformed.
  */
-const createTransformMiddleware = (ampSSR, options) => {
+const createAmpSsrMiddleware = (ampSsr, options) => {
   options = options || {};
   options.skipTransform = options.skipTransform ||
       (url => url.startsWith(DEFAULT_AMP_PREFIX + '/'));
 
-  options.ampUrl = options.ampUrl || (url => DEFAULT_AMP_PREFIX + url);
+  options.getAmpUrl = options.getAmpUrl || (url => DEFAULT_AMP_PREFIX + url);
 
   return (req, res, next) => {
     // This is a request for the original AMP. Allow the flow to continue normally.
@@ -50,7 +67,7 @@ const createTransformMiddleware = (ampSSR, options) => {
       return;
     }
 
-    const ampUrl = options.ampUrl(req.url);
+    const ampUrl = options.getAmpUrl(req.url);
     req.url = ampUrl;
 
     const chunks = [];
@@ -87,7 +104,7 @@ const createTransformMiddleware = (ampSSR, options) => {
       }
 
       const body = Buffer.concat(chunks).toString('utf8');
-      const transformedBody = ampSSR.transformHtml(body, {ampUrl: ampUrl});
+      const transformedBody = ampSsr.transformHtml(body, {ampUrl: ampUrl});
       res.send(transformedBody);
     };
 
@@ -95,4 +112,4 @@ const createTransformMiddleware = (ampSSR, options) => {
   };
 };
 
-module.exports = createTransformMiddleware;
+module.exports = createAmpSsrMiddleware;
