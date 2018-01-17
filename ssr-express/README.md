@@ -18,6 +18,9 @@ limitations under the License.
 
 amp-ssr-express is an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly, using the [amp-ssr](../ssr) component.
 
+The middleware is typically used by developers who want to create a dynamic AMP website and take advantage
+of the performance boost provided by server-side-rendered AMPs, and pair them with the original valid AMPs.
+
 For the middleware to work, a route that renders AMP pages must be available. It will then rewrite the
 request to that route and apply server-side-rendering to the result.
 
