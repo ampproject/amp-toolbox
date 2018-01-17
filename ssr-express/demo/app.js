@@ -34,11 +34,11 @@ ampSSR.setConfig({
 });
 
 // Setup the AMP-SSR Transformer and pass along the path to build the link tag.
-const transformMiddleware = createTransformMiddleware(ampSSR, {});
+const transformMiddleware = createTransformMiddleware(ampSSR);
 
 // It's important that the transformMiddleware is added BEFORE the static middleware.
 // This allows us to replace the parts needed before static handles the request.
-app.get('/*.html', transformMiddleware);
+app.use(transformMiddleware);
 
 const staticMiddelware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddelware);

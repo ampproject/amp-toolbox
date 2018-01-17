@@ -16,22 +16,32 @@
 'use strict';
 
 const path = require('path');
+const URL = require('url');
+
+const DEFAULT_AMP_PREFIX = '/amp';
 
 // The transform middleware replaces the `res.write` method so that, instead of sending
 // the content to the network, it is accumulated in a buffer. `res.end` is also replaced
 // so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
 // to the network.
 const createTransformMiddleware = (ampSSR, options) => {
-  options.ampPath = options.ampPath || '/amp/';
+  options = options || {};
+  options.skipTransform = options.skipTransform
+      || (url => url.pathname.startsWith(DEFAULT_AMP_PREFIX + '/'));
+
+  options.ampUrl = options.ampUrl || (url => DEFAULT_AMP_PREFIX + url.pathname);
 
   return (req, res, next) => {
+    const url = URL.parse(req.originalUrl);
+
     // This is a request for the original AMP. Allow the flow to continue normally.
-    if (req.url.startsWith(options.ampPath)) {
+    if (options.skipTransform(url)) {
       next();
       return;
     }
 
-    req.url = path.join(options.ampPath, req.url);
+    const ampUrl = options.ampUrl(url);
+    req.url = ampUrl;
 
     const chunks = [];
 
@@ -67,9 +77,7 @@ const createTransformMiddleware = (ampSSR, options) => {
       }
 
       const body = Buffer.concat(chunks).toString('utf8');
-      const transformedBody =
-          ampSSR.transformHtml(body, {ampUrl: path.join(options.ampPath, req.originalUrl)});
-
+      const transformedBody = ampSSR.transformHtml(body, {ampUrl: ampUrl});
       res.send(transformedBody);
     };
 
