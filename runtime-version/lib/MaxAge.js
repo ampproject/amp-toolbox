@@ -15,6 +15,11 @@
  */
 'use strict';
 
+const MAX_AGE_ZERO = {
+  value: 0,
+  isExpired: () => true
+};
+
 /* A max age wrapper. */
 class MaxAge {
 
@@ -24,7 +29,7 @@ class MaxAge {
    * @returns {MaxAge}
    */
   static zero() {
-    return new MaxAge(0, 0);
+    return MAX_AGE_ZERO;
   }
 
   /**

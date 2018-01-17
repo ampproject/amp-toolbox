@@ -15,8 +15,7 @@
  */
 'use strict';
 
-const axios = require('axios');
-const MaxAge = require('./MaxAge.js');
+const OneBehindFetch = require('./OneBehindFetch.js');
 
 const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
 const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/v0/version.txt';
@@ -27,13 +26,8 @@ const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/v0/version.txt';
  */
 class RuntimeVersion {
 
-  constructor() {
-    this.canary_ = {
-      maxAge: MaxAge.zero()
-    };
-    this.release_ = {
-      maxAge: MaxAge.zero()
-    };
+  constructor(request = OneBehindFetch.create()) {
+    this.request_ = request;
   }
 
   /**
@@ -46,38 +40,17 @@ class RuntimeVersion {
    */
   currentVersion(options = {}) {
     if (options.canary) {
-      return this.getAndUpdateCanary_();
+      return this.fetchVersion_(CANARY_ENDPOINT, data => data[0]);
     }
-    return this.getAndUpdateRelease_();
+    return this.fetchVersion_(RELEASE_ENDPOINT, data => data.toString());
   }
 
   /* PRIVATE */
-  getAndUpdateRelease_() {
-    const staleValue = this.release_.version;
-    if (this.release_.maxAge.isExpired()) {
-      this.release_.version = axios.get(RELEASE_ENDPOINT)
-        .then(response => {
-          this.updateMaxAge_(this.release_, response);
-          return this.padVersionString(response.data.toString());
-        });
-    }
-    return staleValue || this.release_.version;
-  }
-
-  getAndUpdateCanary_() {
-    const staleValue = this.canary_.version;
-    if (this.canary_.maxAge.isExpired()) {
-      this.canary_.version = axios.get(CANARY_ENDPOINT)
-        .then(response => {
-          this.updateMaxAge_(this.canary_, response);
-          return this.padVersionString(response.data[0]);
-        });
-    }
-    return staleValue || this.canary_.version;
-  }
-
-  updateMaxAge_(version, response) {
-    version.maxAge = MaxAge.parse(response.headers['cache-control']);
+  fetchVersion_(url, process) {
+    return this.request_.get(url)
+      .then(data => {
+        return this.padVersionString(process(data));
+      });
   }
 
   padVersionString(version) {
