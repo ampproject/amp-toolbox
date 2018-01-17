@@ -15,9 +15,6 @@
  */
 'use strict';
 
-const path = require('path');
-const URL = require('url');
-
 const DEFAULT_AMP_PREFIX = '/amp';
 
 // The transform middleware replaces the `res.write` method so that, instead of sending
@@ -26,21 +23,19 @@ const DEFAULT_AMP_PREFIX = '/amp';
 // to the network.
 const createTransformMiddleware = (ampSSR, options) => {
   options = options || {};
-  options.skipTransform = options.skipTransform
-      || (url => url.pathname.startsWith(DEFAULT_AMP_PREFIX + '/'));
+  options.skipTransform = options.skipTransform ||
+      (url => url.startsWith(DEFAULT_AMP_PREFIX + '/'));
 
-  options.ampUrl = options.ampUrl || (url => DEFAULT_AMP_PREFIX + url.pathname);
+  options.ampUrl = options.ampUrl || (url => DEFAULT_AMP_PREFIX + url);
 
   return (req, res, next) => {
-    const url = URL.parse(req.originalUrl);
-
     // This is a request for the original AMP. Allow the flow to continue normally.
-    if (options.skipTransform(url)) {
+    if (options.skipTransform(req.url)) {
       next();
       return;
     }
 
-    const ampUrl = options.ampUrl(url);
+    const ampUrl = options.ampUrl(req.url);
     req.url = ampUrl;
 
     const chunks = [];
