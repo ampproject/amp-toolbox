@@ -14,13 +14,28 @@
  * limitations under the License.
  */
 'use strict';
+/**
+  * The transform middleware replaces the `res.write` method so that, instead of sending
+  * the content to the network, it is accumulated in a buffer. `res.end` is also replaced
+  * so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
+  * to the network.
+  */
 
 const DEFAULT_AMP_PREFIX = '/amp';
-
-// The transform middleware replaces the `res.write` method so that, instead of sending
-// the content to the network, it is accumulated in a buffer. `res.end` is also replaced
-// so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
-// to the network.
+/**
+ * Creates a new amp-server-side-rendering middleware, using the specified
+ * ampSSR and options.
+ *
+ * There are 2 parameters available for options:
+ * - skipTransform: a `function(url: string): boolean` indicating if the transformation
+ *                  should be applied to the url.
+ * - ampUrl: a `function(url: string): string` that receives a url to be transformed and
+ *           returns the equivalent AMP url.
+ *
+ * @param {*} ampSSR the ampSSR instance to be used by this transformer.
+ * @param {*} options an optional object containing custom configureations for
+ * the transformer.
+ */
 const createTransformMiddleware = (ampSSR, options) => {
   options = options || {};
   options.skipTransform = options.skipTransform ||

@@ -40,8 +40,8 @@ const transformMiddleware = createTransformMiddleware(ampSSR);
 // This allows us to replace the parts needed before static handles the request.
 app.use(transformMiddleware);
 
-const staticMiddelware = express.static(path.join(__dirname, '/public'));
-app.use(staticMiddelware);
+const staticMiddleware = express.static(path.join(__dirname, '/public'));
+app.use(staticMiddleware);
 
 const DEFAULT_PORT = 3000;
 const port = process.env.PORT || DEFAULT_PORT;
