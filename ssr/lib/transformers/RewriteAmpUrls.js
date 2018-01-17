@@ -20,12 +20,29 @@ const {join} = require('path');
 const AMP_CACHE_PREFIX = 'https://cdn.ampproject.org';
 
 /**
- * RewriteAmpUrls - rewrites all AMP runtime URLs to the origin
- * the AMP is being served from. This saves an additional HTTPS
- * request on initial page load. Use the `ampUrlPrefix` parameter
- * to configure a AMP runtime path prefix. It will also add a
- * preload header to trigger HTTP/2 push for CDNs (see
- * https://www.w3.org/TR/preload/#server-push-(http/2)).
+ * RewriteAmpUrls - rewrites AMP runtime URLs.
+ *
+ * This transformer supports two options:
+ *
+ * <ul>
+ *   <ol><strong>ampRuntimeVersion:</strong> specifies a
+ *   <a href=https://github.com/ampproject/amp-toolbox/tree/master/runtime-version">
+ *   specific version</a> of the AMP runtime. For example: <code>ampRuntimeVersion:
+ *   "001515617716922"</code> will result in AMP runtime URLs being re-written
+ *   from <code>https://cdn.ampproject.org/v0.js</code> to
+ *   <code>https://cdn.ampproject.org/rtv/001515617716922/v0.js</code>.</ol>
+ *   <ol><strong>ampUrlPrefix:</strong> specifies an URL prefix for AMP runtime
+ *   URLs. For example: <code>ampUrlPrefix: "/amp"</code> will result in AMP runtime
+ *   URLs being re-written from <code>https://cdn.ampproject.org/v0.js</code> to
+ *   <code>/amp/v0.js</code>. This option is experimental and not recommended.</ol>
+ * </ul>
+ *
+ * Both parameters are optional. If no option is provided, runtime URLs won't be
+ * re-written. You can combine both parameters to rewrite AMP runtime URLs
+ * to versioned URLs on a different origin.
+ *
+ * This transformer also adds a preload header for v0.js to trigger HTTP/2
+ * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
  */
 class RewriteAmpUrls {
   transform(tree, params) {
@@ -33,7 +50,10 @@ class RewriteAmpUrls {
     const head = html.firstChildByTag('head');
     if (!head) return;
 
-    const ampUrlPrefix = params.ampUrlPrefix || '';
+    let ampUrlPrefix = params.ampUrlPrefix || AMP_CACHE_PREFIX;
+    if (params.ampRuntimeVersion) {
+      ampUrlPrefix = join(ampUrlPrefix, 'rtv', params.ampRuntimeVersion);
+    }
 
     let node = head.firstChild;
     while (node) {

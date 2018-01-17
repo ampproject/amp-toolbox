@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "amp-toolbox-ssr": "*",
+    "amp-toolbox-runtime-version": "*",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1"
   }

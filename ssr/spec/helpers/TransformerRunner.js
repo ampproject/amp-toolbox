@@ -23,6 +23,7 @@ const {getFileContents, getDirectories} = require('../helpers/Utils.js');
 const treeParser = require('../../lib/TreeParser.js');
 
 const TRANSFORMER_PARAMS = {
+  ampRuntimeVersion: '001515617716922',
   ampUrlPrefix: '/amp',
   ampUrl: 'https://example.com/amp-version.html'
 };
