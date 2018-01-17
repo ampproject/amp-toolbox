@@ -53,10 +53,14 @@ describe('Express Middleware', () => {
 
   describe('Custom Configuration', () => {
     const skipTransform = url => {
+      // http://example.com is used as the second parameter,
+      // as the URL constructor requires a valid domain.
       const parsedUrl = new URL(url, 'https://example.com');
       return parsedUrl.searchParams.has('amp');
     };
     const ampUrl = url => {
+      // http://example.com is used as the second parameter,
+      // as the URL constructor requires a valid domain.
       const parsedUrl = new URL(url, 'https://example.com');
       parsedUrl.searchParams.set('amp', '');
       return parsedUrl.pathname + parsedUrl.search;
