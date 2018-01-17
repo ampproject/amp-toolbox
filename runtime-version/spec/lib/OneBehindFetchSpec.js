@@ -31,11 +31,16 @@ class RequestHandlerStub {
     });
   }
 }
-const requestHandler = new RequestHandlerStub();
-const fetch = new OneBehindFetch(requestHandler);
+
+let requestHandler;
+let fetch;
 
 describe('OneBehindFetch', () => {
   describe('get', () => {
+    beforeEach(() => {
+      requestHandler = new RequestHandlerStub();
+      fetch = new OneBehindFetch(requestHandler);
+    });
     it('fetches new value', done => {
       const expectedResult = 'hello';
       requestHandler.result = expectedResult;

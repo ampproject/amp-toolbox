@@ -18,42 +18,55 @@
 const axios = require('axios');
 const MaxAge = require('./MaxAge.js');
 
-class Request {
-  constructor() {
-    this.maxAge_ = MaxAge.zero();
-  }
-
-  isInvalid() {
-    return this.maxAge_.isExpired();
-  }
-}
-
+/**
+ * Implements fetch with a one-behind-caching strategy.
+ */
 class OneBehindFetch {
 
+  /**
+   * Creates a new OneBehindFetch.
+   *
+   * @returns {OneBehindFetch}
+   */
   static create() {
     return new OneBehindFetch(axios);
   }
 
+  /**
+   * Creates a new OneBehindFetch.
+   *
+   * @param {Axios} axio request handler
+   * @returns {OneBehindFetch}
+   */
   constructor(axios) {
     this.cache_ = {};
     this.axios_ = axios;
   }
 
+  /**
+   * Performs a get request. Will always return the last cached value.
+   *
+   * @param {String} url request url
+   * @returns {Promise<json>} a promise containing the JSON repsonse
+   */
   get(url) {
-    let request = this.cache_[url];
-    if (!request) {
-      request = new Request();
-      this.cache_[url] = request;
+    let response = this.cache_[url];
+    if (!response) {
+      response = {
+        maxAge: MaxAge.zero()
+      };
+      this.cache_[url] = response;
     }
-    const staleData = request.data;
-    if (request.isInvalid()) {
-      request.data = this.axios_.get(url)
-        .then(response => {
-          request.maxAge = MaxAge.parse(response.headers['cache-control']);
-          return response.data;
-        });
+    if (!response.maxAge.isExpired()) {
+      return response.data;
     }
-    return staleData || request.data;
+    const staleData = response.data;
+    response.data = this.axios_.get(url)
+      .then(fetchResponse => {
+        response.maxAge = MaxAge.parse(fetchResponse.headers['cache-control']);
+        return fetchResponse.data;
+      });
+    return staleData || response.data;
   }
 }
 
