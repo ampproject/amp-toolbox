@@ -17,17 +17,6 @@
 const createSpec = require('../helpers/TransformerRunner.js');
 const ampSSR = require('../../index.js');
 
-ampSSR.setConfig({
-  transformers: [
-    'AddAmpLink',
-    'ServerSideRendering',
-    'RemoveAmpAttribute',
-    'AmpBoilerplateTransformer',
-    'ReorderHeadTransformer',
-    'RewriteAmpUrls'
-  ]
-});
-
 createSpec({
   name: 'End-to-End',
   testDir: __dirname,

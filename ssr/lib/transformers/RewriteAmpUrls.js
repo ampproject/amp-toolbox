@@ -15,9 +15,7 @@
  */
 'use strict';
 
-const {join} = require('path');
-
-const AMP_CACHE_PREFIX = 'https://cdn.ampproject.org';
+const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
 
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
@@ -50,9 +48,9 @@ class RewriteAmpUrls {
     const head = html.firstChildByTag('head');
     if (!head) return;
 
-    let ampUrlPrefix = params.ampUrlPrefix || AMP_CACHE_PREFIX;
+    let ampUrlPrefix = params.ampUrlPrefix || AMP_CACHE_HOST;
     if (params.ampRuntimeVersion) {
-      ampUrlPrefix = join(ampUrlPrefix, 'rtv', params.ampRuntimeVersion);
+      ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, params.ampRuntimeVersion);
     }
 
     let node = head.firstChild;
@@ -74,11 +72,11 @@ class RewriteAmpUrls {
     if (!url) {
       return;
     }
-    return url.startsWith(AMP_CACHE_PREFIX);
+    return url.startsWith(AMP_CACHE_HOST);
   }
 
   _replaceUrl(url, ampUrlPrefix) {
-    return join(ampUrlPrefix, url.substring(AMP_CACHE_PREFIX.length));
+    return ampUrlPrefix + url.substring(AMP_CACHE_HOST.length);
   }
 
   _addPreload(tree, parent, node, href, type) {
