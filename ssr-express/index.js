@@ -15,5 +15,5 @@
  */
 'use strict';
 
-const createAmpSsrMiddleware = require('./lib/AmpSsrMiddleware');
+const createAmpSsrMiddleware = require('./lib/createAmpSsrMiddleware');
 module.exports = createAmpSsrMiddleware;
