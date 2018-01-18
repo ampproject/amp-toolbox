@@ -21,23 +21,11 @@ const app = express();
 const createAmpSsrMiddleware = require('../index.js');
 const ampSsr = require('amp-toolbox-ssr');
 
-ampSsr.setConfig({
-  transformers: [
-    'AddAmpLink',
-    'ServerSideRendering',
-    'RemoveAmpAttribute',
-    // needs to run after ServerSideRendering
-    'AmpBoilerplateTransformer',
-    // needs to run after ServerSideRendering
-    'ReorderHeadTransformer'
-  ]
-});
-
-// Setup the AMP-SSR Transformer and pass along the path to build the link tag.
+// Setup the middleware and pass the ampSsr instance that will perform the transformations.
 const ampSsrMiddleware = createAmpSsrMiddleware(ampSsr);
 
-// It's important that the transformMiddleware is added BEFORE the static middleware.
-// This allows us to replace the parts needed before static handles the request.
+// It's important that the ampSsrMiddleware is added *before* the static middleware.
+// This allows the middleware to intercept the page rendered by static and transform it.
 app.use(ampSsrMiddleware);
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));

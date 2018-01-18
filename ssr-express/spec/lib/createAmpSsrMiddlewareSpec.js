@@ -16,12 +16,11 @@
 
 const MockExpressRequest = require('mock-express-request');
 const MockExpressResponse = require('mock-express-response');
-const {URL} = require('whatwg-url');
-const createAmpSsrMiddleware = require('../index.js');
+const createAmpSsrMiddleware = require('../../lib/createAmpSsrMiddleware');
 
 class TestTransformer {
-  transformHtml() {
-    return 'transformed';
+  transformHtml(body, options) {
+    return 'transformed: ' + options.ampUrl;
   }
 }
 
@@ -42,41 +41,11 @@ describe('Express Middleware', () => {
 
     it('Transforms URLs', () => {
       const result = runMiddlewareForUrl(middleware, '/stuff?q=thing');
-      expect(result).toEqual('transformed');
+      expect(result).toEqual('transformed: /stuff?q=thing&amp=');
     });
 
     it('Skips Urls starting with "/amp/"', () => {
-      const result = runMiddlewareForUrl(middleware, '/amp/stuff?q=thing');
-      expect(result).toEqual('original');
-    });
-  });
-
-  describe('Custom Configuration', () => {
-    const skipTransform = url => {
-      // http://example.com is used as the second parameter,
-      // as the URL constructor requires a valid domain.
-      const parsedUrl = new URL(url, 'https://example.com');
-      return parsedUrl.searchParams.has('amp');
-    };
-    const getAmpUrl = url => {
-      // http://example.com is used as the second parameter,
-      // as the URL constructor requires a valid domain.
-      const parsedUrl = new URL(url, 'https://example.com');
-      parsedUrl.searchParams.set('amp', '');
-      return parsedUrl.pathname + parsedUrl.search;
-    };
-    const middleware = createAmpSsrMiddleware(new TestTransformer(), {
-      skipTransform: skipTransform,
-      getAmpUrl: getAmpUrl
-    });
-
-    it('Transforms URLs', () => {
-      const result = runMiddlewareForUrl(middleware, '/stuff');
-      expect(result).toEqual('transformed');
-    });
-
-    it('Skips Urls', () => {
-      const result = runMiddlewareForUrl(middleware, '/stuff?amp');
+      const result = runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp');
       expect(result).toEqual('original');
     });
   });
