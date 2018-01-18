@@ -1,0 +1,25 @@
+{
+  "name": "amp-toolbox-core",
+  "version": "0.0.1",
+  "description": "Commonly used functionality for amp-toolbox",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine && eslint .",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
+  },
+  "keywords": [
+    "amp"
+  ],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.0.1",
+    "eslint-config-google": "^0.6.0",
+    "jasmine": "^2.8.0",
+    "jasmine-spec-reporter": "^4.2.1"
+  }
+}
