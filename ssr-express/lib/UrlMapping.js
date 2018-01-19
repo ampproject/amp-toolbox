@@ -35,7 +35,7 @@ class UrlMapping {
    */
   isAmpUrl(url) {
     const parsedUrl = URL.parse(url);
-    const searchParams = new URLSearchParams(parsedUrl.search);
+    const searchParams = this.createURLSearchParams_(parsedUrl);
     return searchParams.has(this.prefix_);
   }
 
@@ -47,10 +47,9 @@ class UrlMapping {
    */
   toAmpUrl(canonicalUrl) {
     const parsedUrl = URL.parse(canonicalUrl);
-    const searchParams = new URLSearchParams(parsedUrl.search || '');
+    const searchParams = this.createURLSearchParams_(parsedUrl);
     searchParams.set(this.prefix_, '');
-    parsedUrl.search = searchParams.toString();
-    return URL.format(parsedUrl);
+    return this.formatUrl_(parsedUrl, searchParams);
   }
 
   /**
@@ -61,10 +60,18 @@ class UrlMapping {
    */
   toCanonicalUrl(ampUrl) {
     const parsedUrl = URL.parse(ampUrl);
-    const searchParams = new URLSearchParams(parsedUrl.search || '');
+    const searchParams = this.createURLSearchParams_(parsedUrl);
     searchParams.delete(this.prefix_);
+    return this.formatUrl_(parsedUrl, searchParams);
+  }
+
+  formatUrl_(parsedUrl, searchParams) {
     parsedUrl.search = searchParams.toString();
     return URL.format(parsedUrl);
+  }
+
+  createURLSearchParams_(parsedUrl) {
+    return new URLSearchParams(parsedUrl.search || '');
   }
 }
 
