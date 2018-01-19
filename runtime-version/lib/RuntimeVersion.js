@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const OneBehindFetch = require('./OneBehindFetch.js');
+const {OneBehindFetch} = require('amp-toolbox-core');
 
 const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
 const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/v0/version.txt';

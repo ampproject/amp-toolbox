@@ -14,6 +14,7 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
+    "amp-toolbox-core": "0.0.1",
     "axios": "^0.17.1"
   },
   "devDependencies": {
