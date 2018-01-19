@@ -49,11 +49,13 @@ class DomTransformer {
    * @param {Object} params - a dictionary containing transformer specific parameters.
    */
   transformTree(tree, params) {
-    const sequentialTransformation = (result, transformer) => {
-      const next = Promise.resolve(transformer.transform(tree, params));
-      return result.then(next);
+    const sequence = (promise, transformer) => {
+      return promise.then(() => {
+        const result = Promise.resolve(transformer.transform(tree, params));
+        return result;
+      });
     };
-    return this._transformers.reduce(sequentialTransformation, Promise.resolve());
+    return this._transformers.reduce(sequence, Promise.resolve());
   }
 
   /**

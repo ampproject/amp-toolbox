@@ -16,5 +16,7 @@
 'mode strict';
 
 module.exports = {
-  AMP_TAGS: ['amp', '⚡', '⚡4ads']
+  AMP_TAGS: ['amp', '⚡', '⚡4ads'],
+  AMP_CACHE_HOST: 'https://cdn.ampproject.org',
+  appendRuntimeVersion: (prefix, version) => prefix + '/rtv/' + version
 };

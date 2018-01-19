@@ -30,11 +30,9 @@ const defaultConfig = {
     'AmpBoilerplateTransformer',
     // Optimizes script import order
     // needs to run after ServerSideRendering
-    'ReorderHeadTransformer'
-    // Experimental: rewrites AMP runtime imports to same origin (disabled by default), e.g.:
-    // <script async src="https://cdn.ampproject.org/v0.js"></script>  -> <script async src="/v0.js"></script>
+    'ReorderHeadTransformer',
     // needs to run after ReorderHeadTransformer
-    // 'RewriteAmpUrls'
+    'RewriteAmpUrls'
   ]
 };
 

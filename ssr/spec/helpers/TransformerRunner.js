@@ -13,42 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 const colors = require('colors/safe');
 const jsdiff = require('diff');
 const minify = require('html-minifier').minify;
+const nock = require('nock');
 const {basename, join} = require('path');
 const {getFileContents, getDirectories} = require('../helpers/Utils.js');
 
 const treeParser = require('../../lib/TreeParser.js');
 
 const TRANSFORMER_PARAMS = {
-  ampUrlPrefix: '/amp',
   ampUrl: 'https://example.com/amp-version.html'
 };
 
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach(testDir => {
+      beforeEach(() => {
+        nock('https://cdn.ampproject.org')
+          .get('/rtv/001515617716922/v0.css')
+          .reply(200, '/* v0.css */');
+      });
       it(basename(testDir), done => {
-        const inputTree = parseTree(testDir, 'input.html');
-        const expectedOutputTree = parseTree(testDir, 'expected_output.html');
+        let params = TRANSFORMER_PARAMS;
+
+        // parse input and extract params
+        let input = getFileContents(join(testDir, 'input.html'));
+        if (input.startsWith('<!--')) {
+          const match = input.match(/<!--([^]+)-->/);
+          if (match) {
+            params = JSON.parse(match[1]);
+            // trim params from input string
+            input = input.substring(match[0].length + 1);
+          }
+        }
+        const inputTree = treeParser.parse(input);
+
+        // parse expected output
+        const expectedOutput = getFileContents(join(testDir, 'expected_output.html'));
+        const expectedOutputTree = treeParser.parse(expectedOutput);
+
         Promise.resolve(
-          testConfig.transformer.transform(inputTree, TRANSFORMER_PARAMS)
+          testConfig.transformer.transform(inputTree, params)
         ).then(() => {
-          compare(inputTree, expectedOutputTree);
-          done();
-        });
+          compare(inputTree, expectedOutputTree, done);
+        }).catch(error => done.fail(error));
       });
     });
   });
 };
 
-function parseTree(dir, file) {
-  return treeParser.parse(getFileContents(join(dir, file)));
-}
-
-function compare(actualTree, expectedTree) {
+function compare(actualTree, expectedTree, done) {
   const actualHtml = serialize(actualTree);
   const expectedHtml = serialize(expectedTree);
   const diff = jsdiff.diffChars(expectedHtml, actualHtml);
@@ -68,7 +83,9 @@ function compare(actualTree, expectedTree) {
   }).join('');
 
   if (failed) {
-    fail('Trees do not match\n\n' + reason + '\n\nActual output:\n\n' + actualHtml + '\n\n');
+    done.fail('Trees do not match\n\n' + reason + '\n\nActual output:\n\n' + actualHtml + '\n\n');
+  } else {
+    done();
   }
 }
 

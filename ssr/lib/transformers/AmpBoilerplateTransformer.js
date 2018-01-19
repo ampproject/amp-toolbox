@@ -15,17 +15,27 @@
  */
 'use strict';
 
+const {OneBehindFetch} = require('amp-toolbox-core');
+const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
+
+const V0_CSS = 'v0.css';
+const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
+
 /**
  * AmpBoilerplateTransformer - This DOM transformer locates
  * style and noscript tags in the head and removes them if
  * static layout is being applied server side which needs to have the
  * https://cdn.ampproject.org/v0.css CSS added (known by the presence
- * of <style amp-runtime> tag). Ideally this would be inlined within the
- * <style amp-runtime> tag.
+ * of <style amp-runtime> tag). If a specific AMP runtime version is
+ * specified, v0.css will be inlined.
  */
 class AmpBoilerplateTransformer {
 
-  transform(tree) {
+  constructor(fetch = OneBehindFetch.create()) {
+    this.fetch_ = fetch;
+  }
+
+  transform(tree, params) {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
     if (!head) {
@@ -37,7 +47,7 @@ class AmpBoilerplateTransformer {
       return; // keep existing boilerplate
     }
     this._stripStylesAndNoscript(head);
-    this._addStaticCss(tree, ampRuntimeStyle);
+    return this._addStaticCss(tree, ampRuntimeStyle, params);
   }
 
   _findAmpRuntimeStyle(head) {
@@ -51,14 +61,28 @@ class AmpBoilerplateTransformer {
     return null;
   }
 
-  _addStaticCss(tree, node) {
+  _addStaticCss(tree, node, params) {
+    if (params.ampRuntimeVersion && !params.linkCss) {
+      return this._inlineCss(tree, node, params.ampRuntimeVersion);
+    }
+    this._linkCss(tree, node);
+  }
+
+  _linkCss(tree, node) {
     const cssStyleNode = tree.createElement('link');
-    // TODO inline once createElement fix is submitted
     cssStyleNode.attribs = {
       rel: 'stylesheet',
-      href: 'https://cdn.ampproject.org/v0.css'
+      href: V0_CSS_URL
     };
     node.parent.insertBefore(cssStyleNode, node);
+  }
+
+  _inlineCss(tree, node, version) {
+    const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
+    return this.fetch_.get(versionedV0CssUrl)
+      .then(body => {
+        node.children.push(tree.createTextNode(body));
+      });
   }
 
   _stripStylesAndNoscript(head) {
