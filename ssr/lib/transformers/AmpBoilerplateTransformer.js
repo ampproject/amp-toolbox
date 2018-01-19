@@ -62,7 +62,7 @@ class AmpBoilerplateTransformer {
   }
 
   _addStaticCss(tree, node, params) {
-    if (params.ampRuntimeVersion) {
+    if (params.ampRuntimeVersion && !params.linkCss) {
       return this._inlineCss(tree, node, params.ampRuntimeVersion);
     }
     this._linkCss(tree, node);
