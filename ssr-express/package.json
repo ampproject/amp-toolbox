@@ -25,7 +25,8 @@
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
     "mime-types": "^2.1.17",
-    "whatwg-url": "^6.4.0"
+    "whatwg-url": "^6.4.0",
+    "amp-toolbox-ssr": "*"
   },
   "devDependencies": {
     "eslint": "^3.0.1",

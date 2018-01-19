@@ -31,8 +31,8 @@ As the server-side-rendered version of the content is not valid AMP, the compone
 provides the original content on an alternative URL. Server-side-rendering
 transformations are not applied to this URL, and the original valid AMP is served.
 
-A amphtml link tag is added to the server-side-rendered version, linking it to the original valid
-AMP version hosted on the alernative URL.
+An AMPHTML link tag is added to the server-side-rendered version, linking it to the original valid
+AMP version hosted on the alternative URL.
 
 Example:
 
@@ -44,7 +44,10 @@ of the content.
 The original, valid AMP will then become available at `https://example.com/index.html?amp`.
 
 An amphtml link will be added to the server-side-rendered version:
-`<link rel="amphtml" href="https://example.com/index.html?amp">`.
+
+```html
+<link rel="amphtml" href="https://example.com/index.html?amp">
+```
 
 ## Usage
 

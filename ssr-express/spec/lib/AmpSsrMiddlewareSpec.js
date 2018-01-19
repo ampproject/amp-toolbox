@@ -16,36 +16,43 @@
 
 const MockExpressRequest = require('mock-express-request');
 const MockExpressResponse = require('mock-express-response');
-const createAmpSsrMiddleware = require('../../lib/createAmpSsrMiddleware');
+const AmpSsrMiddleware = require('../../lib/AmpSsrMiddleware');
 
 class TestTransformer {
-  transformHtml(body, options) {
+  async transformHtml(body, options) {
     return 'transformed: ' + options.ampUrl;
   }
 }
 
 function runMiddlewareForUrl(middleware, url) {
-  const mockResponse = new MockExpressResponse();
-  const next = () => mockResponse.send('original');
-  const mockRequest = new MockExpressRequest({
-    url: url
-  });
-  middleware(mockRequest, mockResponse, next);
+  return new Promise(resolve => {
+    const mockResponse = new MockExpressResponse();
+    const next = () => mockResponse.send('original');
+    const mockRequest = new MockExpressRequest({
+      url: url
+    });
 
-  return mockResponse._getString();
+    const end = mockResponse.end;
+    mockResponse.end = chunks => {
+      mockResponse.end = end;
+      mockResponse.end(chunks);
+      resolve(mockResponse._getString());
+    };
+    middleware(mockRequest, mockResponse, next);
+  });
 }
 
 describe('Express Middleware', () => {
   describe('Default configuration', () => {
-    const middleware = createAmpSsrMiddleware(new TestTransformer());
+    const middleware = AmpSsrMiddleware.create({ampSsr: new TestTransformer()});
 
-    it('Transforms URLs', () => {
-      const result = runMiddlewareForUrl(middleware, '/stuff?q=thing');
+    it('Transforms URLs', async () => {
+      const result = await runMiddlewareForUrl(middleware, '/stuff?q=thing');
       expect(result).toEqual('transformed: /stuff?q=thing&amp=');
     });
 
-    it('Skips Urls starting with "/amp/"', () => {
-      const result = runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp');
+    it('Skips Urls starting with "/amp/"', async () => {
+      const result = await runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp');
       expect(result).toEqual('original');
     });
   });

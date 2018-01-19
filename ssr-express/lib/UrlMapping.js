@@ -54,10 +54,10 @@ class UrlMapping {
   }
 
   /**
-   * Given an AMP URL, returns the Canonical equivalent
+   * Given an AMP URL, returns the canonical equivalent
    *
    * @param {string} ampUrl the AMP URL
-   * @returns {string} the equivalent Canonical URL for the AMP page.
+   * @returns {string} the equivalent canonical URL for the AMP page.
    */
   toCanonicalUrl(ampUrl) {
     const parsedUrl = URL.parse(ampUrl);

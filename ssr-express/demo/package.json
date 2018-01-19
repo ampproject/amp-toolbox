@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "amp-toolbox-ssr": "*",
+    "amp-toolbox-ssr": "0.0.4",
     "express": "^4.16.2"
   }
 }
