@@ -19,14 +19,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const AmpSsrMiddleware = require('../index.js');
-const ampSsr = require('amp-toolbox-ssr');
-
-// Setup the middleware and pass the ampSsr instance that will perform the transformations.
-const ampSsrMiddleware = AmpSsrMiddleware.create({ampSsr: ampSsr});
 
 // It's important that the ampSsrMiddleware is added *before* the static middleware.
 // This allows the middleware to intercept the page rendered by static and transform it.
-app.use(ampSsrMiddleware);
+app.use(AmpSsrMiddleware.create());
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);
