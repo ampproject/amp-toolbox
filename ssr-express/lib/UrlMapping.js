@@ -16,13 +16,13 @@
 
 'use strict';
 
-const {URL} = require('whatwg-url');
+const URL = require('url');
+const {URLSearchParams} = require('whatwg-url');
 
 /**
- * When applying server-side-render AMPs, the resulting pages need to be linked to
- * AMP equivalents.
+ * Handles the mapping between the canonical URLs and the AMP URLs.
  */
-class AmpSsrUrlScheme {
+class UrlMapping {
   constructor(prefix) {
     this.prefix_ = prefix;
   }
@@ -34,10 +34,9 @@ class AmpSsrUrlScheme {
    * @returns {boolean} true, if the url is an AMP url.
    */
   isAmpUrl(url) {
-    // http://example.com is used as the second parameter,
-    // as the URL constructor requires a valid domain.
-    const parsedUrl = new URL(url, 'https://example.com');
-    return parsedUrl.searchParams.has(this.prefix_);
+    const parsedUrl = URL.parse(url);
+    const searchParams = new URLSearchParams(parsedUrl.search);
+    return searchParams.has(this.prefix_);
   }
 
   /**
@@ -47,11 +46,11 @@ class AmpSsrUrlScheme {
    * @returns {string} the equivalent AMP url for that page.
    */
   toAmpUrl(canonicalUrl) {
-    // http://example.com is used as the second parameter,
-    // as the URL constructor requires a valid domain.
-    const parsedUrl = new URL(canonicalUrl, 'https://example.com');
-    parsedUrl.searchParams.set(this.prefix_, '');
-    return parsedUrl.pathname + parsedUrl.search;
+    const parsedUrl = URL.parse(canonicalUrl);
+    const searchParams = new URLSearchParams(parsedUrl.search || '');
+    searchParams.set(this.prefix_, '');
+    parsedUrl.search = searchParams.toString();
+    return URL.format(parsedUrl);
   }
 
   /**
@@ -61,12 +60,12 @@ class AmpSsrUrlScheme {
    * @returns {string} the equivalent Canonical URL for the AMP page.
    */
   toCanonicalUrl(ampUrl) {
-    // http://example.com is used as the second parameter,
-    // as the URL constructor requires a valid domain.
-    const parsedUrl = new URL(ampUrl, 'https://example.com');
-    parsedUrl.searchParams.delete(this.prefix_);
-    return parsedUrl.pathname + parsedUrl.search;
+    const parsedUrl = URL.parse(ampUrl);
+    const searchParams = new URLSearchParams(parsedUrl.search || '');
+    searchParams.delete(this.prefix_);
+    parsedUrl.search = searchParams.toString();
+    return URL.format(parsedUrl);
   }
 }
 
-module.exports = AmpSsrUrlScheme;
+module.exports = UrlMapping;

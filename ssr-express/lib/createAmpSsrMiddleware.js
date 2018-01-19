@@ -21,11 +21,10 @@
  * so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
  * to the network.
  */
-
 const mime = require('mime-types');
-const AmpSsrUrlScheme = require('./AmpSsrUrlScheme.js');
+const UrlMapping = require('./UrlMapping');
 
-const DEFAULT_URL_SCHEME = new AmpSsrUrlScheme('amp');
+const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
 /**
  * Creates a new amp-server-side-rendering middleware, using the specified
@@ -34,12 +33,12 @@ const DEFAULT_URL_SCHEME = new AmpSsrUrlScheme('amp');
  * @param {string} ampSsr the ampSsr instance to be used by this transformer.
  * @param {Object} options an optional object containing custom configurations for
  * the middleware.
- * @param {AmpSsrUrlScheme} options.ampSsrUrlScheme The scheme to be used when checking
- * for AMP pages, rewriting to Canonical and generating amphtml links.
+ * @param {UrlMapping} options.ampSsrUrlScheme The scheme to be used when checking
+ * for AMP pages, rewriting to canonical and generating amphtml links.
  */
 const createAmpSsrMiddleware = (ampSsr, options) => {
   options = options || {};
-  const ampSsrUrlScheme = options.ampSsrUrlScheme || DEFAULT_URL_SCHEME;
+  const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
 
   return (req, res, next) => {
     // Checks if mime-type for request is text/html. If mime type is unknown, assume text/html,
@@ -50,14 +49,14 @@ const createAmpSsrMiddleware = (ampSsr, options) => {
       return;
     }
 
-    // This is a request for the AMP url, rewrite to canonical URL, and do apply SSR.
-    if (ampSsrUrlScheme.isAmpUrl(req.url)) {
-      req.url = ampSsrUrlScheme.toCanonicalUrl(req.url);
+    // This is a request for the AMP URL, rewrite to canonical URL, and do apply SSR.
+    if (urlMapping.isAmpUrl(req.url)) {
+      req.url = urlMapping.toCanonicalUrl(req.url);
       next();
       return;
     }
 
-    // This is a request for the Canonical URL. Setup the middelware to transform the
+    // This is a request for the canonical URL. Setup the middelware to transform the
     // response using amp-ssr.
     const chunks = [];
 
@@ -94,9 +93,9 @@ const createAmpSsrMiddleware = (ampSsr, options) => {
 
       const body = Buffer.concat(chunks).toString('utf8');
 
-      // This is a request for the Canonical URL. Generate the AMP equivalent
+      // This is a request for the canonical URL. Generate the AMP equivalent
       // in order to add it to the link rel tag.
-      const linkRelAmpHtmlUrl = ampSsrUrlScheme.toAmpUrl(req.url);
+      const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
       const transformedBody = ampSsr.transformHtml(body, {ampUrl: linkRelAmpHtmlUrl});
       res.send(transformedBody);
     };

@@ -16,36 +16,41 @@ limitations under the License.
 
 ## Introduction
 
-The amp-ssr-express is an [express](http://expressjs.com/) middleware that is typically used by
-developers who want to create a dynamic AMP website and take advantage of the performance boost
-provided by server-side-rendered AMPs.
+amp-ssr-express is an [express](http://expressjs.com/) middleware that optimizes page load
+times for websites using AMP for their canonical pages. The middleware uses the same
+server-side-rendering optimizations as the Google AMP Cache.
 
 The middleware uses the [amp-ssr](../ssr) component to apply server-side-rendering on the fly.
 
 ## How it works
 
-amp-ssr-express works by replacing the content rendered by the routes it is tied to by a version
-of the content that has been transformed by [amp-ssr](../ssr).
+amp-ssr-express intercepts the responses and replaces their content with a version that has been
+transformed by [amp-ssr](../ssr).
 
-As the server-side-rendered version of the content is ceases to be valid AMP, the component also
-handles serving the original content on an alternative URL to which server-side-rendering
-transformations are not applied. This alternative URL is used as the amphtml link of the
-transformed version.
+As the server-side-rendered version of the content is not valid AMP, the component also
+provides the original content on an alternative URL. Server-side-rendering
+transformations are not applied to this URL, and the original valid AMP is served.
+
+A amphtml link tag is added to the server-side-rendered version, linking it to the original valid
+AMP version hosted on the alernative URL.
 
 Example:
 
 A valid AMP page is served on `https://example.com/index.html`.
 
-When the amp-ssr-express middleware is used, that URL will serve the server-side-rendered of the
-content.
+When the amp-ssr-express middleware is used, that URL will serve the server-side-rendered version
+of the content.
 
-The original, valid AMP will then become available at `https://example.com/index.html?amp=`, and
-amphtml link will be added to the server-side-rendered version at `https://example.com/index.html`.
+The original, valid AMP will then become available at `https://example.com/index.html?amp`.
+
+An amphtml link will be added to the server-side-rendered version:
+`<link rel="amphtml" href="https://example.com/index.html?amp">`.
 
 ## Usage
 
-Usage follows the standard for most Express middlewares. It is important that the middleware is
-used *before* the middleware or route that renders the page.
+The AMP SSR middleware can be used like any other express middleware.
+
+It is important that the middleware is used *before* the middleware or route that renders the page.
 
 The example bellow will transform HTML being loaded by express-static:
 
@@ -72,5 +77,5 @@ app.use(staticMiddleware);
 To achieve best performance, those transformations shouldn't be applied for
 every request. Instead, transformations should only be applied the *first time*
 a page is requested, and the results then cached. Caching can happen on the CDN
-level, on the site's internal infrastructure (eg: Memcached), or even on the
+level, on the site's internal infrastructure (e.g.: Memcached), or even on the
 server itself, if the set of pages is small enough to fit in memory.

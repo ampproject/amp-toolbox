@@ -14,33 +14,38 @@
  * limitations under the License.
  */
 
-const AmpSsrUrlScheme = require('../../lib/AmpSsrUrlScheme');
+const UrlMapping = require('../../lib/UrlMapping');
 
 describe('AmpSsrUrlScheme', () => {
-  const ampSsrUrlScheme = new AmpSsrUrlScheme('amp');
+  const urlMapping = new UrlMapping('amp');
 
   describe('isAmpUrl', () => {
     it('correctly identifies AMP urls', () => {
-      const result = ampSsrUrlScheme.isAmpUrl('/page?amp=');
+      const result = urlMapping.isAmpUrl('/page?amp=');
+      expect(result).toBe(true);
+    });
+
+    it('correctly identifies AMP urls, when parameter doesn\'t have the "=" sign', () => {
+      const result = urlMapping.isAmpUrl('/page?amp');
       expect(result).toBe(true);
     });
 
     it('correcty identifies non-AMP urls', () => {
-      const result = ampSsrUrlScheme.isAmpUrl('/page');
+      const result = urlMapping.isAmpUrl('/page');
       expect(result).toBe(false);
     });
   });
 
   describe('toAmpUrl', () => {
     it('correctly transforms canonical URLs to AMP', () => {
-      const result = ampSsrUrlScheme.toAmpUrl('/page');
+      const result = urlMapping.toAmpUrl('/page');
       expect(result).toBe('/page?amp=');
     });
   });
 
   describe('toCanonicalUrl', () => {
     it('correctly transforms AMP URLs to Canonical', () => {
-      const result = ampSsrUrlScheme.toCanonicalUrl('/page?amp=');
+      const result = urlMapping.toCanonicalUrl('/page?amp=');
       expect(result).toBe('/page');
     });
   });
