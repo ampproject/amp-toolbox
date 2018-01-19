@@ -61,15 +61,11 @@ The example bellow will transform HTML being loaded by express-static:
 const express = require('express');
 const path = require('path');
 const app = express();
-const createAmpSsrMiddleware = require('amp-toolbox-ssr-express');
-const ampSsr = require('amp-toolbox-ssr');
-
-// Setup the AMP-SSR Transformer and pass along the path to build the link tag.
-const ampSsrMiddleware = createAmpSsrMiddleware(ampSsr);
+const AmpSsrMiddleware = require('amp-toolbox-ssr-express');
 
 // It's important that the ampSsrMiddleware is added *before* the static middleware.
 // This allows us to replace the parts needed before static handles the request.
-app.use(ampSsrMiddleware);
+app.use(AmpSsrMiddleware.create());
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);
