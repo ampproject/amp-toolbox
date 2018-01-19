@@ -19,8 +19,8 @@ const MockExpressResponse = require('mock-express-response');
 const AmpSsrMiddleware = require('../../lib/AmpSsrMiddleware');
 
 class TestTransformer {
-  async transformHtml(body, options) {
-    return 'transformed: ' + options.ampUrl;
+  transformHtml(body, options) {
+    return Promise.resolve('transformed: ' + options.ampUrl);
   }
 }
 
@@ -46,14 +46,18 @@ describe('Express Middleware', () => {
   describe('Default configuration', () => {
     const middleware = AmpSsrMiddleware.create({ampSsr: new TestTransformer()});
 
-    it('Transforms URLs', async () => {
-      const result = await runMiddlewareForUrl(middleware, '/stuff?q=thing');
-      expect(result).toEqual('transformed: /stuff?q=thing&amp=');
+    it('Transforms URLs', () => {
+      runMiddlewareForUrl(middleware, '/stuff?q=thing')
+        .then(result => {
+          expect(result).toEqual('transformed: /stuff?q=thing&amp=');
+        });
     });
 
-    it('Skips Urls starting with "/amp/"', async () => {
-      const result = await runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp');
-      expect(result).toEqual('original');
+    it('Skips Urls starting with "/amp/"', () => {
+      runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp')
+        .then(result => {
+          expect(result).toEqual('original');
+        });
     });
   });
 });
