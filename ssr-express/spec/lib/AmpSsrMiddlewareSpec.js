@@ -61,15 +61,15 @@ describe('Express Middleware', () => {
         });
     });
 
-    it('Skips Resource Requests', () => {
-      const staticResources = ['/image.jpg', '/image.svg', '/script.js', '/style.css'];
-      const runStaticTest = url => {
-        runMiddlewareForUrl(middleware, url)
-          .then(result => {
-            expect(result).toEqual('original');
-          });
-      };
-      staticResources.forEach(url => runStaticTest(url));
+    const runStaticTest = url => {
+      runMiddlewareForUrl(middleware, url)
+        .then(result => {
+          expect(result).toEqual('original');
+        });
+    };
+
+    ['/image.jpg', '/image.svg', '/script.js', '/style.css'].forEach(url => {
+      it(`Does not transform ${url}`, () => runStaticTest(url));
     });
 
     it('Applies transformation if req.accept method does not exist', () => {
