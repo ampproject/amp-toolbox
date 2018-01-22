@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-ssr",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,8 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "amp-toolbox-core": "*",
-    "amp-toolbox-runtime-version": "*",
+    "amp-toolbox-core": "<1.0.0",
+    "amp-toolbox-runtime-version": "<1.0.0",
     "parse5": "^3.0.2"
   },
   "devDependencies": {

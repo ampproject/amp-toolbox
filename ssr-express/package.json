@@ -26,7 +26,7 @@
   "dependencies": {
     "mime-types": "^2.1.17",
     "whatwg-url": "^6.4.0",
-    "amp-toolbox-ssr": "*"
+    "amp-toolbox-ssr": "<1.0.0"
   },
   "devDependencies": {
     "eslint": "^3.0.1",

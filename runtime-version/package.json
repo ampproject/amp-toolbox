@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-runtime-version",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "AMP Runtime versions",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "amp-toolbox-core": "*",
+    "amp-toolbox-core": "<1.0.0",
     "axios": "^0.17.1"
   },
   "devDependencies": {
