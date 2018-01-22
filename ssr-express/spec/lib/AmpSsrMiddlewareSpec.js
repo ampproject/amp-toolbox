@@ -24,13 +24,14 @@ class TestTransformer {
   }
 }
 
-function runMiddlewareForUrl(middleware, url) {
+function runMiddlewareForUrl(middleware, url, accepts = 'html') {
   return new Promise(resolve => {
     const mockResponse = new MockExpressResponse();
     const next = () => mockResponse.send('original');
     const mockRequest = new MockExpressRequest({
       url: url
     });
+    mockRequest.accepts = () => accepts;
 
     const end = mockResponse.end;
     mockResponse.end = chunks => {
@@ -55,6 +56,24 @@ describe('Express Middleware', () => {
 
     it('Skips Urls starting with "/amp/"', () => {
       runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp')
+        .then(result => {
+          expect(result).toEqual('original');
+        });
+    });
+
+    it('Skips Resource Requests', () => {
+      const staticResources = ['/image.jpg', '/image.svg', '/script.js', '/style.css'];
+      const runStaticTest = url => {
+        runMiddlewareForUrl(middleware, url)
+          .then(result => {
+            expect(result).toEqual('original');
+          });
+      };
+      staticResources.forEach(url => runStaticTest(url));
+    });
+
+    it('Skips transformation if request does not accept HTML', () => {
+      runMiddlewareForUrl(middleware, '/page.html', '')
         .then(result => {
           expect(result).toEqual('original');
         });
