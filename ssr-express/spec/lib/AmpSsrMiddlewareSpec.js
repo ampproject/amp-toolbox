@@ -24,14 +24,14 @@ class TestTransformer {
   }
 }
 
-function runMiddlewareForUrl(middleware, url, accepts = 'html') {
+function runMiddlewareForUrl(middleware, url, accepts = () => 'html') {
   return new Promise(resolve => {
     const mockResponse = new MockExpressResponse();
     const next = () => mockResponse.send('original');
     const mockRequest = new MockExpressRequest({
       url: url
     });
-    mockRequest.accepts = () => accepts;
+    mockRequest.accepts = accepts;
 
     const end = mockResponse.end;
     mockResponse.end = chunks => {
@@ -72,8 +72,15 @@ describe('Express Middleware', () => {
       staticResources.forEach(url => runStaticTest(url));
     });
 
+    it('Applies transformation is accept method does not exist', () => {
+      runMiddlewareForUrl(middleware, '/page.html', null)
+        .then(result => {
+          expect(result).toEqual('transformed: /page.html?amp=');
+        });
+    });
+
     it('Skips transformation if request does not accept HTML', () => {
-      runMiddlewareForUrl(middleware, '/page.html', '')
+      runMiddlewareForUrl(middleware, '/page.html', () => '')
         .then(result => {
           expect(result).toEqual('original');
         });
