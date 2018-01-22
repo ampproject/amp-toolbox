@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-ssr-express-demo",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Demo for the amp-toolbox-ssr-express component",
   "main": "index.js",
   "scripts": {
