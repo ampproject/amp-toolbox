@@ -32,10 +32,10 @@ class AmpSsrMiddleware {
    * Creates a new amp-server-side-rendering middleware, using the specified
    * ampSSR and options.
    *
-   * @param {string} ampSsr the ampSsr instance to be used by this transformer.
    * @param {Object} options an optional object containing custom configurations for
    * the middleware.
-   * @param {UrlMapping} options.ampSsrUrlScheme The scheme to be used when checking
+   * @param {AmpSsr} options.ampSsr the AmpSsr used to apply server-side render transformations.
+   * @param {UrlMapping} options.urlMapping The mapper to be used when checking
    * for AMP pages, rewriting to canonical and generating amphtml links.
    */
   static create(options) {
@@ -44,10 +44,8 @@ class AmpSsrMiddleware {
     const ssr = options.ampSsr || ampSsr;
 
     return (req, res, next) => {
-      // Checks if mime-type for request is text/html. If mime type is unknown, assume text/html,
-      // as it is probably a directory request.
-      const mimeType = mime.lookup(req.url) || 'text/html';
-      if (req.accepts('html') !== 'html' || mimeType !== 'text/html') {
+      // If this is a request for a resource, such as image, JS or CSS, do not apply SSR.
+      if (AmpSsrMiddleware.isResourceRequest_(req)) {
         next();
         return;
       }
@@ -101,12 +99,27 @@ class AmpSsrMiddleware {
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
         ssr.transformHtml(body, {ampUrl: linkRelAmpHtmlUrl})
           .then(transformedBody => {
-            res.send(transformedBody);
+            res.write(Buffer.from(transformedBody, 'utf-8'));
+            res.end();
           });
       };
 
       next();
     };
+  }
+
+  /**
+   * Returns true if the request is for a resource request, such as a request for an image,
+   * Javascript or CSS file.
+   *
+   * @param {Request} req the request to be checked.
+   * @returns {boolean} true if the reqeust is for a resource.
+   */
+  static isResourceRequest_(req) {
+    // Checks if mime-type for request is text/html. If mime type is unknown, assume text/html,
+    // as it is probably a directory request.
+    const mimeType = mime.lookup(req.url) || 'text/html';
+    return (req.accepts && req.accepts('html') !== 'html') || mimeType !== 'text/html';
   }
 }
 
