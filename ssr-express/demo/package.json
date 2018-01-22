@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-ssr-express-demo",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Demo for the amp-toolbox-ssr-express component",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "amp-toolbox-ssr": "*",
+    "amp-toolbox-ssr": "<1.0.0",
     "express": "^4.16.2"
   }
 }
