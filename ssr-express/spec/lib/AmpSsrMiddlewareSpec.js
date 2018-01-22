@@ -72,7 +72,7 @@ describe('Express Middleware', () => {
       staticResources.forEach(url => runStaticTest(url));
     });
 
-    it('Applies transformation is accept method does not exist', () => {
+    it('Applies transformation if req.accept method does not exist', () => {
       runMiddlewareForUrl(middleware, '/page.html', null)
         .then(result => {
           expect(result).toEqual('transformed: /page.html?amp=');
