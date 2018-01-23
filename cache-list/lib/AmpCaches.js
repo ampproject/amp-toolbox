@@ -19,24 +19,47 @@
 const {OneBehindFetch} = require('amp-toolbox-core');
 const CACHE_LIST_ENDPOINT = 'https://cdn.ampproject.org/caches.json';
 
+/**
+ * List of known AMP Caches, as available at `https://cdn.ampproject.org/caches.json`.
+ *
+ */
 class AmpCaches {
+  /**
+   * Creates a new instance of AmpCaches.
+   *
+   * @param {Object} fetchStrategy The fetch strategy to be used when fetching
+   * data from the caches endpoint. Defaults to OneBehindFetch.
+   */
   constructor(fetchStrategy = OneBehindFetch.create()) {
     this.fetchStrategy_ = fetchStrategy;
   }
 
+  /**
+   * Retrieves the list of Caches
+   *
+   * @returns {Promise<Array>} A promise that resolves to an array containing the cache objects.
+   */
   list() {
     return this.getCaches_();
   }
 
-  async get(cacheName) {
-    const caches = await this.list();
-    return caches.find(cache => cache.id === cacheName);
+  /**
+   * Retrieves the cache instance that maches the cacheId.
+   *
+   * @param {string} cacheId The id of the cache to be retrieved.
+   * @returns {Promise<object>} the Cache which the matching id or undefined, if a cache with the
+   * id was not found.
+   */
+  get(cacheId) {
+    return this.list()
+      .then(caches => caches.find(cache => cache.id === cacheId));
   }
 
-  async getCaches_() {
-    const json = await this.fetchStrategy_.get(CACHE_LIST_ENDPOINT);
-    return json.caches;
+  getCaches_() {
+    return this.fetchStrategy_.get(CACHE_LIST_ENDPOINT)
+      .then(json => json.caches);
   }
 }
 
+/** @module AmpCaches */
 module.exports = AmpCaches;

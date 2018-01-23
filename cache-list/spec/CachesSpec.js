@@ -49,10 +49,7 @@ describe('Caches', () => {
     it('returns the correct cache', () => {
       caches.get('google')
         .then(googleCache => {
-          expect(googleCache.id).toBe('google');
-          expect(googleCache.name).toBe('Google AMP Cache');
-          expect(googleCache.docs).toBe('https://developers.google.com/amp/cache/');
-          expect(googleCache.updateCacheApiDomainSuffix).toBe('cdn.ampproject.org');
+          expect(googleCache).toBe(CACHES_JSON.caches[0]);
         });
     });
 

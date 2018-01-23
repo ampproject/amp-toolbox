@@ -17,4 +17,5 @@
 'use strict';
 
 const Caches = require('./lib/AmpCaches.js');
+/** @module AmpCaches */
 module.exports = Caches;
