@@ -37,24 +37,30 @@ describe('Caches', () => {
   const caches = new AmpCaches(fetchStrategy);
 
   describe('list', () => {
-    it('returns an array with the caches', async () => {
-      const cacheList = await caches.list();
-      expect(cacheList.length).toBe(1);
+    it('returns an array with the caches', () => {
+      caches.list()
+        .then(cacheList => {
+          expect(cacheList.length).toBe(1);
+        });
     });
   });
 
   describe('get', () => {
-    it('returns the correct cache', async () => {
-      const googleCache = await caches.get('google');
-      expect(googleCache.id).toBe('google');
-      expect(googleCache.name).toBe('Google AMP Cache');
-      expect(googleCache.docs).toBe('https://developers.google.com/amp/cache/');
-      expect(googleCache.updateCacheApiDomainSuffix).toBe('cdn.ampproject.org');
+    it('returns the correct cache', () => {
+      caches.get('google')
+        .then(googleCache => {
+          expect(googleCache.id).toBe('google');
+          expect(googleCache.name).toBe('Google AMP Cache');
+          expect(googleCache.docs).toBe('https://developers.google.com/amp/cache/');
+          expect(googleCache.updateCacheApiDomainSuffix).toBe('cdn.ampproject.org');
+        });
     });
 
-    it('returns undefined for unexisting cache', async() => {
-      const googleCache = await caches.get('unexisting');
-      expect(googleCache).toBeUndefined();
+    it('returns undefined for unexisting cache', () => {
+      caches.get('unexisting')
+        .then(cache => {
+          expect(cache).toBeUndefined();
+        });
     });
   });
 });
