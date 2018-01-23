@@ -1,0 +1,34 @@
+{
+  "name": "amp-toolbox-cache-list",
+  "version": "0.1.0",
+  "description": "Lists AMP Caches",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine && eslint .",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
+  "keywords": [
+    "amp",
+    "amp-toolbox",
+    "amp-cache"
+  ],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox#readme",
+  "dependencies": {
+    "amp-toolbox-core": "<1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.0.1",
+    "eslint-config-google": "^0.6.0",
+    "jasmine": "^2.9.0"
+  }
+}
