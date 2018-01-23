@@ -23,6 +23,7 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 - **[amp-ssr](./ssr):** a node library implementing server-side-rendering for AMP pages.
 - **[amp-ssr-express](./ssr-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
 - **[amp-runtime-version](./runtime-version):** a node library for querying the current AMP runtime version.
+- **[amp-cache-list](./cache-list):** a Node library for listing the known AMP Caches.
 
 ## Contributing
 
