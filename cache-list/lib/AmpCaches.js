@@ -27,7 +27,7 @@ class AmpCaches {
   /**
    * Creates a new instance of AmpCaches.
    *
-   * @param {Object} fetchStrategy The fetch strategy to be used when fetching
+   * @param {Object} [fetchStrategy = OneBehindFetch] The fetch strategy to be used when fetching
    * data from the caches endpoint. Defaults to OneBehindFetch.
    */
   constructor(fetchStrategy = OneBehindFetch.create()) {
