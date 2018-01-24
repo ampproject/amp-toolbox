@@ -7,6 +7,8 @@ passing a custom fetch strategy to the constructor.
 
 ## Usage
 ```javascript
+  const Caches = require('amp-toolbox-cache-list');
+   
   const caches = new Caches();
 
   // Lists known AMP Caches
