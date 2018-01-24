@@ -109,7 +109,6 @@ class AmpSsrMiddleware {
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
 
         runtimeVersion()
-          .then(version => version)
           .catch(err => {
             console.error('Error retrieving ampRuntimeVersion: ', err);
             return null;
