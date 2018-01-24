@@ -28,6 +28,13 @@ const ampSsr = require('amp-toolbox-ssr');
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
 class AmpSsrMiddleware {
+
+  /**
+   * @function runtimeVersion A function used to provide the runtimeVersion when applying the
+   * SSR transformations.
+   * @returns {Promise<string>} A promise that resolves to the runtime version.
+   */
+
   /**
    * Creates a new amp-server-side-rendering middleware, using the specified
    * ampSSR and options.
@@ -35,13 +42,16 @@ class AmpSsrMiddleware {
    * @param {Object} options an optional object containing custom configurations for
    * the middleware.
    * @param {AmpSsr} options.ampSsr the AmpSsr used to apply server-side render transformations.
-   * @param {UrlMapping} options.urlMapping The mapper to be used when checking
-   * for AMP pages, rewriting to canonical and generating amphtml links.
+   * @param {UrlMapping} options.urlMapping The mapper to be used when checking for AMP pages,
+   * rewriting to * canonical and generating amphtml links.
+   * @param {runtimeVersion} options.runtimeVersion a function used to generate the runtimeVersion,
+   *  to be passed to AmpSsr.
    */
   static create(options) {
     options = options || {};
     const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
     const ssr = options.ampSsr || ampSsr;
+    const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
 
     return (req, res, next) => {
       // If this is a request for a resource, such as image, JS or CSS, do not apply SSR.
@@ -97,10 +107,23 @@ class AmpSsrMiddleware {
         // This is a request for the canonical URL. Generate the AMP equivalent
         // in order to add it to the link rel tag.
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
-        ssr.transformHtml(body, {ampUrl: linkRelAmpHtmlUrl})
+
+        runtimeVersion()
+          .then(version => version)
+          .catch(err => {
+            console.error('Error retrieving ampRuntimeVersion: ', err);
+            return null;
+          })
+          .then(version => ssr.transformHtml(body, {
+            ampUrl: linkRelAmpHtmlUrl,
+            ampRuntimeVersion: version
+          }))
           .then(transformedBody => {
-            res.write(Buffer.from(transformedBody, 'utf-8'));
-            res.end();
+            res.status(200).send(transformedBody);
+          })
+          .catch(err => {
+            console.error('Error applying AMP SSR transformations. Sending original page', err);
+            res.status(200).send(body);
           });
       };
 
