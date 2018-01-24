@@ -28,16 +28,13 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 
 ## Usage
 
+You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP SSR middleware](../ssr-express).
+
 Install via:
 
 ```
 npm install amp-toolbox-ssr
 ```
-
-There are two sample implementations available:
-
-* [express](demo/express/): a sample express server serving server-side-rendered AMP pages.
-* [simple](demo/simple/): a static compiler transforming a list of AMPHTML files.
 
 Minimal usage:
 
@@ -80,10 +77,9 @@ ampSSR.setConfig({
     // Optimizes script import order 
     // needs to run after ServerSideRendering
     'ReorderHeadTransformer',
-    // Experimental: rewrites AMP runtime imports to same origin (disabled by default), e.g.:
-    // <script async src="https://cdn.ampproject.org/v0.js"></script>  -> <script async src="/v0.js"></script>
+    // Adds pre-load statements and optionally versions AMP runtime URLs
     // needs to run after ReorderHeadTransformer
-    // 'RewriteAmpUrls'
+    'RewriteAmpUrls'
   ]
 });
 
@@ -109,6 +105,15 @@ You can find the currently supported transformations [here](lib/transformers).
 Currently the following options are supported:
 
 * **ampUrl**: an URL string pointing to the valid AMP version. Required by the AddAmpLink transformer.
+* **ampRuntimeVersion** specifies a
+  [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version") of the AMP runtime. For example: `ampRuntimeVersion: "001515617716922"` will result in AMP runtime URLs being re-written
+  from `https://cdn.ampproject.org/v0.js` to
+  `https://cdn.ampproject.org/rtv/001515617716922/v0.js<`.
+* **ampUrlPrefix**: specifies an URL prefix for AMP runtime
+  URLs. For example: `ampUrlPrefix: "/amp"` will result in AMP runtime
+  URLs being re-written from `https://cdn.ampproject.org/v0.js` to
+  `/amp/v0.js`.
+
 
 ## Example
 
@@ -221,6 +226,3 @@ faster, content that depends on the custom AMP elements (eg: any element in
 the page that starts with 'amp-') will only be visible after the AMP Runtime
 is loaded.
 
-## Version History
-
-0.0.3 - first official release
