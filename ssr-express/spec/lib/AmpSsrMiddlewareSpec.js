@@ -54,8 +54,8 @@ describe('Express Middleware', () => {
         });
     });
 
-    it('Skips Urls starting with "/amp/"', () => {
-      runMiddlewareForUrl(middleware, '/amp/stuff?q=thing&amp')
+    it('Skips Urls starting the "amp" query parameter', () => {
+      runMiddlewareForUrl(middleware, '/stuff?q=thing&amp')
         .then(result => {
           expect(result).toEqual('original');
         });
@@ -83,6 +83,59 @@ describe('Express Middleware', () => {
       runMiddlewareForUrl(middleware, '/page.html', () => '')
         .then(result => {
           expect(result).toEqual('original');
+        });
+    });
+  });
+
+  describe('Handles transformation errors', () => {
+    const transformer = {
+      transformHtml: () => Promise.reject('error')
+    };
+
+    const middleware = AmpSsrMiddleware.create({ampSsr: transformer});
+
+    it('Sends the original content when SSR fails', () => {
+      runMiddlewareForUrl(middleware, '/page.html')
+        .then(result => {
+          expect(result).toEqual('original');
+        });
+    });
+  });
+
+  describe('options.runtimeVersion', () => {
+    const transformer = {
+      transformHtml: (body, options) => Promise.resolve(options.ampRuntimeVersion || '')
+    };
+
+    it('Default runtimeVersion is null', () => {
+      const middleware = AmpSsrMiddleware.create({ampSsr: transformer});
+      runMiddlewareForUrl(middleware, '/page.html')
+        .then(result => {
+          expect(result).toBe('');
+        });
+    });
+
+    it('Uses runtimeVersion when set', () => {
+      const runtimeVersion = (() => Promise.resolve('1'));
+      const middleware = AmpSsrMiddleware.create({
+        ampSsr: transformer,
+        runtimeVersion: runtimeVersion
+      });
+      runMiddlewareForUrl(middleware, '/page.html')
+        .then(result => {
+          expect(result).toBe('1');
+        });
+    });
+
+    it('Uses null if runtimeVersion fails', () => {
+      const runtimeVersion = (() => Promise.reject('error'));
+      const middleware = AmpSsrMiddleware.create({
+        ampSsr: transformer,
+        runtimeVersion: runtimeVersion
+      });
+      runMiddlewareForUrl(middleware, '/page.html')
+        .then(result => {
+          expect(result).toBe('');
         });
     });
   });
