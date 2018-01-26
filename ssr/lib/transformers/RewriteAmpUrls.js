@@ -22,24 +22,23 @@ const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
  *
  * This transformer supports two options:
  *
- * <ul>
- *   <ol><strong>ampRuntimeVersion:</strong> specifies a
- *   <a href=https://github.com/ampproject/amp-toolbox/tree/master/runtime-version">
- *   specific version</a> of the AMP runtime. For example: <code>ampRuntimeVersion:
- *   "001515617716922"</code> will result in AMP runtime URLs being re-written
- *   from <code>https://cdn.ampproject.org/v0.js</code> to
- *   <code>https://cdn.ampproject.org/rtv/001515617716922/v0.js</code>.</ol>
- *   <ol><strong>ampUrlPrefix:</strong> specifies an URL prefix for AMP runtime
- *   URLs. For example: <code>ampUrlPrefix: "/amp"</code> will result in AMP runtime
- *   URLs being re-written from <code>https://cdn.ampproject.org/v0.js</code> to
- *   <code>/amp/v0.js</code>. This option is experimental and not recommended.</ol>
- * </ul>
+ * * `ampRuntimeVersion`: specifies a
+ *   [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version")
+ *   version</a> of the AMP runtime. For example: `ampRuntimeVersion:
+ *   "001515617716922"` will result in AMP runtime URLs being re-written
+ *   from `https://cdn.ampproject.org/v0.js` to
+ *   `https://cdn.ampproject.org/rtv/001515617716922/v0.js`.
+ *
+ * * `ampUrlPrefix`: specifies an URL prefix for AMP runtime
+ *   URLs. For example: `ampUrlPrefix: "/amp"` will result in AMP runtime
+ *   URLs being re-written from `https://cdn.ampproject.org/v0.js` to
+ *   `/amp/v0.js`. This option is experimental and not recommended.
  *
  * Both parameters are optional. If no option is provided, runtime URLs won't be
  * re-written. You can combine both parameters to rewrite AMP runtime URLs
  * to versioned URLs on a different origin.
  *
- * This transformer also adds a preload header for v0.js to trigger HTTP/2
+ * This transformer also adds a preload header for the AMP runtime (v0.js) to trigger HTTP/2
  * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
  */
 class RewriteAmpUrls {
@@ -80,6 +79,10 @@ class RewriteAmpUrls {
   }
 
   _addPreload(tree, parent, node, href, type) {
+    if (!href.endsWith('v0.js') &&
+      !href.endsWith('v0.css')) {
+      return;
+    }
     const preload = tree.createElement('link', {
       rel: 'preload',
       href: href,
