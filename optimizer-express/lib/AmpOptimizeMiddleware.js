@@ -75,6 +75,14 @@ class AmpOptimizerMiddleware {
       // them to finish the request correctly.
       const originalEnd = res.end;
       const originalWrite = res.write;
+      const originalWriteHead = res.writeHead;
+
+      // We need to postpone writeHead, as it flushes the request headers to the client, and we
+      // need to update the Content-Length with the size of the server side rendered AMP.
+      res.writeHead = (statusCode, statusMessage, headers) => {
+        res.status(statusCode);
+        res.set(headers);
+      };
 
       res.write = chunk => {
         chunks.push(chunk);
@@ -84,6 +92,7 @@ class AmpOptimizerMiddleware {
         // Replace methods with the original implementation.
         res.write = originalWrite;
         res.end = originalEnd;
+        res.writeHead = originalWriteHead;
 
         if (chunk) {
           // When an error (eg: 404) happens, express-static sends a string with
@@ -113,18 +122,19 @@ class AmpOptimizerMiddleware {
             console.error('Error retrieving ampRuntimeVersion: ', err);
             return null;
           })
-          .then(version => optimizer.transformHtml(body, {
-            ampUrl: linkRelAmpHtmlUrl,
-            ampRuntimeVersion: version
-          }))
+          .then(version => {
+            const ampSsrParams = req.ampSsrParams || {};
+            ampSsrParams.ampUrl = linkRelAmpHtmlUrl;
+            ampSsrParams.ampRuntimeVersion = version;
+            return optimizer.transformHtml(body, ampSsrParams);
+          })
           .then(transformedBody => {
-            res.status(200).send(transformedBody);
+            res.setHeader('Content-Length', Buffer.byteLength(transformedBody, 'utf-8'));
+            res.end(transformedBody, 'utf-8');
           })
           .catch(err => {
-            console.error(
-              'Error applying AMP Optimize transformations. Sending original page',
-              err);
-            res.status(200).send(body);
+            console.error('Error applying AMP Optimizer. Sending original page', err);
+            res.end(body);
           });
       };
 
@@ -143,7 +153,9 @@ class AmpOptimizerMiddleware {
     // Checks if mime-type for request is text/html. If mime type is unknown, assume text/html,
     // as it is probably a directory request.
     const mimeType = mime.lookup(req.url) || 'text/html';
-    return (req.accepts && req.accepts('html') !== 'html') || mimeType !== 'text/html';
+    return (req.accepts && req.accepts('html') !== 'html') ||
+       mimeType !== 'text/html' &&
+       !req.url.endsWith('/'); // adjust for /abc.com/, which return application/x-msdownload
   }
 }
 
