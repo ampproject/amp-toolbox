@@ -1,9 +1,16 @@
 ## Introduction
 
-`amp-toolbox-optimizer` is a library for server-side-rendering AMP pages. This makes it possible to optimize
-page loading times when serving AMP pages from a non-cache domain.
+`amp-toolbox-ssr` is a library for optimizing websites build with AMP.
 
-**Warning:** server-side rendered AMP files are no longer valid AMPHTML. Hence, serve-side rendered AMP pages should link to their [valid AMP counterpart](https://www.ampproject.org/docs/guides/discovery).
+Websites using AMP to build their canonical (or mobile) pages can use amp-toolbox-ssr to improve loading times when serving AMP pages from their own origin. The library applies a set of transformations that will result in faster loading times:
+
+* Server-side render AMP layouts.
+* Pre-load the AMP `v0.js` runtime to benefit from H2 push.
+* Version AMP runtime and extension imports to benefit from browser caching.
+
+You can find the currently supported transformations [here](lib/transformers).
+
+**Warning: optimized AMPs will no longer be valid AMPHTML. Don't use this to optimize AMPs meant for being used by platforms such as Google Search. **
 
 ## Table of Contents
 
@@ -11,6 +18,7 @@ page loading times when serving AMP pages from a non-cache domain.
 - [Background](#background)
 - [Usage](#usage)
   - [Options](#options)
+  - [Versioned AMP Runtime](##versioned-amp-runtime)
 - [Example](#example)
 - [Best Practices](#best-practices)
   - [Transform AMP pages at build time if possible](#transform-amp-pages-at-build-time-if-possible)
@@ -27,8 +35,6 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 * Provide a reference implementation for other AMP caches.
 
 ## Usage
-
-You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimizer Middleware](../optimizer-express).
 
 Install via:
 
@@ -51,39 +57,78 @@ const originalHtml = `
 // Additional options can be passed as the second argument
 const optimizedHtml = ampOptimizer.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
+}).then(ssrHtml => {
+  console.log(ssrHtml);
 });
 
 console.log(optimizedHtml);
 ```
 
-Advanced usage configuring the applied transformations:
+You can find a sample implementation [here](demo/simple/). If you're using the express middleware in your backend, it's best to use the [AMP Optimizer Middleware](../optimizer-express).
 
-```js
-const ampOptimizer = require('amp-toolbox-optimizer');
+### Options
 
-// Configure the transformers to be used.
-// otherwise a default configuration is used.
-ampOptimizer.setConfig({
-  transformers: [
-    // Adds a link to the valid AMP version
-    'AddAmpLink',
-    // Applies server-side-rendering optimizations
-    'ServerSideRendering',
-    // Removes ⚡ or 'amp' from the html tag
-    'RemoveAmpAttribute',
-    // Removes the boilerplate
-    // needs to run after ServerSideRendering
-    'AmpBoilerplateTransformer',
-    // Optimizes script import order 
-    // needs to run after ServerSideRendering
-    'ReorderHeadTransformer',
-    // Adds pre-load statements and optionally versions AMP runtime URLs
-    // needs to run after ReorderHeadTransformer
-    'RewriteAmpUrls'
-  ]
-});
+Currently the following options are supported:
 
-// Transformer expects a string (streams are not supported)
+* **ampUrl**: an URL string pointing to the valid AMP version. Required by the AddAmpLink transformer.
+* **ampRuntimeVersion** specifies a [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version") of the AMP runtime. For example: `ampRuntimeVersion: "001515617716922"` will result in AMP runtime URLs being re-written from:
+
+  ```
+  https://cdn.ampproject.org/v0.js
+  ```
+
+  to:
+
+  ```
+  https://cdn.ampproject.org/rtv/001515617716922/v0.js
+  ```
+* **ampUrlPrefix (experimental)**: specifies an URL prefix for AMP runtime
+  URLs. For example: ```ampUrlPrefix: "/amp"` will result in AMP runtime
+  URLs being re-written from:
+
+  ```
+  https://cdn.ampproject.org/v0.js
+  ```
+
+  to:
+
+  ```
+  /amp/v0.js
+  ```
+
+### Versioned AMP Runtime
+
+The `ampRuntimeVersion` parameter will rewrite all AMP runtime and extension imports to the specified version. For example: 
+
+```
+https://cdn.ampproject.org/v0.js
+```
+
+will be replaced with:
+
+```
+https://cdn.ampproject.org/rtv/001515617716922/v0.js
+```
+
+Versioning the AMP runtime URLs has two benefits:
+
+1. Better usage of the brower cache: versioned AMP runtime URLs are served with a longer max-age than the unversioned ones.
+2. Critical CSS can be inlined. The AMP runtime defines it's [own CSS styles](https://cdn.ampproject.org/v0.css) for AMP layouts and other things. Versioning the AMP runtime makes it possible to inline these styles, which greatly improving time to FCP as it ensures that inlined styles and imported runtime are compatible.
+
+**Important:** when using versioned AMP runtime URLs make sure to invalidate all caches whenever a new AMP runtime is released. This is to ensure that your AMP pages always use the latest version of the AMP runtime.  
+
+You can use [amp-toolbox-runtime-version](../amp-toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
+
+```
+const ampOptimiser = require('amp-toolbox-optimizer');
+
+// retrieve the latest runtime version
+const runtimeVersion = require('amp-toolbox-runtime-version');
+
+// retrieve the latest version
+const ampRuntimeVersion = await runtimeVersion.currentVersion();
+
+// The input string
 const originalHtml = `
 <!doctype html>
 <html ⚡>
@@ -91,29 +136,13 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const optimizedHtml = ampOptimizer.transformHtml(originalHtml, {
-  ampUrl: 'canonical.amp.html'
+const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
+  ampUrl: 'canonical.amp.html',
+  ampRuntimeVersion: ampRuntimeVersion
 });
 
 console.log(optimizedHtml);
 ```
-
-You can find the currently supported transformations [here](lib/transformers). 
-
-### Options
-
-Currently the following options are supported:
-
-* **ampUrl**: an URL string pointing to the valid AMP version. Required by the AddAmpLink transformer.
-* **ampRuntimeVersion** specifies a
-  [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version") of the AMP runtime. For example: `ampRuntimeVersion: "001515617716922"` will result in AMP runtime URLs being re-written
-  from `https://cdn.ampproject.org/v0.js` to
-  `https://cdn.ampproject.org/rtv/001515617716922/v0.js<`.
-* **ampUrlPrefix**: specifies an URL prefix for AMP runtime
-  URLs. For example: `ampUrlPrefix: "/amp"` will result in AMP runtime
-  URLs being re-written from `https://cdn.ampproject.org/v0.js` to
-  `/amp/v0.js`.
-
 
 ## Example
 
@@ -196,10 +225,10 @@ transformations statically. For such cases it is possible to run the
 transformations after AMP pages are rendered, e.g. in an Express middleware.
 
 To achieve best performance, those transformations shouldn't be applied for
-every request. Instead, transformations should only be applied the *first time* 
+every request. Instead, transformations should only be applied the *first time*
 a page is requested, and the results then cached. Caching can happen on the CDN
 level, on the site's internal infrastructure (eg: Memcached), or even on the
-server itself, if the set of pages is small enough to fit in memory. 
+server itself, if the set of pages is small enough to fit in memory.
 
 ## Why is it faster?
 
@@ -216,7 +245,7 @@ Runtime is loaded.
 
 To improve this, AMP server-side rendering applies the same rules as the
 AMP Runtime on the server. This ensures that the reflow will not happen  and
-the AMP boilerplate is no longer needed. The first render no longer depends on the 
+the AMP boilerplate is no longer needed. The first render no longer depends on the
 AMP Runtime being loaded, which improves load times.
 
 ## Caveats
