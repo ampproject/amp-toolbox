@@ -13,5 +13,5 @@ node index.js example.html
 ```
 
 The output is transformed by some of built-in transformers, and the
-`CheerioTransformer` is used to: (1) prepend "SSR" to the `<title>`; and (2)
+`CheerioTransformer` is used to: (1) prepend "Optimize" to the `<title>`; and (2)
 enable the `amp-fx-parallax` experiment.

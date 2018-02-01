@@ -18,7 +18,7 @@
 /**
  * The transform middleware replaces the `res.write` method so that, instead of sending
  * the content to the network, it is accumulated in a buffer. `res.end` is also replaced
- * so that, when it is invoked, the buffered response is transformed with AMP-SSR and sent
+ * so that, when it is invoked, the buffered response is transformed with AMP-Optimize and sent
  * to the network.
  */
 const mime = require('mime-types');
@@ -31,7 +31,7 @@ class ampOptimizeMiddleware {
 
   /**
    * @function runtimeVersion A function used to provide the runtimeVersion when applying the
-   * SSR transformations.
+   * Optimize transformations.
    * @returns {Promise<string>} A promise that resolves to the runtime version.
    */
 
@@ -54,13 +54,13 @@ class ampOptimizeMiddleware {
     const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
 
     return (req, res, next) => {
-      // If this is a request for a resource, such as image, JS or CSS, do not apply SSR.
+      // If this is a request for a resource, such as image, JS or CSS, do not apply Optimize.
       if (ampOptimizeMiddleware.isResourceRequest_(req)) {
         next();
         return;
       }
 
-      // This is a request for the AMP URL, rewrite to canonical URL, and do apply SSR.
+      // This is a request for the AMP URL, rewrite to canonical URL, and do apply Optimize.
       if (urlMapping.isAmpUrl(req.url)) {
         req.url = urlMapping.toCanonicalUrl(req.url);
         next();
@@ -121,7 +121,7 @@ class ampOptimizeMiddleware {
             res.status(200).send(transformedBody);
           })
           .catch(err => {
-            console.error('Error applying AMP SSR transformations. Sending original page', err);
+            console.error('Error applying AMP Optimize transformations. Sending original page', err);
             res.status(200).send(body);
           });
       };

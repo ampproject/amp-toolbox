@@ -51,7 +51,7 @@ An amphtml link will be added to the server-side-rendered version:
 
 ## Usage
 
-The AMP SSR middleware can be used like any other express middleware.
+The AMP Optimize middleware can be used like any other express middleware.
 
 It is important that the middleware is used *before* the middleware or route that renders the page.
 

@@ -94,7 +94,7 @@ describe('Express Middleware', () => {
 
     const middleware = ampOptimizeMiddleware.create({ampOptimize: transformer});
 
-    it('Sends the original content when SSR fails', () => {
+    it('Sends the original content when Optimize fails', () => {
       runMiddlewareForUrl(middleware, '/page.html')
         .then(result => {
           expect(result).toEqual('original');
