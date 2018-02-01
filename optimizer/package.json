@@ -1,0 +1,31 @@
+{
+  "name": "amp-toolbox-optimizer",
+  "version": "0.1.0",
+  "description": "Server-side rendering for AMPs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine && eslint .",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
+  },
+  "keywords": [
+    "amp"
+  ],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "amp-toolbox-core": "<1.0.0",
+    "amp-toolbox-runtime-version": "<1.0.0",
+    "parse5": "^3.0.2"
+  },
+  "devDependencies": {
+    "colors": "^1.1.2",
+    "diff": "^3.3.1",
+    "eslint": "^3.0.1",
+    "eslint-config-google": "^0.6.0",
+    "html-minifier": "^3.5.5",
+    "jasmine": "^2.8.0",
+    "jasmine-spec-reporter": "^4.2.1",
+    "nock": "^9.1.6"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "amp-toolbox-optimizer-demo-simple",
+  "version": "1.0.0",
+  "description": "A simple demo how to use the AMP Optimizer transformation API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The AMPHTML Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "amp-toolbox-runtime-version": "<1.0.0",
+    "amp-toolbox-optimizer": "<1.0.0",
+    "glob": "^7.1.2",
+    "mkdirp": "^0.5.1"
+  }
+}
