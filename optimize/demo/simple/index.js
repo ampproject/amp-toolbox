@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const ampSSR = require('amp-toolbox-ssr');
+const ampSSR = require('amp-toolbox-optimize');
 const runtimeVersion = require('amp-toolbox-runtime-version');
 
 // Transformers are easy to implement and integrate

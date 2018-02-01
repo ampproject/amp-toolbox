@@ -1,7 +1,7 @@
 {
-  "name": "amp-toolbox-ssr-express",
+  "name": "amp-toolbox-optimize-express",
   "version": "0.2.0",
-  "description": "Express middleware for amp-toolbox-ssr",
+  "description": "Express middleware for amp-toolbox-optimize",
   "main": "index.js",
   "scripts": {
     "test": "jasmine && eslint .",
@@ -26,7 +26,7 @@
   "dependencies": {
     "mime-types": "^2.1.17",
     "whatwg-url": "^6.4.0",
-    "amp-toolbox-ssr": "<1.0.0"
+    "amp-toolbox-optimize": "<1.0.0"
   },
   "devDependencies": {
     "eslint": "^3.0.1",

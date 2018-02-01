@@ -1,6 +1,6 @@
 ## Introduction
 
-`amp-toolbox-ssr` is a library for server-side-rendering AMP pages. This makes it possible to optimize
+`amp-toolbox-optimize` is a library for server-side-rendering AMP pages. This makes it possible to optimize
 page loading times when serving AMP pages from a non-cache domain.
 
 **Warning:** server-side rendered AMP files are no longer valid AMPHTML. Hence, serve-side rendered AMP pages should link to their [valid AMP counterpart](https://www.ampproject.org/docs/guides/discovery).
@@ -33,13 +33,13 @@ You can find a sample implementation [here](demo/simple/). If you're using the e
 Install via:
 
 ```
-npm install amp-toolbox-ssr
+npm install amp-toolbox-optimize
 ```
 
 Minimal usage:
 
 ```js
-const ampSSR = require('amp-toolbox-ssr');
+const ampSSR = require('amp-toolbox-optimize');
 
 // Transformer expects a string (streams are not supported)
 const originalHtml = `
@@ -59,7 +59,7 @@ console.log(ssrHtml);
 Advanced usage configuring the applied transformations:
 
 ```js
-const ampSSR = require('amp-toolbox-ssr');
+const ampSSR = require('amp-toolbox-optimize');
 
 // Configure the transformers to be used.
 // otherwise a default configuration is used.

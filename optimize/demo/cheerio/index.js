@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 
-const ssr = require('amp-toolbox-ssr');
+const ssr = require('amp-toolbox-optimize');
 const cheerio = require('cheerio');
 
 if (process.argv.length !== 3 || !fs.existsSync(process.argv[2])) {

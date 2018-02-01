@@ -1,5 +1,5 @@
 {
-  "name": "amp-toolbox-ssr-demo-simple",
+  "name": "amp-toolbox-optimize-demo-simple",
   "version": "1.0.0",
   "description": "A simple demo how to use the AMP SSR transformation API.",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "amp-toolbox-runtime-version": "<1.0.0",
-    "amp-toolbox-ssr": "<1.0.0",
+    "amp-toolbox-optimize": "<1.0.0",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1"
   }
