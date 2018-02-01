@@ -91,14 +91,14 @@ async function copyAndTransform(file, ampRuntimeVersion) {
     .replace('.html', '.amp.html');
   // The transformer needs the path to the original AMP document
   // to correctly setup AMP to canonical linking
-  const ssrHtml = await ampOptimize.transformHtml(originalHtml, {
+  const optimizedHtml = await ampOptimize.transformHtml(originalHtml, {
     ampUrl: ampFile,
     ampRuntimeVersion: ampRuntimeVersion
   });
   // We change the path of the original AMP file to match the new
   // amphtml link and make the canonical link point to the transformed version.
   writeFile(ampFile, originalHtml);
-  writeFile(file, ssrHtml);
+  writeFile(file, optimizedHtml);
 }
 
 function readFile(fileName) {

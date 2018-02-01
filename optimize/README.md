@@ -49,11 +49,11 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const ssrHtml = ampOptimize.transformHtml(originalHtml, {
+const optimizedHtml = ampOptimize.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
 });
 
-console.log(ssrHtml);
+console.log(optimizedHtml);
 ```
 
 Advanced usage configuring the applied transformations:
@@ -91,11 +91,11 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const ssrHtml = ampOptimize.transformHtml(originalHtml, {
+const optimizedHtml = ampOptimize.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
 });
 
-console.log(ssrHtml);
+console.log(optimizedHtml);
 ```
 
 You can find the currently supported transformations [here](lib/transformers). 
