@@ -123,10 +123,10 @@ class AmpOptimizerMiddleware {
             return null;
           })
           .then(version => {
-            const ampOptimiserParams = req.ampOptimiserParams || {};
-            ampOptimiserParams.ampUrl = linkRelAmpHtmlUrl;
-            ampOptimiserParams.ampRuntimeVersion = version;
-            return optimizer.transformHtml(body, ampOptimiserParams);
+            const ampOptimizerParams = req.ampOptimizerParams || {};
+            ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
+            ampOptimizerParams.ampRuntimeVersion = version;
+            return optimizer.transformHtml(body, ampOptimizerParams);
           })
           .then(transformedBody => {
             res.setHeader('Content-Length', Buffer.byteLength(transformedBody, 'utf-8'));
