@@ -15,5 +15,4 @@
  */
 'use strict';
 
-const ampOptimizeMiddleware = require('./lib/ampOptimizeMiddleware');
-module.exports = ampOptimizeMiddleware;
+module.exports =  require('./lib/AmpOptimizeMiddleware');
