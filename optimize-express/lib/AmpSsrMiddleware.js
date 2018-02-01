@@ -23,11 +23,11 @@
  */
 const mime = require('mime-types');
 const UrlMapping = require('./UrlMapping');
-const ampSsr = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimize');
 
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
-class AmpSsrMiddleware {
+class ampOptimizeMiddleware {
 
   /**
    * @function runtimeVersion A function used to provide the runtimeVersion when applying the
@@ -37,25 +37,25 @@ class AmpSsrMiddleware {
 
   /**
    * Creates a new amp-server-side-rendering middleware, using the specified
-   * ampSSR and options.
+   * ampOptimize and options.
    *
    * @param {Object} options an optional object containing custom configurations for
    * the middleware.
-   * @param {AmpSsr} options.ampSsr the AmpSsr used to apply server-side render transformations.
+   * @param {ampOptimize} options.ampOptimize the ampOptimize used to apply server-side render transformations.
    * @param {UrlMapping} options.urlMapping The mapper to be used when checking for AMP pages,
    * rewriting to * canonical and generating amphtml links.
    * @param {runtimeVersion} options.runtimeVersion a function used to generate the runtimeVersion,
-   *  to be passed to AmpSsr.
+   *  to be passed to ampOptimize.
    */
   static create(options) {
     options = options || {};
     const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
-    const ssr = options.ampSsr || ampSsr;
+    const ssr = options.ampOptimize || ampOptimize;
     const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
 
     return (req, res, next) => {
       // If this is a request for a resource, such as image, JS or CSS, do not apply SSR.
-      if (AmpSsrMiddleware.isResourceRequest_(req)) {
+      if (ampOptimizeMiddleware.isResourceRequest_(req)) {
         next();
         return;
       }
@@ -145,4 +145,4 @@ class AmpSsrMiddleware {
   }
 }
 
-module.exports = AmpSsrMiddleware;
+module.exports = ampOptimizeMiddleware;

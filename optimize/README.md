@@ -39,7 +39,7 @@ npm install amp-toolbox-optimize
 Minimal usage:
 
 ```js
-const ampSSR = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimize');
 
 // Transformer expects a string (streams are not supported)
 const originalHtml = `
@@ -49,7 +49,7 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const ssrHtml = ampSSR.transformHtml(originalHtml, {
+const ssrHtml = ampOptimize.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
 });
 
@@ -59,11 +59,11 @@ console.log(ssrHtml);
 Advanced usage configuring the applied transformations:
 
 ```js
-const ampSSR = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimize');
 
 // Configure the transformers to be used.
 // otherwise a default configuration is used.
-ampSSR.setConfig({
+ampOptimize.setConfig({
   transformers: [
     // Adds a link to the valid AMP version
     'AddAmpLink',
@@ -91,7 +91,7 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const ssrHtml = ampSSR.transformHtml(originalHtml, {
+const ssrHtml = ampOptimize.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
 });
 

@@ -16,7 +16,7 @@
 
 const UrlMapping = require('../../lib/UrlMapping');
 
-describe('AmpSsrUrlScheme', () => {
+describe('ampOptimizeUrlScheme', () => {
   const urlMapping = new UrlMapping('amp');
 
   describe('isAmpUrl', () => {

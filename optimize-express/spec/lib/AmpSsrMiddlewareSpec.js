@@ -16,7 +16,7 @@
 
 const MockExpressRequest = require('mock-express-request');
 const MockExpressResponse = require('mock-express-response');
-const AmpSsrMiddleware = require('../../lib/AmpSsrMiddleware');
+const ampOptimizeMiddleware = require('../../lib/ampOptimizeMiddleware');
 
 class TestTransformer {
   transformHtml(body, options) {
@@ -45,7 +45,7 @@ function runMiddlewareForUrl(middleware, url, accepts = () => 'html') {
 
 describe('Express Middleware', () => {
   describe('Default configuration', () => {
-    const middleware = AmpSsrMiddleware.create({ampSsr: new TestTransformer()});
+    const middleware = ampOptimizeMiddleware.create({ampOptimize: new TestTransformer()});
 
     it('Transforms URLs', () => {
       runMiddlewareForUrl(middleware, '/stuff?q=thing')
@@ -92,7 +92,7 @@ describe('Express Middleware', () => {
       transformHtml: () => Promise.reject('error')
     };
 
-    const middleware = AmpSsrMiddleware.create({ampSsr: transformer});
+    const middleware = ampOptimizeMiddleware.create({ampOptimize: transformer});
 
     it('Sends the original content when SSR fails', () => {
       runMiddlewareForUrl(middleware, '/page.html')
@@ -108,7 +108,7 @@ describe('Express Middleware', () => {
     };
 
     it('Default runtimeVersion is null', () => {
-      const middleware = AmpSsrMiddleware.create({ampSsr: transformer});
+      const middleware = ampOptimizeMiddleware.create({ampOptimize: transformer});
       runMiddlewareForUrl(middleware, '/page.html')
         .then(result => {
           expect(result).toBe('');
@@ -117,8 +117,8 @@ describe('Express Middleware', () => {
 
     it('Uses runtimeVersion when set', () => {
       const runtimeVersion = (() => Promise.resolve('1'));
-      const middleware = AmpSsrMiddleware.create({
-        ampSsr: transformer,
+      const middleware = ampOptimizeMiddleware.create({
+        ampOptimize: transformer,
         runtimeVersion: runtimeVersion
       });
       runMiddlewareForUrl(middleware, '/page.html')
@@ -129,8 +129,8 @@ describe('Express Middleware', () => {
 
     it('Uses null if runtimeVersion fails', () => {
       const runtimeVersion = (() => Promise.reject('error'));
-      const middleware = AmpSsrMiddleware.create({
-        ampSsr: transformer,
+      const middleware = ampOptimizeMiddleware.create({
+        ampOptimize: transformer,
         runtimeVersion: runtimeVersion
       });
       runMiddlewareForUrl(middleware, '/page.html')

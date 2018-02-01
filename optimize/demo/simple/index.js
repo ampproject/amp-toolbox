@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const ampSSR = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimize');
 const runtimeVersion = require('amp-toolbox-runtime-version');
 
 // Transformers are easy to implement and integrate
@@ -42,7 +42,7 @@ class CustomTransformer {
 
 // Configure the transformers to be used.
 // otherwise a default configuration is used.
-ampSSR.setConfig({
+ampOptimize.setConfig({
   transformers: [
     new CustomTransformer(),
     'AddAmpLink',
@@ -60,9 +60,9 @@ ampSSR.setConfig({
 const SRC_DIR = 'src';
 const DIST_DIR = 'dist';
 
-runAmpSSRTransformations();
+runampOptimizeTransformations();
 
-async function runAmpSSRTransformations() {
+async function runampOptimizeTransformations() {
   // This is optional in case AMP runtime URLs should be versioned
   const ampRuntimeVersion = await runtimeVersion.currentVersion();
   console.log('amp version: ', ampRuntimeVersion);
@@ -91,7 +91,7 @@ async function copyAndTransform(file, ampRuntimeVersion) {
     .replace('.html', '.amp.html');
   // The transformer needs the path to the original AMP document
   // to correctly setup AMP to canonical linking
-  const ssrHtml = await ampSSR.transformHtml(originalHtml, {
+  const ssrHtml = await ampOptimize.transformHtml(originalHtml, {
     ampUrl: ampFile,
     ampRuntimeVersion: ampRuntimeVersion
   });
