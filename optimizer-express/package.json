@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
+    "amp-toolbox-optimizer": "<1.0.0",
     "mime-types": "^2.1.17",
-    "whatwg-url": "^6.4.0",
-    "amp-toolbox-optimizer": "<1.0.0"
+    "whatwg-url": "^6.4.0"
   },
   "devDependencies": {
     "eslint": "^3.0.1",

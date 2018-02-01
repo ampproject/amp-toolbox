@@ -54,7 +54,7 @@ class AmpOptimizerMiddleware {
     const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
 
     return (req, res, next) => {
-      // If this is a request for a resource, such as image, JS or CSS, do not apply optimizations. 
+      // If this is a request for a resource, such as image, JS or CSS, do not apply optimizations.
       if (AmpOptimizerMiddleware.isResourceRequest_(req)) {
         next();
         return;
@@ -121,7 +121,9 @@ class AmpOptimizerMiddleware {
             res.status(200).send(transformedBody);
           })
           .catch(err => {
-            console.error('Error applying AMP Optimize transformations. Sending original page', err);
+            console.error(
+              'Error applying AMP Optimize transformations. Sending original page',
+              err);
             res.status(200).send(body);
           });
       };

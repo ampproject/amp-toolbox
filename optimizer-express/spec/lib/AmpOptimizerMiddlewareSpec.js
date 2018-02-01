@@ -16,7 +16,7 @@
 
 const MockExpressRequest = require('mock-express-request');
 const MockExpressResponse = require('mock-express-response');
-const AmpOptimizerMiddleware = require('../../lib/AmpOptimizerMiddleware');
+const AmpOptimizerMiddleware = require('../../lib/AmpOptimizeMiddleware.js');
 
 class TestTransformer {
   transformHtml(body, options) {
