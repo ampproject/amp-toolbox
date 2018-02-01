@@ -94,7 +94,7 @@ describe('Express Middleware', () => {
 
     const middleware = AmpOptimizerMiddleware.create({ampOptimizer: transformer});
 
-    it('Sends the original content when Optimize fails', () => {
+    it('Sends the original content when optimizer fails', () => {
       runMiddlewareForUrl(middleware, '/page.html')
         .then(result => {
           expect(result).toEqual('original');

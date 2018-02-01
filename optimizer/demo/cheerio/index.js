@@ -55,7 +55,7 @@ class CheerioTransformer {
   transform(tree, params) {
     const $ = cheerio.load(tree.root.children);
     // Prepends "Optimized" to the <title>
-    $('title').text('Optimize: ' + $('title').text());
+    $('title').text('Optimized: ' + $('title').text());
     // Injects amp-fx-parallax component
     $('head').append(
       '<script async custom-element="amp-fx-parallax" src="https://cdn.ampproject.org/v0/amp-fx-parallax-0.1.js"></script>'

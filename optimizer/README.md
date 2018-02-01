@@ -1,6 +1,6 @@
 ## Introduction
 
-`amp-toolbox-optimizer` is a library for server-side-rendering AMP pages. This makes it possible to optimizer
+`amp-toolbox-optimizer` is a library for server-side-rendering AMP pages. This makes it possible to optimize
 page loading times when serving AMP pages from a non-cache domain.
 
 **Warning:** server-side rendered AMP files are no longer valid AMPHTML. Hence, serve-side rendered AMP pages should link to their [valid AMP counterpart](https://www.ampproject.org/docs/guides/discovery).
@@ -28,7 +28,7 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 
 ## Usage
 
-You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimize Middleware](../optimizer-express).
+You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimizer Middleware](../optimizer-express).
 
 Install via:
 

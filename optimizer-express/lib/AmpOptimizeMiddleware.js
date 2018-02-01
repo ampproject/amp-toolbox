@@ -18,7 +18,7 @@
 /**
  * The transform middleware replaces the `res.write` method so that, instead of sending
  * the content to the network, it is accumulated in a buffer. `res.end` is also replaced
- * so that, when it is invoked, the buffered response is transformed with AMP-Optimize and sent
+ * so that, when it is invoked, the buffered response is transformed with AMP Optimizer and sent
  * to the network.
  */
 const mime = require('mime-types');
@@ -31,7 +31,7 @@ class AmpOptimizerMiddleware {
 
   /**
    * @function runtimeVersion A function used to provide the runtimeVersion when applying the
-   * optimize transformations.
+   * optimizer transformations.
    * @returns {Promise<string>} A promise that resolves to the runtime version.
    */
 
