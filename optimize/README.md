@@ -28,7 +28,7 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 
 ## Usage
 
-You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimize middleware](../ssr-express).
+You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimize middleware](../optimize-express).
 
 Install via:
 

@@ -16,16 +16,16 @@ limitations under the License.
 
 ## Introduction
 
-amp-ssr-express is an [express](http://expressjs.com/) middleware that optimizes page load
+amp-optimize-express is an [express](http://expressjs.com/) middleware that optimizes page load
 times for websites using AMP for their canonical pages. The middleware uses the same
 server-side-rendering optimizations as the Google AMP Cache.
 
-The middleware uses the [amp-ssr](../ssr) component to apply server-side-rendering on the fly.
+The middleware uses the [amp-optimize](../optimize) component to apply server-side-rendering on the fly.
 
 ## How it works
 
-amp-ssr-express intercepts the responses and replaces their content with a version that has been
-transformed by [amp-ssr](../ssr).
+amp-optimize-express intercepts the responses and replaces their content with a version that has been
+transformed by [amp-optimize](../optimize).
 
 As the server-side-rendered version of the content is not valid AMP, the component also
 provides the original content on an alternative URL. Server-side-rendering
@@ -38,7 +38,7 @@ Example:
 
 A valid AMP page is served on `https://example.com/index.html`.
 
-When the amp-ssr-express middleware is used, that URL will serve the server-side-rendered version
+When the amp-optimize-express middleware is used, that URL will serve the server-side-rendered version
 of the content.
 
 The original, valid AMP will then become available at `https://example.com/index.html?amp`.

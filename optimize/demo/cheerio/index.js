@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 
-const ssr = require('amp-toolbox-optimize');
+const optimize = require('amp-toolbox-optimize');
 const cheerio = require('cheerio');
 
 if (process.argv.length !== 3 || !fs.existsSync(process.argv[2])) {
@@ -73,7 +73,7 @@ class CheerioTransformer {
   }
 }
 
-ssr.setConfig({
+optimize.setConfig({
   transformers: [
     new CheerioTransformer(),
     'AddAmpLink',
@@ -86,7 +86,7 @@ ssr.setConfig({
   ]
 });
 
-console.log(ssr.transformHtml(
+console.log(optimize.transformHtml(
   fs.readFileSync(FILENAME, 'utf8'),
   {ampFxParallax: '1.7'}
 ));
