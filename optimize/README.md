@@ -1,6 +1,6 @@
 ## Introduction
 
-`amp-toolbox-optimize` is a library for server-side-rendering AMP pages. This makes it possible to optimize
+`amp-toolbox-optimizer` is a library for server-side-rendering AMP pages. This makes it possible to optimize
 page loading times when serving AMP pages from a non-cache domain.
 
 **Warning:** server-side rendered AMP files are no longer valid AMPHTML. Hence, serve-side rendered AMP pages should link to their [valid AMP counterpart](https://www.ampproject.org/docs/guides/discovery).
@@ -33,13 +33,13 @@ You can find a sample implementation [here](demo/simple/). If you're using the e
 Install via:
 
 ```
-npm install amp-toolbox-optimize
+npm install amp-toolbox-optimizer
 ```
 
 Minimal usage:
 
 ```js
-const ampOptimize = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimizer');
 
 // Transformer expects a string (streams are not supported)
 const originalHtml = `
@@ -59,7 +59,7 @@ console.log(optimizedHtml);
 Advanced usage configuring the applied transformations:
 
 ```js
-const ampOptimize = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimizer');
 
 // Configure the transformers to be used.
 // otherwise a default configuration is used.

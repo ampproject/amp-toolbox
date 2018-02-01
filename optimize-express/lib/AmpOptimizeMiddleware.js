@@ -23,7 +23,7 @@
  */
 const mime = require('mime-types');
 const UrlMapping = require('./UrlMapping');
-const ampOptimize = require('amp-toolbox-optimize');
+const ampOptimize = require('amp-toolbox-optimizer');
 
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
