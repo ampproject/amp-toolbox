@@ -15,12 +15,12 @@
  */
 
 const createSpec = require('../helpers/TransformerRunner.js');
-const ampOptimize = require('../../index.js');
+const ampOptimizer = require('../../index.js');
 
 createSpec({
   name: 'End-to-End',
   testDir: __dirname,
   transformer: {
-    transform: (tree, params) => ampOptimize.transformTree(tree, params)
+    transform: (tree, params) => ampOptimizer.transformTree(tree, params)
   }
 });

@@ -18,11 +18,11 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const ampOptimizeMiddleware = require('../index.js');
+const AmpOptimizerMiddleware = require('../index.js');
 
-// It's important that the ampOptimizeMiddleware is added *before* the static middleware.
+// It's important that the AmpOptimizerMiddleware is added *before* the static middleware.
 // This allows the middleware to intercept the page rendered by static and transform it.
-app.use(ampOptimizeMiddleware.create());
+app.use(AmpOptimizerMiddleware.create());
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);

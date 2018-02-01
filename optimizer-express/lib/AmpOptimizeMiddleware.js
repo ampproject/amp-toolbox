@@ -23,44 +23,44 @@
  */
 const mime = require('mime-types');
 const UrlMapping = require('./UrlMapping');
-const ampOptimize = require('amp-toolbox-optimizerr');
+const ampOptimizer = require('amp-toolbox-optimizer');
 
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
-class ampOptimizeMiddleware {
+class AmpOptimizerMiddleware {
 
   /**
    * @function runtimeVersion A function used to provide the runtimeVersion when applying the
-   * Optimize transformations.
+   * optimize transformations.
    * @returns {Promise<string>} A promise that resolves to the runtime version.
    */
 
   /**
    * Creates a new amp-server-side-rendering middleware, using the specified
-   * ampOptimize and options.
+   * ampOptimizer and options.
    *
    * @param {Object} options an optional object containing custom configurations for
    * the middleware.
-   * @param {ampOptimize} options.ampOptimize the ampOptimize used to apply server-side render transformations.
+   * @param {ampOptimizer} options.ampOptimizer the ampOptimizer used to apply server-side render transformations.
    * @param {UrlMapping} options.urlMapping The mapper to be used when checking for AMP pages,
    * rewriting to * canonical and generating amphtml links.
    * @param {runtimeVersion} options.runtimeVersion a function used to generate the runtimeVersion,
-   *  to be passed to ampOptimize.
+   *  to be passed to ampOptimizer.
    */
   static create(options) {
     options = options || {};
     const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
-    const optimizerr = options.ampOptimize || ampOptimize;
+    const optimizer = options.ampOptimizer || ampOptimizer;
     const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
 
     return (req, res, next) => {
-      // If this is a request for a resource, such as image, JS or CSS, do not apply Optimize.
-      if (ampOptimizeMiddleware.isResourceRequest_(req)) {
+      // If this is a request for a resource, such as image, JS or CSS, do not apply optimizations. 
+      if (AmpOptimizerMiddleware.isResourceRequest_(req)) {
         next();
         return;
       }
 
-      // This is a request for the AMP URL, rewrite to canonical URL, and do apply Optimize.
+      // This is a request for the AMP URL, rewrite to canonical URL, and do apply optimizations.
       if (urlMapping.isAmpUrl(req.url)) {
         req.url = urlMapping.toCanonicalUrl(req.url);
         next();
@@ -68,7 +68,7 @@ class ampOptimizeMiddleware {
       }
 
       // This is a request for the canonical URL. Setup the middelware to transform the
-      // response using amp-optimizerr.
+      // response using amp-optimizer.
       const chunks = [];
 
       // We need to store the original versions of those methods, as we need to invoke
@@ -113,7 +113,7 @@ class ampOptimizeMiddleware {
             console.error('Error retrieving ampRuntimeVersion: ', err);
             return null;
           })
-          .then(version => optimizerr.transformHtml(body, {
+          .then(version => optimizer.transformHtml(body, {
             ampUrl: linkRelAmpHtmlUrl,
             ampRuntimeVersion: version
           }))
@@ -145,4 +145,4 @@ class ampOptimizeMiddleware {
   }
 }
 
-module.exports = ampOptimizeMiddleware;
+module.exports = AmpOptimizerMiddleware;

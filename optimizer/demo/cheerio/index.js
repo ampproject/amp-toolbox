@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 
-const optimizerr = require('amp-toolbox-optimizerr');
+const optimizer = require('amp-toolbox-optimizer');
 const cheerio = require('cheerio');
 
 if (process.argv.length !== 3 || !fs.existsSync(process.argv[2])) {
@@ -54,7 +54,7 @@ class CheerioTransformer {
    */
   transform(tree, params) {
     const $ = cheerio.load(tree.root.children);
-    // Prepends "Optimize" to the <title>
+    // Prepends "Optimized" to the <title>
     $('title').text('Optimize: ' + $('title').text());
     // Injects amp-fx-parallax component
     $('head').append(
@@ -73,7 +73,7 @@ class CheerioTransformer {
   }
 }
 
-optimizerr.setConfig({
+optimizer.setConfig({
   transformers: [
     new CheerioTransformer(),
     'AddAmpLink',
@@ -86,7 +86,7 @@ optimizerr.setConfig({
   ]
 });
 
-console.log(optimizerr.transformHtml(
+console.log(optimizer.transformHtml(
   fs.readFileSync(FILENAME, 'utf8'),
   {ampFxParallax: '1.7'}
 ));
