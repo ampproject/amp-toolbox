@@ -16,16 +16,16 @@ limitations under the License.
 
 ## Introduction
 
-amp-optimize-express is an [express](http://expressjs.com/) middleware that optimizes page load
+amp-optimizerr-express is an [express](http://expressjs.com/) middleware that optimizers page load
 times for websites using AMP for their canonical pages. The middleware uses the same
 server-side-rendering optimizations as the Google AMP Cache.
 
-The middleware uses the [amp-optimize](../optimize) component to apply server-side-rendering on the fly.
+The middleware uses the [amp-optimizerr](../optimizerr) component to apply server-side-rendering on the fly.
 
 ## How it works
 
-amp-optimize-express intercepts the responses and replaces their content with a version that has been
-transformed by [amp-optimize](../optimize).
+amp-optimizerr-express intercepts the responses and replaces their content with a version that has been
+transformed by [amp-optimizerr](../optimizerr).
 
 As the server-side-rendered version of the content is not valid AMP, the component also
 provides the original content on an alternative URL. Server-side-rendering
@@ -38,7 +38,7 @@ Example:
 
 A valid AMP page is served on `https://example.com/index.html`.
 
-When the amp-optimize-express middleware is used, that URL will serve the server-side-rendered version
+When the amp-optimizerr-express middleware is used, that URL will serve the server-side-rendered version
 of the content.
 
 The original, valid AMP will then become available at `https://example.com/index.html?amp`.
@@ -61,7 +61,7 @@ The example bellow will transform HTML being loaded by express-static:
 const express = require('express');
 const path = require('path');
 const app = express();
-const ampOptimizeMiddleware = require('amp-toolbox-optimizer-express');
+const ampOptimizeMiddleware = require('amp-toolbox-optimizerr-express');
 
 // It's important that the ampOptimizeMiddleware is added *before* the static middleware.
 // This allows us to replace the parts needed before static handles the request.

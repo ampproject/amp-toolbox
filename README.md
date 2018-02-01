@@ -20,8 +20,8 @@ limitations under the License.
 
 A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
-- **[amp-optimize](./optimize):** a node library implementing server-side-rendering for AMP pages.
-- **[amp-optimize-express](./optimize-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
+- **[amp-optimizerr](./optimizerr):** a node library implementing server-side-rendering for AMP pages.
+- **[amp-optimizerr-express](./optimizerr-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
 - **[amp-runtime-version](./runtime-version):** a node library for querying the current AMP runtime version.
 - **[amp-cache-list](./cache-list):** a Node library for listing the known AMP Caches.
 

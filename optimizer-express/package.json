@@ -1,7 +1,7 @@
 {
-  "name": "amp-toolbox-optimizer-express",
+  "name": "amp-toolbox-optimizerr-express",
   "version": "0.2.0",
-  "description": "Express middleware for amp-toolbox-optimizer",
+  "description": "Express middleware for amp-toolbox-optimizerr",
   "main": "index.js",
   "scripts": {
     "test": "jasmine && eslint .",
@@ -14,7 +14,7 @@
   },
   "keywords": [
     "amp",
-    "amp-optimize",
+    "amp-optimizerr",
     "amp-toolbox"
   ],
   "author": "AMPHTML Team",
@@ -26,7 +26,7 @@
   "dependencies": {
     "mime-types": "^2.1.17",
     "whatwg-url": "^6.4.0",
-    "amp-toolbox-optimizer": "<1.0.0"
+    "amp-toolbox-optimizerr": "<1.0.0"
   },
   "devDependencies": {
     "eslint": "^3.0.1",

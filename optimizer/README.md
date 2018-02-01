@@ -1,6 +1,6 @@
 ## Introduction
 
-`amp-toolbox-optimizer` is a library for server-side-rendering AMP pages. This makes it possible to optimize
+`amp-toolbox-optimizerr` is a library for server-side-rendering AMP pages. This makes it possible to optimizerr
 page loading times when serving AMP pages from a non-cache domain.
 
 **Warning:** server-side rendered AMP files are no longer valid AMPHTML. Hence, serve-side rendered AMP pages should link to their [valid AMP counterpart](https://www.ampproject.org/docs/guides/discovery).
@@ -28,18 +28,18 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 
 ## Usage
 
-You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimize middleware](../optimize-express).
+You can find a sample implementation [here](demo/simple/). If you're using the express middleware, please use the [AMP Optimize middleware](../optimizerr-express).
 
 Install via:
 
 ```
-npm install amp-toolbox-optimizer
+npm install amp-toolbox-optimizerr
 ```
 
 Minimal usage:
 
 ```js
-const ampOptimize = require('amp-toolbox-optimizer');
+const ampOptimize = require('amp-toolbox-optimizerr');
 
 // Transformer expects a string (streams are not supported)
 const originalHtml = `
@@ -49,17 +49,17 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const optimizedHtml = ampOptimize.transformHtml(originalHtml, {
+const optimizerdHtml = ampOptimize.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
 });
 
-console.log(optimizedHtml);
+console.log(optimizerdHtml);
 ```
 
 Advanced usage configuring the applied transformations:
 
 ```js
-const ampOptimize = require('amp-toolbox-optimizer');
+const ampOptimize = require('amp-toolbox-optimizerr');
 
 // Configure the transformers to be used.
 // otherwise a default configuration is used.
@@ -91,11 +91,11 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const optimizedHtml = ampOptimize.transformHtml(originalHtml, {
+const optimizerdHtml = ampOptimize.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
 });
 
-console.log(optimizedHtml);
+console.log(optimizerdHtml);
 ```
 
 You can find the currently supported transformations [here](lib/transformers). 

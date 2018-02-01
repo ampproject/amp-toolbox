@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const ampOptimize = require('amp-toolbox-optimizer');
+const ampOptimize = require('amp-toolbox-optimizerr');
 const runtimeVersion = require('amp-toolbox-runtime-version');
 
 // Transformers are easy to implement and integrate
@@ -91,14 +91,14 @@ async function copyAndTransform(file, ampRuntimeVersion) {
     .replace('.html', '.amp.html');
   // The transformer needs the path to the original AMP document
   // to correctly setup AMP to canonical linking
-  const optimizedHtml = await ampOptimize.transformHtml(originalHtml, {
+  const optimizerdHtml = await ampOptimize.transformHtml(originalHtml, {
     ampUrl: ampFile,
     ampRuntimeVersion: ampRuntimeVersion
   });
   // We change the path of the original AMP file to match the new
   // amphtml link and make the canonical link point to the transformed version.
   writeFile(ampFile, originalHtml);
-  writeFile(file, optimizedHtml);
+  writeFile(file, optimizerdHtml);
 }
 
 function readFile(fileName) {

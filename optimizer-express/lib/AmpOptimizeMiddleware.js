@@ -23,7 +23,7 @@
  */
 const mime = require('mime-types');
 const UrlMapping = require('./UrlMapping');
-const ampOptimize = require('amp-toolbox-optimizer');
+const ampOptimize = require('amp-toolbox-optimizerr');
 
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
@@ -50,7 +50,7 @@ class ampOptimizeMiddleware {
   static create(options) {
     options = options || {};
     const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
-    const optimize = options.ampOptimize || ampOptimize;
+    const optimizerr = options.ampOptimize || ampOptimize;
     const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
 
     return (req, res, next) => {
@@ -68,7 +68,7 @@ class ampOptimizeMiddleware {
       }
 
       // This is a request for the canonical URL. Setup the middelware to transform the
-      // response using amp-optimize.
+      // response using amp-optimizerr.
       const chunks = [];
 
       // We need to store the original versions of those methods, as we need to invoke
@@ -113,7 +113,7 @@ class ampOptimizeMiddleware {
             console.error('Error retrieving ampRuntimeVersion: ', err);
             return null;
           })
-          .then(version => optimize.transformHtml(body, {
+          .then(version => optimizerr.transformHtml(body, {
             ampUrl: linkRelAmpHtmlUrl,
             ampRuntimeVersion: version
           }))
