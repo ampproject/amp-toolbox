@@ -1,12 +1,14 @@
-## Introduction
+## AMP Optimizer
 
-`amp-toolbox-ssr` is a library for optimizing websites build with AMP.
+> AMP Optimizer - the performance optimizations of the AMP Cache on your own site.
 
-Websites using AMP to build their canonical (or mobile) pages can use amp-toolbox-ssr to improve loading times when serving AMP pages from their own origin. The library applies a set of transformations that will result in faster loading times:
+AMP Optimizer optimizes AMPHTML files by: 
 
-* Server-side render AMP layouts.
-* Pre-load the AMP `v0.js` runtime to benefit from H2 push.
-* Version AMP runtime and extension imports to benefit from browser caching.
+* Server-side rendering AMP layouts.
+* Removing the AMP boilerplate.
+* Pre-loading the AMP `v0.js` runtime to benefit from H2 push.
+* Versioning AMP runtime and extension imports.
+* Inlining critical CSS.
 
 You can find the currently supported transformations [here](lib/transformers).
 
@@ -55,13 +57,12 @@ const originalHtml = `
 `
 
 // Additional options can be passed as the second argument
-const optimizedHtml = ampOptimizer.transformHtml(originalHtml, {
+ampOptimizer.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html'
-}).then(ssrHtml => {
-  console.log(ssrHtml);
+}).then(optimizedHtml => {
+  console.log(optimizedHtml);
 });
 
-console.log(optimizedHtml);
 ```
 
 You can find a sample implementation [here](demo/simple/). If you're using the express middleware in your backend, it's best to use the [AMP Optimizer Middleware](../optimizer-express).
