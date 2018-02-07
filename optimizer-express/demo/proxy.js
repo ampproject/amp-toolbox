@@ -17,10 +17,9 @@
 'use strict';
 
 const express = require('express');
-const path = require('path');
 const app = express();
-const AmpSsrMiddleware = require('amp-toolbox-optimizer-express');
-const ampSSR = require('amp-toolbox-optimizer');
+const AmpOptimizerMiddleware = require('amp-toolbox-optimizer-express');
+const ampOptimizer = require('amp-toolbox-optimizer');
 const compression = require('compression');
 const httpProxy = require('http-proxy');
 const https = require('https');
@@ -33,7 +32,7 @@ const cache = apicache.middleware;
 
 // Configure the transformers to be used.
 // otherwise a default configuration is used.
-ampSSR.setConfig({
+ampOptimizer.setConfig({
   transformers: [
     new PreloadImagesTransformer(),
     'AddAmpLink',
@@ -49,19 +48,21 @@ ampSSR.setConfig({
   ]
 });
 
-const target = process.argv[2] || 'https://www.ampbyexample.com'
-//
-// Create a HTTP Proxy server with a HTTPS target
-//
+// Read proxy for command line, or default to ampbyexample.com.
+const target = process.argv[2] || 'https://www.ampbyexample.com';
+
+// Create a HTTP Proxy server the target
 const proxy = httpProxy.createProxyServer({
   agent: https.globalAgent,
   changeOrigin: true,
   target: target,
   headers: {
+    // We force encoding to avoid issues with data decompression.
     'accept-encoding': 'none'
   }
 });
 
+// http-proxy doesn't handle errors by default, and crashes the server. Se we add our own handler.
 proxy.on('error', (err, req, res) => {
   res.writeHead(404, {
     'Content-Type': 'text/plain'
@@ -70,20 +71,22 @@ proxy.on('error', (err, req, res) => {
   res.end('Page not Found');
 });
 
-const staticMiddleware = express.static(path.join(__dirname, '/public'));
-
-// Cache pags for 20 mins
+// Enable caching
 app.use(cache('20 minutes'));
 
 // Enable compression
 app.use(compression());
 
+// Enable versioned AMP urls.
 const currentVersion = () => runtimeVersion.currentVersion();
-app.use(AmpSsrMiddleware.create({
-  ampSsr: ampSSR,
+
+// Enable the Optimizer middleware.
+app.use(AmpOptimizerMiddleware.create({
+  ampOptimizer: ampOptimizer,
   runtimeVersion: currentVersion
 }));
-app.use(staticMiddleware);
+
+// Handle requests through the proxy.
 app.use((req, res) => {
   proxy.web(req, res);
 });
