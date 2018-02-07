@@ -12,7 +12,7 @@ AMP Optimizer optimizes AMPHTML files by:
 
 You can find the currently supported transformations [here](lib/transformers).
 
-**Warning: optimized AMPs will no longer be valid AMPHTML. Don't use this to optimize AMPs meant for being used by platforms such as Google Search. **
+**Warning: optimized AMPs will no longer be valid AMPHTML. Don't use this to optimize AMPs meant for being used by platforms such as Google Search.**
 
 ## Table of Contents
 
