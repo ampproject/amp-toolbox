@@ -1,6 +1,14 @@
-## AMP Optimizer
+# AMP Optimizer
 
-> AMP Optimizer - the performance optimizations of the AMP Cache on your own site.
+AMP Optimizer - the performance optimizations of the AMP Cache on your own site.
+
+![AMP Optimizer in Action](https://user-images.githubusercontent.com/380472/36001450-96cfbce2-0d26-11e8-8b65-4ffc3182d57c.gif)
+
+First Meaningful Render - 4.1 vs 5.6 - 27 % faster <br>
+Full Render - 4.6 vs 5.7 - 19% faster <br>
+www.ampproject.org
+
+## Introduction
 
 AMP Optimizer optimizes AMPHTML files by: 
 
