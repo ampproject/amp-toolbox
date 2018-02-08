@@ -32,7 +32,8 @@ const defaultConfig = {
     // needs to run after ServerSideRendering
     'ReorderHeadTransformer',
     // needs to run after ReorderHeadTransformer
-    'RewriteAmpUrls'
+    'RewriteAmpUrls',
+    'GoogleFontsPreconnect'
   ]
 };
 
