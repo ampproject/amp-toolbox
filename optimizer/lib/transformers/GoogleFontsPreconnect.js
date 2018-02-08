@@ -30,7 +30,7 @@
  *
  * The transformer will only issue the preconnect instruction if Google Fonts is used on the page.
  */
-class GoogleFontsPreconnectTransformer {
+class GoogleFontsPreconnect {
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
@@ -53,5 +53,5 @@ class GoogleFontsPreconnectTransformer {
   }
 }
 
-/** @module GoogleFontsPreconnectTransformer */
-module.exports = GoogleFontsPreconnectTransformer;
+/** @module GoogleFontsPreconnect */
+module.exports = new GoogleFontsPreconnect();

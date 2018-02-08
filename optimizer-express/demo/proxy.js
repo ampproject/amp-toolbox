@@ -24,8 +24,6 @@ const compression = require('compression');
 const httpProxy = require('http-proxy');
 const https = require('https');
 const runtimeVersion = require('amp-toolbox-runtime-version');
-const PreloadImagesTransformer = require('./lib/PreloadImagesTransformer');
-const GoogleFontsPreconnectTransformer = require('./lib/GoogleFontsPreconnectTransformer');
 const apicache = require('apicache');
 
 const cache = apicache.middleware;
@@ -34,7 +32,7 @@ const cache = apicache.middleware;
 // otherwise a default configuration is used.
 ampOptimizer.setConfig({
   transformers: [
-    new PreloadImagesTransformer(),
+    'PreloadImages',
     'AddAmpLink',
     'ServerSideRendering',
     'RemoveAmpAttribute',
@@ -44,7 +42,7 @@ ampOptimizer.setConfig({
     'ReorderHeadTransformer',
     // needs to run after ReorderHeadTransformer
     'RewriteAmpUrls',
-    new GoogleFontsPreconnectTransformer()
+    'GoogleFontsPreconnect'
   ]
 });
 
