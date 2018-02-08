@@ -25,7 +25,7 @@ node runtimeVersion.js
 ## Proxy
 
 Uses the `http-proxy` library to implement a proxy server that reads valid AMPs from an origin
-and servers an optimized version.
+and serves an optimized version.
 
 Usage:
 
