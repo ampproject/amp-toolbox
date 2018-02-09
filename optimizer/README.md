@@ -4,8 +4,9 @@ AMP Optimizer - the performance optimizations of the AMP Cache on your own site.
 
 ![AMP Optimizer in Action](https://user-images.githubusercontent.com/380472/36001450-96cfbce2-0d26-11e8-8b65-4ffc3182d57c.gif)
 
-First Meaningful Render - 4.1 vs 5.6 - 27 % faster <br>
-Full Render - 4.6 vs 5.7 - 19% faster <br>
+First Render - 3.0 seconds vs 4.8 seconds (37% faster) <br>
+Visually Complete - 3.7 seconds vs 6.4 seconds (42% faster) <br>
+
 www.ampproject.org
 
 ## Introduction
