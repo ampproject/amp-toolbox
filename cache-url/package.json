@@ -29,6 +29,8 @@
     "jasmine": "^2.9.0"
   },
   "dependencies": {
-    "amp-toolbox-cache-list": "<1.0.0"
+    "amp-toolbox-cache-list": "<1.0.0",
+    "mime-types": "^2.1.18",
+    "punycode": "^2.1.0"
   }
 }

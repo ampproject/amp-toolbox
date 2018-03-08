@@ -16,17 +16,57 @@
 
 'use strict';
 
+const {URL} = require('url');
+const punycode = require('punycode');
+const mime = require('mime-types');
+
 /**
  * Translates canonical URLs into AMP Cache URLs, according to the specification available at
  * https://developers.google.com/amp/cache/overview.
  */
 class AmpUrl {
+
   /**
    * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
-   * @param {string} canonicalUrl
+   * @param {string} updateCacheApiDomainSuffix the AMP Cache domain suffix
+   * @param {string} canonicalUrl the canonical URL
    */
-  cacheUrl(ampCache, canonicalUrl) {
+  cacheUrl(updateCacheApiDomainSuffix, canonicalUrl) {
+    const url = new URL(canonicalUrl);
+    const originalHostname = url.hostname;
+    let unicodeHostname = punycode.toUnicode(originalHostname);
+    unicodeHostname = unicodeHostname.replace(/-/g, '--');
+    unicodeHostname = unicodeHostname.replace(/\./g, '-');
 
+    let pathSegment = this._getResourcePath(url.pathname);
+    pathSegment += url.protocol === 'https:' ? '/s/' : '/';
+
+    url.protocol = 'https';
+    url.hostname = punycode.toASCII(unicodeHostname) + '.' + updateCacheApiDomainSuffix;
+    url.pathname = pathSegment + originalHostname + url.pathname;
+    return url.toString();
+  }
+
+  /**
+   * Returns the AMP Cache path, based on the mime type of the file that is being loaded.
+   * @param {string} pathname the pathname on the canonical url.
+   */
+  _getResourcePath(pathname) {
+    const mimetype = mime.lookup(pathname);
+    if (!mimetype) {
+      return '/c';
+    }
+
+    if (mimetype.indexOf('image/') === 0) {
+      return '/i';
+    }
+
+    if (mimetype.indexOf('font') >= 0) {
+      return '/r';
+    }
+
+    // Default to document
+    return '/c';
   }
 }
 
