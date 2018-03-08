@@ -16,38 +16,59 @@
 
 'use strict';
 
-const AmpUrl = require('../lib/AmpUrl');
+const createCacheUrl = require('../lib/AmpCacheUrlGenerator');
 
 describe('AmpUrl', () => {
-  const ampUrl = new AmpUrl();
-  const cache = {
-    updateCacheApiDomainSuffix: 'cdn.ampproject.org'
-  };
+  const domainSuffix = 'cdn.ampproject.org';
 
   describe('cacheUrl', () => {
     const tests = [
-      {canonical: 'https://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/'},
-      {canonical: 'http://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/'},
-      {canonical: 'https://www.example.com/index.html',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/index.html'},
-      {canonical: 'http://www.example.com/index.html',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/index.html'},
-      {canonical: 'https://www.example.com/image.png',
-        cache: 'https://www-example-com.cdn.ampproject.org/i/s/www.example.com/image.png'},
-      {canonical: 'http://www.example.com/image.png',
-        cache: 'https://www-example-com.cdn.ampproject.org/i/www.example.com/image.png'},
-      {canonical: 'https://www.example.com/font.woff2',
-        cache: 'https://www-example-com.cdn.ampproject.org/r/s/www.example.com/font.woff2'},
-      {canonical: 'http://www.example.com/font.woff2',
-        cache: 'https://www-example-com.cdn.ampproject.org/r/www.example.com/font.woff2'}
+      {
+        url: 'https://www.example.com',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/'
+      },
+      {
+        url: 'http://www.example.com',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/'
+      },
+      {
+        url: 'https://www.example.com/index.html',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/index.html'
+      },
+      {
+        url: 'http://www.example.com/index.html',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/index.html'
+      },
+      {
+        url: 'https://www.example.com/image.png',
+        cache: 'https://www-example-com.cdn.ampproject.org/i/s/www.example.com/image.png'
+      },
+      {
+        url: 'http://www.example.com/image.png',
+        cache: 'https://www-example-com.cdn.ampproject.org/i/www.example.com/image.png'
+      },
+      {
+        url: 'https://www.example.com/font.woff2',
+        cache: 'https://www-example-com.cdn.ampproject.org/r/s/www.example.com/font.woff2'
+      },
+      {
+        url: 'http://www.example.com/font.woff2',
+        cache: 'https://www-example-com.cdn.ampproject.org/r/www.example.com/font.woff2'
+      },
+      {
+        url: 'https://example.com/g?value=Hello%20World',
+        cache: 'https://example-com.cdn.ampproject.org/c/s/example.com/g?value=Hello%20World'
+      },
+      {
+        url: 'https://點看.com',
+        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/xn--c1yn36f.com/'
+      }
     ];
 
-    tests.forEach(url => {
-      it(`Transforms ${url.canonical} into ${url.cache}`, () => {
-        const result = ampUrl.cacheUrl(cache.updateCacheApiDomainSuffix, url.canonical);
-        expect(result).toBe(url.cache);
+    tests.forEach(test => {
+      it(`Transforms ${test.url} into ${test.cache}`, () => {
+        const result = createCacheUrl(domainSuffix, test.url);
+        expect(result).toBe(test.cache);
       });
     });
   });

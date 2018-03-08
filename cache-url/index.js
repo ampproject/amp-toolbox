@@ -16,7 +16,7 @@
 
 'use strict';
 
-const AmpUrl = require('./lib/AmpUrl');
+const createCacheUrl = require('./lib/AmpCacheUrlGenerator');
 
 /** @module AmpUrl */
-module.exports = new AmpUrl();
+module.exports = createCacheUrl;
