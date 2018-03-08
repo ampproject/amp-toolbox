@@ -19,4 +19,4 @@
 const AmpUrl = require('./lib/AmpUrl');
 
 /** @module AmpUrl */
-module.exports = AmpUrl;
+module.exports = new AmpUrl();
