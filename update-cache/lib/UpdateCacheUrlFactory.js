@@ -43,7 +43,7 @@ class UpdateCacheUrlFactory {
         return caches.map(cache => {
           const cacheUrl = createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl);
           const updateCacheUrl = this.fromCacheUrl(cacheUrl, timestamp);
-          return {id: cache.id, name: cache.name, updateCacheUrl: updateCacheUrl};
+          return {cacheId: cache.id, cacheName: cache.name, updateCacheUrl: updateCacheUrl};
         });
       });
   }
