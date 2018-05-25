@@ -26,6 +26,12 @@
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
     "amp-toolbox-cache-list": "^0.1.0",
-    "amp-toolbox-cache-url": "^0.1.0"
+    "amp-toolbox-cache-url": "^0.1.0",
+    "jsrsasign": "^8.0.12"
+  },
+  "devDependencies": {
+    "eslint": "^3.0.1",
+    "eslint-config-google": "^0.6.0",
+    "jasmine": "^2.9.0"
   }
 }
