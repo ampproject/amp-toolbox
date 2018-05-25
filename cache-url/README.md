@@ -5,7 +5,7 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 
 ## Usage
 
-``javascript
-const createCacheUrl = require('amp-toolbox-cache-url');
-const cacheUrl = createCacheUrl('cdn.ampproject.org', 'https://www.example.com');
-``
+```javascript
+  const createCacheUrl = require('amp-toolbox-cache-url');
+  const cacheUrl = createCacheUrl('cdn.ampproject.org', 'https://www.example.com');
+```
