@@ -17,13 +17,16 @@
 'use strict';
 
 const createCacheUrl = require('amp-toolbox-cache-url');
+const Signature = require('./Signature');
+const Caches = require('amp-toolbox-cache-list');
+
 const {URL} = require('url');
 
 /**
  * Generates update-cache URLs, according to the specification available at:
  * https://developers.google.com/amp/cache/update-ping#update-cache-request
  */
-class UpdateCacheUrlFactory {
+class UpdateCacheUrlProvider {
   constructor(signature, caches) {
     this._caches = caches;
     this._sig = signature;
@@ -66,11 +69,24 @@ class UpdateCacheUrlFactory {
     url.searchParams.append('amp_ts', timestamp);
 
     // Append the signature to the Cache Refresh Url.
-    const urlSignature = this._sig.create(url.pathname + url.search);
+    const urlSignature = this._sig.generate(url.pathname + url.search);
     url.searchParams.append('amp_url_signature', urlSignature);
     return url.toString();
   }
+
+  /**
+   * Creates an instance of UpdateCacheUrlProvider that uses the privateKey
+   * to sign the Urls.
+   *
+   * @param {string} privateKey Private Key to be used when signing Urls.
+   * @returns {UpdateCacheUrlProvider} an instance of UpdateCacheUrlProvider.
+   */
+  static create(privateKey) {
+    const signature = new Signature(privateKey);
+    const caches = new Caches();
+    return new UpdateCacheUrlProvider(signature, caches);
+  }
 }
 
-/** @module UpdateCacheUrlFactory */
-module.exports = UpdateCacheUrlFactory;
+/** @module UpdateCacheUrlProvider */
+module.exports = UpdateCacheUrlProvider;

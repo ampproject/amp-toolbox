@@ -16,22 +16,23 @@
 
 'use strict';
 
-const UpdateCacheUrlFactory = require('../lib/UpdateCacheUrlFactory');
-const signature = {create: () => ''};
+const UpdateCacheUrlProvider = require('../lib/UpdateCacheUrlProvider');
+
+const signature = {generate: () => 'RESULT_SIGNATURE'};
 const caches = {list: () => Promise.resolve([
   {id: 'test', name: 'Test', updateCacheApiDomainSuffix: 'test.com'},
   {id: 'example', name: 'Example', updateCacheApiDomainSuffix: 'example.com'}
 ])};
 
 describe('UpdateCacheUrl', () => {
-  const updateCacheUrl = new UpdateCacheUrlFactory(signature, caches);
+  const updateCacheUrl = new UpdateCacheUrlProvider(signature, caches);
 
   describe('fromCacheUrl', () => {
     it('Generates the correct signature', () => {
       const timestamp = 1;
       const result = updateCacheUrl.fromCacheUrl('https://test.com', timestamp);
       const expected =
-          'https://test.com/update-cache/?amp_action=flush&amp_ts=1&amp_url_signature=';
+          'https://test.com/update-cache/?amp_action=flush&amp_ts=1&amp_url_signature=RESULT_SIGNATURE';
       expect(result).toBe(expected);
     });
   });

@@ -16,23 +16,8 @@
 
 'use strict';
 
-const UpdateCacheUrlFactory = require('./lib/UpdateCacheUrlFactory');
-const Signature = require('./lib/Signature');
-const Caches = require('amp-toolbox-cache-list');
+const UpdateCacheUrlProvider = require('./lib/UpdateCacheUrlProvider');
 
-/**
- * Creates an instance of UpdateCacheUrlFactory that uses the privateKey
- * to sign the Urls.
- *
- * @param {string} privateKey Private Key to be used when signing Urls.
- * @returns {UpdateCacheUrlFactory} an instance of UpdateCacheUrlFactory.
- */
-function createUpdateCacheUrlFactory(privateKey) {
-  const signature = new Signature(privateKey);
-  const caches = new Caches();
-  return new UpdateCacheUrlFactory(signature, caches);
-}
-
-/** @module createUpdateCacheUrlFactory */
-module.exports = createUpdateCacheUrlFactory;
+/** @module UpdateCacheUrlProvider */
+module.exports = UpdateCacheUrlProvider.create;
 

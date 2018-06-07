@@ -34,7 +34,7 @@ class Signature {
    * Generates a signature for the content
    * @param {string} data the signed content, using base64 url encoding.
    */
-  create(data) {
+  generate(data) {
     const signed = this._sig.signString(data);
     return jsrsasign.hextob64u(signed);
   }

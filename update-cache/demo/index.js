@@ -16,7 +16,10 @@
 
 'use strict';
 
-const Signature = require('../lib/Signature');
+const createUpdateCacheUrlProvider = require('../');
+
+// Load the private key, generated as described on 
+// https://developers.google.com/amp/cache/update-cache#rsa-keys
 const PRIVATE_KEY = `
 -----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAz28TyldF6N73GAcoDzJwkn5G1Ar6jGcls98L+Exyq3Yt9Gcq
@@ -47,17 +50,14 @@ C8iytkhnemDhNLoBYVaO1tPRSXkyelek+8s3HeKe86Qvc1tbhNV9
 -----END RSA PRIVATE KEY-----
 `;
 
-const TEST_EXPECTED = 'Zgk0Fdq9EyoLK0Fspm4GLNfkpFxQRBgWuJyfj7cyDUGjdm9-OB9dK821aasvrF4lBl4dg8-T' +
-'0tO1AJynH0kAb3TaZNHrrI6ItgarhHO34EtkGH_g-h9VHbpNUO8lCcthK55TaUWTHLPgdSmztEuloOVxpQdauSOSqpShg-' +
-'1OqDXMyeaBqQETeb7rFF0VvyEkysWRkEaee-qrcinaeBEGIrHn5zw0Z3zhh8EBjCdgFBo8vYa3x2FXg5fPWLHLgUfQv1IN' +
-'51wf684vhJDJOP-tuS8I-DKa41gzDsH50V5rRB1f1H3tCN2L4toJ8hWOz1kco5kRDbwATXtGNBnet7q--A';
+// Create an instance of the factory using the private key.
+const updateCacheUrlProvider = createUpdateCacheUrlProvider(PRIVATE_KEY);
 
-describe('Signature', () => {
-  const signature = new Signature(PRIVATE_KEY);
-  describe('create', () => {
-    it('Generates the correct signature', () => {
-      const result = signature.generate('test');
-      expect(result).toBe(TEST_EXPECTED);
+updateCacheUrlProvider.fromOriginUrl('https://www.example.com')
+  .then(cacheUpdateUrls => {
+    cacheUpdateUrls.forEach(cacheUpdateUrlInfo => {
+      console.log('Cache ID:' + cacheUpdateUrlInfo.cacheId);
+      console.log('Cache Name:' + cacheUpdateUrlInfo.cacheName);
+      console.log('cache-update URL:' + cacheUpdateUrlInfo.updateCacheUrl);
     });
   });
-});
