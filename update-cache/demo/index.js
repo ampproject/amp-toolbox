@@ -18,7 +18,7 @@
 
 const createUpdateCacheUrlProvider = require('../');
 
-// Load the private key, generated as described on 
+// Load the private key, generated as described on
 // https://developers.google.com/amp/cache/update-cache#rsa-keys
 const PRIVATE_KEY = `
 -----BEGIN RSA PRIVATE KEY-----
