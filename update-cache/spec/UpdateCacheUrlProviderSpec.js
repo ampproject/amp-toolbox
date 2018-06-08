@@ -24,22 +24,22 @@ const caches = {list: () => Promise.resolve([
   {id: 'example', name: 'Example', updateCacheApiDomainSuffix: 'example.com'}
 ])};
 
-describe('UpdateCacheUrl', () => {
+describe('UpdateCacheUrlProvider', () => {
   const updateCacheUrl = new UpdateCacheUrlProvider(signature, caches);
 
-  describe('fromCacheUrl', () => {
+  describe('calculateFromCacheUrl', () => {
     it('Generates the correct signature', () => {
       const timestamp = 1;
-      const result = updateCacheUrl.fromCacheUrl('https://test.com', timestamp);
+      const result = updateCacheUrl.calculateFromCacheUrl('https://test.com', timestamp);
       const expected =
           'https://test.com/update-cache/?amp_action=flush&amp_ts=1&amp_url_signature=RESULT_SIGNATURE';
       expect(result).toBe(expected);
     });
   });
 
-  describe('fromOriginUrl', () => {
+  describe('calculateFromOriginUrl', () => {
     const timestamp = 1;
-    updateCacheUrl.fromOriginUrl('https://test.com', timestamp)
+    updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp)
       .then(result => {
         expect(result.length).toBe(2);
       });

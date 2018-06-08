@@ -54,7 +54,7 @@ const TEST_EXPECTED = 'Zgk0Fdq9EyoLK0Fspm4GLNfkpFxQRBgWuJyfj7cyDUGjdm9-OB9dK821a
 
 describe('Signature', () => {
   const signature = new Signature(PRIVATE_KEY);
-  describe('create', () => {
+  describe('generate', () => {
     it('Generates the correct signature', () => {
       const result = signature.generate('test');
       expect(result).toBe(TEST_EXPECTED);

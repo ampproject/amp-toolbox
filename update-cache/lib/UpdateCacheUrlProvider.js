@@ -40,12 +40,12 @@ class UpdateCacheUrlProvider {
    * @returns {Array<Object>} an array with objects containing the cache ID, cache name and
    * update-cache url.
    */
-  fromOriginUrl(originUrl, timestamp) {
+  calculateFromOriginUrl(originUrl, timestamp) {
     return this._caches.list()
       .then(caches => {
         return caches.map(cache => {
           const cacheUrl = createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl);
-          const updateCacheUrl = this.fromCacheUrl(cacheUrl, timestamp);
+          const updateCacheUrl = this.calculateFromCacheUrl(cacheUrl, timestamp);
           return {cacheId: cache.id, cacheName: cache.name, updateCacheUrl: updateCacheUrl};
         });
       });
@@ -56,11 +56,11 @@ class UpdateCacheUrlProvider {
    * https://developers.google.com/amp/cache/update-ping#update-cache-request
    *
    * @param {String} cacheUrl the URL for the content on an AMP Cache
-   * (eg: https://example_com.cdn.ampproject.org)
+   * (eg: https://example_com.cdn.ampproject.org/example.com/)
    * @param {Number} timestamp as a UNIX Epoch in seconds
    * @return {String} the signed update-cache URL.
    */
-  fromCacheUrl(cacheUrl, timestamp) {
+  calculateFromCacheUrl(cacheUrl, timestamp) {
     const url = new URL(cacheUrl);
 
     // Create the Cache Refresh URL to be signed.

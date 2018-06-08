@@ -5,16 +5,16 @@ https://developers.google.com/amp/cache/update-ping#update-cache-request).
 
 ## Usage
 ```javascript
-  const createUpdateCacheUrlProvider = require('amp-toolbox-update-cache');
+  const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 
   // Load the private key, generated as described on 
   // https://developers.google.com/amp/cache/update-cache#rsa-keys
   const privateKey = '...';
 
   // Create an instance of the factory using the private key.
-  const updateCacheUrlProvider = createUpdateCacheUrlProvider(privateKey);
+  const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
 
-  updateCacheUrlProvider.fromOriginUrl('https://www.example.com')
+  updateCacheUrlProvider.calculateFromOriginUrl('https://www.example.com')
     .then(cacheUpdateUrls => {
       cacheUpdateUrls.forEach(cacheUpdateUrlInfo => {
         console.log('Cache ID:' + cacheUpdateUrlInfo.cacheId);

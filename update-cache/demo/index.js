@@ -16,7 +16,7 @@
 
 'use strict';
 
-const createUpdateCacheUrlProvider = require('../');
+const UpdateCacheUrlProvider = require('../');
 
 // Load the private key, generated as described on
 // https://developers.google.com/amp/cache/update-cache#rsa-keys
@@ -51,9 +51,9 @@ C8iytkhnemDhNLoBYVaO1tPRSXkyelek+8s3HeKe86Qvc1tbhNV9
 `;
 
 // Create an instance of the factory using the private key.
-const updateCacheUrlProvider = createUpdateCacheUrlProvider(PRIVATE_KEY);
+const updateCacheUrlProvider = UpdateCacheUrlProvider.create(PRIVATE_KEY);
 
-updateCacheUrlProvider.fromOriginUrl('https://www.example.com')
+updateCacheUrlProvider.calculateFromOriginUrl('https://www.example.com')
   .then(cacheUpdateUrls => {
     cacheUpdateUrls.forEach(cacheUpdateUrlInfo => {
       console.log('Cache ID:' + cacheUpdateUrlInfo.cacheId);
