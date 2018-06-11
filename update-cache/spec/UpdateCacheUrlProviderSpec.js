@@ -35,6 +35,12 @@ describe('UpdateCacheUrlProvider', () => {
           'https://test.com/update-cache/?amp_action=flush&amp_ts=1&amp_url_signature=RESULT_SIGNATURE';
       expect(result).toBe(expected);
     });
+
+    it('Generates signature with default timestamp', () => {
+      const result = updateCacheUrl.calculateFromCacheUrl('https://test.com');
+      const regex = /amp_ts=\d+/;
+      expect(result).toMatch(regex);
+    });
   });
 
   describe('calculateFromOriginUrl', () => {

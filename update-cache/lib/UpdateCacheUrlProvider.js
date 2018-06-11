@@ -36,11 +36,11 @@ class UpdateCacheUrlProvider {
    * Generates update-cache URLs for each known AMP cache.
    *
    * @param {string} originUrl the URL for the content on the origin (ex: https://example.com)
-   * @param {Number} timestamp as a UNIX Epoch in seconds
+   * @param {Number} [timestamp] as a UNIX Epoch in seconds
    * @returns {Array<Object>} an array with objects containing the cache ID, cache name and
    * update-cache url.
    */
-  calculateFromOriginUrl(originUrl, timestamp) {
+  calculateFromOriginUrl(originUrl, timestamp = defaultTimestamp_()) {
     return this._caches.list()
       .then(caches => {
         return caches.map(cache => {
@@ -57,10 +57,10 @@ class UpdateCacheUrlProvider {
    *
    * @param {String} cacheUrl the URL for the content on an AMP Cache
    * (eg: https://example_com.cdn.ampproject.org/example.com/)
-   * @param {Number} timestamp as a UNIX Epoch in seconds
+   * @param {Number} [timestamp] as a UNIX Epoch in seconds
    * @return {String} the signed update-cache URL.
    */
-  calculateFromCacheUrl(cacheUrl, timestamp) {
+  calculateFromCacheUrl(cacheUrl, timestamp = defaultTimestamp_()) {
     const url = new URL(cacheUrl);
 
     // Create the Cache Refresh URL to be signed.
@@ -86,6 +86,10 @@ class UpdateCacheUrlProvider {
     const caches = new Caches();
     return new UpdateCacheUrlProvider(signature, caches);
   }
+}
+
+function defaultTimestamp_() {
+  return (Date.now() / 1000) | 0;
 }
 
 /** @module UpdateCacheUrlProvider */
