@@ -1,9 +1,12 @@
-#AMP-Toolbox update-cache
+# AMP-Toolbox update-cache
 
-Generates update-cache invalidation URLs, as described on the [Google AMP Cache documentation](
+Generates AMP Cache invalidation URLs for all known AMP Caches. For more info see the [Google AMP Cache documentation](
 https://developers.google.com/amp/cache/update-ping#update-cache-request).
 
 ## Usage
+
+Generate a list of update URLs like this:
+
 ```javascript
   const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 
@@ -23,3 +26,5 @@ https://developers.google.com/amp/cache/update-ping#update-cache-request).
       });
     });
 ```
+
+Note: this only generates the URLs, but doesn't perform the actual update request. 
