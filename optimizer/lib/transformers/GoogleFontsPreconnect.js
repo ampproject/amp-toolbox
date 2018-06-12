@@ -34,6 +34,8 @@ class GoogleFontsPreconnect {
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
+    const referenceNode = this.getReferenceNode_(head);
+
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (this.isGoogleFontsLinkNode_(node)) {
         // Preconnect to fonts.gstatic.com, where the final fonts are downloaded.
@@ -41,9 +43,22 @@ class GoogleFontsPreconnect {
         linkPreconnect.attribs.rel = 'preconnect';
         linkPreconnect.attribs.href = 'https://fonts.gstatic.com';
         linkPreconnect.attribs.crossorigin = '';
-        head.insertBefore(linkPreconnect, node);
+        head.insertBefore(linkPreconnect, referenceNode);
       }
     }
+  }
+
+  getReferenceNode_(head) {
+    const referenceNode = head.firstChildByTag('meta');
+
+    // Check if firstChild is meta charset and return nextSibling so that the preconnect is
+    // inserted after the meta charset tag.
+    if (referenceNode && referenceNode.tagName === 'meta' && referenceNode.attribs.charset) {
+      return referenceNode.nextSibling;
+    }
+
+    // Otherwise, the preconnect will be inserted before the 1st element in the head.
+    return head.firstChild;
   }
 
   isGoogleFontsLinkNode_(node) {
