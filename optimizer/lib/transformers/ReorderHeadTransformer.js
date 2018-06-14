@@ -27,6 +27,7 @@ class HeadNodes {
     this._metaOther = [];
     this._scriptRenderDelayingExtensions = [];
     this._scriptNonRenderDelayingExtensions = [];
+    this._resourceHintLinks = [];
     this._linkIcons = [];
     this._styleAmpCustom = null;
     this._linkStylesheetsBeforeAmpCustom = [];
@@ -59,6 +60,7 @@ class HeadNodes {
     head.appendChild(this._styleAmpRuntime);
     head.appendChild(this._linkStyleAmpRuntime);
     head.appendChild(this._metaCharset);
+    head.appendAll(this._resourceHintLinks);
     head.appendAll(this._metaOther);
     head.appendChild(this._scriptAmpEngine);
     head.appendAll(this._scriptRenderDelayingExtensions);
@@ -157,6 +159,15 @@ class HeadNodes {
       this._linkIcons.push(node);
       return;
     }
+
+    if (rel === 'preload' ||
+      rel === 'prefetch' ||
+      rel === 'dns-prefetch' ||
+      rel === 'preconnect') {
+      this._resourceHintLinks.push(node);
+      return;
+    }
+
     this._others.push(node);
   }
 
