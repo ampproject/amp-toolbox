@@ -16,6 +16,8 @@
 
 'use strict';
 
+const {findMetaCharset} = require('../HtmlDomHelper');
+
 /**
  * Adds a preconnect instruction to `fonts.gstatic.com` when the Google Fonts CSS
  * is used in the page.
@@ -34,7 +36,6 @@ class GoogleFontsPreconnect {
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
-    const referenceNode = this.getReferenceNode_(head);
 
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (this.isGoogleFontsLinkNode_(node)) {
@@ -43,22 +44,13 @@ class GoogleFontsPreconnect {
         linkPreconnect.attribs.rel = 'preconnect';
         linkPreconnect.attribs.href = 'https://fonts.gstatic.com';
         linkPreconnect.attribs.crossorigin = '';
-        head.insertBefore(linkPreconnect, referenceNode);
+        const referenceNode = findMetaCharset(head);
+        head.insertAfter(linkPreconnect, referenceNode);
+
+        // We only need 1 preconnect, so we can skip the remaining elements and return.
+        return;
       }
     }
-  }
-
-  getReferenceNode_(head) {
-    const referenceNode = head.firstChildByTag('meta');
-
-    // Check if firstChild is meta charset and return nextSibling so that the preconnect is
-    // inserted after the meta charset tag.
-    if (referenceNode && referenceNode.tagName === 'meta' && referenceNode.attribs.charset) {
-      return referenceNode.nextSibling;
-    }
-
-    // Otherwise, the preconnect will be inserted before the 1st element in the head.
-    return head.firstChild;
   }
 
   isGoogleFontsLinkNode_(node) {

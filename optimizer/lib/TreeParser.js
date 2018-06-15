@@ -72,6 +72,24 @@ Node.insertBefore = function(newNode, referenceNode) {
   htmlparser2.insertBefore(this, newNode, referenceNode);
 };
 
+/**
+ * Inserts a Node after the reference node. If referenceNode is null, inserts the node as
+ * the first child.
+ *
+ * @param {Node} newNode the node to be inserted.
+ * @param {Node} referenceNode the reference node, where the new node will be added before.
+ */
+Node.insertAfter = function(newNode, referenceNode) {
+  if (referenceNode) {
+    // if referenceNode.nextSibling is null, referenceNode is the last child. newNode is inserted
+    // as the last element.
+    this.insertBefore(newNode, referenceNode.nextSibling);
+    return;
+  }
+
+  this.insertBefore(newNode, this.firstChild);
+};
+
 // Append child node
 Node.appendAll = function(nodes) {
   if (!nodes) {
