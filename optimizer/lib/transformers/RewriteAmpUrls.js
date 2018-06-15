@@ -84,7 +84,7 @@ class RewriteAmpUrls {
   _addPreload(tree, parent, node, href, type) {
     if (!href.endsWith('v0.js') &&
       !href.endsWith('v0.css')) {
-      return;
+      return node;
     }
     const preload = tree.createElement('link', {
       rel: 'preload',
