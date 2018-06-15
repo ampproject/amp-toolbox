@@ -16,6 +16,7 @@
 'use strict';
 
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
+const {findMetaCharset} = require('../HtmlDomHelper');
 
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
@@ -53,15 +54,17 @@ class RewriteAmpUrls {
     }
 
     let node = head.firstChild;
+    let referenceNode = findMetaCharset(head);
+
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, ampUrlPrefix);
-        this._addPreload(tree, head, node, node.attribs.src, 'script');
+        referenceNode = this._addPreload(tree, head, referenceNode, node.attribs.src, 'script');
       } else if (node.tagName === 'link' &&
                   node.attribs.rel === 'stylesheet' &&
                   this._usesAmpCacheUrl(node.attribs.href)) {
         node.attribs.href = this._replaceUrl(node.attribs.href, ampUrlPrefix);
-        this._addPreload(tree, head, node, node.attribs.href, 'style');
+        referenceNode = this._addPreload(tree, head, referenceNode, node.attribs.href, 'style');
       }
       node = node.nextSibling;
     }
@@ -88,7 +91,8 @@ class RewriteAmpUrls {
       href: href,
       as: type
     });
-    parent.insertBefore(preload, node);
+    parent.insertAfter(preload, node);
+    return preload;
   }
 }
 
