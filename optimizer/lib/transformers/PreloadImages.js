@@ -44,8 +44,9 @@ class PreloadImages {
       if (preloadImageMap.size >= MAX_PRELOADED_IMAGES) {
         break;
       }
+      let imageUrl = this.extractImageUrl(node);
 
-      if (node.tagName !== 'amp-img') {
+      if (!imageUrl) {
         continue;
       }
 
@@ -54,20 +55,36 @@ class PreloadImages {
         continue;
       }
 
-      preloadImageMap.set(node.attribs.src, node);
+      preloadImageMap.set(imageUrl, this.createPreload(tree, imageUrl, node.attribs.media));
     }
 
     let referenceNode = findMetaCharset(head);
 
-    for (let node of preloadImageMap.values()) {
-      const src = node.attribs.src;
-      const link = tree.createElement('link');
-      link.attribs.rel = 'preload';
-      link.attribs.href = src;
-      link.attribs.as = 'image';
-      head.insertAfter(link, referenceNode);
-      referenceNode = link;
+    for (let preload of preloadImageMap.values()) {
+      head.insertAfter(preload, referenceNode);
+      referenceNode = preload;
     }
+  }
+
+  extractImageUrl(node) {
+    if (node.tagName === 'amp-img') {
+      return node.attribs.src;
+    }
+    if (node.tagName === 'amp-video') {
+      return node.attribs.poster;
+    }
+    return null;
+  }
+
+  createPreload(tree, href, media) {
+    const preload = tree.createElement('link');
+    preload.attribs.rel = 'preload';
+    preload.attribs.href = href;
+    preload.attribs.as = 'image';
+    if (media) {
+      preload.attribs.media = media;
+    }
+    return preload;
   }
 }
 
