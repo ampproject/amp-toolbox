@@ -16,6 +16,8 @@
 
 'use strict';
 
+const {findMetaCharset} = require('../HtmlDomHelper');
+
 /**
  * Adds preload instructions to the first 5 amp-img tags on the page, that don't use srcset.
  *
@@ -55,13 +57,16 @@ class PreloadImages {
       preloadImageMap.set(node.attribs.src, node);
     }
 
+    let referenceNode = findMetaCharset(head);
+
     for (let node of preloadImageMap.values()) {
       const src = node.attribs.src;
       const link = tree.createElement('link');
       link.attribs.rel = 'preload';
       link.attribs.href = src;
       link.attribs.as = 'image';
-      head.appendChild(link);
+      head.insertAfter(link, referenceNode);
+      referenceNode = link;
     }
   }
 }
