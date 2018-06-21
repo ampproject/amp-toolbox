@@ -22,9 +22,9 @@
  * @param {Node} head the section to search for the meta charset node.
  * @returns {Node} the '<meta charset>' node or null.
  */
-function findMetaCharset(head) {
+function findMetaViewport(head) {
   for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-    if (node.tagName === 'meta' && node.attribs.charset) {
+    if (node.tagName === 'meta' && node.attribs.name === 'viewport') {
       return node;
     }
   }
@@ -33,5 +33,5 @@ function findMetaCharset(head) {
 
 /** @module HtmlDomHelper */
 module.exports = {
-  findMetaCharset: findMetaCharset
+  findMetaViewport: findMetaViewport
 };

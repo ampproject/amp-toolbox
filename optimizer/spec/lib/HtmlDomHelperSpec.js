@@ -14,40 +14,30 @@
  * limitations under the License.
  */
 
-const {findMetaCharset} = require('../../lib/HtmlDomHelper');
+const {findMetaViewport} = require('../../lib/HtmlDomHelper');
 const treeParser = require('../../lib/TreeParser');
 
 describe('HtmlDomHelper', () => {
-  describe('findMetaCharset', () => {
+  describe('findMetaViewport', () => {
     it('returns null if tag is not present', () => {
       const tree = treeParser.parse(`<html><head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta charset="utf-8">
           </head></html>`);
       const html = tree.root.firstChild;
       const head = html.firstChild;
-      const result = findMetaCharset(head);
+      const result = findMetaViewport(head);
       expect(result).toBeNull();
     });
 
-    it('returns the correct tag when it is the 1st child', () => {
+    it('returns the correct tag', () => {
       const tree = treeParser.parse(`<html><head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="hello world">
           </head></html>`);
       const html = tree.root.firstChild;
       const head = html.firstChild;
-      const result = findMetaCharset(head);
-      expect(result).toEqual(head.children[1]);
-    });
-
-    it('returns the correct tag when it is not the 1st child', () => {
-      const tree = treeParser.parse(`<html><head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta charset="utf-8">
-          </head></html>`);
-      const html = tree.root.firstChild;
-      const head = html.firstChild;
-      const result = findMetaCharset(head);
+      const result = findMetaViewport(head);
       expect(result).toEqual(head.children[3]);
     });
   });

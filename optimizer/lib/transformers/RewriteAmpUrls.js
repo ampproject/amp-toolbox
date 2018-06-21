@@ -16,7 +16,7 @@
 'use strict';
 
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
-const {findMetaCharset} = require('../HtmlDomHelper');
+const {findMetaViewport} = require('../HtmlDomHelper');
 
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
@@ -54,7 +54,7 @@ class RewriteAmpUrls {
     }
 
     let node = head.firstChild;
-    let referenceNode = findMetaCharset(head);
+    let referenceNode = findMetaViewport(head);
 
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
