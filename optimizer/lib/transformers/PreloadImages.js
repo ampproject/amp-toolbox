@@ -39,23 +39,18 @@ class PreloadImages {
     const body = html.firstChildByTag('body');
     const preloadImageMap = new Map();
 
-    for (let node = body; node !== null; node = node.nextNode()) {
+    let node = body;
+    while (node !== null) {
       // We've hit the maximum number of preloads.
       if (preloadImageMap.size >= MAX_PRELOADED_IMAGES) {
         break;
       }
-      let imageUrl = this.extractImageUrl(node);
-
-      if (!imageUrl) {
-        continue;
+      if (node.tagName === 'template') {
+        node = node.nextSibling;
+      } else {
+        this.addImage(preloadImageMap, tree, node);
+        node = node.nextNode();
       }
-
-      // If srcset is used, skip preloading as we don't know which image will be used.
-      if (node.attribs.srcset) {
-        continue;
-      }
-
-      preloadImageMap.set(imageUrl, this.createPreload(tree, imageUrl, node.attribs.media));
     }
 
     let referenceNode = findMetaCharset(head);
@@ -64,6 +59,18 @@ class PreloadImages {
       head.insertAfter(preload, referenceNode);
       referenceNode = preload;
     }
+  }
+
+  addImage(preloadImageMap, tree, node) {
+    let imageUrl = this.extractImageUrl(node);
+    if (!imageUrl) {
+      return;
+    }
+    // If srcset is used, skip preloading as we don't know which image will be used.
+    if (node.attribs.srcset) {
+      return;
+    }
+    preloadImageMap.set(imageUrl, this.createPreload(tree, imageUrl, node.attribs.media));
   }
 
   extractImageUrl(node) {
