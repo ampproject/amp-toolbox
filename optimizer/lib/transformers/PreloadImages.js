@@ -27,13 +27,18 @@ const {findMetaCharset} = require('../HtmlDomHelper');
  *
  * By issuing preload instructions, browsers will start downloading the images before the AMP
  * runtime is loaded, resulting on an earlier complete render.
+ *
+ * This transformer supports the following option:
+ *
+ * * `imagePreloadCount`: specifies the maxinum number of images to preload. The default is 5.
  */
 
 // Maximum number of images that will be preloaded.
 const MAX_PRELOADED_IMAGES = 5;
 
 class PreloadImages {
-  transform(tree) {
+  transform(tree, params) {
+    const imagePreloadCount = params.imagePreloadCount || MAX_PRELOADED_IMAGES;
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
     const body = html.firstChildByTag('body');
@@ -42,11 +47,11 @@ class PreloadImages {
     let node = body;
     while (node !== null) {
       // We've hit the maximum number of preloads.
-      if (preloadImageMap.size >= MAX_PRELOADED_IMAGES) {
+      if (preloadImageMap.size >= imagePreloadCount) {
         break;
       }
       if (node.tagName === 'template') {
-        node = node.nextSibling;
+        node = this.nextNode(node);
       } else {
         this.addImage(preloadImageMap, tree, node);
         node = node.nextNode();
@@ -59,6 +64,13 @@ class PreloadImages {
       head.insertAfter(preload, referenceNode);
       referenceNode = preload;
     }
+  }
+
+  nextNode(node) {
+    if (node.nextSibling) {
+      return node.nextSibling;
+    }
+    return this.nextNode(node.parent);
   }
 
   addImage(preloadImageMap, tree, node) {
