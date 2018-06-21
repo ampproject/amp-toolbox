@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {findMetaCharset} = require('../HtmlDomHelper');
+const {findMetaViewport} = require('../HtmlDomHelper');
 
 /**
  * Adds a preconnect instruction to `fonts.gstatic.com` when the Google Fonts CSS
@@ -44,7 +44,7 @@ class GoogleFontsPreconnect {
         linkPreconnect.attribs.rel = 'preconnect';
         linkPreconnect.attribs.href = 'https://fonts.gstatic.com';
         linkPreconnect.attribs.crossorigin = '';
-        const referenceNode = findMetaCharset(head);
+        const referenceNode = findMetaViewport(head);
         head.insertAfter(linkPreconnect, referenceNode);
 
         // We only need 1 preconnect, so we can skip the remaining elements and return.

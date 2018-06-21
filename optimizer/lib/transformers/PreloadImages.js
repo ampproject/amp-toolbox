@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {findMetaCharset} = require('../HtmlDomHelper');
+const {findMetaViewport} = require('../HtmlDomHelper');
 
 /**
  * Adds preload instructions to the first 5 amp-img tags on the page, that don't use srcset.
@@ -58,7 +58,7 @@ class PreloadImages {
       preloadImageMap.set(imageUrl, this.createPreload(tree, imageUrl, node.attribs.media));
     }
 
-    let referenceNode = findMetaCharset(head);
+    let referenceNode = findMetaViewport(head);
 
     for (let preload of preloadImageMap.values()) {
       head.insertAfter(preload, referenceNode);
