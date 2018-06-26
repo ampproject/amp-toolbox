@@ -113,6 +113,10 @@ Node.hasAttribute = function(attribute) {
   return attribute in this.attribs;
 };
 
+Node.insertText = function(text) {
+  htmlparser2.insertText(this, text);
+};
+
 /**
  * A DOM Tree
  */
@@ -140,22 +144,6 @@ class Tree {
       result.attribs = attribs;
     }
     return result;
-  }
-
-  /**
-   * Creates a new text node
-   *
-   * @param {string} value
-   * @returns {Node} new node
-   */
-  createTextNode(value) {
-    return Node.constructor({
-      type: 'text',
-      data: value,
-      parent: null,
-      prev: null,
-      next: null
-    });
   }
 }
 

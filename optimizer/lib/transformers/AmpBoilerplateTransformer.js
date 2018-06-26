@@ -63,7 +63,7 @@ class AmpBoilerplateTransformer {
 
   _addStaticCss(tree, node, params) {
     if (params.ampRuntimeVersion && !params.linkCss) {
-      return this._inlineCss(tree, node, params.ampRuntimeVersion);
+      return this._inlineCss(node, params.ampRuntimeVersion);
     }
     this._linkCss(tree, node);
   }
@@ -77,12 +77,10 @@ class AmpBoilerplateTransformer {
     node.parent.insertBefore(cssStyleNode, node);
   }
 
-  _inlineCss(tree, node, version) {
+  _inlineCss(node, version) {
     const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
     return this.fetch_.get(versionedV0CssUrl)
-      .then(body => {
-        node.children.push(tree.createTextNode(body));
-      });
+      .then(body => node.insertText(body));
   }
 
   _stripStylesAndNoscript(head) {
