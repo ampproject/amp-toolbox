@@ -131,12 +131,6 @@ describe('Tree', () => {
       expect(element.attribs.myAttribute).toBe('hello');
     });
   });
-  describe('createTextNode', () => {
-    it('sets data', () => {
-      const textNode = tree.createTextNode('test');
-      expect(textNode.data).toBe('test');
-    });
-  });
   describe('appendChild', () => {
     let firstElement;
     let secondElement;
