@@ -1,0 +1,29 @@
+{
+  "name": "amp-toolbox-cli",
+  "version": "0.1.0",
+  "description": "A Command Line Interface (CLI) for amp-toolbox",
+  "main": "index.js",
+  "scripts": {},
+  "bin": {
+    "outside": "bin/amp-toolbox"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
+  "keywords": [
+    "amp-toolbox",
+    "cli"
+  ],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox#readme",
+  "dependencies": {
+    "amp-toolbox-update-cache": "^0.1.2",
+    "minimist": "^1.2.0",
+    "node-fetch": "^2.1.2"
+  }
+}
