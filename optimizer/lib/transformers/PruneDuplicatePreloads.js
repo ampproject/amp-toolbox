@@ -23,24 +23,24 @@
  * items.
  */
 class PruneDuplicatePreloads {
-      
-  transform(tree, params) {
+
+  transform(tree) {
     const preloaded = new Set();
     const html = tree.root.firstChildByTag('html');
-    if ('undefined' == typeof html) {
+    if (typeof html === 'undefined') {
       return;
     }
     const head = html.firstChildByTag('head');
-    if ('undefined' == typeof head) {
+    if (typeof head === 'undefined') {
       return;
     }
-    const childNodes = new Array();
-    for (let node = head.firstChild; null != node; node = node.nextSibling) {
+    const childNodes = [];
+    for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (this.notPreloadLink(node)) {
         childNodes.push(node);
         continue;
       }
-      if(!this.alreadyLoaded(node, preloaded)) {
+      if (!this.alreadyLoaded(node, preloaded)) {
         this.markPreloaded(node, preloaded);
         childNodes.push(node);
       }
@@ -51,39 +51,30 @@ class PruneDuplicatePreloads {
   }
 
   notPreloadLink(node) {
-    if ('link' !== node.tagName) {
+    if (node.tagName !== 'link') {
       return true;
     }
-    if ('undefined' == typeof node.attribs
-        || 'undefined' == typeof node.attribs.rel) {
+    if (typeof node.attribs === 'undefined' ||
+        typeof node.attribs.rel === 'undefined') {
       return true;
     }
-    return 'preload' !== node.attribs.rel;
+    return node.attribs.rel !== 'preload';
   }
 
   alreadyLoaded(link, preloaded) {
-    if ('undefined' == typeof link.attribs
-        || 'undefined' == typeof link.attribs.href) {
+    if (typeof link.attribs === 'undefined' ||
+        typeof link.attribs.href === 'undefined') {
       return false;
     }
     return preloaded.has(link.attribs.href);
   }
 
   markPreloaded(link, preloaded) {
-    if ('undefined' == typeof link.attribs
-        || 'undefined' == typeof link.attribs.href) {
+    if (typeof link.attribs === 'undefined' ||
+        typeof link.attribs.href === 'undefined') {
       return;
     }
-    preloaded.add(link.attribs.href)
-  }
-
-  pruneChild(prune, head) {
-    for (let i = 0; i < head.length; i++) {
-      if (head[i] === prune) {
-        head.splice(i, 1);
-        return;
-      }
-    }
+    preloaded.add(link.attribs.href);
   }
 }
 
