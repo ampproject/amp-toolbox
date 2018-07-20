@@ -38,6 +38,7 @@ class PruneDuplicatePreloads {
     for (let node = head.firstChild; null != node; node = node.nextSibling) {
       if (this.notPreloadLink(node)) {
         childNodes.push(node);
+        continue;
       }
       if(!this.alreadyLoaded(node, preloaded)) {
         this.markPreloaded(node, preloaded);
