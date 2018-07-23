@@ -27,21 +27,21 @@ class PruneDuplicatePreloads {
   transform(tree) {
     const preloaded = new Set();
     const html = tree.root.firstChildByTag('html');
-    if (typeof html === 'undefined') {
+    if (!html) {
       return;
     }
     const head = html.firstChildByTag('head');
-    if (typeof head === 'undefined') {
+    if (!head) {
       return;
     }
     const childNodes = [];
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-      if (this.notPreloadLink(node)) {
+      if (this._notPreloadLink(node)) {
         childNodes.push(node);
         continue;
       }
-      if (!this.alreadyLoaded(node, preloaded)) {
-        this.markPreloaded(node, preloaded);
+      if (!this._alreadyLoaded(node, preloaded)) {
+        this._markPreloaded(node, preloaded);
         childNodes.push(node);
       }
       // skip adding elements which are already loaded.
@@ -50,28 +50,25 @@ class PruneDuplicatePreloads {
     head.childNodes = childNodes;
   }
 
-  notPreloadLink(node) {
+  _notPreloadLink(node) {
     if (node.tagName !== 'link') {
       return true;
     }
-    if (typeof node.attribs === 'undefined' ||
-        typeof node.attribs.rel === 'undefined') {
+    if (!node.attribs || !node.attribs.rel) {
       return true;
     }
     return node.attribs.rel !== 'preload';
   }
 
-  alreadyLoaded(link, preloaded) {
-    if (typeof link.attribs === 'undefined' ||
-        typeof link.attribs.href === 'undefined') {
+  _alreadyLoaded(link, preloaded) {
+    if (!link.attribs || !link.attribs.href) {
       return false;
     }
     return preloaded.has(link.attribs.href);
   }
 
-  markPreloaded(link, preloaded) {
-    if (typeof link.attribs === 'undefined' ||
-        typeof link.attribs.href === 'undefined') {
+  _markPreloaded(link, preloaded) {
+    if (!link.attribs || !link.attribs.href) {
       return;
     }
     preloaded.add(link.attribs.href);
