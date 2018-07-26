@@ -25,7 +25,7 @@
 class PruneDuplicatePreloads {
 
   transform(tree) {
-    const preloaded = new Set();
+    const preloaded = [];
     const html = tree.root.firstChildByTag('html');
     if (!html) {
       return;
@@ -36,42 +36,44 @@ class PruneDuplicatePreloads {
     }
     const childNodes = [];
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-      if (this._notPreloadLink(node)) {
+      if (this._notHintLink(node)) {
         childNodes.push(node);
-        continue;
-      }
-      if (!this._alreadyLoaded(node, preloaded)) {
+      } else if (!this._alreadyLoaded(node, preloaded)) {
         this._markPreloaded(node, preloaded);
         childNodes.push(node);
       }
-      // skip adding elements which are already loaded.
     }
     // replace the child node list
     head.childNodes = childNodes;
   }
 
-  _notPreloadLink(node) {
+  _notHintLink(node) {
     if (node.tagName !== 'link') {
       return true;
     }
     if (!node.attribs || !node.attribs.rel) {
       return true;
     }
-    return node.attribs.rel !== 'preload';
+    if (!node.attribs || !node.attribs.href) {
+      return true;
+    }
+    return ['dns-prefetch', 'preconnect', 'prefetch', 'preload', 'prerender']
+        .indexOf(node.attribs.rel) === -1;
   }
 
   _alreadyLoaded(link, preloaded) {
-    if (!link.attribs || !link.attribs.href) {
-      return false;
+    for (let i = 0; i < preloaded.length; i++) {
+      let prior = preloaded[i];
+      if (prior.attribs.href === link.attribs.href &&
+          prior.attribs.rel === link.attribs.rel) {
+        return true;
+      }
     }
-    return preloaded.has(link.attribs.href);
+    return false;
   }
 
   _markPreloaded(link, preloaded) {
-    if (!link.attribs || !link.attribs.href) {
-      return;
-    }
-    preloaded.add(link.attribs.href);
+    preloaded.push(link);
   }
 }
 
