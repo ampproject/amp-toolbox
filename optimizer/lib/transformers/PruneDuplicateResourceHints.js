@@ -73,7 +73,7 @@ class PruneDuplicateResourceHints {
 
   _markPreloaded(link, preloaded) {
     let rel = link.attribs.rel;
-    let href = link.attribs.href;    
+    let href = link.attribs.href;
     let relations = preloaded.get(href);
     if (!relations) {
       relations = new Set();
