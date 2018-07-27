@@ -77,7 +77,7 @@ class PruneDuplicateResourceHints {
     let relations = preloaded.get(href);
     if (!relations) {
       relations = new Set();
-      preloaded.set(href, new Set());
+      preloaded.set(href, relations);
     }
     relations.add(rel);
   }
