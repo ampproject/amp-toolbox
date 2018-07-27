@@ -17,12 +17,12 @@
 'use strict';
 
 /**
- * Removes duplicate preload header directives.
+ * Removes duplicate browser resource hint link header directives.
  *
  * To avoid wasted requests for preloaded resources strip references to duplicate
  * items.
  */
-class PruneDuplicatePreloads {
+class PruneDuplicateResourceHints {
 
   transform(tree) {
     const preloaded = new Map();
@@ -73,13 +73,14 @@ class PruneDuplicatePreloads {
 
   _markPreloaded(link, preloaded) {
     let rel = link.attribs.rel;
-    let href = link.attribs.href;
-    if (!preloaded.has(href)) {
+    let href = link.attribs.href;    
+    let relations = preloaded.get(href);
+    if (!relations) {
+      relations = new Set();
       preloaded.set(href, new Set());
     }
-    let relations = preloaded.get(href);
     relations.add(rel);
   }
 }
 
-module.exports = new PruneDuplicatePreloads();
+module.exports = new PruneDuplicateHints();
