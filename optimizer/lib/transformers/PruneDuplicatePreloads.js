@@ -25,7 +25,7 @@
 class PruneDuplicatePreloads {
 
   transform(tree) {
-    const preloaded = [];
+    const preloaded = new Map();
     const html = tree.root.firstChildByTag('html');
     if (!html) {
       return;
@@ -62,18 +62,23 @@ class PruneDuplicatePreloads {
   }
 
   _alreadyLoaded(link, preloaded) {
-    for (let i = 0; i < preloaded.length; i++) {
-      let prior = preloaded[i];
-      if (prior.attribs.href === link.attribs.href &&
-          prior.attribs.rel === link.attribs.rel) {
-        return true;
-      }
+    let rel = link.attribs.rel;
+    let href = link.attribs.href;
+    if (!preloaded.has(href)) {
+      return false;
     }
-    return false;
+    let relations = preloaded.get(href);
+    return relations.has(rel);
   }
 
   _markPreloaded(link, preloaded) {
-    preloaded.push(link);
+    let rel = link.attribs.rel;
+    let href = link.attribs.href;
+    if (!preloaded.has(href)) {
+      preloaded.set(href, new Set());
+    }
+    let relations = preloaded.get(href);
+    relations.add(rel);
   }
 }
 
