@@ -59,7 +59,7 @@ class PruneDuplicateResourceHints {
     if (!node.attribs || !node.attribs.href) {
       return true;
     }
-    return HINT_TAGS.indexOf(node.attribs.rel) === -1;
+    return !HINT_TAGS.includes(node.attribs.rel);
   }
 
   _alreadyLoaded(link, preloaded) {
