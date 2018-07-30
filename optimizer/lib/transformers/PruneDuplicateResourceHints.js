@@ -16,7 +16,7 @@
 
 'use strict';
 
-const HINT_TAGS = ['dns-prefetch', 'preconnect', 'prefetch', 'preload', 'prerender'];
+const HINT_TAGS = new Set(['dns-prefetch', 'preconnect', 'prefetch', 'preload', 'prerender']);
 
 /**
  * Removes duplicate browser resource hint link header directives.
@@ -59,7 +59,7 @@ class PruneDuplicateResourceHints {
     if (!node.attribs || !node.attribs.href) {
       return true;
     }
-    return !HINT_TAGS.includes(node.attribs.rel);
+    return !HINT_TAGS.has(node.attribs.rel);
   }
 
   _alreadyLoaded(link, preloaded) {
