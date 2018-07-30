@@ -62,18 +62,18 @@ class PruneDuplicateResourceHints {
   }
 
   _alreadyLoaded(link, preloaded) {
-    let rel = link.attribs.rel;
-    let href = link.attribs.href;
+    const rel = link.attribs.rel;
+    const href = link.attribs.href;
     if (!preloaded.has(href)) {
       return false;
     }
-    let relations = preloaded.get(href);
+    const relations = preloaded.get(href);
     return relations.has(rel);
   }
 
   _markPreloaded(link, preloaded) {
-    let rel = link.attribs.rel;
-    let href = link.attribs.href;
+    const rel = link.attribs.rel;
+    const href = link.attribs.href;
     let relations = preloaded.get(href);
     if (!relations) {
       relations = new Set();
