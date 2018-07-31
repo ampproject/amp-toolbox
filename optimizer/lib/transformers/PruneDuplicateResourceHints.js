@@ -38,7 +38,7 @@ class PruneDuplicateResourceHints {
     }
     const childNodes = [];
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-      if (this._notHintLink(node)) {
+      if (this._notPruneableHintLink(node)) {
         childNodes.push(node);
       } else if (!this._alreadyLoaded(node, preloaded)) {
         this._markPreloaded(node, preloaded);
@@ -49,15 +49,22 @@ class PruneDuplicateResourceHints {
     head.childNodes = childNodes;
   }
 
-  _notHintLink(node) {
+  _notPruneableHintLink(node) {
     if (node.tagName !== 'link') {
       return true;
     }
-    if (!node.attribs || !node.attribs.rel) {
+    if (!node.attribs) {
       return true;
     }
-    if (!node.attribs || !node.attribs.href) {
+    if (!node.attribs.rel) {
       return true;
+    }
+    if (!node.attribs.href) {
+      return true;
+    }
+    if (node.attribs.rel === 'preload' && !node.attribs.as) {
+      // @TODO(https://github.com/ampproject/amp-toolbox/issues/77) Refactor to use logging
+      console.log('Warning: preload missing "as" attribute ');
     }
     return !HINT_TAGS.has(node.attribs.rel);
   }
