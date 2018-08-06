@@ -63,8 +63,7 @@ class PruneDuplicateResourceHints {
       return true;
     }
     if (node.attribs.rel === 'preload' && !node.attribs.as) {
-      // @TODO(https://github.com/ampproject/amp-toolbox/issues/77) Refactor to use logging
-      console.log('Warning: preload missing "as" attribute ');
+      return true;
     }
     return !HINT_TAGS.has(node.attribs.rel);
   }
