@@ -18,9 +18,9 @@ const sizeOf = require('image-size');
 const jimp = require('jimp');
 
 /**
- * Adds placeholders for all AMP images that are blurry versions of the
- * corresponding original source. The blur will be displayed as the <amp-img> is
- * loading, and
+ * Adds placeholders for all AMP images and posters that are blurry versions of
+ * the corresponding original source. The blur will be displayed as the
+ * <amp-img> is rendering, and will fade out once the element is loaded.
  */
 
 class BlurImagePlaceholders {
@@ -31,7 +31,8 @@ class BlurImagePlaceholders {
     let node = body;
     const ampImgPromises = [];
     while (node !== null) {
-      if (node.tagName === 'amp-img') {
+      if (node.tagName === 'amp-img' ||
+      (node.tagName === 'amp-video' && node.attribs.poster)) {
         let parent = node;
         ampImgPromises.push(this.addBitmap_(tree, parent).then(imgChild => {
           parent.appendChild(imgChild);
@@ -45,7 +46,11 @@ class BlurImagePlaceholders {
 
   addBitmap_(tree, node) {
     const imgChild = tree.createElement('img');
-    imgChild.attribs.src = node.attribs.src;
+    if (node.tagName === 'amp-img') {
+      imgChild.attribs.src = node.attribs.src;
+    } else {
+      imgChild.attribs.src = node.attribs.poster;
+    }
     imgChild.attribs.class = 'i-amphtml-blur';
     imgChild.attribs.placeholder = '';
     return this.getDataURI_(imgChild, tree).then(() => {
