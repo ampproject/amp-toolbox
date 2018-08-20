@@ -21,30 +21,30 @@ const jimp = require('jimp');
  * the corresponding original source. The blur will be displayed as the
  * <amp-img> is rendering, and will fade out once the element is loaded.
  */
-
 class BlurImagePlaceholders {
   /**
    * Parses the document to add blurred placedholders in all appropriate
    * locations.
-   * @param {Tree} tree - a DOM tree.
-   * @param {Object} params - a dictionary containing transformer specific parameters.
+   * @param tree A parse5 treeAdapter.
+   * @return {Array} An array of promises that all represents the resolution of
+   * a blurred placeholder being added in an appropriate place.
    */
-  transform(tree, params) {
+  transform(tree) {
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
     for (let node = body; node !== null; node = node.nextNode()) {
-      let childSrc;
-      if (node.tagName === 'amp-img') {
-        childSrc = node.attribs.src;
+      const {tagName} = node;
+      let src;
+      if (tagName === 'amp-img') {
+        src = node.attribs.src;
       }
-      if (node.tagName === 'amp-video' && node.attribs.poster) {
-        childSrc = node.attribs.poster;
+      if (tagName === 'amp-video' && node.attribs.poster) {
+        src = node.attribs.poster;
       }
-      if (childSrc) {
-        let parent = node;
-        promises.push(this.addBitmap_(tree, childSrc).then(imgChild => {
-          parent.appendChild(imgChild);
+      if (src && !this.hasPlaceholder_(node)) {
+        promises.push(this.addBlurryPlaceholder_(tree, src).then(imgChild => {
+          node.appendChild(imgChild);
         }));
       }
     }
@@ -52,56 +52,79 @@ class BlurImagePlaceholders {
   }
 
   /**
-   * Adds a child image
-   * @param {Tree} tree - a DOM tree
-   * @param {String} parentURL - The image that the bitmap is based on.
+   * Adds a child image that is a blurry placeholder.
+   * @param tree A parse5 treeAdapter.
+   * @param {String} src The image that the bitmap is based on.
+   * @return {!Promise} A promise that signifies that the img has been updated
+   * to have correct attributes to be a blurred placeholder.
+   * @private
    */
-  addBitmap_(tree, parentImg) {
-    const imgChild = tree.createElement('img');
-    imgChild.attribs.src = parentImg;
-    imgChild.attribs.class = 'i-amphtml-blur';
-    imgChild.attribs.placeholder = '';
-    return this.getDataURI_(imgChild).then(() => {
-      return imgChild;
-    })
-    .catch(err => {
+  addBlurryPlaceholder_(tree, src) {
+    const img = tree.createElement('img');
+    img.attribs.src = src;
+    img.attribs.class = 'i-amphtml-blur';
+    img.attribs.placeholder = '';
+    return this.getDataURI_(img).then(() => {
+      return img;
+    }).catch(err => {
       console.log(err);
     });
   }
 
   /**
    * Creates the bitmap in a dataURI format.
-   * @param {Node} img - The DOM element that needs a dataURI for the
+   * @param {Node} img The DOM element that needs a dataURI for the
    * placeholder.
+   * @return {!Promise} A promise that is resolved once the img's src is updated
+   * to be a dataURI of a bitmap.
+   * @private
    */
   getDataURI_(img) {
     const bitMapDims = this.getBitmapDimensions_(img);
-    return this.createBitmap_(img, bitMapDims[0], bitMapDims[1]).then(dataURI => {
+    return this.createBitmap_(img, bitMapDims.width, bitMapDims.height).then(dataURI => {
       img.attribs.src = dataURI;
     });
   }
 
   /**
    * Calculates the correct dimensions for the bitmap.
-   * @param {Node} img - The DOM element that will need a bitmap.
+   * @param {Node} img The DOM element that will need a bitmap.
    * placeholder.
+   * @return {Record} The aspect ratio of the bitmap of the image.
+   * @private
    */
   getBitmapDimensions_(img) {
+    // Gets the original aspect ratio of the image.
     const imgDims = sizeOf(img.attribs.src);
-    const bitmapPixelAmt = 60;
     const imgWidth = imgDims.width;
     const imgHeight = imgDims.height;
-    const ratioWidth = imgWidth / imgHeight;
-    let bitmapHeight = bitmapPixelAmt / ratioWidth;
+    // Aims for a bitmap of ~60 pixels (w * h = ~60).
+    const bitmapPixelAmt = 60;
+    // Gets the ratio of the width to the height. (r = w0 / h0 = w / h)
+    const ratioWH = imgWidth / imgHeight;
+    // Express the width in terms of height by multiply the ratio by the
+    // height. (h * r = (w / h) * h)
+    // Plug this representation of the width into the original equation.
+    // (h * r * h = ~60).
+    // Divide the bitmap size by the ratio to get the all expressions using
+    // height on one side. (h * h = ~60 / r)
+    let bitmapHeight = bitmapPixelAmt / ratioWH;
+    // Take the square root of the height instances to find the singular value
+    // for the height. (h = sqrt(~60 / r))
     bitmapHeight = Math.sqrt(bitmapHeight);
+    // Divide the goal total pixel amount by the height to get the width.
+    // (w = ~60 / h). 
     const bitmapWidth = bitmapPixelAmt / bitmapHeight;
-    return [Math.round(bitmapWidth), Math.round(bitmapHeight)];
+    return {width: Math.round(bitmapWidth), height: Math.round(bitmapHeight)};
   }
 
   /**
-   * Calculates the correct dimensions for the bitmap.
-   * @param {Node} img - The DOM element that will need a bitmap.
+   * Reads and transforms an image to a blurry placeholder format.
+   * @param {Node} img The DOM element that will need a bitmap.
    * placeholder.
+   * @return {!Promise} A promise that is resolved when the image has been read
+   * and transformed.
+   * @private
    */
   createBitmap_(img, width, height) {
     return jimp.read(img.attribs.src)
@@ -112,6 +135,22 @@ class BlurImagePlaceholders {
     .catch(err => {
       console.log(err);
     });
+  }
+
+  /**
+   * Checks if an element has a placeholder.
+   * @param {Node} node The DOM element that is being checked for a placeholder.
+   * @return {boolean} Whether or not the element already has a placeholder
+   * child.
+   * @private
+   */
+  hasPlaceholder_(node) {
+    node.childNodes.forEach(child => {
+      if (child.attribs.placeholder) {
+        return true;
+      }
+    });
+    return false;
   }
 }
 
