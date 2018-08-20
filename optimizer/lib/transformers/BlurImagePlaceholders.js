@@ -113,7 +113,7 @@ class BlurImagePlaceholders {
     // for the height. (h = sqrt(~60 / r))
     bitmapHeight = Math.sqrt(bitmapHeight);
     // Divide the goal total pixel amount by the height to get the width.
-    // (w = ~60 / h). 
+    // (w = ~60 / h).
     const bitmapWidth = bitmapPixelAmt / bitmapHeight;
     return {width: Math.round(bitmapWidth), height: Math.round(bitmapHeight)};
   }
@@ -128,13 +128,13 @@ class BlurImagePlaceholders {
    */
   createBitmap_(img, width, height) {
     return jimp.read(img.attribs.src)
-    .then(image => {
-      image.resize(width, height, jimp.RESIZE_BEZIER);
-      return image.getBase64Async('image/png');
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(image => {
+        image.resize(width, height, jimp.RESIZE_BEZIER);
+        return image.getBase64Async('image/png');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   /**
