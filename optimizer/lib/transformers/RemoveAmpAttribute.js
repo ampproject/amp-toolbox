@@ -23,6 +23,7 @@ class RemoveAmpAttribute {
     for (let i = 0, len = AMP_TAGS.length; i < len; i++) {
       delete html.attribs[AMP_TAGS[i]];
     }
+    html.attribs.transformed = 'amp-toolbox-optimizer';
   }
 }
 
