@@ -11,6 +11,10 @@
   "keywords": [
     "amp"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {

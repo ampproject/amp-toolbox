@@ -8,6 +8,10 @@
     "lint": "eslint . --config ../.eslintrc.json",
     "lint-fix": "eslint . --config ../.eslintrc.json --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
   "keywords": [
     "amp"
   ],
