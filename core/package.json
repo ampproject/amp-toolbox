@@ -4,9 +4,9 @@
   "description": "Commonly used functionality for amp-toolbox",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine && eslint .",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "test": "jasmine && npm run lint",
+    "lint": "eslint . --config ../.eslintrc.json",
+    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
   },
   "keywords": [
     "amp"

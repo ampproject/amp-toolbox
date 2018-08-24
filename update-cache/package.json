@@ -4,9 +4,9 @@
   "description": "Implements the AMP update-cache API, as described at https://developers.google.com/amp/cache/update-cache ",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine && eslint .",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "test": "jasmine && npm run lint",
+    "lint": "eslint . --config ../.eslintrc.json",
+    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
   },
   "repository": {
     "type": "git",
