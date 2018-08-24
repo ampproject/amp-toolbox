@@ -28,7 +28,6 @@ const ampOptimizer = require('amp-toolbox-optimizer');
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
 class AmpOptimizerMiddleware {
-
   /**
    * @function runtimeVersion A function used to provide the runtimeVersion when applying the
    * optimizer transformations.
@@ -84,11 +83,11 @@ class AmpOptimizerMiddleware {
         res.set(headers);
       };
 
-      res.write = chunk => {
+      res.write = (chunk) => {
         chunks.push(chunk);
       };
 
-      res.end = chunk => {
+      res.end = (chunk) => {
         // Replace methods with the original implementation.
         res.write = originalWrite;
         res.end = originalEnd;
@@ -118,21 +117,21 @@ class AmpOptimizerMiddleware {
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
 
         runtimeVersion()
-          .catch(err => {
+          .catch((err) => {
             console.error('Error retrieving ampRuntimeVersion: ', err);
             return null;
           })
-          .then(version => {
+          .then((version) => {
             const ampOptimizerParams = req.ampOptimizerParams || {};
             ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
             ampOptimizerParams.ampRuntimeVersion = version;
             return optimizer.transformHtml(body, ampOptimizerParams);
           })
-          .then(transformedBody => {
+          .then((transformedBody) => {
             res.setHeader('Content-Length', Buffer.byteLength(transformedBody, 'utf-8'));
             res.end(transformedBody, 'utf-8');
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('Error applying AMP Optimizer. Sending original page', err);
             res.end(body);
           });

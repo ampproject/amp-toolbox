@@ -16,7 +16,7 @@
 'use strict';
 
 const parse5 = require('parse5');
-const htmlparser2 = parse5.treeAdapters.htmlparser2;
+const htmlparser2 = require('parse5-htmlparser2-tree-adapter');
 
 // Extend Node close with methods required by transformers
 const Node = Object.getPrototypeOf(htmlparser2.createDocument());
@@ -103,7 +103,7 @@ Node.appendAll = function(nodes) {
 // First child by tag
 Node.firstChildByTag = function(tag) {
   return this.children.find(
-    child => child.tagName && child.tagName.toLowerCase() === tag
+    (child) => child.tagName && child.tagName.toLowerCase() === tag
   );
 };
 
@@ -121,7 +121,6 @@ Node.insertText = function(text) {
  * A DOM Tree
  */
 class Tree {
-
   /**
    * @param {obj} htmlparser2 treeAdapter
    * @param {Node} root node
@@ -152,7 +151,6 @@ class Tree {
  * required by transformers.
  */
 class TreeParser {
-
   constructor(options) {
     this.options = options;
   }
@@ -179,5 +177,5 @@ class TreeParser {
 }
 
 module.exports = new TreeParser({
-  treeAdapter: htmlparser2
+  treeAdapter: htmlparser2,
 });

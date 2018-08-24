@@ -23,7 +23,6 @@ const jsrsasign = require('jsrsasign');
  * `SHA256withRSA` algorithm.
  */
 class Signature {
-
   constructor(privateKey) {
     this._privateKey = privateKey;
     this._sig = new jsrsasign.Signature({alg: 'SHA256withRSA'});

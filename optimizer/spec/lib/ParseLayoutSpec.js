@@ -20,7 +20,7 @@ const {
   calculateHeight,
   calculateWidth,
   isLayoutSizeDefined,
-  getCssLengthStyle
+  getCssLengthStyle,
 } = require('../../lib/ParseLayout.js');
 
 describe('ParseLayout', () => {

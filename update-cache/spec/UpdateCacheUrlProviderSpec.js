@@ -21,7 +21,7 @@ const UpdateCacheUrlProvider = require('../lib/UpdateCacheUrlProvider');
 const signature = {generate: () => 'RESULT_SIGNATURE'};
 const caches = {list: () => Promise.resolve([
   {id: 'test', name: 'Test', updateCacheApiDomainSuffix: 'test.com'},
-  {id: 'example', name: 'Example', updateCacheApiDomainSuffix: 'example.com'}
+  {id: 'example', name: 'Example', updateCacheApiDomainSuffix: 'example.com'},
 ])};
 
 describe('UpdateCacheUrlProvider', () => {
@@ -44,10 +44,12 @@ describe('UpdateCacheUrlProvider', () => {
   });
 
   describe('calculateFromOriginUrl', () => {
-    const timestamp = 1;
-    updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp)
-      .then(result => {
-        expect(result.length).toBe(2);
-      });
+    it('Generates update cache URL for each known cache', () => {
+      const timestamp = 1;
+      updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp)
+        .then((result) => {
+          expect(result.length).toBe(2);
+        });
+    });
   });
 });

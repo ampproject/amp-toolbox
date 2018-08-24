@@ -20,26 +20,26 @@ describe('RuntimeVersion', () => {
   const runtimeVersion = new RuntimeVersion();
 
   describe('currentVersion', () => {
-    it('returns release version by default', done => {
-      runtimeVersion.currentVersion().then(version => {
+    it('returns release version by default', (done) => {
+      runtimeVersion.currentVersion().then((version) => {
         expect(version).toMatch(/[0-9]+/);
         done();
       });
     });
-    it('returns canary version if specified via option', done => {
-      runtimeVersion.currentVersion({canary: true}).then(version => {
+    it('returns canary version if specified via option', (done) => {
+      runtimeVersion.currentVersion({canary: true}).then((version) => {
         expect(version).toMatch(/[0-9]+/);
         done();
       });
     });
-    it('pads release version to 15 chars', done => {
-      runtimeVersion.currentVersion().then(version => {
+    it('pads release version to 15 chars', (done) => {
+      runtimeVersion.currentVersion().then((version) => {
         expect(version.length).toBe(15);
         done();
       });
     });
-    it('pads canary version to 15 chars', done => {
-      runtimeVersion.currentVersion({canary: true}).then(version => {
+    it('pads canary version to 15 chars', (done) => {
+      runtimeVersion.currentVersion({canary: true}).then((version) => {
         expect(version.length).toBe(15);
         done();
       });
