@@ -17,6 +17,6 @@
 
 module.exports = {
   MaxAge: require('./lib/MaxAge.js'),
-  OneBehindFetch: require('./lib/OneBehindFetch.js')
+  OneBehindFetch: require('./lib/OneBehindFetch.js'),
 };
 

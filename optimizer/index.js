@@ -34,8 +34,8 @@ const defaultConfig = {
     // needs to run after ReorderHeadTransformer
     'RewriteAmpUrls',
     'GoogleFontsPreconnect',
-    'PruneDuplicateResourceHints'
-  ]
+    'PruneDuplicateResourceHints',
+  ],
 };
 
 module.exports = new DomTransformer(defaultConfig);

@@ -32,14 +32,14 @@ const CACHES_JSON = JSON.parse(
 
 describe('Caches', () => {
   const fetchStrategy = {
-    get: () => Promise.resolve(CACHES_JSON)
+    get: () => Promise.resolve(CACHES_JSON),
   };
   const caches = new AmpCaches(fetchStrategy);
 
   describe('list', () => {
     it('returns an array with the caches', () => {
       caches.list()
-        .then(cacheList => {
+        .then((cacheList) => {
           expect(cacheList.length).toBe(1);
         });
     });
@@ -48,14 +48,14 @@ describe('Caches', () => {
   describe('get', () => {
     it('returns the correct cache', () => {
       caches.get('google')
-        .then(googleCache => {
+        .then((googleCache) => {
           expect(googleCache).toBe(CACHES_JSON.caches[0]);
         });
     });
 
     it('returns undefined for unexisting cache', () => {
       caches.get('unexisting')
-        .then(cache => {
+        .then((cache) => {
           expect(cache).toBeUndefined();
         });
     });

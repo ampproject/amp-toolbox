@@ -25,7 +25,6 @@ const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/v0/version.txt';
  * stale-while-revalidate caching strategy to avoid refreshing the version.
  */
 class RuntimeVersion {
-
   constructor(request = OneBehindFetch.create()) {
     this.request_ = request;
   }
@@ -40,15 +39,15 @@ class RuntimeVersion {
    */
   currentVersion(options = {}) {
     if (options.canary) {
-      return this.fetchVersion_(CANARY_ENDPOINT, data => data[0]);
+      return this.fetchVersion_(CANARY_ENDPOINT, (data) => data[0]);
     }
-    return this.fetchVersion_(RELEASE_ENDPOINT, data => data.toString());
+    return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.toString());
   }
 
   /* PRIVATE */
   fetchVersion_(url, process) {
     return this.request_.get(url)
-      .then(data => {
+      .then((data) => {
         return this.padVersionString(process(data));
       });
   }

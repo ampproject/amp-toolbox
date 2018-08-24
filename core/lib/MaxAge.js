@@ -17,12 +17,11 @@
 
 const MAX_AGE_ZERO = {
   value: 0,
-  isExpired: () => true
+  isExpired: () => true,
 };
 
 /* A max age wrapper. */
 class MaxAge {
-
   /**
    * Returns new MaxAge with value 0.
    *

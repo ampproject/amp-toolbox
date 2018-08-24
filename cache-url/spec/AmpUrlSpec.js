@@ -25,47 +25,47 @@ describe('AmpUrl', () => {
     const tests = [
       {
         url: 'https://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/'
+        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/',
       },
       {
         url: 'http://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/'
+        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/',
       },
       {
         url: 'https://www.example.com/index.html',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/index.html'
+        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/index.html',
       },
       {
         url: 'http://www.example.com/index.html',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/index.html'
+        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/index.html',
       },
       {
         url: 'https://www.example.com/image.png',
-        cache: 'https://www-example-com.cdn.ampproject.org/i/s/www.example.com/image.png'
+        cache: 'https://www-example-com.cdn.ampproject.org/i/s/www.example.com/image.png',
       },
       {
         url: 'http://www.example.com/image.png',
-        cache: 'https://www-example-com.cdn.ampproject.org/i/www.example.com/image.png'
+        cache: 'https://www-example-com.cdn.ampproject.org/i/www.example.com/image.png',
       },
       {
         url: 'https://www.example.com/font.woff2',
-        cache: 'https://www-example-com.cdn.ampproject.org/r/s/www.example.com/font.woff2'
+        cache: 'https://www-example-com.cdn.ampproject.org/r/s/www.example.com/font.woff2',
       },
       {
         url: 'http://www.example.com/font.woff2',
-        cache: 'https://www-example-com.cdn.ampproject.org/r/www.example.com/font.woff2'
+        cache: 'https://www-example-com.cdn.ampproject.org/r/www.example.com/font.woff2',
       },
       {
         url: 'https://example.com/g?value=Hello%20World',
-        cache: 'https://example-com.cdn.ampproject.org/c/s/example.com/g?value=Hello%20World'
+        cache: 'https://example-com.cdn.ampproject.org/c/s/example.com/g?value=Hello%20World',
       },
       {
         url: 'https://點看.com',
-        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/xn--c1yn36f.com/'
-      }
+        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/xn--c1yn36f.com/',
+      },
     ];
 
-    tests.forEach(test => {
+    tests.forEach((test) => {
       it(`Transforms ${test.url} into ${test.cache}`, () => {
         const result = createCacheUrl(domainSuffix, test.url);
         expect(result).toBe(test.cache);

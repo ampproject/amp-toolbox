@@ -33,5 +33,5 @@ function findMetaViewport(head) {
 
 /** @module HtmlDomHelper */
 module.exports = {
-  findMetaViewport: findMetaViewport
+  findMetaViewport: findMetaViewport,
 };

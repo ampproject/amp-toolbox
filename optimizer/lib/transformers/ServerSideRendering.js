@@ -110,7 +110,7 @@ class ServerSideRendering {
         continue;
       }
       if (isRenderDelayingExtension(node)) {
-        return;  // We can't remove the boilerplate.
+        return; // We can't remove the boilerplate.
       }
     }
 

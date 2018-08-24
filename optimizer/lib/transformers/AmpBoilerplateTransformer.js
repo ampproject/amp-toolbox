@@ -30,7 +30,6 @@ const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
  * specified, v0.css will be inlined.
  */
 class AmpBoilerplateTransformer {
-
   constructor(fetch = OneBehindFetch.create()) {
     this.fetch_ = fetch;
   }
@@ -72,7 +71,7 @@ class AmpBoilerplateTransformer {
     const cssStyleNode = tree.createElement('link');
     cssStyleNode.attribs = {
       rel: 'stylesheet',
-      href: V0_CSS_URL
+      href: V0_CSS_URL,
     };
     node.parent.insertBefore(cssStyleNode, node);
   }
@@ -80,7 +79,7 @@ class AmpBoilerplateTransformer {
   _inlineCss(node, version) {
     const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
     return this.fetch_.get(versionedV0CssUrl)
-      .then(body => node.insertText(body));
+      .then((body) => node.insertText(body));
   }
 
   _stripStylesAndNoscript(head) {

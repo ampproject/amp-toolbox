@@ -52,12 +52,12 @@ class AmpCaches {
    */
   get(cacheId) {
     return this.list()
-      .then(caches => caches.find(cache => cache.id === cacheId));
+      .then((caches) => caches.find((cache) => cache.id === cacheId));
   }
 
   getCaches_() {
     return this.fetchStrategy_.get(CACHE_LIST_ENDPOINT)
-      .then(json => json.caches);
+      .then((json) => json.caches);
   }
 }
 

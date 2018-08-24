@@ -121,7 +121,7 @@ function cssLength(input, allowAuto) {
     isSet: false,
     isAuto: false,
     numeral: Number.NaN,
-    unit: 'px'
+    unit: 'px',
   };
 
   if (input === null) {
@@ -170,5 +170,5 @@ module.exports = {
   isLayoutSizeDefined: isLayoutSizeDefined,
   getCssLengthStyle: getCssLengthStyle,
   calculateLayout: calculateLayout,
-  getLayoutSizeDefinedClass: getLayoutSizeDefinedClass
+  getLayoutSizeDefinedClass: getLayoutSizeDefinedClass,
 };

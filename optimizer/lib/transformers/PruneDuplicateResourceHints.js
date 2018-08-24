@@ -25,7 +25,6 @@ const HINT_TAGS = new Set(['dns-prefetch', 'preconnect', 'prefetch', 'preload', 
  * items.
  */
 class PruneDuplicateResourceHints {
-
   transform(tree) {
     const preloaded = new Map();
     const html = tree.root.firstChildByTag('html');

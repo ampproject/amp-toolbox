@@ -21,6 +21,6 @@ createSpec({
   name: 'End-to-End',
   testDir: __dirname,
   transformer: {
-    transform: (tree, params) => ampOptimizer.transformTree(tree, params)
-  }
+    transform: (tree, params) => ampOptimizer.transformTree(tree, params),
+  },
 });

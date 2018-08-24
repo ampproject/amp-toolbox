@@ -83,7 +83,7 @@ describe('Tree Parser', () => {
         'null-text',
         'span-tag',
         'null-text',
-        'null-text'
+        'null-text',
       ];
       expect(traverse(tree)).toEqual(expectedNodes);
     });

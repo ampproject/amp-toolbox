@@ -23,18 +23,18 @@ const {getFileContents, getDirectories} = require('../helpers/Utils.js');
 const treeParser = require('../../lib/TreeParser.js');
 
 const TRANSFORMER_PARAMS = {
-  ampUrl: 'https://example.com/amp-version.html'
+  ampUrl: 'https://example.com/amp-version.html',
 };
 
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
-    getDirectories(testConfig.testDir).forEach(testDir => {
+    getDirectories(testConfig.testDir).forEach((testDir) => {
       beforeEach(() => {
         nock('https://cdn.ampproject.org')
           .get('/rtv/001515617716922/v0.css')
           .reply(200, '/* v0.css */');
       });
-      it(basename(testDir), done => {
+      it(basename(testDir), (done) => {
         let params = TRANSFORMER_PARAMS;
 
         // parse input and extract params
@@ -57,7 +57,7 @@ module.exports = function(testConfig) {
           testConfig.transformer.transform(inputTree, params)
         ).then(() => {
           compare(inputTree, expectedOutputTree, done);
-        }).catch(error => done.fail(error));
+        }).catch((error) => done.fail(error));
       });
     });
   });
@@ -68,7 +68,7 @@ function compare(actualTree, expectedTree, done) {
   const expectedHtml = serialize(expectedTree);
   const diff = jsdiff.diffChars(expectedHtml, actualHtml);
   let failed = false;
-  const reason = diff.map(part => {
+  const reason = diff.map((part) => {
     let string;
     if (part.added) {
       string = colors.green(part.value);

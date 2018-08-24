@@ -89,7 +89,7 @@ class RewriteAmpUrls {
     const preload = tree.createElement('link', {
       rel: 'preload',
       href: href,
-      as: type
+      as: type,
     });
     parent.insertAfter(preload, node);
     return preload;

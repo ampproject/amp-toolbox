@@ -25,7 +25,7 @@ class SimpleTransformer {
 
 class SimpleTransformerWithPromise {
   transform(tree) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const html = tree.root.firstChildByTag('html');
       html.attribs.test = 'promise';
       resolve();
@@ -35,18 +35,18 @@ class SimpleTransformerWithPromise {
 
 describe('Dom Transformer', () => {
   describe('transformHtml', () => {
-    it('supports sync transformers', done => {
+    it('supports sync transformers', (done) => {
       domTransformerWith(new SimpleTransformer())
         .transformHtml('<html><head></head><body></body></html>')
-        .then(result => {
+        .then((result) => {
           expect(result).toEqual('<html test="simple"><head></head><body></body></html>');
           done();
         });
     });
-    it('supports async transformers', done => {
+    it('supports async transformers', (done) => {
       domTransformerWith(new SimpleTransformerWithPromise())
         .transformHtml('<html><head></head><body></body></html>')
-        .then(result => {
+        .then((result) => {
           expect(result).toEqual('<html test="promise"><head></head><body></body></html>');
           done();
         });
@@ -56,7 +56,7 @@ describe('Dom Transformer', () => {
 
 function domTransformerWith(transformer) {
   return new DomTransformer({
-    transformers: [transformer]
+    transformers: [transformer],
   });
 }
 

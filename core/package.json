@@ -4,9 +4,13 @@
   "description": "Commonly used functionality for amp-toolbox",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine && eslint .",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "test": "jasmine && npm run lint",
+    "lint": "eslint . --config ../.eslintrc.json",
+    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
   },
   "keywords": [
     "amp"
@@ -14,12 +18,12 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "axios": "^0.17.1"
+    "axios": "^0.18.0"
   },
   "devDependencies": {
-    "eslint": "^3.0.1",
-    "eslint-config-google": "^0.6.0",
-    "jasmine": "^2.8.0",
+    "eslint": "^5.4.0",
+    "eslint-config-google": "^0.9.1",
+    "jasmine": "^3.2.0",
     "jasmine-spec-reporter": "^4.2.1"
   }
 }
