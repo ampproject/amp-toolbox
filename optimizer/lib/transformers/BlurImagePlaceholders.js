@@ -67,8 +67,8 @@ class BlurImagePlaceholders {
     return this.getDataURI_(img).then(() => {
       return img;
     }).catch(err => {
-      console.error("Error from transformer during the calculation of bitmap " +
-        "size from the source image. " + err);
+      console.error("Transformer error during the calculation of bitmap " +
+        "size from the source image: " + err);
     });
   }
 
@@ -134,8 +134,8 @@ class BlurImagePlaceholders {
         return image.getBase64Async('image/png');
       })
       .catch(err => {
-        console.error("Error from Jimp during the creation of the bitmap/the" +
-          "conversion to the data URI. " + err);
+        console.error("Jimp error during the creation of the bitmap/the" +
+          "encoding of the data URI: " + err);
       });
   }
 

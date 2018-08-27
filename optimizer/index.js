@@ -34,7 +34,8 @@ const defaultConfig = {
     // needs to run after ReorderHeadTransformer
     'RewriteAmpUrls',
     'GoogleFontsPreconnect',
-    'PruneDuplicateResourceHints'
+    'PruneDuplicateResourceHints',
+    'BlurImagePlaceholders'
   ]
 };
 

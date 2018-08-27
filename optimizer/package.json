@@ -24,8 +24,10 @@
     "eslint": "^3.0.1",
     "eslint-config-google": "^0.6.0",
     "html-minifier": "^3.5.5",
+    "image-size": "^0.6.3",
     "jasmine": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
+    "jimp": "^0.3.2",
     "nock": "^9.1.6"
   }
 }
