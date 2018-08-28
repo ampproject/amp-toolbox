@@ -44,7 +44,7 @@ class AddBlurryImagePlaceholders {
         src = node.attribs.poster;
       }
       if (src && !this.hasPlaceholder_(node)) {
-        promises.push(this.addBlurryPlaceholder_(tree, src).then(imgChild => {
+        promises.push(this.getBlurryPlaceholder_(tree, src).then(imgChild => {
           node.appendChild(imgChild);
         }));
       }
@@ -53,14 +53,14 @@ class AddBlurryImagePlaceholders {
   }
 
   /**
-   * Adds a child image that is a blurry placeholder.
+   * Returns a child image that is a blurry placeholder.
    * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
    * @return {!Promise} A promise that signifies that the img has been updated
    * to have correct attributes to be a blurred placeholder.
    * @private
    */
-  addBlurryPlaceholder_(tree, src) {
+  getBlurryPlaceholder_(tree, src) {
     const img = tree.createElement('img');
     img.attribs.src = src;
     img.attribs.class = 'i-amphtml-blur';
@@ -68,8 +68,8 @@ class AddBlurryImagePlaceholders {
     return this.getDataURI_(img).then(() => {
       return img;
     }).catch(err => {
-      console.error('Transformer error during the calculation of bitmap ' +
-        'size from the source image: ' + err);
+      console.error('AddBlurryImagePlaceholders transformer error during the ' +
+        'calculation of bitmap size from the source image: ' + err);
     });
   }
 
