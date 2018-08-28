@@ -25,9 +25,9 @@ class RequestHandlerStub {
   get(_) {
     return Promise.resolve({
       headers: {
-        'cache-control': 'max-age=' + this.maxAge
+        'cache-control': 'max-age=' + this.maxAge,
       },
-      data: this.result
+      data: this.result,
     });
   }
 }
@@ -41,26 +41,26 @@ describe('OneBehindFetch', () => {
       requestHandler = new RequestHandlerStub();
       fetch = new OneBehindFetch(requestHandler);
     });
-    it('fetches new value', done => {
+    it('fetches new value', (done) => {
       const expectedResult = 'hello';
       requestHandler.result = expectedResult;
       fetch.get('https://example.com')
-        .then(data => {
+        .then((data) => {
           expect(data).toBe(expectedResult);
           done();
         });
     });
-    it('uses a one behind caching model', done => {
+    it('uses a one behind caching model', (done) => {
       requestHandler.result = 'hello';
       requestHandler.maxAge = 0;
       fetch.get('https://example.com');
       requestHandler.result = 'world';
       fetch.get('https://example.com')
-        .then(data => {
+        .then((data) => {
           expect(data).toBe('hello');
         });
       fetch.get('https://example.com')
-        .then(data => {
+        .then((data) => {
           expect(data).toBe('world');
           done();
         });

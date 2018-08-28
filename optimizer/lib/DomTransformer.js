@@ -15,13 +15,13 @@
  */
 'use strict';
 
+const path = require('path');
 const treeParser = require('./TreeParser.js');
 
 /**
  * Applies a set of transformations to a DOM tree.
  */
 class DomTransformer {
-
   /**
    * Create a DomTransformer.
    * @param {Object} config - The config.
@@ -64,9 +64,9 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
    */
   setConfig(config) {
-    this._transformers = config.transformers.map(transformer => {
+    this._transformers = config.transformers.map((transformer) => {
       if (typeof transformer === 'string') {
-        return require('./transformers/' + transformer + '.js');
+        return require(path.join(__dirname, 'transformers', transformer + '.js'));
       }
       return transformer;
     });

@@ -1,6 +1,5 @@
 {
   "extends": "google",
-  "installedESLint": true,
   "rules": {
     "max-len": [2, 100, {
       "ignoreComments": true,

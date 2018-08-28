@@ -27,7 +27,7 @@ if (process.argv.length !== 3 || !fs.existsSync(process.argv[2])) {
     'usage:',
     process.argv[0],
     process.argv[1],
-    'filename'
+    'filename',
   ].join(' '));
   process.exit(1);
 }
@@ -35,7 +35,6 @@ if (process.argv.length !== 3 || !fs.existsSync(process.argv[2])) {
 const FILENAME = process.argv[2];
 
 class CheerioTransformer {
-
   /**
    * More about tree's type: tree is a parse5
    * [Document](http://inikulin.github.io/parse5/modules/ast.html#document),
@@ -66,7 +65,7 @@ class CheerioTransformer {
     $('body').append([
       '<script>',
       'document.cookie="AMP_EXP=amp-fx-parallax;Path=/;Expires=Tue, 01-Jan-2036 08:00:01 GMT"',
-      '</script>'
+      '</script>',
     ].join(''));
     // See the docs for other methods:
     // https://github.com/cheeriojs/cheerio/blob/master/Readme.md
@@ -82,8 +81,8 @@ optimizer.setConfig({
     // needs to run after ServerSideRendering
     'AmpBoilerplateTransformer',
     // needs to run after ServerSideRendering
-    'ReorderHeadTransformer'
-  ]
+    'ReorderHeadTransformer',
+  ],
 });
 
 console.log(optimizer.transformHtml(

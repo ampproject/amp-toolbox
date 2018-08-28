@@ -28,7 +28,7 @@ const currentVersion = () => runtimeVersion.currentVersion();
 
 const ssrMiddleware = AmpSsrMiddleware.create({
   // Pass the function as a parameter when creating the Middleware.
-  runtimeVersion: currentVersion
+  runtimeVersion: currentVersion,
 });
 
 // It's important that the ampSsrMiddleware is added *before* the static middleware.

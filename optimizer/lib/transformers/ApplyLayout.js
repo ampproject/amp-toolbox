@@ -23,7 +23,7 @@ const {
   calculateLayout,
   getLayoutClass,
   isLayoutSizeDefined,
-  getLayoutSizeDefinedClass
+  getLayoutSizeDefinedClass,
 } = require('../ParseLayout.js');
 
 const SUPPORTED_LAYOUTS = ['', 'nodisplay', 'fixed', 'fixed-height', 'responsive',
@@ -125,5 +125,5 @@ module.exports = {
     apply(layout, width, height, customElement);
     maybeAddSizerInto(customElement, tree, layout, width, height);
     return true;
-  }
+  },
 };

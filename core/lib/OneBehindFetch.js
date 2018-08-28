@@ -22,7 +22,6 @@ const MaxAge = require('./MaxAge.js');
  * Implements fetch with a one-behind-caching strategy.
  */
 class OneBehindFetch {
-
   /**
    * Creates a new OneBehindFetch.
    *
@@ -53,7 +52,7 @@ class OneBehindFetch {
     let response = this.cache_[url];
     if (!response) {
       response = {
-        maxAge: MaxAge.zero()
+        maxAge: MaxAge.zero(),
       };
       this.cache_[url] = response;
     }
@@ -62,7 +61,7 @@ class OneBehindFetch {
     }
     const staleData = response.data;
     response.data = this.axios_.get(url)
-      .then(fetchResponse => {
+      .then((fetchResponse) => {
         response.maxAge = MaxAge.parse(fetchResponse.headers['cache-control']);
         return fetchResponse.data;
       });

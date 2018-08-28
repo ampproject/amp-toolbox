@@ -96,12 +96,6 @@ class ServerSideRendering {
     const referenceNode = head.children && head.children.length ? head.children[0] : null;
     head.insertBefore(ampRuntimeMarker, referenceNode);
 
-    // Below, we're only concerned about removing the boilerplate.
-    // If we've already determined that we can't, we're done here.
-    if (!canRemoveBoilerplate) {
-      return;
-    }
-
     for (let node = head.firstChild; node; node = node.nextSibling) {
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc, which we checked for above.
@@ -110,8 +104,14 @@ class ServerSideRendering {
         continue;
       }
       if (isRenderDelayingExtension(node)) {
-        return;  // We can't remove the boilerplate.
+        canRemoveBoilerplate = false;
       }
+    }
+
+    // Below, we're only concerned about removing the boilerplate.
+    // If we've already determined that we can't, we're done here.
+    if (!canRemoveBoilerplate) {
+      return;
     }
 
     // The boilerplate can be removed, note it on the <html> tag.

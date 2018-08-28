@@ -18,7 +18,6 @@
 const {isRenderDelayingExtension} = require('../Extensions.js');
 
 class HeadNodes {
-
   constructor() {
     this._styleAmpRuntime = null;
     this._linkStyleAmpRuntime = null;
@@ -49,7 +48,7 @@ class HeadNodes {
 
   _removeDuplicateCustomExtensions(extensions) {
     const nodesByName = new Map();
-    extensions.forEach(node => {
+    extensions.forEach((node) => {
       const name = this._getName(node);
       nodesByName.set(name, node);
     });
@@ -191,7 +190,6 @@ class HeadNodes {
  * (9) amp boilerplate (first style amp-boilerplate, then noscript).
  */
 class ReorderHeadTransformer {
-
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     if (!html) {
@@ -207,7 +205,6 @@ class ReorderHeadTransformer {
     head.children = [];
     headNodes.appendToHead(head);
   }
-
 }
 
 module.exports = new ReorderHeadTransformer();

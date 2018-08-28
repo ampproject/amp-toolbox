@@ -24,12 +24,12 @@ describe('Transfomers', () => {
 
 function loadTestConfigs() {
   const transfomerTestDirs = getDirectories(__dirname);
-  return transfomerTestDirs.map(testDir => {
+  return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
     return {
       name: transformerName,
       testDir: testDir,
-      transformer: require(join('../../lib/transformers', transformerName + '.js'))
+      transformer: require(join('../../lib/transformers', transformerName + '.js')),
     };
   });
 }

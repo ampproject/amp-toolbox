@@ -30,7 +30,7 @@ class AddAmpLink {
 
     const ampLink = tree.createElement('link', {
       rel: 'amphtml',
-      href: params.ampUrl
+      href: params.ampUrl,
     });
 
     head.appendChild(ampLink);

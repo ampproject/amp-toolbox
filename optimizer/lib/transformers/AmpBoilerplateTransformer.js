@@ -22,15 +22,12 @@ const V0_CSS = 'v0.css';
 const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
 
 /**
- * AmpBoilerplateTransformer - This DOM transformer locates
- * style and noscript tags in the head and removes them if
- * static layout is being applied server side which needs to have the
- * https://cdn.ampproject.org/v0.css CSS added (known by the presence
- * of <style amp-runtime> tag). If a specific AMP runtime version is
- * specified, v0.css will be inlined.
+ * AmpBoilerplateTransformer - This DOM transformer adds
+ * https://cdn.ampproject.org/v0.css if server-side-rendering is applied
+ * (known by the presence of <style amp-runtime> tag). If a specific AMP
+ * runtime version is specified, v0.css will be inlined.
  */
 class AmpBoilerplateTransformer {
-
   constructor(fetch = OneBehindFetch.create()) {
     this.fetch_ = fetch;
   }
@@ -46,7 +43,6 @@ class AmpBoilerplateTransformer {
     if (!ampRuntimeStyle) {
       return; // keep existing boilerplate
     }
-    this._stripStylesAndNoscript(head);
     return this._addStaticCss(tree, ampRuntimeStyle, params);
   }
 
@@ -72,36 +68,16 @@ class AmpBoilerplateTransformer {
     const cssStyleNode = tree.createElement('link');
     cssStyleNode.attribs = {
       rel: 'stylesheet',
-      href: V0_CSS_URL
+      href: V0_CSS_URL,
     };
     node.parent.insertBefore(cssStyleNode, node);
   }
 
   _inlineCss(node, version) {
     const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
+    node.attribs['i-amphtml-version'] = version;
     return this.fetch_.get(versionedV0CssUrl)
-      .then(body => node.insertText(body));
-  }
-
-  _stripStylesAndNoscript(head) {
-    let node = head.firstChild;
-    while (node) {
-      const nextNode = node.nextSibling;
-      if (this._isRemovableStyle(node) || this._isNoscript(node)) {
-        node.remove(); // remove existing boilerplate
-      }
-      node = nextNode;
-    }
-  }
-
-  _isRemovableStyle(node) {
-    return node.tagName === 'style' &&
-      !node.hasAttribute('amp-custom') &&
-      !node.hasAttribute('amp-runtime');
-  }
-
-  _isNoscript(node) {
-    return node.tagName === 'noscript';
+      .then((body) => node.insertText(body));
   }
 }
 

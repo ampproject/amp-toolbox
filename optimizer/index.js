@@ -36,7 +36,7 @@ const defaultConfig = {
     'GoogleFontsPreconnect',
     'PruneDuplicateResourceHints',
     'AddBlurryImagePlaceholders'
-  ]
+  ],
 };
 
 module.exports = new DomTransformer(defaultConfig);

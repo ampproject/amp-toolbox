@@ -1,6 +1,8 @@
 {
   "extends": "google",
-  "installedESLint": true,
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "rules": {
     "max-len": [2, 100, {
       "ignoreComments": true,

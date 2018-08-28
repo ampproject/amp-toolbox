@@ -26,5 +26,5 @@ module.exports = {
   },
   isCustomElement: function(node) {
     return node.tagName && node.tagName.startsWith('amp-');
-  }
+  },
 };

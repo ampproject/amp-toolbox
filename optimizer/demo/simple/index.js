@@ -33,7 +33,7 @@ class CustomTransformer {
 
     const desc = tree.createElement('meta', {
       name: 'description',
-      content: 'this is just a demo'
+      content: 'this is just a demo',
     });
 
     head.appendChild(desc);
@@ -53,8 +53,8 @@ ampOptimizer.setConfig({
     // needs to run after ServerSideRendering
     'ReorderHeadTransformer',
     // needs to run after ReorderHeadTransformer
-    'RewriteAmpUrls'
-  ]
+    'RewriteAmpUrls',
+  ],
 });
 
 const SRC_DIR = 'src';
@@ -69,7 +69,7 @@ async function runAmpOptimizerTransformations() {
 
   // Collect input files and invoke the transformers
   const files = await collectInputFiles('/**/*.html');
-  files.forEach(file => copyAndTransform(file, ampRuntimeVersion));
+  files.forEach((file) => copyAndTransform(file, ampRuntimeVersion));
 }
 
 // Collect all files in the src dir.
@@ -93,7 +93,7 @@ async function copyAndTransform(file, ampRuntimeVersion) {
   // to correctly setup AMP to canonical linking
   const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
     ampUrl: ampFile,
-    ampRuntimeVersion: ampRuntimeVersion
+    ampRuntimeVersion: ampRuntimeVersion,
   });
   // We change the path of the original AMP file to match the new
   // amphtml link and make the canonical link point to the transformed version.
@@ -114,11 +114,11 @@ function readFile(fileName) {
 
 function writeFile(filePath, content) {
   filePath = path.join(DIST_DIR, filePath);
-  mkdirp(path.dirname(filePath), err => {
+  mkdirp(path.dirname(filePath), (err) => {
     if (err) {
       throw err;
     }
-    fs.writeFile(filePath, content, err => {
+    fs.writeFile(filePath, content, (err) => {
       if (err) {
         throw err;
       }

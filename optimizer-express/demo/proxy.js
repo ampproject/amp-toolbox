@@ -42,8 +42,8 @@ ampOptimizer.setConfig({
     'ReorderHeadTransformer',
     // needs to run after ReorderHeadTransformer
     'RewriteAmpUrls',
-    'GoogleFontsPreconnect'
-  ]
+    'GoogleFontsPreconnect',
+  ],
 });
 
 // Read proxy for command line, or default to ampbyexample.com.
@@ -56,14 +56,14 @@ const proxy = httpProxy.createProxyServer({
   target: target,
   headers: {
     // We force encoding to avoid issues with data decompression.
-    'accept-encoding': 'none'
-  }
+    'accept-encoding': 'none',
+  },
 });
 
 // http-proxy doesn't handle errors by default, and crashes the server. Se we add our own handler.
 proxy.on('error', (err, req, res) => {
   res.writeHead(404, {
-    'Content-Type': 'text/plain'
+    'Content-Type': 'text/plain',
   });
 
   res.end('Page not Found');
@@ -81,7 +81,7 @@ const currentVersion = () => runtimeVersion.currentVersion();
 // Enable the Optimizer middleware.
 app.use(AmpOptimizerMiddleware.create({
   ampOptimizer: ampOptimizer,
-  runtimeVersion: currentVersion
+  runtimeVersion: currentVersion,
 }));
 
 // Handle requests through the proxy.
