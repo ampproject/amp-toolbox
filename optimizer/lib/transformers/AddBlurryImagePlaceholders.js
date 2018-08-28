@@ -15,17 +15,18 @@
  */
 const sizeOf = require('image-size');
 const jimp = require('jimp');
+const PIXEL_TARGET = 60;
 
 /**
  * Adds placeholders for all AMP images and posters that are blurry versions of
  * the corresponding original source. The blur will be displayed as the
  * <amp-img> is rendering, and will fade out once the element is loaded.
  */
-class BlurImagePlaceholders {
+class AddBlurryImagePlaceholders {
   /**
    * Parses the document to add blurred placedholders in all appropriate
    * locations.
-   * @param tree A parse5 treeAdapter.
+   * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @return {Array} An array of promises that all represents the resolution of
    * a blurred placeholder being added in an appropriate place.
    */
@@ -53,7 +54,7 @@ class BlurImagePlaceholders {
 
   /**
    * Adds a child image that is a blurry placeholder.
-   * @param tree A parse5 treeAdapter.
+   * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
    * @return {!Promise} A promise that signifies that the img has been updated
    * to have correct attributes to be a blurred placeholder.
@@ -67,8 +68,8 @@ class BlurImagePlaceholders {
     return this.getDataURI_(img).then(() => {
       return img;
     }).catch(err => {
-      console.error("Transformer error during the calculation of bitmap " +
-        "size from the source image: " + err);
+      console.error('Transformer error during the calculation of bitmap ' +
+        'size from the source image: ' + err);
     });
   }
 
@@ -99,23 +100,22 @@ class BlurImagePlaceholders {
     const imgDims = sizeOf(img.attribs.src);
     const imgWidth = imgDims.width;
     const imgHeight = imgDims.height;
-    // Aims for a bitmap of ~60 pixels (w * h = ~60).
-    const bitmapPixelAmt = 60;
+    // Aims for a bitmap of ~P pixels (w * h = ~P).
     // Gets the ratio of the width to the height. (r = w0 / h0 = w / h)
     const ratioWH = imgWidth / imgHeight;
     // Express the width in terms of height by multiply the ratio by the
     // height. (h * r = (w / h) * h)
     // Plug this representation of the width into the original equation.
-    // (h * r * h = ~60).
+    // (h * r * h = ~P).
     // Divide the bitmap size by the ratio to get the all expressions using
-    // height on one side. (h * h = ~60 / r)
-    let bitmapHeight = bitmapPixelAmt / ratioWH;
+    // height on one side. (h * h = ~P / r)
+    let bitmapHeight = PIXEL_TARGET / ratioWH;
     // Take the square root of the height instances to find the singular value
-    // for the height. (h = sqrt(~60 / r))
+    // for the height. (h = sqrt(~P / r))
     bitmapHeight = Math.sqrt(bitmapHeight);
     // Divide the goal total pixel amount by the height to get the width.
-    // (w = ~60 / h).
-    const bitmapWidth = bitmapPixelAmt / bitmapHeight;
+    // (w = ~P / h).
+    const bitmapWidth = PIXEL_TARGET / bitmapHeight;
     return {width: Math.round(bitmapWidth), height: Math.round(bitmapHeight)};
   }
 
@@ -134,8 +134,8 @@ class BlurImagePlaceholders {
         return image.getBase64Async('image/png');
       })
       .catch(err => {
-        console.error("Jimp error during the creation of the bitmap/the" +
-          "encoding of the data URI: " + err);
+        console.error('Jimp error during the creation of the bitmap/the' +
+          'encoding of the data URI: ' + err);
       });
   }
 
@@ -148,7 +148,7 @@ class BlurImagePlaceholders {
    */
   hasPlaceholder_(node) {
     node.childNodes.forEach(child => {
-      if (child.attribs.placeholder) {
+      if (child.attribs && child.attribs.placeholder) {
         return true;
       }
     });
@@ -156,5 +156,5 @@ class BlurImagePlaceholders {
   }
 }
 
-/** @module BlurImagePlaceholders */
-module.exports = new BlurImagePlaceholders();
+/** @module AddBlurryImagePlaceholders */
+module.exports = new AddBlurryImagePlaceholders();

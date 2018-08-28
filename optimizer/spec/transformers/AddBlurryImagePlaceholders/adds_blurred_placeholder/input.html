@@ -1,3 +1,4 @@
+<!doctype html>
 <html ⚡>
 <head>
   <meta charset="utf-8">
@@ -7,21 +8,14 @@
   <script async src="https://cdn.ampproject.org/v0.js"></script>
   <script async custom-element="amp-experiment" src="https://cdn.ampproject.org/v0/amp-experiment-0.1.js"></script>
   <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.1.js"></script>
-  <style amp-custom></style>
+  <style amp-custom>
+    h1 {
+      margin: 16px;
+    }
+  </style>
 </head>
 <body>
-    <amp-story standalone bookend-config-src="./related.json">
-
-      <amp-story-page id="intro">
-        <amp-story-grid-layer template="fill">
-          <amp-video id="intro-vid" src="./media/cover.mp4" layout= "fill" poster="500fish.gif" autoplay loop noaudio><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAYAAAD68A/GAAAA6klEQVR4ARXBzysEUQDA8e9789jRNs1mi9aWcnQYKbRoD2574ODiwBEn+Wtc11FaysVZfsZpW+XAampJfiybLJqJ4b0nn49wnIwFhcWhODXH6dEu1gpyuT7crhQ3jRDQKJB4fi8Zv4fJIMDhA6M148NFyhvrjIyVqFX3UJ2uz0D/IPPTs0yUCqyszmB+Ey4u7/DkMtuHx6iOFOr7K6bVeqD9+Uzeuyd+bJBE78hIUg+viNtNjElQAsNT85byVoVu95V0uMNLZDl4y3Nyfg3W8k+CASyLSwusbe5z9hNQqWtGC0Nks2kQGoThD3SNVwEBFSdAAAAAAElFTkSuQmCC" class="i-amphtml-blur" placeholder="">
-          </amp-video>
-        </amp-story-grid-layer>
-        <amp-story-grid-layer template="vertical" anchor="top">
-          <h1>This is a title</h1>
-          <p>Blur Test</p>
-        </amp-story-grid-layer>
-      </amp-story-page>
-    </amp-story>
-  </body>
+  <h1>Hello, AMP world!</h1>
+  <amp-img width=360 height=200 layout=responsive src="spec/transformers/500fish.gif"></amp-img></amp-img>
+</body>
 </html>

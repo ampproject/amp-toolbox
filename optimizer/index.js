@@ -35,8 +35,8 @@ const defaultConfig = {
     'RewriteAmpUrls',
     'GoogleFontsPreconnect',
     'PruneDuplicateResourceHints',
-    'BlurImagePlaceholders',
-  ],
+    'AddBlurryImagePlaceholders'
+  ]
 };
 
 module.exports = new DomTransformer(defaultConfig);
