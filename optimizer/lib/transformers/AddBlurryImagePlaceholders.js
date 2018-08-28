@@ -44,7 +44,7 @@ class AddBlurryImagePlaceholders {
         src = node.attribs.poster;
       }
       if (src && !this.hasPlaceholder_(node)) {
-        promises.push(this.getBlurryPlaceholder_(tree, src).then(imgChild => {
+        promises.push(this.addBlurryPlaceholder_(tree, src).then((imgChild) => {
           node.appendChild(imgChild);
         }));
       }
@@ -53,23 +53,23 @@ class AddBlurryImagePlaceholders {
   }
 
   /**
-   * Returns a child image that is a blurry placeholder.
+   * Adds a child image that is a blurry placeholder.
    * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
    * @return {!Promise} A promise that signifies that the img has been updated
    * to have correct attributes to be a blurred placeholder.
    * @private
    */
-  getBlurryPlaceholder_(tree, src) {
+  addBlurryPlaceholder_(tree, src) {
     const img = tree.createElement('img');
     img.attribs.src = src;
     img.attribs.class = 'i-amphtml-blur';
     img.attribs.placeholder = '';
     return this.getDataURI_(img).then(() => {
       return img;
-    }).catch(err => {
+    }).catch((err) => {
       console.error('AddBlurryImagePlaceholders transformer error during the ' +
-        'calculation of bitmap size from the source image: ' + err);
+       'calculation of bitmap size from the source image: ' + err);
     });
   }
 
@@ -83,9 +83,10 @@ class AddBlurryImagePlaceholders {
    */
   getDataURI_(img) {
     const bitMapDims = this.getBitmapDimensions_(img);
-    return this.createBitmap_(img, bitMapDims.width, bitMapDims.height).then(dataURI => {
-      img.attribs.src = dataURI;
-    });
+    return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
+      .then((dataURI) => {
+        img.attribs.src = dataURI;
+      });
   }
 
   /**
@@ -129,11 +130,11 @@ class AddBlurryImagePlaceholders {
    */
   createBitmap_(img, width, height) {
     return jimp.read(img.attribs.src)
-      .then(image => {
+      .then((image) => {
         image.resize(width, height, jimp.RESIZE_BEZIER);
         return image.getBase64Async('image/png');
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Jimp error during the creation of the bitmap/the' +
           'encoding of the data URI: ' + err);
       });
@@ -147,7 +148,7 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   hasPlaceholder_(node) {
-    node.childNodes.forEach(child => {
+    node.childNodes.forEach((child) => {
       if (child.attribs && child.attribs.placeholder) {
         return true;
       }
