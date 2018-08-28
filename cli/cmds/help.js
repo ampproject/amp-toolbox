@@ -16,30 +16,33 @@
 
 'use strict';
 
+const MAIN_MENU = `
+amp-toolbox [command] <options>
+
+update-cache .............. removes documents from the AMP Caches
+version ................... shows version
+help ...................... show this menu`;
+
+const UPDATE_CACHE_MENU = `
+Usage:
+
+amp-toolbox update-cache [url] <options>
+
+
+Options:
+
+--privateKey .............. Path to the private key file. Defaults to './privateKey.pem'.
+`;
+
 const MENUS = {
-  main: `
-    amp-toolbox [command] <options>
-
-    update-cache .............. show weather for today
-    version ................... shows version
-    help ...................... show this menu`,
-
-  'update-cache': `
-    Usage:
-
-    amp-toolbox update-cache [url] <options>
-
-
-    Options:
-    
-    --privateKey .............. Path to the private key file. Defaults to './privateKey.pem'.
-  `
+  'main': MAIN_MENU,
+  'update-cache': UPDATE_CACHE_MENU,
 };
 
 module.exports = (args) => {
   const subCmd = args._[0] === 'help'
     ? args._[1]
-    : args._[0]
+    : args._[0];
 
-  console.log(MENUS[subCmd] || MENUS.main)
-}
+  console.log(MENUS[subCmd] || MENUS.main);
+};

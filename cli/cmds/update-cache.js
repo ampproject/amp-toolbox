@@ -46,7 +46,7 @@ async function updateCache(cacheUpdateUrlInfo) {
 
 module.exports = (args) => {
   const canonicalUrl = args._[1];
-  const privateKeyFile = args.privateKey || './privateKey.pem'
+  const privateKeyFile = args.privateKey || './privateKey.pem';
 
   if (!canonicalUrl) {
     console.error('Missing URL');
@@ -55,14 +55,14 @@ module.exports = (args) => {
 
   if (!fs.existsSync(privateKeyFile)) {
     console.error(`${privateKeyFile} does not exist`);
-    process.exit(1);    
+    process.exit(1);
   }
 
   try {
     const privateKey = fs.readFileSync(privateKeyFile, 'utf8');
-    updateCaches(privateKey, canonicalUrl);    
-  } catch(e) {
+    updateCaches(privateKey, canonicalUrl);
+  } catch (e) {
     console.error(`Error reading Private Key: ${privateKeyFile}`);
     process.exit(1);
   }
-}
+};

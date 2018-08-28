@@ -21,8 +21,8 @@ const minimist = require('minimist');
 module.exports = () => {
   const args = minimist(process.argv.slice(2));
   const command = args._[0] || 'help';
-  
-  switch(command) {
+
+  switch (command) {
     case 'help':
       require('./cmds/help')(args);
       break;
@@ -33,8 +33,8 @@ module.exports = () => {
       require('./cmds/update-cache')(args);
       break;
     default:
-      console.error(`"${command}" is not a valid command!`)
+      console.error(`"${command}" is not a valid command!`);
       process.exit(1);
       break;
   }
-}
+};

@@ -18,6 +18,6 @@
 
 const {version} = require('../package.json');
 
-module.exports = (args) => {
+module.exports = () => {
   console.log(`v${version}`);
-}
+};
