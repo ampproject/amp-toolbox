@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const path = require('path');
 const treeParser = require('./TreeParser.js');
 
 /**
@@ -65,7 +66,7 @@ class DomTransformer {
   setConfig(config) {
     this._transformers = config.transformers.map((transformer) => {
       if (typeof transformer === 'string') {
-        return require('./transformers/' + transformer + '.js');
+        return require(path.join(__dirname, 'transformers', transformer + '.js'));
       }
       return transformer;
     });
