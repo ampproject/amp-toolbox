@@ -24,5 +24,4 @@ module.exports = async (args, logger) => {
     : args._[0];
 
   logger.log(menus[subCmd] || menus.main);
-  return 0;
 };

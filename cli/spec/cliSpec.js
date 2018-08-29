@@ -25,9 +25,7 @@ describe('Cli', () => {
 
   it('Triggers the correct command', (done) => {
     cli.run([])
-      .then((result) => {
-        expect(result).toBe(0);
-        done();
-      });
+      .then(() => done())
+      .catch((e) => done.fail(e));
   });
 });

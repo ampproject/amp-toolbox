@@ -35,8 +35,7 @@ class Cli {
       case 'update-cache':
         return await require('./cmds/updateCache')(args, this.logger);
       default:
-        console.error(`"${command}" is not a valid command!`);
-        return 1;
+        throw new Error(`"${command}" is not a valid command!`);
     }
   }
 }

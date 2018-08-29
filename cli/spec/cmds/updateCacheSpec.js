@@ -28,20 +28,18 @@ describe('update-cache', () => {
 
   it('Display Error if URL is missing', (done) => {
     updateCacheCmd({'_': []}, mockConsole)
-      .then((result) => {
-        expect(result).toBe(1);
-        const output = mockConsole.getErrors();
-        expect(output).toBe('Missing URL');
+      .then(() => done(new Error('Expected Promise to be Rejected')))
+      .catch((err) => {
+        expect(err.message).toBe('Missing URL');
         done();
       });
   });
 
   it('Displays an Error if privateKey is unavailable', (done) => {
     updateCacheCmd({'_': ['', 'https://www.example.com']}, mockConsole)
-      .then((result) => {
-        expect(result).toBe(1);
-        const output = mockConsole.getErrors();
-        expect(output).toBe('./privateKey.pem does not exist');
+      .then(() => done(new Error('Expected Promise to be Rejected')))
+      .catch((err) => {
+        expect(err.message).toBe('./privateKey.pem does not exist');
         done();
       });
   });
@@ -53,10 +51,9 @@ describe('update-cache', () => {
     };
 
     updateCacheCmd(args, mockConsole)
-      .then((result) => {
-        expect(result).toBe(1);
-        const output = mockConsole.getErrors();
-        expect(output)
+      .then(() => done(new Error('Expected Promise to be Rejected')))
+      .catch((err) => {
+        expect(err.message)
           .toBe('Error generating cache invalidation URL: init failed:not supported argument');
         done();
       });

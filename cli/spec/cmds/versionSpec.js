@@ -23,10 +23,14 @@ const MockConsole = require('../helpers/MockConsole');
 describe('Version', () => {
   const mockConsole = new MockConsole();
 
-  it('prints the version', () => {
+  it('prints the version', (done) => {
     mockConsole.clear();
-    versionCmd({}, mockConsole);
-    const output = mockConsole.getLogs();
-    expect(output).toBe(`v${packageInfo.version}`);
+    versionCmd({}, mockConsole)
+      .then(() => {
+        const output = mockConsole.getLogs();
+        expect(output).toBe(`v${packageInfo.version}`);
+        done();
+      })
+      .catch((e) => done.fail(e));
   });
 });

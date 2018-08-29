@@ -19,31 +19,52 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
 const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
+const errorRegex = /<br><br>\s+(.+?)\s+<ins>/;
+const MESSAGE_SUCCESS = '\x1b[32mSUCCESS!\x1b[0m';
+const MESSAGE_WARNING = '\x1b[33mWARNING!\x1b[0m';
 
 async function updateCaches(privateKey, url, logger) {
   logger.log(`Invalidating AMP Caches for ${url}`);
   try {
     const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
     const cacheUpdateUrls = await updateCacheUrlProvider.calculateFromOriginUrl(url);
-    cacheUpdateUrls.forEach(updateCache, logger);
-    return 0;
+    cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache(cacheUpdateUrl, logger));
   } catch (e) {
-    logger.error(`Error generating cache invalidation URL: ${e}`);
-    return 1;
+    throw new Error(`Error generating cache invalidation URL: ${e}`);
   }
 }
 
 async function updateCache(cacheUpdateUrlInfo, logger) {
+  const marker = `\x1b[1m[${cacheUpdateUrlInfo.cacheName}]:\x1b[0m`;
+  logger.log(`\n${marker} Invalidating ${cacheUpdateUrlInfo.cacheName}`);
+  logger.log(`${marker} Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`);
+  let response;
   try {
-    logger.log(`\tInvalidating ${cacheUpdateUrlInfo.cacheName}`);
-    const response = await fetch(cacheUpdateUrlInfo.updateCacheUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error Invalidating Cache URL: ${cacheUpdateUrlInfo.updateCacheUrl}`);
-    }
-    logger.log('\tSuccess!');
+    response = await fetch(cacheUpdateUrlInfo.updateCacheUrl);
   } catch (e) {
-    logger.error(`Error invalidating Cache URL: ${e}`);
+    logger.error(`[${cacheUpdateUrlInfo.cacheName}]: ${MESSAGE_WARNING} - Error connecting to ` +
+        `the AMP Cache, with message: "${e.message}"`);
   }
+
+  if (response.status !== 200) {
+    const body = await response.text();
+    const match = errorRegex.exec(body);
+
+    if (match) {
+      logger.error(
+        `${marker} ${MESSAGE_WARNING} - Error Invalidating Cache URL. Received ` +
+        `response code "${response.status}" with message: "${match[1]}"`
+      );
+    } else {
+      logger.error(
+        `${marker} ${MESSAGE_WARNING} - Error Invalidating Cache URL. Received ` +
+        `response code "${response.status}" with an unknown error`
+      );
+    }
+    return;
+  }
+
+  logger.log(`${marker} ${MESSAGE_SUCCESS}`);
 }
 
 module.exports = async (args, logger) => {
@@ -51,20 +72,19 @@ module.exports = async (args, logger) => {
   const privateKeyFile = args.privateKey || './privateKey.pem';
 
   if (!canonicalUrl) {
-    logger.error('Missing URL');
-    return 1;
+    throw new Error('Missing URL');
   }
 
   if (!fs.existsSync(privateKeyFile)) {
-    logger.error(`${privateKeyFile} does not exist`);
-    return 1;
+    throw new Error(`${privateKeyFile} does not exist`);
   }
 
+  let privateKey;
   try {
-    const privateKey = fs.readFileSync(privateKeyFile, 'utf8');
-    return await updateCaches(privateKey, canonicalUrl, logger);
+    privateKey = fs.readFileSync(privateKeyFile, 'utf8');
   } catch (e) {
-    logger.error(`Error reading Private Key: ${privateKeyFile}`);
-    return 1;
+    throw new Error(`Error reading Private Key: ${privateKeyFile} (${e.message})`);
   }
+
+  await updateCaches(privateKey, canonicalUrl, logger);
 };

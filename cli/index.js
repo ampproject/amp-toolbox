@@ -18,11 +18,14 @@
 
 const Cli = require('./lib/cli');
 
+const ERROR_MESSAGE = '\x1b[31mERROR\x1b[0m';
+
 module.exports = () => {
   const cli = new Cli();
   const args = process.argv.slice(2);
   cli.run(args)
-    .then((result) => {
-      process.exit(result);
+    .catch((err) => {
+      console.error(`${ERROR_MESSAGE}: ${err.message}`);
+      process.exit(1);
     });
 };

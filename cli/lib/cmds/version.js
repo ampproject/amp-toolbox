@@ -20,5 +20,4 @@ const packageInfo = require('../../package.json');
 
 module.exports = async (_, logger) => {
   logger.log(`v${packageInfo.version}`);
-  return 0;
 };

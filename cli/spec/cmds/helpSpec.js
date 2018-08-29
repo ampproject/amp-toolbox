@@ -32,12 +32,12 @@ describe('Version', () => {
       _: ['help'],
     };
     helpCmd(args, mockConsole)
-      .then((result) => {
-        expect(result).toBe(0);
+      .then(() => {
         const output = mockConsole.getLogs();
         expect(output).toBe(messages['main']);
         done();
-      });
+      })
+      .catch((e) => done.fail(e));
   });
 
   it('prints the generic help, if unknown command', (done) => {
@@ -45,12 +45,12 @@ describe('Version', () => {
       _: ['help', 'unknown'],
     };
     helpCmd(args, mockConsole)
-      .then((result) => {
-        expect(result).toBe(0);
+      .then(() => {
         const output = mockConsole.getLogs();
         expect(output).toBe(messages['main']);
         done();
-      });
+      })
+      .catch((e) => done.fail(e));
   });
 
   it('prints help for "update-cache"', (done) => {
@@ -58,11 +58,11 @@ describe('Version', () => {
       _: ['help', 'update-cache'],
     };
     helpCmd(args, mockConsole)
-      .then((result) => {
-        expect(result).toBe(0);
+      .then(() => {
         const output = mockConsole.getLogs();
         expect(output).toBe(messages['update-cache']);
         done();
-      });
+      })
+      .catch((e) => done.fail(e));
   });
 });
