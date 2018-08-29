@@ -35,6 +35,7 @@ const defaultConfig = {
     'RewriteAmpUrls',
     'GoogleFontsPreconnect',
     'PruneDuplicateResourceHints',
+    'AddBlurryImagePlaceholders',
   ],
 };
 
