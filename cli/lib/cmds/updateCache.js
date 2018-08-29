@@ -20,49 +20,51 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 
-async function updateCaches(privateKey, url) {
-  console.log(`Invalidating AMP Caches for ${url}`);
+async function updateCaches(privateKey, url, logger) {
+  logger.log(`Invalidating AMP Caches for ${url}`);
   try {
     const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
     const cacheUpdateUrls = await updateCacheUrlProvider.calculateFromOriginUrl(url);
-    cacheUpdateUrls.forEach(updateCache);
+    cacheUpdateUrls.forEach(updateCache, logger);
+    return 0;
   } catch (e) {
-    console.error(`Error generating cache invalidation URL: ${e}`);
+    logger.error(`Error generating cache invalidation URL: ${e}`);
+    return 1;
   }
 }
 
-async function updateCache(cacheUpdateUrlInfo) {
+async function updateCache(cacheUpdateUrlInfo, logger) {
   try {
-    console.log(`\tInvalidating ${cacheUpdateUrlInfo.cacheName}`);
+    logger.log(`\tInvalidating ${cacheUpdateUrlInfo.cacheName}`);
     const response = await fetch(cacheUpdateUrlInfo.updateCacheUrl);
     if (response.status !== 200) {
       throw new Error(`Error Invalidating Cache URL: ${cacheUpdateUrlInfo.updateCacheUrl}`);
     }
-    console.log('\tSuccess!');
+    logger.log('\tSuccess!');
   } catch (e) {
-    console.error(`Error invalidating Cache URL: ${e}`);
+    logger.error(`Error invalidating Cache URL: ${e}`);
   }
 }
 
-module.exports = (args) => {
+module.exports = async (args, logger) => {
   const canonicalUrl = args._[1];
   const privateKeyFile = args.privateKey || './privateKey.pem';
 
   if (!canonicalUrl) {
-    console.error('Missing URL');
-    process.exit(1);
+    logger.error('Missing URL');
+    return 1;
   }
 
   if (!fs.existsSync(privateKeyFile)) {
-    console.error(`${privateKeyFile} does not exist`);
-    process.exit(1);
+    logger.error(`${privateKeyFile} does not exist`);
+    return 1;
   }
 
   try {
     const privateKey = fs.readFileSync(privateKeyFile, 'utf8');
-    updateCaches(privateKey, canonicalUrl);
+    return await updateCaches(privateKey, canonicalUrl, logger);
   } catch (e) {
-    console.error(`Error reading Private Key: ${privateKeyFile}`);
-    process.exit(1);
+    logger.error(`Error reading Private Key: ${privateKeyFile}`);
+    return 1;
   }
 };

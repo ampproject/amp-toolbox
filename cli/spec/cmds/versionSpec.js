@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 The AMP HTML Authors. All Rights Reserved.
+ * Copyright 2018 The AMP HTML Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,17 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
+const versionCmd = require('../../lib/cmds/version');
+const packageInfo = require('../../package.json');
+const MockConsole = require('../helpers/MockConsole');
 
-module.exports = () => {
-  const cli = new Cli();
-  const args = process.argv.slice(2);
-  cli.run(args)
-    .then((result) => {
-      process.exit(result);
-    });
-};
+describe('Version', () => {
+  const mockConsole = new MockConsole();
+
+  it('prints the version', () => {
+    mockConsole.clear();
+    versionCmd({}, mockConsole);
+    const output = mockConsole.getLogs();
+    expect(output).toBe(`v${packageInfo.version}`);
+  });
+});

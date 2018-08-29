@@ -16,13 +16,29 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
+const minimist = require('minimist');
 
-module.exports = () => {
-  const cli = new Cli();
-  const args = process.argv.slice(2);
-  cli.run(args)
-    .then((result) => {
-      process.exit(result);
-    });
-};
+class Cli {
+  constructor(logger = console) {
+    this.logger = logger;
+  }
+
+  async run(args) {
+    args = minimist(args);
+    const command = args._[0] || 'help';
+
+    switch (command) {
+      case 'help':
+        return await require('./cmds/help')(args, this.logger);
+      case 'version':
+        return await require('./cmds/version')(args, this.logger);
+      case 'update-cache':
+        return await require('./cmds/updateCache')(args, this.logger);
+      default:
+        console.error(`"${command}" is not a valid command!`);
+        return 1;
+    }
+  }
+}
+
+module.exports = Cli;

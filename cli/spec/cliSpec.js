@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 The AMP HTML Authors. All Rights Reserved.
+ * Copyright 2018 The AMP HTML Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,18 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
+const Cli = require('../lib/cli');
+const MockConsole = require('./helpers/MockConsole');
 
-module.exports = () => {
-  const cli = new Cli();
-  const args = process.argv.slice(2);
-  cli.run(args)
-    .then((result) => {
-      process.exit(result);
-    });
-};
+describe('Cli', () => {
+  const mockConsole = new MockConsole();
+  const cli = new Cli(mockConsole);
+
+  it('Triggers the correct command', (done) => {
+    cli.run([])
+      .then((result) => {
+        expect(result).toBe(0);
+        done();
+      });
+  });
+});

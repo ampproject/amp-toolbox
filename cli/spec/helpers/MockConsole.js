@@ -16,33 +16,31 @@
 
 'use strict';
 
-const MAIN_MENU = `
-amp-toolbox [command] <options>
+class MockConsole {
+  constructor() {
+    this.clear();
+  }
 
-update-cache .............. removes documents from the AMP Caches
-version ................... shows version
-help ...................... show this menu`;
+  log(args) {
+    this.logs.push(args);
+  }
 
-const UPDATE_CACHE_MENU = `
-Usage:
+  error(args) {
+    this.errors.push(args);
+  }
 
-amp-toolbox update-cache [url] <options>
+  getErrors() {
+    return this.errors.join();
+  }
 
+  getLogs() {
+    return this.logs.join();
+  }
 
-Options:
-
---privateKey .............. Path to the private key file. Defaults to './privateKey.pem'.
-`;
-
-const MENUS = {
-  'main': MAIN_MENU,
-  'update-cache': UPDATE_CACHE_MENU,
+  clear() {
+    this.errors = [];
+    this.logs = [];
+  }
 };
 
-module.exports = (args) => {
-  const subCmd = args._[0] === 'help'
-    ? args._[1]
-    : args._[0];
-
-  console.log(MENUS[subCmd] || MENUS.main);
-};
+module.exports = MockConsole;

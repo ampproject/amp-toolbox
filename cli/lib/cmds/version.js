@@ -16,13 +16,9 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
+const packageInfo = require('../../package.json');
 
-module.exports = () => {
-  const cli = new Cli();
-  const args = process.argv.slice(2);
-  cli.run(args)
-    .then((result) => {
-      process.exit(result);
-    });
+module.exports = async (_, logger) => {
+  logger.log(`v${packageInfo.version}`);
+  return 0;
 };
