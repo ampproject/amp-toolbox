@@ -8,6 +8,7 @@ Supported commands:
 - [version](#version): prints the current `amp-toolbox-cli` version.
 - [help](#help): displays available commands.
 
+
 ## Commands
 
 ### help
@@ -18,17 +19,20 @@ Displays the help menu, listing all available commands:
 ./amp-toolbox-cli help
 ```
 
+
 Pass a command to get more information about this specific command
 
 ```
 ./amp-toolbox-cli help [command]
 ```
 
+
 Example:
 
 ```shell
 ./amp-toolbox help update-cache
 ```
+
 
 ### version
 
@@ -39,11 +43,12 @@ Example:
 ./amp-toolbox version
 ```
 
+
 ### update-cache
 
 Uses the [AMP update-cache API](https://developers.google.com/amp/cache/update-cache) to update documents stored in AMP Caches.
 
-It requires the public and private keys to be generated, as [described on the documentation](https://developers.google.com/amp/cache/update-cache#rsa-keys).
+It requires the public and private keys to be generated, as [described on the documentation](https://developers.google.com/amp/cache/update-cache#rsa-keys). Only the private key is required to generate the cache invalidation URLs, but the public key must be made available to the AMP Caches, as described on the [guidelines](https://developers.google.com/amp/cache/update-cache#update-cache-guidelines).
 
 By default, the application will look for the private key on a file called `privateKey.pem`, on the current working directory.
 
