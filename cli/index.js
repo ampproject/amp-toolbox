@@ -25,7 +25,7 @@ module.exports = () => {
   const args = process.argv.slice(2);
   cli.run(args)
     .catch((err) => {
-      logger.error(`${err.message}`);
+      logger.error(err.message);
       process.exit(1);
     });
 };

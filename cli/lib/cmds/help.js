@@ -23,7 +23,7 @@ function help(args, logger) {
     ? args._[1]
     : args._[0];
 
-  logger.log(menus[subCmd] || menus.main);
+  logger.info(menus[subCmd] || menus.main);
   return Promise.resolve();
 };
 

@@ -22,7 +22,7 @@ const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 const errorRegex = /<br><br>\s+(.+?)\s+<ins>/;
 
 function updateCaches_(privateKey, url, logger) {
-  logger.log(`Invalidating AMP Caches for ${url}`);
+  logger.info(`Invalidating AMP Caches for ${url}`);
   try {
     const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
     return updateCacheUrlProvider.calculateFromOriginUrl(url)
@@ -37,8 +37,8 @@ function updateCaches_(privateKey, url, logger) {
 
 function updateCache_(cacheUpdateUrlInfo, logger) {
   const tag = cacheUpdateUrlInfo.cacheName;
-  logger.log(`Invalidating ${cacheUpdateUrlInfo.cacheName}`, tag);
-  logger.log(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
+  logger.info(`Invalidating ${cacheUpdateUrlInfo.cacheName}`, tag);
+  logger.info(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
 
   fetch(cacheUpdateUrlInfo.updateCacheUrl)
     .then((response) => {
@@ -63,7 +63,7 @@ function updateCache_(cacheUpdateUrlInfo, logger) {
         });
     })
     .catch((e) => {
-      logger.warn(`Error connecting to the AMP Cache, with message: "${e.message}"`, tag);
+      logger.warn(`Error connecting to the AMP Cache with message: "${e.message}"`, tag);
     });
 }
 

@@ -17,9 +17,10 @@
 'use strict';
 
 const minimist = require('minimist');
+const Logger = require('./util/Logger');
 
 class Cli {
-  constructor(logger) {
+  constructor(logger = new Logger()) {
     this.logger = logger;
   }
 

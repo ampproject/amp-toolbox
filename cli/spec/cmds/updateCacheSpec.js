@@ -17,17 +17,17 @@
 'use strict';
 
 const updateCacheCmd = require('../../lib/cmds/updateCache');
-const MockConsole = require('../helpers/MockConsole');
+const MockLogger = require('../helpers/MockLogger');
 
 describe('update-cache', () => {
-  const mockConsole = new MockConsole();
+  const mockLogger = new MockLogger();
 
   afterEach(() => {
-    mockConsole.clear();
+    mockLogger.clear();
   });
 
   it('Display Error if URL is missing', (done) => {
-    updateCacheCmd({'_': []}, mockConsole)
+    updateCacheCmd({'_': []}, mockLogger)
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message).toBe('Missing URL');
@@ -36,7 +36,7 @@ describe('update-cache', () => {
   });
 
   it('Displays an Error if privateKey is unavailable', (done) => {
-    updateCacheCmd({'_': ['', 'https://www.example.com']}, mockConsole)
+    updateCacheCmd({'_': ['', 'https://www.example.com']}, mockLogger)
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message).toBe('./privateKey.pem does not exist');
@@ -50,7 +50,7 @@ describe('update-cache', () => {
       'privateKey': './spec/cmds/invalidKey.pem',
     };
 
-    updateCacheCmd(args, mockConsole)
+    updateCacheCmd(args, mockLogger)
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message)

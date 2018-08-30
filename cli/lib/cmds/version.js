@@ -19,7 +19,7 @@
 const packageInfo = require('../../package.json');
 
 function version(_, logger) {
-  logger.log(`v${packageInfo.version}`);
+  logger.info(`v${packageInfo.version}`);
   return Promise.resolve();
 };
 

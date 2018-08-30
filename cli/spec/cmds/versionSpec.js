@@ -18,16 +18,16 @@
 
 const versionCmd = require('../../lib/cmds/version');
 const packageInfo = require('../../package.json');
-const MockConsole = require('../helpers/MockConsole');
+const MockLogger = require('../helpers/MockLogger');
 
 describe('Version', () => {
-  const mockConsole = new MockConsole();
+  const mockLogger = new MockLogger();
 
   it('prints the version', (done) => {
-    mockConsole.clear();
-    versionCmd({}, mockConsole)
+    mockLogger.clear();
+    versionCmd({}, mockLogger)
       .then(() => {
-        const output = mockConsole.getLogs();
+        const output = mockLogger.getLogs();
         expect(output).toBe(`v${packageInfo.version}`);
         done();
       })

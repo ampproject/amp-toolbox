@@ -16,12 +16,12 @@
 
 'use strict';
 
-class MockConsole {
+class MockLogger {
   constructor() {
     this.clear();
   }
 
-  log(args) {
+  info(args) {
     this.logs.push(args);
   }
 
@@ -43,4 +43,4 @@ class MockConsole {
   }
 };
 
-module.exports = MockConsole;
+module.exports = MockLogger;

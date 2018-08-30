@@ -39,7 +39,7 @@ class Logger {
     console.log(this.formatTag_(tag), TAG_SUCCESS, args);
   }
 
-  log(args, tag = null) {
+  info(args, tag = null) {
     console.log(this.formatTag_(tag), args);
   }
 

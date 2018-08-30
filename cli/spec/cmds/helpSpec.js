@@ -18,22 +18,22 @@
 
 const helpCmd = require('../../lib/cmds/help');
 const messages = require('../../lib/cmds/helpMessages.json');
-const MockConsole = require('../helpers/MockConsole');
+const MockLogger = require('../helpers/MockLogger');
 
 describe('Version', () => {
-  const mockConsole = new MockConsole();
+  const mockLogger = new MockLogger();
 
   afterEach(() => {
-    mockConsole.clear();
+    mockLogger.clear();
   });
 
   it('prints the generic help', (done) => {
     const args = {
       _: ['help'],
     };
-    helpCmd(args, mockConsole)
+    helpCmd(args, mockLogger)
       .then(() => {
-        const output = mockConsole.getLogs();
+        const output = mockLogger.getLogs();
         expect(output).toBe(messages['main']);
         done();
       })
@@ -44,9 +44,9 @@ describe('Version', () => {
     const args = {
       _: ['help', 'unknown'],
     };
-    helpCmd(args, mockConsole)
+    helpCmd(args, mockLogger)
       .then(() => {
-        const output = mockConsole.getLogs();
+        const output = mockLogger.getLogs();
         expect(output).toBe(messages['main']);
         done();
       })
@@ -57,9 +57,9 @@ describe('Version', () => {
     const args = {
       _: ['help', 'update-cache'],
     };
-    helpCmd(args, mockConsole)
+    helpCmd(args, mockLogger)
       .then(() => {
-        const output = mockConsole.getLogs();
+        const output = mockLogger.getLogs();
         expect(output).toBe(messages['update-cache']);
         done();
       })

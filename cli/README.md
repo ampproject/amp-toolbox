@@ -48,7 +48,7 @@ Example:
 
 Uses the [AMP update-cache API](https://developers.google.com/amp/cache/update-cache) to update documents stored in AMP Caches.
 
-It requires the public and private keys to be generated, as [described on the documentation](https://developers.google.com/amp/cache/update-cache#rsa-keys). Only the private key is required to generate the cache invalidation URLs, but the public key must be made available to the AMP Caches, as described on the [guidelines](https://developers.google.com/amp/cache/update-cache#update-cache-guidelines).
+It requires the public and private keys to be generated, as [described on the documentation](https://developers.google.com/amp/cache/update-cache#rsa-keys). Only the private key is required to generate the cache invalidation URLs, but the public key must be made available to the AMP Caches, as described in the [guidelines](https://developers.google.com/amp/cache/update-cache#update-cache-guidelines).
 
 By default, the application will look for the private key on a file called `privateKey.pem`, on the current working directory.
 

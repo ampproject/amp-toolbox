@@ -17,11 +17,11 @@
 'use strict';
 
 const Cli = require('../lib/cli');
-const MockConsole = require('./helpers/MockConsole');
+const MockLogger = require('./helpers/MockLogger');
 
 describe('Cli', () => {
-  const mockConsole = new MockConsole();
-  const cli = new Cli(mockConsole);
+  const mockLogger = new MockLogger();
+  const cli = new Cli(mockLogger);
 
   it('Triggers the correct command', (done) => {
     cli.run([])
