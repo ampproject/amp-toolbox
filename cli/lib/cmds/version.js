@@ -18,6 +18,8 @@
 
 const packageInfo = require('../../package.json');
 
-module.exports = async (_, logger) => {
+async function version(_, logger) {
   logger.log(`v${packageInfo.version}`);
 };
+
+module.exports = version;

@@ -21,18 +21,18 @@ const fs = require('fs');
 const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 const errorRegex = /<br><br>\s+(.+?)\s+<ins>/;
 
-async function updateCaches(privateKey, url, logger) {
+async function updateCaches_(privateKey, url, logger) {
   logger.log(`Invalidating AMP Caches for ${url}`);
   try {
     const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
     const cacheUpdateUrls = await updateCacheUrlProvider.calculateFromOriginUrl(url);
-    cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache(cacheUpdateUrl, logger));
+    cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache_(cacheUpdateUrl, logger));
   } catch (e) {
     throw new Error(`Error generating cache invalidation URL: ${e}`);
   }
 }
 
-async function updateCache(cacheUpdateUrlInfo, logger) {
+async function updateCache_(cacheUpdateUrlInfo, logger) {
   const tag = cacheUpdateUrlInfo.cacheName;
   logger.log(`Invalidating ${cacheUpdateUrlInfo.cacheName}`, tag);
   logger.log(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
@@ -64,7 +64,7 @@ async function updateCache(cacheUpdateUrlInfo, logger) {
   logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
 }
 
-module.exports = async (args, logger) => {
+async function updateCache(args, logger) {
   const canonicalUrl = args._[1];
   const privateKeyFile = args.privateKey || './privateKey.pem';
 
@@ -83,5 +83,7 @@ module.exports = async (args, logger) => {
     throw new Error(`Error reading Private Key: ${privateKeyFile} (${e.message})`);
   }
 
-  await updateCaches(privateKey, canonicalUrl, logger);
+  await updateCaches_(privateKey, canonicalUrl, logger);
 };
+
+module.exports = updateCache;
