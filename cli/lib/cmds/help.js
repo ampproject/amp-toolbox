@@ -18,12 +18,13 @@
 
 const menus = require('./helpMessages.json');
 
-async function help(args, logger) {
+function help(args, logger) {
   const subCmd = args._[0] === 'help'
     ? args._[1]
     : args._[0];
 
   logger.log(menus[subCmd] || menus.main);
+  return Promise.resolve();
 };
 
 module.exports = help;

@@ -21,69 +21,72 @@ const fs = require('fs');
 const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 const errorRegex = /<br><br>\s+(.+?)\s+<ins>/;
 
-async function updateCaches_(privateKey, url, logger) {
+function updateCaches_(privateKey, url, logger) {
   logger.log(`Invalidating AMP Caches for ${url}`);
   try {
     const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
-    const cacheUpdateUrls = await updateCacheUrlProvider.calculateFromOriginUrl(url);
-    cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache_(cacheUpdateUrl, logger));
+    return updateCacheUrlProvider.calculateFromOriginUrl(url)
+      .then((cacheUpdateUrls) => {
+        cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache_(cacheUpdateUrl, logger));
+        return;
+      });
   } catch (e) {
-    throw new Error(`Error generating cache invalidation URL: ${e}`);
+    return Promise.reject(new Error(`Error generating cache invalidation URL: ${e}`));
   }
 }
 
-async function updateCache_(cacheUpdateUrlInfo, logger) {
+function updateCache_(cacheUpdateUrlInfo, logger) {
   const tag = cacheUpdateUrlInfo.cacheName;
   logger.log(`Invalidating ${cacheUpdateUrlInfo.cacheName}`, tag);
   logger.log(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
-  let response;
-  try {
-    response = await fetch(cacheUpdateUrlInfo.updateCacheUrl);
-  } catch (e) {
-    logger.warn(`Error connecting to the AMP Cache, with message: "${e.message}"`, tag);
-  }
 
-  if (response.status !== 200) {
-    const body = await response.text();
-    const match = errorRegex.exec(body);
-
-    if (match) {
-      logger.error(
-        `Error Invalidating Cache URL. Received response code "${response.status}" with ` +
-        `message: "${match[1]}"`, tag
-      );
-    } else {
-      logger.error(
-        `Error Invalidating Cache URL. Received response code "${response.status}" with `+
-        'an unknown error', tag
-      );
-    }
-    return;
-  }
-
-  logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
+  fetch(cacheUpdateUrlInfo.updateCacheUrl)
+    .then((response) => {
+      if (response.status === 200) {
+        logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
+        return;
+      }
+      return response.text()
+        .then((body) => {
+          const match = errorRegex.exec(body);
+          if (match) {
+            logger.error(
+              `Error Invalidating Cache URL. Received response code "${response.status}" with ` +
+              `message: "${match[1]}"`, tag
+            );
+          } else {
+            logger.error(
+              `Error Invalidating Cache URL. Received response code "${response.status}" with `+
+              'an unknown error', tag
+            );
+          }
+        });
+    })
+    .catch((e) => {
+      logger.warn(`Error connecting to the AMP Cache, with message: "${e.message}"`, tag);
+    });
 }
 
-async function updateCache(args, logger) {
+function updateCache(args, logger) {
   const canonicalUrl = args._[1];
   const privateKeyFile = args.privateKey || './privateKey.pem';
 
   if (!canonicalUrl) {
-    throw new Error('Missing URL');
+    return Promise.reject(new Error('Missing URL'));
   }
 
   if (!fs.existsSync(privateKeyFile)) {
-    throw new Error(`${privateKeyFile} does not exist`);
+    return Promise.reject(new Error(`${privateKeyFile} does not exist`));
   }
 
   let privateKey;
   try {
     privateKey = fs.readFileSync(privateKeyFile, 'utf8');
   } catch (e) {
-    throw new Error(`Error reading Private Key: ${privateKeyFile} (${e.message})`);
+    return Promise.reject(`Error reading Private Key: ${privateKeyFile} (${e.message})`);
   }
 
-  await updateCaches_(privateKey, canonicalUrl, logger);
+  return updateCaches_(privateKey, canonicalUrl, logger);
 };
 
 module.exports = updateCache;
