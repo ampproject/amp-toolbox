@@ -16,16 +16,26 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
-const Logger = require('./lib/util/Logger');
+const TAG_ERROR = '\x1b[31mERROR\x1b[0m';
+const TAG_SUCCESS = '\x1b[32mSUCCESS!\x1b[0m';
+const TAG_WARNING = '\x1b[33mWARNING!\x1b[0m';
 
-module.exports = () => {
-  const logger = new Logger();
-  const cli = new Cli(logger);
-  const args = process.argv.slice(2);
-  cli.run(args)
-    .catch((err) => {
-      logger.error(`${err.message}`);
-      process.exit(1);
-    });
-};
+class Logger {
+  error(args, tag = null) {
+    console.error(tag ? `\x1b[1m[${tag}]:\x1b[0m` : '', TAG_ERROR, args);
+  }
+
+  warn(args, tag = null) {
+    console.log(tag ? `\x1b[1m[${tag}]:\x1b[0m` : '', TAG_WARNING, args);
+  }
+
+  success(args, tag = null) {
+    console.log(tag ? `\x1b[1m[${tag}]:\x1b[0m` : '', TAG_SUCCESS, args);
+  }
+
+  log(args, tag = null) {
+    console.log(tag ? `\x1b[1m[${tag}]:\x1b[0m` : '', args);
+  }
+}
+
+module.exports = Logger;

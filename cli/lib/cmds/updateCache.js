@@ -20,8 +20,6 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
 const errorRegex = /<br><br>\s+(.+?)\s+<ins>/;
-const MESSAGE_SUCCESS = '\x1b[32mSUCCESS!\x1b[0m';
-const MESSAGE_WARNING = '\x1b[33mWARNING!\x1b[0m';
 
 async function updateCaches(privateKey, url, logger) {
   logger.log(`Invalidating AMP Caches for ${url}`);
@@ -35,15 +33,14 @@ async function updateCaches(privateKey, url, logger) {
 }
 
 async function updateCache(cacheUpdateUrlInfo, logger) {
-  const marker = `\x1b[1m[${cacheUpdateUrlInfo.cacheName}]:\x1b[0m`;
-  logger.log(`\n${marker} Invalidating ${cacheUpdateUrlInfo.cacheName}`);
-  logger.log(`${marker} Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`);
+  const tag = cacheUpdateUrlInfo.cacheName;
+  logger.log(`Invalidating ${cacheUpdateUrlInfo.cacheName}`, tag);
+  logger.log(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
   let response;
   try {
     response = await fetch(cacheUpdateUrlInfo.updateCacheUrl);
   } catch (e) {
-    logger.error(`[${cacheUpdateUrlInfo.cacheName}]: ${MESSAGE_WARNING} - Error connecting to ` +
-        `the AMP Cache, with message: "${e.message}"`);
+    logger.warn(`Error connecting to the AMP Cache, with message: "${e.message}"`, tag);
   }
 
   if (response.status !== 200) {
@@ -52,19 +49,19 @@ async function updateCache(cacheUpdateUrlInfo, logger) {
 
     if (match) {
       logger.error(
-        `${marker} ${MESSAGE_WARNING} - Error Invalidating Cache URL. Received ` +
-        `response code "${response.status}" with message: "${match[1]}"`
+        `Error Invalidating Cache URL. Received response code "${response.status}" with ` +
+        `message: "${match[1]}"`, tag
       );
     } else {
       logger.error(
-        `${marker} ${MESSAGE_WARNING} - Error Invalidating Cache URL. Received ` +
-        `response code "${response.status}" with an unknown error`
+        `Error Invalidating Cache URL. Received response code "${response.status}" with `+
+        'an unknown error', tag
       );
     }
     return;
   }
 
-  logger.log(`${marker} ${MESSAGE_SUCCESS}`);
+  logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
 }
 
 module.exports = async (args, logger) => {

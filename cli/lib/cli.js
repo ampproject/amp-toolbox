@@ -19,23 +19,23 @@
 const minimist = require('minimist');
 
 class Cli {
-  constructor(logger = console) {
+  constructor(logger) {
     this.logger = logger;
   }
 
-  async run(args) {
+  run(args) {
     args = minimist(args);
     const command = args._[0] || 'help';
 
     switch (command) {
       case 'help':
-        return await require('./cmds/help')(args, this.logger);
+        return require('./cmds/help')(args, this.logger);
       case 'version':
-        return await require('./cmds/version')(args, this.logger);
+        return require('./cmds/version')(args, this.logger);
       case 'update-cache':
-        return await require('./cmds/updateCache')(args, this.logger);
+        return require('./cmds/updateCache')(args, this.logger);
       default:
-        throw new Error(`"${command}" is not a valid command!`);
+        return Promise.reject(new Error(`"${command}" is not a valid command!`));
     }
   }
 }
