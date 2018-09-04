@@ -174,17 +174,19 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   passesHueristic_(node, src, tagName) {
-    // Checks if the image file is in an svg format
-    if (!src.endsWith('.jpg')) {
+    // Checks to see if the image is a jpeg.
+    if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
       return false;
     }
 
+    // Checks if the image is a poster or a responsive image
     const isPoster = tagName == 'amp-video';
-    const isAmpImg = (tagName == 'amp-img' && node.attribs.layout == 'responsive');
-    if (isPoster || isAmpImg) {
+    const isResponsiveImg = (tagName == 'amp-img' &&
+      node.attribs.layout == 'responsive');
+    if (isPoster || isResponsiveImg) {
+      // Ensures image is not a child of a template
       return !this.templateAncestor_(node);
     }
-
     return false;
   }
 
