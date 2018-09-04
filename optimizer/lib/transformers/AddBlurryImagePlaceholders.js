@@ -16,6 +16,7 @@
 const sizeOf = require('image-size');
 const jimp = require('jimp');
 const PIXEL_TARGET = 60;
+const MAX_BLURRED_PLACEHOLDERS = 5;
 
 /**
  * Adds placeholders for all AMP images and posters that are blurry versions of
@@ -34,6 +35,7 @@ class AddBlurryImagePlaceholders {
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
+    let currPlaceholderAmt = 0;
     for (let node = body; node !== null; node = node.nextNode()) {
       const {tagName} = node;
       let src;
@@ -43,11 +45,16 @@ class AddBlurryImagePlaceholders {
       if (tagName === 'amp-video' && node.attribs.poster) {
         src = node.attribs.poster;
       }
-      if (src && !this.hasPlaceholder_(node)) {
-        promises.push(this.addBlurryPlaceholder_(tree, src).then((imgChild) => {
-          node.appendChild(imgChild);
-        }));
-      }
+      if (currPlaceholderAmt < MAX_BLURRED_PLACEHOLDERS && src &&
+        !this.hasPlaceholder_(node) && this.passesHueristic_(node, src, tagName)) {
+          promises.push(this.addBlurryPlaceholder_(tree, src)
+          .then((imgChild) => {
+            if (currPlaceholderAmt < MAX_BLURRED_PLACEHOLDERS) {
+              node.appendChild(imgChild);
+              currPlaceholderAmt++;
+            }
+          }));
+        }
     }
     return Promise.all(promises);
   }
@@ -153,6 +160,47 @@ class AddBlurryImagePlaceholders {
         return true;
       }
     });
+    return false;
+  }
+
+  /**
+   * Checks if an image should have a blurred image placeholder.
+   * @param {Node} node The DOM element that is being checked to see if it
+   * should have a blurred placeholder.
+   * @param {string} src The image source that is being checked.
+   * @param {string} tagName The type of element that is being checked.
+   * @return {boolean} Whether or not the element should have a blurred
+   * placeholder child.
+   * @private
+   */
+  passesHueristic_(node, src, tagName) {
+    // Checks if the image file is in an svg format
+    if (!src.endsWith('.jpg')) {
+      return false;
+    }
+
+    const isPoster = tagName == 'amp-video';
+    const isAmpImg = (tagName == 'amp-img' && node.attribs.layout == 'responsive');
+    if (isPoster || isAmpImg) {
+      return !this.templateAncestor_(node);
+    }
+
+    return false;
+  }
+
+  /**
+   * Checks to see if an element is part of a template.
+   * @param {Node} node The DOM element that is being checked to see if it is an
+   * ancestor of a template element.
+   * @return {boolean} If an element is an ancestor of a template.
+   */
+  templateAncestor_(node) {
+    while (!!node) {
+      if (node.tagName == 'template') {
+        return true;
+      }
+      node = node.parentElement;
+    }
     return false;
   }
 }
