@@ -19,9 +19,12 @@ const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
 
 /**
- * Adds placeholders for all AMP images and posters that are blurry versions of
- * the corresponding original source. The blur will be displayed as the
- * <amp-img> is rendering, and will fade out once the element is loaded.
+ * Adds placeholders for certain amp-img's and posters for amp-videos that are
+ * blurry versions of the corresponding original source. The blur will be
+ * displayed as the <amp-img> is rendering, and will fade out once the element
+ * is loaded. The current requirements of appending a blurry placeholder is for
+ * the element is to be a JPEG that is either responsive or a poster for an
+ * amp-video.
  */
 class AddBlurryImagePlaceholders {
   /**
@@ -50,16 +53,17 @@ class AddBlurryImagePlaceholders {
         src = node.attribs.poster;
       }
       if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS && src &&
-        !this.hasPlaceholder_(node) && this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
-          promises.push(this.addBlurryPlaceholder_(tree, src)
-            .then((imgChild) => {
-              if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS) {
-                node.appendChild(imgChild);
-                currPlaceholderCount++;
-              }
-            })
-          );
-        }
+        !this.hasPlaceholder_(node) &&
+          this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
+            promises.push(this.addBlurryPlaceholder_(tree, src)
+              .then((imgChild) => {
+                if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS) {
+                  node.appendChild(imgChild);
+                  currPlaceholderCount++;
+                }
+              })
+            );
+          }
     }
     return Promise.all(promises);
   }
