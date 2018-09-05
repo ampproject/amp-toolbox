@@ -18,6 +18,8 @@ const jimp = require('jimp');
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
 
+const {nextNode} = require('../HtmlDomHelper');
+
 /**
  * Adds placeholders for certain amp-img's and posters for amp-videos that are
  * blurry versions of the corresponding original source. The blur will be
@@ -43,7 +45,7 @@ class AddBlurryImagePlaceholders {
       const {tagName} = node;
       let src;
       if (tagName === 'template') {
-        node = this.nextNode(node);
+        node = nextNode(node);
         continue;
       }
       if (tagName === 'amp-img') {
@@ -68,18 +70,6 @@ class AddBlurryImagePlaceholders {
     return Promise.all(promises);
   }
 
-  /**
-   * Skips the subtree that is descending from the current node.
-   * @param {Node} node the node that has its subtree being skipped
-   * @return {Node} the appropriate "next" node that will skip the current
-   * subtree.
-   */
-  nextNode(node) {
-    if (node.nextSibling) {
-      return node.nextSibling;
-    }
-    return this.nextNode(node.parent);
-  }
 
   /**
    * Adds a child image that is a blurry placeholder.
