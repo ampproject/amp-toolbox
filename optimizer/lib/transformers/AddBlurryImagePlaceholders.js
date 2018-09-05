@@ -35,28 +35,46 @@ class AddBlurryImagePlaceholders {
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
-    let currPlaceholderAmt = 0;
+    let currPlaceholderCount = 0;
     for (let node = body; node !== null; node = node.nextNode()) {
       const {tagName} = node;
       let src;
+      if (tagName === 'template') {
+        node = this.nextNode(node);
+        continue;
+      }
       if (tagName === 'amp-img') {
         src = node.attribs.src;
       }
       if (tagName === 'amp-video' && node.attribs.poster) {
         src = node.attribs.poster;
       }
-      if (currPlaceholderAmt < MAX_BLURRED_PLACEHOLDERS && src &&
-        !this.hasPlaceholder_(node) && this.passesHueristic_(node, src, tagName)) {
+      if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS && src &&
+        !this.hasPlaceholder_(node) && this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
           promises.push(this.addBlurryPlaceholder_(tree, src)
-          .then((imgChild) => {
-            if (currPlaceholderAmt < MAX_BLURRED_PLACEHOLDERS) {
-              node.appendChild(imgChild);
-              currPlaceholderAmt++;
-            }
-          }));
+            .then((imgChild) => {
+              if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS) {
+                node.appendChild(imgChild);
+                currPlaceholderCount++;
+              }
+            })
+          );
         }
     }
     return Promise.all(promises);
+  }
+
+  /**
+   * Skips the subtree that is descending from the current node.
+   * @param {Node} node the node that has its subtree being skipped
+   * @return {Node} the appropriate "next" node that will skip the current
+   * subtree.
+   */
+  nextNode(node) {
+    if (node.nextSibling) {
+      return node.nextSibling;
+    }
+    return this.nextNode(node.parent);
   }
 
   /**
@@ -165,6 +183,11 @@ class AddBlurryImagePlaceholders {
 
   /**
    * Checks if an image should have a blurred image placeholder.
+   * The current criteria for determining if a blurry image placeholder should
+   * be appeneded is that it should be a JPEG that is either an amp-img that is
+   * a responsive or a poster for an amp-video. These two use cases were the
+   * most found to be the most common places where a blurry image placeholder
+   * would likely want to be used through manual testing.
    * @param {Node} node The DOM element that is being checked to see if it
    * should have a blurred placeholder.
    * @param {string} src The image source that is being checked.
@@ -173,7 +196,7 @@ class AddBlurryImagePlaceholders {
    * placeholder child.
    * @private
    */
-  passesHueristic_(node, src, tagName) {
+  shouldAddBlurryPlaceholder_(node, src, tagName) {
     // Checks to see if the image is a jpeg.
     if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
       return false;
@@ -183,27 +206,7 @@ class AddBlurryImagePlaceholders {
     const isPoster = tagName == 'amp-video';
     const isResponsiveImg = (tagName == 'amp-img' &&
       node.attribs.layout == 'responsive');
-    if (isPoster || isResponsiveImg) {
-      // Ensures image is not a child of a template
-      return !this.templateAncestor_(node);
-    }
-    return false;
-  }
-
-  /**
-   * Checks to see if an element is part of a template.
-   * @param {Node} node The DOM element that is being checked to see if it is an
-   * ancestor of a template element.
-   * @return {boolean} If an element is an ancestor of a template.
-   */
-  templateAncestor_(node) {
-    while (!!node) {
-      if (node.tagName == 'template') {
-        return true;
-      }
-      node = node.parentElement;
-    }
-    return false;
+    return isPoster || isResponsiveImg;
   }
 }
 
