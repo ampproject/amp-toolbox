@@ -56,7 +56,7 @@ class AddBlurryImagePlaceholders {
       }
       if (currPlaceholderCount >= MAX_BLURRED_PLACEHOLDERS) {
         return;
-      } // src && !this.hasPlaceholder_(node) &&
+      }
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         promises.push(this.addBlurryPlaceholder_(tree, src)
           .then((imgChild) => {
