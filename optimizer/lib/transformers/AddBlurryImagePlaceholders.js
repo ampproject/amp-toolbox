@@ -55,7 +55,7 @@ class AddBlurryImagePlaceholders {
         src = node.attribs.poster;
       }
       if (currPlaceholderCount >= MAX_BLURRED_PLACEHOLDERS) {
-        return;
+        break;
       }
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         promises.push(this.addBlurryPlaceholder_(tree, src)
@@ -186,8 +186,8 @@ class AddBlurryImagePlaceholders {
    * loading attribute OR the element is a poster on an amp-video
    *
    * This criteria was found to be the most common places where a blurry image
-   * placeholder would likely want to be used through manual examition of
-   * current AMP pages.
+   * placeholder would likely want to be used through manual examination of
+   * existing AMP pages.
    * @param {Node} node The DOM element that is being checked to see if it
    * should have a blurred placeholder.
    * @param {string} src The image source that is being checked.
