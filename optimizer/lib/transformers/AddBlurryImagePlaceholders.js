@@ -54,18 +54,20 @@ class AddBlurryImagePlaceholders {
       if (tagName === 'amp-video' && node.attribs.poster) {
         src = node.attribs.poster;
       }
-      if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS && src &&
-        !this.hasPlaceholder_(node) &&
-          this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
-            promises.push(this.addBlurryPlaceholder_(tree, src)
-              .then((imgChild) => {
-                if (currPlaceholderCount < MAX_BLURRED_PLACEHOLDERS) {
-                  node.appendChild(imgChild);
-                  currPlaceholderCount++;
-                }
-              })
-            );
-          }
+      if (currPlaceholderCount >= MAX_BLURRED_PLACEHOLDERS) {
+        return;
+      } // src && !this.hasPlaceholder_(node) &&
+      if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
+        promises.push(this.addBlurryPlaceholder_(tree, src)
+          .then((imgChild) => {
+            if (currPlaceholderCount >= MAX_BLURRED_PLACEHOLDERS) {
+              return;
+            }
+            node.appendChild(imgChild);
+            currPlaceholderCount++;
+          })
+        );
+      }
     }
     return Promise.all(promises);
   }
@@ -178,10 +180,14 @@ class AddBlurryImagePlaceholders {
   /**
    * Checks if an image should have a blurred image placeholder.
    * The current criteria for determining if a blurry image placeholder should
-   * be appeneded is that it should be a JPEG that is either an amp-img that is
-   * a responsive or a poster for an amp-video. These two use cases were the
-   * most found to be the most common places where a blurry image placeholder
-   * would likely want to be used through manual testing.
+   * be appended is as follows:
+   * - The source for the image should be a JPEG.
+   * - If the element is an amp-img that is responsive and does not have a no
+   * loading attribute OR the element is a poster on an amp-video
+   *
+   * This criteria was found to be the most common places where a blurry image
+   * placeholder would likely want to be used through manual examition of
+   * current AMP pages.
    * @param {Node} node The DOM element that is being checked to see if it
    * should have a blurred placeholder.
    * @param {string} src The image source that is being checked.
@@ -191,16 +197,23 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   shouldAddBlurryPlaceholder_(node, src, tagName) {
+    // Checks to see if the image doesn't have a source or if it already has a
+    // placeholder.
+    if (!src || this.hasPlaceholder_(node)) {
+      return false;
+    }
+
     // Checks to see if the image is a jpeg.
     if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
       return false;
     }
 
-    // Checks if the image is a poster or a responsive image
+    // Checks if the image is a poster or a responsive image without a no
+    // loading attribute.
     const isPoster = tagName == 'amp-video';
-    const isResponsiveImg = (tagName == 'amp-img' &&
-      node.attribs.layout == 'responsive');
-    return isPoster || isResponsiveImg;
+    const isResponsiveImgWithLoading = (tagName == 'amp-img' &&
+      node.attribs.layout == 'responsive' && (node.attribs.noloading == null));
+    return isPoster || isResponsiveImgWithLoading;
   }
 }
 
