@@ -18,7 +18,7 @@
 const {OneBehindFetch} = require('amp-toolbox-core');
 
 const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
-const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/v0/version.txt';
+const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
 
 /**
  * Queries cdn.ampproject.org for the lastest AMP runtime version. Uses a
@@ -39,9 +39,9 @@ class RuntimeVersion {
    */
   currentVersion(options = {}) {
     if (options.canary) {
-      return this.fetchVersion_(CANARY_ENDPOINT, (data) => data[0]);
+      return this.fetchVersion_(CANARY_ENDPOINT, (data) => this.padVersionString(data[0]));
     }
-    return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.toString());
+    return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.amp_runtime_version);
   }
 
   /* PRIVATE */
