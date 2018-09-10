@@ -18,7 +18,7 @@ const jimp = require('jimp');
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
 
-const {nextNode} = require('../HtmlDomHelper');
+const {skipNodeandChildren} = require('../HtmlDomHelper');
 
 /**
  * Adds placeholders for certain amp-img's and posters for amp-videos that are
@@ -45,7 +45,7 @@ class AddBlurryImagePlaceholders {
       const {tagName} = node;
       let src;
       if (tagName === 'template') {
-        node = nextNode(node);
+        node = skipNodeandChildren(node);
         continue;
       }
       if (tagName === 'amp-img') {
@@ -208,11 +208,15 @@ class AddBlurryImagePlaceholders {
       return false;
     }
 
-    // Checks if the image is a poster or a responsive image without a no
-    // loading attribute.
+    // Checks if the image has a noloading attribute
+    if (tagName == 'amp-img' && node.attribs.noloading != null) {
+      return false;
+    }
+
+    // Checks if the image is a poster or a responsive image
     const isPoster = tagName == 'amp-video';
     const isResponsiveImgWithLoading = (tagName == 'amp-img' &&
-      node.attribs.layout == 'responsive' && (node.attribs.noloading == null));
+      node.attribs.layout == 'responsive');
     return isPoster || isResponsiveImgWithLoading;
   }
 }

@@ -32,20 +32,20 @@ function findMetaViewport(head) {
 }
 
 /**
-   * Skips the subtree that is descending from the current node.
-   * @param {Node} node the node that has its subtree being skipped
-   * @return {Node} the appropriate "next" node that will skip the current
-   * subtree.
-   */
-function nextNode(node) {
+ * Skips the subtree that is descending from the current node.
+ * @param {Node} node the node that has its subtree being skipped
+ * @return {Node} the appropriate "next" node that will skip the current
+ * subtree.
+ */
+function skipNodeandChildren(node) {
     if (node.nextSibling) {
       return node.nextSibling;
     }
-    return nextNode(node.parent);
+    return skipNodeandChildren(node.parent);
   }
 
 /** @module HtmlDomHelper */
 module.exports = {
   findMetaViewport: findMetaViewport,
-  nextNode: nextNode,
+  skipNodeandChildren: skipNodeandChildren,
 };
