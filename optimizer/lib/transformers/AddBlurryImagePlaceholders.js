@@ -18,7 +18,7 @@ const jimp = require('jimp');
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
 
-const {skipNodeandChildren} = require('../HtmlDomHelper');
+const {skipNodeAndChildren} = require('../HtmlDomHelper');
 
 /**
  * Adds placeholders for certain amp-img's and posters for amp-videos that are
@@ -40,12 +40,12 @@ class AddBlurryImagePlaceholders {
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
-    let currPlaceholderCount = 0;
+    let placeholders = 0;
     for (let node = body; node !== null; node = node.nextNode()) {
       const {tagName} = node;
       let src;
       if (tagName === 'template') {
-        node = skipNodeandChildren(node);
+        node = skipNodeAndChildren(node);
         continue;
       }
       if (tagName === 'amp-img') {
@@ -54,16 +54,15 @@ class AddBlurryImagePlaceholders {
       if (tagName === 'amp-video' && node.attribs.poster) {
         src = node.attribs.poster;
       }
-      if (currPlaceholderCount >= MAX_BLURRED_PLACEHOLDERS) {
+      if (placeholders >= MAX_BLURRED_PLACEHOLDERS) {
         break;
       }
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
-        currPlaceholderCount++;
-        promises.push(this.addBlurryPlaceholder_(tree, src)
-          .then((imgChild) => {
-            node.appendChild(imgChild);
-          })
-        );
+        placeholders++;
+        const p = this.addBlurryPlaceholder_(tree, src).then((img) => {
+            node.appendChild(img);
+          });
+        promises.push(p);
       }
     }
     return Promise.all(promises);
@@ -194,23 +193,25 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   shouldAddBlurryPlaceholder_(node, src, tagName) {
-    // Checks to see if the image doesn't have a source or if it already has a
-    // placeholder.
+    // Ensures current placeholders are not overridden.
     if (!src || this.hasPlaceholder_(node)) {
       return false;
     }
 
-    // Checks to see if the image is a jpeg.
+    // Non-JPEG images are not commonly featured in a role where blurred
+    // image placeholders would be wanted.
     if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
       return false;
     }
 
-    // Checks if the image has a noloading attribute
+    // Images with noloading attributes should not have any indicators that they
+    // are loading.
     if (tagName == 'amp-img' && node.attribs.noloading != null) {
       return false;
     }
 
-    // Checks if the image is a poster or a responsive image
+    // Checks if the image is a poster or a responsive image as these are the
+    // two most common cases where blurred placeholders would be wanted.
     const isPoster = tagName == 'amp-video';
     const isResponsiveImgWithLoading = (tagName == 'amp-img' &&
       node.attribs.layout == 'responsive');
