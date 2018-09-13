@@ -41,7 +41,7 @@ class RuntimeVersion {
     if (options.canary) {
       return this.fetchVersion_(CANARY_ENDPOINT, (data) => this.padVersionString(data[0]));
     }
-    return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.amp_runtime_version);
+    return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.ampRuntimeVersion);
   }
 
   /* PRIVATE */
