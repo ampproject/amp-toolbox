@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {findMetaViewport} = require('../HtmlDomHelper');
+const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
 
 /**
  * Adds preload instructions to the first 5 amp-img tags on the page, that don't use srcset.
@@ -51,7 +51,7 @@ class PreloadImages {
         break;
       }
       if (node.tagName === 'template') {
-        node = this.nextNode(node);
+        node = skipNodeAndChildren(node);
       } else {
         this.addImage(preloadImageMap, tree, node);
         node = node.nextNode();
@@ -64,13 +64,6 @@ class PreloadImages {
       head.insertAfter(preload, referenceNode);
       referenceNode = preload;
     }
-  }
-
-  nextNode(node) {
-    if (node.nextSibling) {
-      return node.nextSibling;
-    }
-    return this.nextNode(node.parent);
   }
 
   addImage(preloadImageMap, tree, node) {

@@ -16,11 +16,17 @@
 const sizeOf = require('image-size');
 const jimp = require('jimp');
 const PIXEL_TARGET = 60;
+const MAX_BLURRED_PLACEHOLDERS = 5;
+
+const {skipNodeAndChildren} = require('../HtmlDomHelper');
 
 /**
- * Adds placeholders for all AMP images and posters that are blurry versions of
- * the corresponding original source. The blur will be displayed as the
- * <amp-img> is rendering, and will fade out once the element is loaded.
+ * Adds placeholders for certain amp-img's and posters for amp-videos that are
+ * blurry versions of the corresponding original source. The blur will be
+ * displayed as the <amp-img> is rendering, and will fade out once the element
+ * is loaded. The current requirements of appending a blurry placeholder is for
+ * the element is to be a JPEG that is either responsive or a poster for an
+ * amp-video.
  */
 class AddBlurryImagePlaceholders {
   /**
@@ -34,23 +40,34 @@ class AddBlurryImagePlaceholders {
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
+    let placeholders = 0;
     for (let node = body; node !== null; node = node.nextNode()) {
       const {tagName} = node;
       let src;
+      if (tagName === 'template') {
+        node = skipNodeAndChildren(node);
+        continue;
+      }
       if (tagName === 'amp-img') {
         src = node.attribs.src;
       }
       if (tagName === 'amp-video' && node.attribs.poster) {
         src = node.attribs.poster;
       }
-      if (src && !this.hasPlaceholder_(node)) {
-        promises.push(this.addBlurryPlaceholder_(tree, src).then((imgChild) => {
-          node.appendChild(imgChild);
-        }));
+      if (placeholders >= MAX_BLURRED_PLACEHOLDERS) {
+        break;
+      }
+      if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
+        placeholders++;
+        const p = this.addBlurryPlaceholder_(tree, src).then((img) => {
+            node.appendChild(img);
+          });
+        promises.push(p);
       }
     }
     return Promise.all(promises);
   }
+
 
   /**
    * Adds a child image that is a blurry placeholder.
@@ -154,6 +171,51 @@ class AddBlurryImagePlaceholders {
       }
     });
     return false;
+  }
+
+  /**
+   * Checks if an image should have a blurred image placeholder.
+   * The current criteria for determining if a blurry image placeholder should
+   * be appended is as follows:
+   * - The source for the image should be a JPEG.
+   * - If the element is an amp-img that is responsive and does not have a no
+   * loading attribute OR the element is a poster on an amp-video
+   *
+   * This criteria was found to be the most common places where a blurry image
+   * placeholder would likely want to be used through manual examination of
+   * existing AMP pages.
+   * @param {Node} node The DOM element that is being checked to see if it
+   * should have a blurred placeholder.
+   * @param {string} src The image source that is being checked.
+   * @param {string} tagName The type of element that is being checked.
+   * @return {boolean} Whether or not the element should have a blurred
+   * placeholder child.
+   * @private
+   */
+  shouldAddBlurryPlaceholder_(node, src, tagName) {
+    // Ensures current placeholders are not overridden.
+    if (!src || this.hasPlaceholder_(node)) {
+      return false;
+    }
+
+    // Non-JPEG images are not commonly featured in a role where blurred
+    // image placeholders would be wanted.
+    if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
+      return false;
+    }
+
+    // Images with noloading attributes should not have any indicators that they
+    // are loading.
+    if (tagName == 'amp-img' && node.attribs.noloading != null) {
+      return false;
+    }
+
+    // Checks if the image is a poster or a responsive image as these are the
+    // two most common cases where blurred placeholders would be wanted.
+    const isPoster = tagName == 'amp-video';
+    const isResponsiveImgWithLoading = (tagName == 'amp-img' &&
+      node.attribs.layout == 'responsive');
+    return isPoster || isResponsiveImgWithLoading;
   }
 }
 
