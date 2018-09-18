@@ -45,10 +45,10 @@ describe('OneBehindFetch', () => {
       const expectedResult = 'hello';
       requestHandler.result = expectedResult;
       fetch.get('https://example.com')
-        .then((data) => {
-          expect(data).toBe(expectedResult);
-          done();
-        });
+          .then((data) => {
+            expect(data).toBe(expectedResult);
+            done();
+          });
     });
     it('uses a one behind caching model', (done) => {
       requestHandler.result = 'hello';
@@ -56,14 +56,14 @@ describe('OneBehindFetch', () => {
       fetch.get('https://example.com');
       requestHandler.result = 'world';
       fetch.get('https://example.com')
-        .then((data) => {
-          expect(data).toBe('hello');
-        });
+          .then((data) => {
+            expect(data).toBe('hello');
+          });
       fetch.get('https://example.com')
-        .then((data) => {
-          expect(data).toBe('world');
-          done();
-        });
+          .then((data) => {
+            expect(data).toBe('world');
+            done();
+          });
     });
   });
 });

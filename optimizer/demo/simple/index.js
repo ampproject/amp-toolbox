@@ -88,7 +88,7 @@ function collectInputFiles(pattern) {
 async function copyAndTransform(file, ampRuntimeVersion) {
   const originalHtml = await readFile(file);
   const ampFile = file.substring(1, file.length)
-    .replace('.html', '.amp.html');
+      .replace('.html', '.amp.html');
   // The transformer needs the path to the original AMP document
   // to correctly setup AMP to canonical linking
   const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {

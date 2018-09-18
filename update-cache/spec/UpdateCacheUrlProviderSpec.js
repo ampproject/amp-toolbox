@@ -47,9 +47,9 @@ describe('UpdateCacheUrlProvider', () => {
     it('Generates update cache URL for each known cache', () => {
       const timestamp = 1;
       updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp)
-        .then((result) => {
-          expect(result.length).toBe(2);
-        });
+          .then((result) => {
+            expect(result.length).toBe(2);
+          });
     });
   });
 });

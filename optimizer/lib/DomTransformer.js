@@ -40,7 +40,7 @@ class DomTransformer {
     params = params || {};
     const tree = treeParser.parse(html);
     return this.transformTree(tree, params)
-      .then(() => treeParser.serialize(tree));
+        .then(() => treeParser.serialize(tree));
   }
 
   /**

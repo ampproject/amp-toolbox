@@ -25,7 +25,7 @@ describe('Cli', () => {
 
   it('Triggers the correct command', (done) => {
     cli.run([])
-      .then(() => done())
-      .catch((e) => done.fail(e));
+        .then(() => done())
+        .catch((e) => done.fail(e));
   });
 });

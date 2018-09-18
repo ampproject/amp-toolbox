@@ -49,23 +49,23 @@ describe('Express Middleware', () => {
 
     it('Transforms URLs', () => {
       runMiddlewareForUrl(middleware, '/stuff?q=thing')
-        .then((result) => {
-          expect(result).toEqual('transformed: /stuff?q=thing&amp=');
-        });
+          .then((result) => {
+            expect(result).toEqual('transformed: /stuff?q=thing&amp=');
+          });
     });
 
     it('Skips Urls starting the "amp" query parameter', () => {
       runMiddlewareForUrl(middleware, '/stuff?q=thing&amp')
-        .then((result) => {
-          expect(result).toEqual('original');
-        });
+          .then((result) => {
+            expect(result).toEqual('original');
+          });
     });
 
     const runStaticTest = (url, expected) => {
       runMiddlewareForUrl(middleware, url)
-        .then((result) => {
-          expect(result).toEqual(expected);
-        });
+          .then((result) => {
+            expect(result).toEqual(expected);
+          });
     };
 
     ['/image.jpg', '/image.svg', '/script.js', '/style.css'].forEach((url) => {
@@ -78,16 +78,16 @@ describe('Express Middleware', () => {
 
     it('Applies transformation if req.accept method does not exist', () => {
       runMiddlewareForUrl(middleware, '/page.html', null)
-        .then((result) => {
-          expect(result).toEqual('transformed: /page.html?amp=');
-        });
+          .then((result) => {
+            expect(result).toEqual('transformed: /page.html?amp=');
+          });
     });
 
     it('Skips transformation if request does not accept HTML', () => {
       runMiddlewareForUrl(middleware, '/page.html', () => '')
-        .then((result) => {
-          expect(result).toEqual('original');
-        });
+          .then((result) => {
+            expect(result).toEqual('original');
+          });
     });
   });
 
@@ -100,9 +100,9 @@ describe('Express Middleware', () => {
 
     it('Sends the original content when optimizer fails', () => {
       runMiddlewareForUrl(middleware, '/page.html')
-        .then((result) => {
-          expect(result).toEqual('original');
-        });
+          .then((result) => {
+            expect(result).toEqual('original');
+          });
     });
   });
 
@@ -114,9 +114,9 @@ describe('Express Middleware', () => {
     it('Default runtimeVersion is null', () => {
       const middleware = AmpOptimizerMiddleware.create({ampOptimizer: transformer});
       runMiddlewareForUrl(middleware, '/page.html')
-        .then((result) => {
-          expect(result).toBe('');
-        });
+          .then((result) => {
+            expect(result).toBe('');
+          });
     });
 
     it('Uses runtimeVersion when set', () => {
@@ -126,9 +126,9 @@ describe('Express Middleware', () => {
         runtimeVersion: runtimeVersion,
       });
       runMiddlewareForUrl(middleware, '/page.html')
-        .then((result) => {
-          expect(result).toBe('1');
-        });
+          .then((result) => {
+            expect(result).toBe('1');
+          });
     });
 
     it('Uses null if runtimeVersion fails', () => {
@@ -138,9 +138,9 @@ describe('Express Middleware', () => {
         runtimeVersion: runtimeVersion,
       });
       runMiddlewareForUrl(middleware, '/page.html')
-        .then((result) => {
-          expect(result).toBe('');
-        });
+          .then((result) => {
+            expect(result).toBe('');
+          });
     });
   });
 });

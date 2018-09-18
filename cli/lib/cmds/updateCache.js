@@ -26,10 +26,10 @@ function updateCaches_(privateKey, url, logger) {
   try {
     const updateCacheUrlProvider = UpdateCacheUrlProvider.create(privateKey);
     return updateCacheUrlProvider.calculateFromOriginUrl(url)
-      .then((cacheUpdateUrls) => {
-        cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache_(cacheUpdateUrl, logger));
-        return;
-      });
+        .then((cacheUpdateUrls) => {
+          cacheUpdateUrls.forEach((cacheUpdateUrl) => updateCache_(cacheUpdateUrl, logger));
+          return;
+        });
   } catch (e) {
     return Promise.reject(new Error(`Error generating cache invalidation URL: ${e}`));
   }
@@ -41,30 +41,30 @@ function updateCache_(cacheUpdateUrlInfo, logger) {
   logger.info(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
 
   fetch(cacheUpdateUrlInfo.updateCacheUrl)
-    .then((response) => {
-      if (response.status === 200) {
-        logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
-        return;
-      }
-      return response.text()
-        .then((body) => {
-          const match = errorRegex.exec(body);
-          if (match) {
-            logger.error(
-              `Error Invalidating Cache URL. Received response code "${response.status}" with ` +
-              `message: "${match[1]}"`, tag
-            );
-          } else {
-            logger.error(
-              `Error Invalidating Cache URL. Received response code "${response.status}" with `+
-              'an unknown error', tag
-            );
-          }
-        });
-    })
-    .catch((e) => {
-      logger.warn(`Error connecting to the AMP Cache with message: "${e.message}"`, tag);
-    });
+      .then((response) => {
+        if (response.status === 200) {
+          logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
+          return;
+        }
+        return response.text()
+            .then((body) => {
+              const match = errorRegex.exec(body);
+              if (match) {
+                logger.error(
+                    `Error Invalidating Cache URL. Received response code "${response.status}" ` +
+                    `with message: "${match[1]}"`, tag
+                );
+              } else {
+                logger.error(
+                    `Error Invalidating Cache URL. Received response code "${response.status}"` +
+                    'with an unknown error', tag
+                );
+              }
+            });
+      })
+      .catch((e) => {
+        logger.warn(`Error connecting to the AMP Cache with message: "${e.message}"`, tag);
+      });
 }
 
 function updateCache(args, logger) {
