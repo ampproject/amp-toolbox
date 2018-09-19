@@ -37,19 +37,19 @@ describe('Dom Transformer', () => {
   describe('transformHtml', () => {
     it('supports sync transformers', (done) => {
       domTransformerWith(new SimpleTransformer())
-        .transformHtml('<html><head></head><body></body></html>')
-        .then((result) => {
-          expect(result).toEqual('<html test="simple"><head></head><body></body></html>');
-          done();
-        });
+          .transformHtml('<html><head></head><body></body></html>')
+          .then((result) => {
+            expect(result).toEqual('<html test="simple"><head></head><body></body></html>');
+            done();
+          });
     });
     it('supports async transformers', (done) => {
       domTransformerWith(new SimpleTransformerWithPromise())
-        .transformHtml('<html><head></head><body></body></html>')
-        .then((result) => {
-          expect(result).toEqual('<html test="promise"><head></head><body></body></html>');
-          done();
-        });
+          .transformHtml('<html><head></head><body></body></html>')
+          .then((result) => {
+            expect(result).toEqual('<html test="promise"><head></head><body></body></html>');
+            done();
+          });
     });
   });
 });

@@ -57,7 +57,7 @@ class CheerioTransformer {
     $('title').text('Optimized: ' + $('title').text());
     // Injects amp-fx-parallax component
     $('head').append(
-      '<script async custom-element="amp-fx-parallax" src="https://cdn.ampproject.org/v0/amp-fx-parallax-0.1.js"></script>'
+        '<script async custom-element="amp-fx-parallax" src="https://cdn.ampproject.org/v0/amp-fx-parallax-0.1.js"></script>'
     );
     // Enables parallax scrolling
     $('h1').attr('amp-fx-parallax', params.ampFxParallax);
@@ -86,7 +86,7 @@ optimizer.setConfig({
 });
 
 console.log(optimizer.transformHtml(
-  fs.readFileSync(FILENAME, 'utf8'),
-  {ampFxParallax: '1.7'}
+    fs.readFileSync(FILENAME, 'utf8'),
+    {ampFxParallax: '1.7'}
 ));
 

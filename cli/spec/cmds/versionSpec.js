@@ -26,11 +26,11 @@ describe('Version', () => {
   it('prints the version', (done) => {
     mockLogger.clear();
     versionCmd({}, mockLogger)
-      .then(() => {
-        const output = mockLogger.getLogs();
-        expect(output).toBe(`v${packageInfo.version}`);
-        done();
-      })
-      .catch((e) => done.fail(e));
+        .then(() => {
+          const output = mockLogger.getLogs();
+          expect(output).toBe(`v${packageInfo.version}`);
+          done();
+        })
+        .catch((e) => done.fail(e));
   });
 });

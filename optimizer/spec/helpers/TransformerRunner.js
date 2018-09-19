@@ -31,8 +31,8 @@ module.exports = function(testConfig) {
     getDirectories(testConfig.testDir).forEach((testDir) => {
       beforeEach(() => {
         nock('https://cdn.ampproject.org')
-          .get('/rtv/001515617716922/v0.css')
-          .reply(200, '/* v0.css */');
+            .get('/rtv/001515617716922/v0.css')
+            .reply(200, '/* v0.css */');
       });
       it(basename(testDir), (done) => {
         let params = TRANSFORMER_PARAMS;
@@ -54,7 +54,7 @@ module.exports = function(testConfig) {
         const expectedOutputTree = treeParser.parse(expectedOutput);
 
         Promise.resolve(
-          testConfig.transformer.transform(inputTree, params)
+            testConfig.transformer.transform(inputTree, params)
         ).then(() => {
           compare(inputTree, expectedOutputTree, done);
         }).catch((error) => done.fail(error));

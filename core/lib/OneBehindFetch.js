@@ -61,10 +61,10 @@ class OneBehindFetch {
     }
     const staleData = response.data;
     response.data = this.axios_.get(url)
-      .then((fetchResponse) => {
-        response.maxAge = MaxAge.parse(fetchResponse.headers['cache-control']);
-        return fetchResponse.data;
-      });
+        .then((fetchResponse) => {
+          response.maxAge = MaxAge.parse(fetchResponse.headers['cache-control']);
+          return fetchResponse.data;
+        });
     return staleData || response.data;
   }
 }

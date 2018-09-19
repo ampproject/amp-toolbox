@@ -42,13 +42,13 @@ class UpdateCacheUrlProvider {
    */
   calculateFromOriginUrl(originUrl, timestamp = defaultTimestamp_()) {
     return this._caches.list()
-      .then((caches) => {
-        return caches.map((cache) => {
-          const cacheUrl = createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl);
-          const updateCacheUrl = this.calculateFromCacheUrl(cacheUrl, timestamp);
-          return {cacheId: cache.id, cacheName: cache.name, updateCacheUrl: updateCacheUrl};
+        .then((caches) => {
+          return caches.map((cache) => {
+            const cacheUrl = createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl);
+            const updateCacheUrl = this.calculateFromCacheUrl(cacheUrl, timestamp);
+            return {cacheId: cache.id, cacheName: cache.name, updateCacheUrl: updateCacheUrl};
+          });
         });
-      });
   }
 
   /**

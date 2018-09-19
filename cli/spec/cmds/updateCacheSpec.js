@@ -28,20 +28,20 @@ describe('update-cache', () => {
 
   it('Display Error if URL is missing', (done) => {
     updateCacheCmd({'_': []}, mockLogger)
-      .then(() => done(new Error('Expected Promise to be Rejected')))
-      .catch((err) => {
-        expect(err.message).toBe('Missing URL');
-        done();
-      });
+        .then(() => done(new Error('Expected Promise to be Rejected')))
+        .catch((err) => {
+          expect(err.message).toBe('Missing URL');
+          done();
+        });
   });
 
   it('Displays an Error if privateKey is unavailable', (done) => {
     updateCacheCmd({'_': ['', 'https://www.example.com']}, mockLogger)
-      .then(() => done(new Error('Expected Promise to be Rejected')))
-      .catch((err) => {
-        expect(err.message).toBe('./privateKey.pem does not exist');
-        done();
-      });
+        .then(() => done(new Error('Expected Promise to be Rejected')))
+        .catch((err) => {
+          expect(err.message).toBe('./privateKey.pem does not exist');
+          done();
+        });
   });
 
   it('Displays an Error if privateKey is invalid', (done) => {
@@ -51,11 +51,11 @@ describe('update-cache', () => {
     };
 
     updateCacheCmd(args, mockLogger)
-      .then(() => done(new Error('Expected Promise to be Rejected')))
-      .catch((err) => {
-        expect(err.message)
-          .toBe('Error generating cache invalidation URL: init failed:not supported argument');
-        done();
-      });
+        .then(() => done(new Error('Expected Promise to be Rejected')))
+        .catch((err) => {
+          expect(err.message)
+              .toBe('Error generating cache invalidation URL: init failed:not supported argument');
+          done();
+        });
   });
 });

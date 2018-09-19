@@ -60,8 +60,8 @@ class AddBlurryImagePlaceholders {
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
         const p = this.addBlurryPlaceholder_(tree, src).then((img) => {
-            node.appendChild(img);
-          });
+          node.appendChild(img);
+        });
         promises.push(p);
       }
     }
@@ -101,9 +101,9 @@ class AddBlurryImagePlaceholders {
   getDataURI_(img) {
     const bitMapDims = this.getBitmapDimensions_(img);
     return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
-      .then((dataURI) => {
-        img.attribs.src = dataURI;
-      });
+        .then((dataURI) => {
+          img.attribs.src = dataURI;
+        });
   }
 
   /**
@@ -147,14 +147,14 @@ class AddBlurryImagePlaceholders {
    */
   createBitmap_(img, width, height) {
     return jimp.read(img.attribs.src)
-      .then((image) => {
-        image.resize(width, height, jimp.RESIZE_BEZIER);
-        return image.getBase64Async('image/png');
-      })
-      .catch((err) => {
-        console.error('Jimp error during the creation of the bitmap/the' +
+        .then((image) => {
+          image.resize(width, height, jimp.RESIZE_BEZIER);
+          return image.getBase64Async('image/png');
+        })
+        .catch((err) => {
+          console.error('Jimp error during the creation of the bitmap/the' +
           'encoding of the data URI: ' + err);
-      });
+        });
   }
 
   /**
