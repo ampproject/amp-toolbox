@@ -80,7 +80,7 @@ class AddBlurryImagePlaceholders {
    */
   addBlurryPlaceholder_(tree, src) {
     const img = tree.createElement('img');
-    img.attribs.class = 'i-amphtml-blur';
+    img.attribs.class = 'i-amphtml-blurry-placeholder';
     img.attribs.placeholder = '';
     img.attribs.src = src;
     return this.getDataURI_(img).then((dataURI) => {
