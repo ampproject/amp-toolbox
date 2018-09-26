@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 const sizeOf = require('image-size');
 const jimp = require('jimp');
 const PIXEL_TARGET = 60;
@@ -74,15 +75,27 @@ class AddBlurryImagePlaceholders {
    * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
    * @return {!Promise} A promise that signifies that the img has been updated
-   * to have correct attributes to be a blurred placeholder.
+   * to have correct attributes to be a blurred placeholder along with the
+   * placeholder itself.
    * @private
    */
   addBlurryPlaceholder_(tree, src) {
     const img = tree.createElement('img');
-    img.attribs.src = src;
     img.attribs.class = 'i-amphtml-blur';
     img.attribs.placeholder = '';
-    return this.getDataURI_(img).then(() => {
+    img.attribs.src = src;
+    return this.getDataURI_(img).then((dataURI) => {
+      const svg = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/'
+      + 'svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' viewBox=\'0 0 '
+      + dataURI.width + ' ' + dataURI.height
+      + '\'%3E%3Cfilter id=\'b\' color-interpolation-filters=\'sRGB\'%3E%3C'
+      + 'feGaussianBlur stdDeviation=\'.5\'%3E%3C/feGaussianBlur%3E%3C'
+      + 'feComponentTransfer%3E%3CfeFuncA type=\'discrete\' tableValues=\''
+      + '1 1%0A\'%3E%3C/feFuncA%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C'
+      + 'image filter=\'url(%23b)\' x=\'0\' y=\'0\' height=\'100%25\' width=\'1'
+      + '00%25\' xlink:href=\'' + dataURI.src
+      + '\'%3E%3C/image%3E%3C/svg%3E%0A ';
+      img.attribs.src = svg;
       return img;
     }).catch((err) => {
       console.error('AddBlurryImagePlaceholders transformer error during the ' +
@@ -102,7 +115,7 @@ class AddBlurryImagePlaceholders {
     const bitMapDims = this.getBitmapDimensions_(img);
     return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
       .then((dataURI) => {
-        img.attribs.src = dataURI;
+        return {src: dataURI, width: bitMapDims.width, height: bitMapDims.height};
       });
   }
 
