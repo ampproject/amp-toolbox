@@ -84,17 +84,17 @@ class AddBlurryImagePlaceholders {
     img.attribs.placeholder = '';
     img.attribs.src = src;
     return this.getDataURI_(img).then((dataURI) => {
-      const svg = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/'
-      + 'svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' viewBox=\'0 0 '
-      + dataURI.width + ' ' + dataURI.height
-      + '\'%3E%3Cfilter id=\'b\' color-interpolation-filters=\'sRGB\'%3E%3C'
-      + 'feGaussianBlur stdDeviation=\'.5\'%3E%3C/feGaussianBlur%3E%3C'
-      + 'feComponentTransfer%3E%3CfeFuncA type=\'discrete\' tableValues=\''
-      + '1 1%0A\'%3E%3C/feFuncA%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C'
-      + 'image filter=\'url(%23b)\' x=\'0\' y=\'0\' height=\'100%25\' width=\'1'
-      + '00%25\' xlink:href=\'' + dataURI.src
-      + '\'%3E%3C/image%3E%3C/svg%3E%0A ';
-      img.attribs.src = svg;
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww`
+      + `w.w3.org/1999/xlink" viewBox="0 0 ${dataURI.width} ${dataURI.height}">`
+      + `<filter id="b" color-interpolation-filters="sRGB"><feGaussianBlur stdD`
+      + `eviation=".5"></feGaussianBlur><feComponentTransfer><feFuncA type="dis`
+      + `crete" tableValues="1 1%0A"></feFuncA></feComponentTransfer></filter><`
+      + `image filter="url(#b)" x="0" y="0" height="100%" width="100%" xlink:hr`
+      + `ef="${dataURI.src}"></image></svg>`;
+      svg = svg.replace(/"/g, '\'');
+      svg = encodeURI(svg);
+      svg = svg.replace(/%20/g, " ");
+      img.attribs.src = 'data:image/svg+xml,'+svg;
       return img;
     }).catch((err) => {
       console.error('AddBlurryImagePlaceholders transformer error during the ' +
@@ -114,8 +114,11 @@ class AddBlurryImagePlaceholders {
     const bitMapDims = this.getBitmapDimensions_(img);
     return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
         .then((dataURI) => {
-          return {src: dataURI, width: bitMapDims.width,
-            height: bitMapDims.height};
+          return {
+            src: dataURI,
+            width: bitMapDims.width,
+            height: bitMapDims.height,
+          };
         });
   }
 
