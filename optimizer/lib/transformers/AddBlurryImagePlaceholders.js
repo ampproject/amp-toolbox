@@ -84,16 +84,16 @@ class AddBlurryImagePlaceholders {
     img.attribs.placeholder = '';
     img.attribs.src = src;
     return this.getDataURI_(img).then((dataURI) => {
-      let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww`
+      let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww'
       + `w.w3.org/1999/xlink" viewBox="0 0 ${dataURI.width} ${dataURI.height}">`
-      + `<filter id="b" color-interpolation-filters="sRGB"><feGaussianBlur stdD`
-      + `eviation=".5"></feGaussianBlur><feComponentTransfer><feFuncA type="dis`
-      + `crete" tableValues="1 1%0A"></feFuncA></feComponentTransfer></filter><`
-      + `image filter="url(#b)" x="0" y="0" height="100%" width="100%" xlink:hr`
+      + '<filter id="b" color-interpolation-filters="sRGB"><feGaussianBlur stdD'
+      + 'eviation=".5"></feGaussianBlur><feComponentTransfer><feFuncA type="dis'
+      + 'crete" tableValues="1 1%0A"></feFuncA></feComponentTransfer></filter><'
+      + 'image filter="url(#b)" x="0" y="0" height="100%" width="100%" xlink:hr'
       + `ef="${dataURI.src}"></image></svg>`;
       svg = svg.replace(/"/g, '\'');
       svg = encodeURI(svg);
-      svg = svg.replace(/%20/g, " ");
+      svg = svg.replace(/%20/g, ' ');
       img.attribs.src = 'data:image/svg+xml,'+svg;
       return img;
     }).catch((err) => {
