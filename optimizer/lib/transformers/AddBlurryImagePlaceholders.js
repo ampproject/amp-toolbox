@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 const sizeOf = require('image-size');
 const jimp = require('jimp');
 const PIXEL_TARGET = 60;
@@ -114,9 +113,10 @@ class AddBlurryImagePlaceholders {
   getDataURI_(img) {
     const bitMapDims = this.getBitmapDimensions_(img);
     return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
-      .then((dataURI) => {
-        return {src: dataURI, width: bitMapDims.width, height: bitMapDims.height};
-      });
+        .then((dataURI) => {
+          return {src: dataURI, width: bitMapDims.width,
+            height: bitMapDims.height};
+        });
   }
 
   /**
