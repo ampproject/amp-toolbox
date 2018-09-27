@@ -84,17 +84,26 @@ class AddBlurryImagePlaceholders {
     img.attribs.placeholder = '';
     img.attribs.src = src;
     return this.getDataURI_(img).then((dataURI) => {
-      let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://ww'
-      + `w.w3.org/1999/xlink" viewBox="0 0 ${dataURI.width} ${dataURI.height}">`
-      + '<filter id="b" color-interpolation-filters="sRGB"><feGaussianBlur stdD'
-      + 'eviation=".5"></feGaussianBlur><feComponentTransfer><feFuncA type="dis'
-      + 'crete" tableValues="1 1%0A"></feFuncA></feComponentTransfer></filter><'
-      + 'image filter="url(#b)" x="0" y="0" height="100%" width="100%" xlink:hr'
-      + `ef="${dataURI.src}"></image></svg>`;
-      svg = svg.replace(/"/g, '\'');
+      const svgOpen = '<svg xmlns="http://www.w3.org/2000/svg" '
+          + 'xmlns:xlink="http://www.w3.org/1999/xlink" '
+          + `viewBox="0 0 ${dataURI.width} ${dataURI.height}">`;
+      const filterOpen = '<filter id="b" color-interpolation-filters="sRGB">';
+      const blur = '<feGaussianBlur stdDeviation=".5"></feGaussianBlur>';
+      const componentTransferOpen = '<feComponentTransfer>';
+      const func = '<feFuncA type="discrete" tableValues="1 1%0A"></feFuncA>';
+      const componentTransferClose = '</feComponentTransfer>';
+      const filterClose = '</filter>';
+      const image = '<image filter="url(#b)" x="0" y="0" '
+          + 'height="100%" width="100%" '
+          + `xlink:href="${dataURI.src}"></image>`;
+      const svgClose = '</svg>';
+      const html = svgOpen + filterOpen + blur + componentTransferOpen + func
+          + componentTransferClose + filterClose + image + svgClose;
+      let svg = html.replace(/"/g, '\'');
       svg = encodeURI(svg);
+      // Decodes spaces to shorten dataURI length.
       svg = svg.replace(/%20/g, ' ');
-      img.attribs.src = 'data:image/svg+xml,'+svg;
+      img.attribs.src = 'data:image/svg+xml,' + svg;
       return img;
     }).catch((err) => {
       console.error('AddBlurryImagePlaceholders transformer error during the ' +
