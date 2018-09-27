@@ -90,7 +90,7 @@ class AddBlurryImagePlaceholders {
       const filterOpen = '<filter id="b" color-interpolation-filters="sRGB">';
       const blur = '<feGaussianBlur stdDeviation=".5"></feGaussianBlur>';
       const componentTransferOpen = '<feComponentTransfer>';
-      const func = '<feFuncA type="discrete" tableValues="1 1%0A"></feFuncA>';
+      const func = '<feFuncA type="discrete" tableValues="1 1"></feFuncA>';
       const componentTransferClose = '</feComponentTransfer>';
       const filterClose = '</filter>';
       const image = '<image filter="url(#b)" x="0" y="0" '
@@ -101,7 +101,7 @@ class AddBlurryImagePlaceholders {
           + componentTransferClose + filterClose + image + svgClose;
       let svg = html.replace(/"/g, '\'');
       svg = encodeURI(svg);
-      // Decodes spaces to shorten dataURI length.
+      // Decodes spaces to optimize dataURI length.
       svg = svg.replace(/%20/g, ' ');
       img.attribs.src = 'data:image/svg+xml,' + svg;
       return img;
