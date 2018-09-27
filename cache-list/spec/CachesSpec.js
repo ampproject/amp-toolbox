@@ -19,7 +19,7 @@
 const AmpCaches = require('../index');
 
 const CACHES_JSON = JSON.parse(
-`{
+    `{
   "caches": [
     {
       "id": "google",
@@ -39,25 +39,25 @@ describe('Caches', () => {
   describe('list', () => {
     it('returns an array with the caches', () => {
       caches.list()
-        .then((cacheList) => {
-          expect(cacheList.length).toBe(1);
-        });
+          .then((cacheList) => {
+            expect(cacheList.length).toBe(1);
+          });
     });
   });
 
   describe('get', () => {
     it('returns the correct cache', () => {
       caches.get('google')
-        .then((googleCache) => {
-          expect(googleCache).toBe(CACHES_JSON.caches[0]);
-        });
+          .then((googleCache) => {
+            expect(googleCache).toBe(CACHES_JSON.caches[0]);
+          });
     });
 
     it('returns undefined for unexisting cache', () => {
       caches.get('unexisting')
-        .then((cache) => {
-          expect(cache).toBeUndefined();
-        });
+          .then((cache) => {
+            expect(cache).toBeUndefined();
+          });
     });
   });
 });

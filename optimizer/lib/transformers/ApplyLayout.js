@@ -116,7 +116,7 @@ module.exports = {
     const width = calculateWidth(ampLayout, inputWidth, customElement.tagName);
 
     const layout = calculateLayout(ampLayout, width, height,
-      getAttributeOrNull(customElement, 'sizes'), getAttributeOrNull(customElement, 'heights'));
+        getAttributeOrNull(customElement, 'sizes'), getAttributeOrNull(customElement, 'heights'));
 
     if (!isSupportedLayout(layout)) {
       return false;

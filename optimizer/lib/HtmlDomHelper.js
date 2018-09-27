@@ -38,11 +38,11 @@ function findMetaViewport(head) {
  * subtree.
  */
 function skipNodeAndChildren(node) {
-    if (node.nextSibling) {
-      return node.nextSibling;
-    }
-    return skipNodeAndChildren(node.parent);
+  if (node.nextSibling) {
+    return node.nextSibling;
   }
+  return skipNodeAndChildren(node.parent);
+}
 
 /** @module HtmlDomHelper */
 module.exports = {

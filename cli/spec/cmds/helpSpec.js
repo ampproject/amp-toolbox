@@ -32,12 +32,12 @@ describe('Version', () => {
       _: ['help'],
     };
     helpCmd(args, mockLogger)
-      .then(() => {
-        const output = mockLogger.getLogs();
-        expect(output).toBe(messages['main']);
-        done();
-      })
-      .catch((e) => done.fail(e));
+        .then(() => {
+          const output = mockLogger.getLogs();
+          expect(output).toBe(messages['main']);
+          done();
+        })
+        .catch((e) => done.fail(e));
   });
 
   it('prints the generic help, if unknown command', (done) => {
@@ -45,12 +45,12 @@ describe('Version', () => {
       _: ['help', 'unknown'],
     };
     helpCmd(args, mockLogger)
-      .then(() => {
-        const output = mockLogger.getLogs();
-        expect(output).toBe(messages['main']);
-        done();
-      })
-      .catch((e) => done.fail(e));
+        .then(() => {
+          const output = mockLogger.getLogs();
+          expect(output).toBe(messages['main']);
+          done();
+        })
+        .catch((e) => done.fail(e));
   });
 
   it('prints help for "update-cache"', (done) => {
@@ -58,11 +58,11 @@ describe('Version', () => {
       _: ['help', 'update-cache'],
     };
     helpCmd(args, mockLogger)
-      .then(() => {
-        const output = mockLogger.getLogs();
-        expect(output).toBe(messages['update-cache']);
-        done();
-      })
-      .catch((e) => done.fail(e));
+        .then(() => {
+          const output = mockLogger.getLogs();
+          expect(output).toBe(messages['update-cache']);
+          done();
+        })
+        .catch((e) => done.fail(e));
   });
 });

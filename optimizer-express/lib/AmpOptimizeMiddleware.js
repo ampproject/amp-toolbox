@@ -117,24 +117,24 @@ class AmpOptimizerMiddleware {
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
 
         runtimeVersion()
-          .catch((err) => {
-            console.error('Error retrieving ampRuntimeVersion: ', err);
-            return null;
-          })
-          .then((version) => {
-            const ampOptimizerParams = req.ampOptimizerParams || {};
-            ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
-            ampOptimizerParams.ampRuntimeVersion = version;
-            return optimizer.transformHtml(body, ampOptimizerParams);
-          })
-          .then((transformedBody) => {
-            res.setHeader('Content-Length', Buffer.byteLength(transformedBody, 'utf-8'));
-            res.end(transformedBody, 'utf-8');
-          })
-          .catch((err) => {
-            console.error('Error applying AMP Optimizer. Sending original page', err);
-            res.end(body);
-          });
+            .catch((err) => {
+              console.error('Error retrieving ampRuntimeVersion: ', err);
+              return null;
+            })
+            .then((version) => {
+              const ampOptimizerParams = req.ampOptimizerParams || {};
+              ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
+              ampOptimizerParams.ampRuntimeVersion = version;
+              return optimizer.transformHtml(body, ampOptimizerParams);
+            })
+            .then((transformedBody) => {
+              res.setHeader('Content-Length', Buffer.byteLength(transformedBody, 'utf-8'));
+              res.end(transformedBody, 'utf-8');
+            })
+            .catch((err) => {
+              console.error('Error applying AMP Optimizer. Sending original page', err);
+              res.end(body);
+            });
       };
 
       next();

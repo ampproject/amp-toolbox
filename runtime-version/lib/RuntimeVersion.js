@@ -47,9 +47,9 @@ class RuntimeVersion {
   /* PRIVATE */
   fetchVersion_(url, process) {
     return this.request_.get(url)
-      .then((data) => {
-        return this.padVersionString(process(data));
-      });
+        .then((data) => {
+          return this.padVersionString(process(data));
+        });
   }
 
   padVersionString(version) {

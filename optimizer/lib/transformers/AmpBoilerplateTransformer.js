@@ -77,7 +77,7 @@ class AmpBoilerplateTransformer {
     const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
     node.attribs['i-amphtml-version'] = version;
     return this.fetch_.get(versionedV0CssUrl)
-      .then((body) => node.insertText(body));
+        .then((body) => node.insertText(body));
   }
 }
 
