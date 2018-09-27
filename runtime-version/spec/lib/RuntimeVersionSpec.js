@@ -35,14 +35,12 @@ describe('RuntimeVersion', () => {
     it('pads release version to 15 chars', (done) => {
       runtimeVersion.currentVersion().then((version) => {
         expect(version.length).toBe(15);
-        expect(version.startsWith('01')).toBe(true);
         done();
       });
     });
     it('pads canary version to 15 chars', (done) => {
       runtimeVersion.currentVersion({canary: true}).then((version) => {
         expect(version.length).toBe(15);
-        expect(version.startsWith('00')).toBe(true);
         done();
       });
     });
