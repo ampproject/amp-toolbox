@@ -84,25 +84,30 @@ class AddBlurryImagePlaceholders {
     img.attribs.placeholder = '';
     img.attribs.src = src;
     return this.getDataURI_(img).then((dataURI) => {
-      const svgOpen = '<svg xmlns="http://www.w3.org/2000/svg" '
-          + 'xmlns:xlink="http://www.w3.org/1999/xlink" '
-          + `viewBox="0 0 ${dataURI.width} ${dataURI.height}">`;
-      const filterOpen = '<filter id="b" color-interpolation-filters="sRGB">';
-      const blur = '<feGaussianBlur stdDeviation=".5"></feGaussianBlur>';
-      const componentTransferOpen = '<feComponentTransfer>';
-      const func = '<feFuncA type="discrete" tableValues="1 1"></feFuncA>';
-      const componentTransferClose = '</feComponentTransfer>';
-      const filterClose = '</filter>';
-      const image = '<image filter="url(#b)" x="0" y="0" '
-          + 'height="100%" width="100%" '
-          + `xlink:href="${dataURI.src}"></image>`;
-      const svgClose = '</svg>';
-      const html = svgOpen + filterOpen + blur + componentTransferOpen + func
-          + componentTransferClose + filterClose + image + svgClose;
+      const html = `<svg xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" 
+                      viewBox="0 0 ${dataURI.width} ${dataURI.height}">
+                      <filter id="b" color-interpolation-filters="sRGB">
+                        <feGaussianBlur stdDeviation=".5"></feGaussianBlur>
+                        <feComponentTransfer>
+                          <feFuncA type="discrete" tableValues="1 1"></feFuncA>
+                        </feComponentTransfer>
+                      </filter>
+                      <image filter="url(#b)" x="0" y="0" 
+                        height="100%" width="100%" 
+                        xlink:href="${dataURI.src}">
+                      </image>  
+                    </svg>`;
       let svg = html.replace(/"/g, '\'');
       svg = encodeURI(svg);
-      // Decodes spaces to optimize dataURI length.
+
+      // Optimizes dataURI length by deleting line breaks, decoding spaces, and
+      // removing unnecessary spaces.
+      svg = svg.replace(/%0A/g, '');
       svg = svg.replace(/%20/g, ' ');
+      svg = svg.replace(/\s+/g, ' ');
+      svg = svg.replace(/\%3E %3C/g, '\%3E%3C');
+
       img.attribs.src = 'data:image/svg+xml,' + svg;
       return img;
     }).catch((err) => {
