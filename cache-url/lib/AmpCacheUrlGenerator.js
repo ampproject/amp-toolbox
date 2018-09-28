@@ -17,28 +17,33 @@
 'use strict';
 
 const {URL} = require('url');
-const punycode = require('punycode');
-const mime = require('mime-types');
+const constructCurlsDomain = require('./AmpCurlUrlGenerator'); 
 
 /**
  * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
+ * Example:
+ * createCacheUrl('cdn.ampproject.org', 'hello-world.com')
+ * // Should resolve: 'https://hello--world-com.cdn.ampproject.org/c/s/hello-world.com'
+ *
  * @param {string} domainSuffix the AMP Cache domain suffix
  * @param {string} url the canonical URL
+ * @returns Promise
  */
 function createCacheUrl(domainSuffix, url) {
-  const cacheUrl = new URL(url);
-  const originalHostname = cacheUrl.hostname;
-  let unicodeHostname = punycode.toUnicode(originalHostname);
-  unicodeHostname = unicodeHostname.replace(/-/g, '--');
-  unicodeHostname = unicodeHostname.replace(/\./g, '-');
+  return new Promise((resolve, reject) => {
 
-  let pathSegment = _getResourcePath(cacheUrl.pathname);
-  pathSegment += cacheUrl.protocol === 'https:' ? '/s/' : '/';
+    const canonicalUrl = new URL(url);
+    let pathSegment = _getResourcePath(canonicalUrl.pathname);
+    pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
 
-  cacheUrl.protocol = 'https';
-  cacheUrl.hostname = punycode.toASCII(unicodeHostname) + '.' + domainSuffix;
-  cacheUrl.pathname = pathSegment + originalHostname + cacheUrl.pathname;
-  return cacheUrl.toString();
+    constructCurlsDomain(canonicalUrl.toString()).then((curlsDomain) => {
+      const cacheUrl = new URL(url);
+      cacheUrl.protocol = 'https';
+      cacheUrl.hostname = curlsDomain + '.' + domainSuffix;
+      cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
+      resolve(cacheUrl.toString());
+    });
+  });
 }
 
 /**
