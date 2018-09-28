@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "devDependencies": {
-    "eslint": "5.6.0",
+    "eslint": "5.6.1",
     "eslint-config-google": "0.10.0",
     "jasmine": "3.2.0"
   },
