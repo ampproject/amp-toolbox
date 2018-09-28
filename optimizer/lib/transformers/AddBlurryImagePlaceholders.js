@@ -74,15 +74,41 @@ class AddBlurryImagePlaceholders {
    * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
    * @return {!Promise} A promise that signifies that the img has been updated
-   * to have correct attributes to be a blurred placeholder.
+   * to have correct attributes to be a blurred placeholder along with the
+   * placeholder itself.
    * @private
    */
   addBlurryPlaceholder_(tree, src) {
     const img = tree.createElement('img');
-    img.attribs.src = src;
-    img.attribs.class = 'i-amphtml-blur';
+    img.attribs.class = 'i-amphtml-blurry-placeholder';
     img.attribs.placeholder = '';
-    return this.getDataURI_(img).then(() => {
+    img.attribs.src = src;
+    return this.getDataURI_(img).then((dataURI) => {
+      const html = `<svg xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" 
+                      viewBox="0 0 ${dataURI.width} ${dataURI.height}">
+                      <filter id="b" color-interpolation-filters="sRGB">
+                        <feGaussianBlur stdDeviation=".5"></feGaussianBlur>
+                        <feComponentTransfer>
+                          <feFuncA type="discrete" tableValues="1 1"></feFuncA>
+                        </feComponentTransfer>
+                      </filter>
+                      <image filter="url(#b)" x="0" y="0" 
+                        height="100%" width="100%" 
+                        xlink:href="${dataURI.src}">
+                      </image>  
+                    </svg>`;
+      let svg = html.replace(/"/g, '\'');
+      svg = encodeURI(svg);
+
+      // Optimizes dataURI length by deleting line breaks, decoding spaces, and
+      // removing unnecessary spaces.
+      svg = svg.replace(/%0A/g, '');
+      svg = svg.replace(/%20/g, ' ');
+      svg = svg.replace(/\s+/g, ' ');
+      svg = svg.replace(/\%3E %3C/g, '\%3E%3C');
+
+      img.attribs.src = 'data:image/svg+xml,' + svg;
       return img;
     }).catch((err) => {
       console.error('AddBlurryImagePlaceholders transformer error during the ' +
@@ -102,7 +128,11 @@ class AddBlurryImagePlaceholders {
     const bitMapDims = this.getBitmapDimensions_(img);
     return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
         .then((dataURI) => {
-          img.attribs.src = dataURI;
+          return {
+            src: dataURI,
+            width: bitMapDims.width,
+            height: bitMapDims.height,
+          };
         });
   }
 
