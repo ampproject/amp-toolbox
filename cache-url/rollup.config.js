@@ -12,7 +12,7 @@ const plugins = [
   commonjs(),
   json(),
   builtins(),
-  compiler()
+  compiler(),
 ];
 
 export default [
