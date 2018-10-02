@@ -16,7 +16,7 @@
 
 'use strict';
 
-const url = require('url');
+const Url = require('url').URL;
 const punycode = require('punycode');
 const mime = require('mime-types');
 
@@ -26,7 +26,7 @@ const mime = require('mime-types');
  * @param {string} url the canonical URL
  */
 function createCacheUrl(domainSuffix, url) {
-  const cacheUrl = new url.URL(url);
+  const cacheUrl = new Url(url);
   const originalHostname = cacheUrl.hostname;
   let unicodeHostname = punycode.toUnicode(originalHostname);
   unicodeHostname = unicodeHostname.replace(/-/g, '--');
