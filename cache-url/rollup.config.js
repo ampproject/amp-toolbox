@@ -2,6 +2,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
 import json from 'rollup-plugin-json';
+import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import pkg from './package.json';
 
 const plugins = [
@@ -11,6 +12,7 @@ const plugins = [
   commonjs(),
   json(),
   builtins(),
+  compiler()
 ];
 
 export default [
