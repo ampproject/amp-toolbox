@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-const punycode = require('punycode');
+const {URL} = require('url');
 
-/** @private {string} The default AMP cache prefix to be used. */
-const DEFAULT_CACHE_AUTHORITY_ = 'cdn.ampproject.org';
+const punycode = require('punycode');
 
 /** @type {string} */
 const LTR_CHARS =
@@ -45,10 +44,10 @@ const MAX_DOMAIN_LABEL_LENGTH_ = 63;
  * 4. Convert back to IDN.
  *
  * Examples:
- *   'something.com'    =>  'something-com'
- *   'SOMETHING.COM'    =>  'something-com'
- *   'hello-world.com'  =>  'hello--world-com'
- *   'hello--world.com' =>  'hello----world-com'
+ *   'https://something.com/'    =>  'something-com'
+ *   'https://SOMETHING.COM/'    =>  'something-com'
+ *   'https://hello-world.com'  =>  'hello--world-com'
+ *   'https://hello--world.com' =>  'hello----world-com'
  *
  * Fallback applies to the following cases:
  * - RFCs don’t permit a domain label to exceed 63 characters.
@@ -61,21 +60,26 @@ const MAX_DOMAIN_LABEL_LENGTH_ = 63;
  * 2. Base32 encode the resulting hash. Set the domain prefix to the resulting
  *    string.
  *
+ * Also, this will only use the domain (hostname) from the passed URL to give output
+ *
  * @param {string} url The complete publisher url.
  * @return {!Promise<string>} The curls encoded domain.
  * @private
  */
-export function constructCurlsDomain(url) {
-  return new Promise(resolve => {
-    if (isEligibleForHumanReadableCacheEncoding_(url)) {
-      const curlsEncoding = constructHumanReadableCurlsCacheDomain_(url);
+function createCurlsSubdomain(url) {
+  // Get our domain from the passed url string
+  const domain = new URL(url).hostname;
+
+  return new Promise((resolve) => {
+    if (isEligibleForHumanReadableCacheEncoding_(domain)) {
+      const curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
       if (curlsEncoding.length > MAX_DOMAIN_LABEL_LENGTH_) {
-        constructFallbackCurlsCacheDomain_(url).then(resolve);
+        constructFallbackCurlsCacheDomain_(domain).then(resolve);
       } else {
         resolve(curlsEncoding);
       }
     } else {
-      constructFallbackCurlsCacheDomain_(url).then(resolve);
+      constructFallbackCurlsCacheDomain_(domain).then(resolve);
     }
   });
 }
@@ -127,8 +131,8 @@ function constructHumanReadableCurlsCacheDomain_(domain) {
  * @private
  */
 function constructFallbackCurlsCacheDomain_(domain) {
-  return new Promise(resolve => {
-    sha256_(domain).then(digest => {
+  return new Promise((resolve) => {
+    sha256_(domain).then((digest) => {
       resolve(encodeHexToBase32_(digest));
     });
   });
@@ -141,11 +145,20 @@ function constructFallbackCurlsCacheDomain_(domain) {
  * @private
  */
 function sha256_(str) {
-  // Transform the string into an arraybuffer.
-  const buffer = new TextEncoder('utf-8').encode(str);
-  return crypto.subtle.digest('SHA-256', buffer).then(hash => {
-    return hex_(hash);
-  });
+  if (typeof window !== 'undefined') {
+    // Transform the string into an arraybuffer.
+    const buffer = new TextEncoder('utf-8').encode(str);
+    return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
+      return hex_(hash);
+    });
+  } else {
+    const buffer = Buffer.from(str, 'utf-8');
+    const crypto = require('crypto');
+    return new Promise((resolve) => {
+      const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
+      resolve(sha256);
+    });
+  }
 }
 
 /**
@@ -193,21 +206,21 @@ function encodeHexToBase32_(hexString) {
       Math.ceil(hexString.length * bitsPerHexChar / bitsPerBase32Char);
 
   const result = encodedString.substr(numInitialPaddingChars, numHexStringChars);
-  return encodedString.substr(numInitialPaddingChars, numHexStringChars);
+  return result;
 }
 
 /**
  * We use the base32 character encoding defined here:
  * https://tools.ietf.org/html/rfc4648#page-8
- * 
- * @param {string} paddedHexString 
+ *
+ * @param {string} paddedHexString
  * @return {string} the base32 string
  * @private
  */
 function encode32_(paddedHexString) {
   let bytes = [];
   paddedHexString.match(/.{1,2}/g).forEach((pair, i) => {
-    bytes[i] = parseInt(pair, 16);        
+    bytes[i] = parseInt(pair, 16);
   });
 
   // Split into groups of 5 and convert to base32.
@@ -217,7 +230,9 @@ function encode32_(paddedHexString) {
   let parts = [];
 
   if (leftover != 0) {
-    for (let i = 0; i < (5-leftover); i++) { bytes += '\x00'; }
+    for (let i = 0; i < (5-leftover); i++) {
+      bytes += '\x00';
+    }
     quanta += 1;
   }
 
@@ -249,5 +264,5 @@ function encode32_(paddedHexString) {
 }
 
 
-// Export our functions
-module.exports = constructCurlsDomain;
+/** @module AmpCurlUrl */
+module.exports = createCurlsSubdomain;

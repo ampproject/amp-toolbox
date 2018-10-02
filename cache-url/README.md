@@ -6,6 +6,20 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 ## Usage
 
 ```javascript
-  const createCacheUrl = require('amp-toolbox-cache-url');
-  const cacheUrl = createCacheUrl('cdn.ampproject.org', 'https://www.example.com');
+  // Import the module
+  const ampToolboxCacheUrl = require('amp-toolbox-cache-url');
+
+  // Get an AMP Cache URL
+  ampToolboxCacheUrl.createCacheUrl('cdn.ampproject.org', 'https://www.example.com').then((cacheUrl) => {
+    // This would log: 
+    // 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/'
+    console.log(cacheUrl);
+  });
+
+  // Transform a domain to an AMP Cache subdomain
+  ampToolboxCacheUrl.constructCurlsDomain('https://www.example.com').then((curlDomain) => {
+    // This would log: 
+    // 'www-example-com'
+    console.log(curlDomain);
+  });
 ```

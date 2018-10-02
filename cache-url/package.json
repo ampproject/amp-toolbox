@@ -29,7 +29,6 @@
     "jasmine": "3.2.0"
   },
   "dependencies": {
-    "mime-types": "^2.1.19",
     "punycode": "^2.1.1"
   }
 }

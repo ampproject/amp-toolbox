@@ -17,7 +17,7 @@
 'use strict';
 
 const createCacheUrl = require('../lib/AmpCacheUrlGenerator');
-const constructCurlsDomain = require('../lib/AmpCurlUrlGenerator'); 
+const createCurlsSubdomain = require('../lib/AmpCurlUrlGenerator');
 
 describe('AmpUrl', () => {
   const domainSuffix = 'cdn.ampproject.org';
@@ -67,14 +67,72 @@ describe('AmpUrl', () => {
     ];
 
     tests.forEach((test) => {
-      it(`Transforms ${test.url} into ${test.cache}`, () => {
-        const result = createCacheUrl(domainSuffix, test.url);
-        expect(result).toBe(test.cache);
+      it(`Transforms ${test.url} into ${test.cache}`, (done) => {
+        createCacheUrl(domainSuffix, test.url).then((result) => {
+          expect(result).toBe(test.cache);
+          done();
+        });
       });
     });
   });
 
   describe('curlsUrl', () => {
-  
+    const tests = [
+      {
+        url: 'https://something.com',
+        curlsSubdomain: 'something-com',
+      },
+      {
+        url: 'https://SOMETHING.COM',
+        curlsSubdomain: 'something-com',
+      },
+      {
+        url: 'https://hello-world.com',
+        curlsSubdomain: 'hello--world-com',
+      },
+      {
+        url: 'https://hello--world.com',
+        curlsSubdomain: 'hello----world-com',
+      },
+      {
+        url: 'https://toplevelnohyphens',
+        curlsSubdomain: 'qsgpfjzulvuaxb66z77vlhb5gu2irvcnyp6t67cz6tqo5ae6fysa',
+      },
+      {
+        url: 'https://no-dot-domain',
+        curlsSubdomain: '4lxc7wqq7b25walg4rdiil62veijrmqui5z3ept2lyfqqwpowryq',
+      },
+      {
+        url: 'https://itwasadarkandstormynight.therainfellintorrents.exceptatoccasionalintervalswhenitwascheckedby.aviolentgustofwindwhichsweptupthestreets.com',
+        curlsSubdomain: 'dgz4cnrxufaulnwku4ow5biptyqnenjievjht56hd7wqinbdbteq',
+      },
+      // Wikipedia's example of an IDN: "bücher.ch" -> "bücher-ch".
+      {
+        url: 'https://xn--bcher-kva.ch',
+        curlsSubdomain: 'xn--bcher-ch-65a',
+      },
+      // Actual URL of Egyptian Ministry of Communications.
+      // Right-to-left (RTL) characters will pass through, so long as the entire
+      // domain is wholly RTL as in this case. It even renders nicely in Chrome.
+      {
+        url: 'https://xn--4gbrim.xn----rmckbbajlc6dj7bxne2c.xn--wgbh1c',
+        curlsSubdomain: 'xn-------i5fvcbaopc6fkc0de0d9jybegt6cd',
+      },
+      // A mix of RTL and LTR can't be legally combined into one label.
+      // ToASCII() catches this case for us and fails, so we fall back:
+      {
+        url: 'https://hello.xn--4gbrim.xn----rmckbbajlc6dj7bxne2c.xn--wgbh1c',
+        curlsSubdomain: 'a6h5moukddengbsjm77rvbosevwuduec2blkjva4223o4bgafgla',
+      },
+    ];
+
+    tests.forEach((test) => {
+      it(`Transforms ${test.url} into ${test.curlsSubdomain}`, (done) => {
+        createCurlsSubdomain(test.url).then((result) => {
+          expect(result).toBe(test.curlsSubdomain);
+          done();
+        });
+      });
+    });
   });
 });

@@ -17,12 +17,12 @@
 'use strict';
 
 const {URL} = require('url');
-const constructCurlsDomain = require('./AmpCurlUrlGenerator'); 
+const createCurlsSubdomain = require('./AmpCurlUrlGenerator');
 
 /**
  * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
  * Example:
- * createCacheUrl('cdn.ampproject.org', 'hello-world.com')
+ * createCacheUrl('cdn.ampproject.org', 'https://hello-world.com')
  * // Should resolve: 'https://hello--world-com.cdn.ampproject.org/c/s/hello-world.com'
  *
  * @param {string} domainSuffix the AMP Cache domain suffix
@@ -31,15 +31,14 @@ const constructCurlsDomain = require('./AmpCurlUrlGenerator');
  */
 function createCacheUrl(domainSuffix, url) {
   return new Promise((resolve, reject) => {
-
     const canonicalUrl = new URL(url);
     let pathSegment = _getResourcePath(canonicalUrl.pathname);
     pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
 
-    constructCurlsDomain(canonicalUrl.toString()).then((curlsDomain) => {
+    createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
       const cacheUrl = new URL(url);
       cacheUrl.protocol = 'https';
-      cacheUrl.hostname = curlsDomain + '.' + domainSuffix;
+      cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
       cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
       resolve(cacheUrl.toString());
     }).catch((err) => {
@@ -53,9 +52,6 @@ function createCacheUrl(domainSuffix, url) {
  * @param {string} pathname the pathname on the canonical url.
  */
 function _getResourcePath(pathname) {
-
-  // Require our font and image extensions
-  // Requiring here to help tree shaking
   const imageExtensions = require('./ImageExtensions');
   const fontExtensions = require('./FontExtensions');
 
@@ -63,7 +59,7 @@ function _getResourcePath(pathname) {
     return '/i';
   }
 
-  if (fileExtensions.isPathNameAFont(pathname)) {
+  if (fontExtensions.isPathNameAFont(pathname)) {
     return '/r';
   }
 

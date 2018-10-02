@@ -17,6 +17,10 @@
 'use strict';
 
 const createCacheUrl = require('./lib/AmpCacheUrlGenerator');
+const createCurlsSubdomain = require('./lib/AmpCurlUrlGenerator');
 
 /** @module AmpUrl */
-module.exports = createCacheUrl;
+module.exports = {
+  createCacheUrl: createCacheUrl,
+  createCurlsSubdomain: createCurlsSubdomain,
+};
