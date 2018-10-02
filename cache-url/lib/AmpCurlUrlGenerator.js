@@ -182,7 +182,7 @@ function hex_(buffer) {
  * https://tools.ietf.org/html/rfc4648
  *
  * @param {string} hexString the hex string
- * @return {string} The base32 encoded string
+ * @return {string} the base32 encoded string
  * @private
  */
 function encodeHexToBase32_(hexString) {
