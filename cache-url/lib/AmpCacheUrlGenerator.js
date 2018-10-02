@@ -23,27 +23,25 @@ const createCurlsSubdomain = require('./AmpCurlUrlGenerator');
  * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
  * Example:
  * createCacheUrl('cdn.ampproject.org', 'https://hello-world.com')
- * // Should resolve: 'https://hello--world-com.cdn.ampproject.org/c/s/hello-world.com'
+ * Should resolve: 'https://hello--world-com.cdn.ampproject.org/c/s/hello-world.com'
  *
  * @param {string} domainSuffix the AMP Cache domain suffix
  * @param {string} url the canonical URL
- * @returns Promise
+ * @return {!Promise<string>} The converted AMP cache URL
  */
 function createCacheUrl(domainSuffix, url) {
-  return new Promise((resolve, reject) => {
-    const canonicalUrl = new URL(url);
-    let pathSegment = _getResourcePath(canonicalUrl.pathname);
-    pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
+  const canonicalUrl = new URL(url);
+  let pathSegment = _getResourcePath(canonicalUrl.pathname);
+  pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
 
-    createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
-      const cacheUrl = new URL(url);
-      cacheUrl.protocol = 'https';
-      cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
-      cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
-      resolve(cacheUrl.toString());
-    }).catch((err) => {
-      reject(err);
-    });
+  return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
+    const cacheUrl = new URL(url);
+    cacheUrl.protocol = 'https';
+    cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
+    cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
+    return cacheUrl.toString();
+  }).catch((err) => {
+    reject(err);
   });
 }
 

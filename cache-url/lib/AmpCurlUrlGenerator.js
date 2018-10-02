@@ -69,19 +69,16 @@ const MAX_DOMAIN_LABEL_LENGTH_ = 63;
 function createCurlsSubdomain(url) {
   // Get our domain from the passed url string
   const domain = new URL(url).hostname;
-
-  return new Promise((resolve) => {
-    if (isEligibleForHumanReadableCacheEncoding_(domain)) {
-      const curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
-      if (curlsEncoding.length > MAX_DOMAIN_LABEL_LENGTH_) {
-        constructFallbackCurlsCacheDomain_(domain).then(resolve);
-      } else {
-        resolve(curlsEncoding);
-      }
+  if (isEligibleForHumanReadableCacheEncoding_(domain)) {
+    const curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
+    if (curlsEncoding.length > MAX_DOMAIN_LABEL_LENGTH_) {
+      return constructFallbackCurlsCacheDomain_(domain);
     } else {
-      constructFallbackCurlsCacheDomain_(domain).then(resolve);
+      return Promise.resolve(curlsEncoding);
     }
-  });
+  } else {
+    return constructFallbackCurlsCacheDomain_(domain);
+  }
 }
 
 /**
@@ -131,11 +128,7 @@ function constructHumanReadableCurlsCacheDomain_(domain) {
  * @private
  */
 function constructFallbackCurlsCacheDomain_(domain) {
-  return new Promise((resolve) => {
-    sha256_(domain).then((digest) => {
-      resolve(encodeHexToBase32_(digest));
-    });
-  });
+  return sha256_(domain).then((digest) => encodeHexToBase32_(digest));
 }
 
 
@@ -188,7 +181,7 @@ function hex_(buffer) {
  * Encodes a hex string in base 32 according to specs in RFC 4648 section 6:
  * https://tools.ietf.org/html/rfc4648
  *
- * @param {string} hexString The hex string
+ * @param {string} hexString the hex string
  * @return {string} The base32 encoded string
  * @private
  */

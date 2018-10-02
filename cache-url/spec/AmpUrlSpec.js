@@ -67,7 +67,7 @@ describe('AmpUrl', () => {
     ];
 
     tests.forEach((test) => {
-      it(`Transforms ${test.url} into ${test.cache}`, (done) => {
+      it(`transforms ${test.url} into ${test.cache}`, (done) => {
         createCacheUrl(domainSuffix, test.url).then((result) => {
           expect(result).toBe(test.cache);
           done();
@@ -127,7 +127,7 @@ describe('AmpUrl', () => {
     ];
 
     tests.forEach((test) => {
-      it(`Transforms ${test.url} into ${test.curlsSubdomain}`, (done) => {
+      it(`transforms ${test.url} into ${test.curlsSubdomain}`, (done) => {
         createCurlsSubdomain(test.url).then((result) => {
           expect(result).toBe(test.curlsSubdomain);
           done();
