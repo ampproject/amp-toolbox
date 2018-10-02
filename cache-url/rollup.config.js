@@ -6,11 +6,11 @@ import pkg from './package.json';
 
 const plugins = [
   resolve({
-    preferBuiltins: false
+    preferBuiltins: false,
   }),
-  commonjs(),  
+  commonjs(),
   json(),
-  builtins()
+  builtins(),
 ];
 
 export default [
@@ -20,21 +20,21 @@ export default [
     output: {
       name: 'amp-toolbox-cache-url',
       file: pkg.browser,
-      format: 'umd'
+      format: 'umd',
     },
     context: 'window',
-    plugins: plugins
+    plugins: plugins,
   },
   {
     input: 'index.js',
-    output: { file: pkg.module, format: 'es' },
+    output: {file: pkg.module, format: 'es'},
     context: 'window',
-    plugins: plugins
+    plugins: plugins,
   },
   {
     input: 'index.js',
-    output: { file: pkg.main, format: 'cjs' },
+    output: {file: pkg.main, format: 'cjs'},
     context: 'global',
-    plugins: plugins
-  }
+    plugins: plugins,
+  },
 ];
