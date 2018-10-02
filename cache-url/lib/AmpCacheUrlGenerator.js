@@ -42,6 +42,8 @@ function createCacheUrl(domainSuffix, url) {
       cacheUrl.hostname = curlsDomain + '.' + domainSuffix;
       cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
       resolve(cacheUrl.toString());
+    }).catch((err) => {
+      reject(err);
     });
   });
 }
@@ -51,16 +53,17 @@ function createCacheUrl(domainSuffix, url) {
  * @param {string} pathname the pathname on the canonical url.
  */
 function _getResourcePath(pathname) {
-  const mimetype = mime.lookup(pathname);
-  if (!mimetype) {
-    return '/c';
-  }
 
-  if (mimetype.indexOf('image/') === 0) {
+  // Require our font and image extensions
+  // Requiring here to help tree shaking
+  const imageExtensions = require('./ImageExtensions');
+  const fontExtensions = require('./FontExtensions');
+
+  if (imageExtensions.isPathNameAnImage(pathname)) {
     return '/i';
   }
 
-  if (mimetype.indexOf('font') >= 0) {
+  if (fileExtensions.isPathNameAFont(pathname)) {
     return '/r';
   }
 

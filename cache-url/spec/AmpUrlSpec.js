@@ -17,6 +17,7 @@
 'use strict';
 
 const createCacheUrl = require('../lib/AmpCacheUrlGenerator');
+const constructCurlsDomain = require('../lib/AmpCurlUrlGenerator'); 
 
 describe('AmpUrl', () => {
   const domainSuffix = 'cdn.ampproject.org';
@@ -71,5 +72,9 @@ describe('AmpUrl', () => {
         expect(result).toBe(test.cache);
       });
     });
+  });
+
+  describe('curlsUrl', () => {
+  
   });
 });
