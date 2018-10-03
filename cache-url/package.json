@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-cache-url",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,6 @@
     "jasmine": "3.2.0"
   },
   "dependencies": {
-    "mime-types": "^2.1.19",
     "punycode": "^2.1.1"
   }
 }
