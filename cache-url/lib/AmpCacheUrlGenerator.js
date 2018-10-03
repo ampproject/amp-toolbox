@@ -40,8 +40,6 @@ function createCacheUrl(domainSuffix, url) {
     cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
     cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
     return cacheUrl.toString();
-  }).catch((err) => {
-    reject(err);
   });
 }
 
