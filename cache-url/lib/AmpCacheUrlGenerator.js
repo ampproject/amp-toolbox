@@ -16,29 +16,32 @@
 
 'use strict';
 
+
 const Url = require('url').URL;
-const punycode = require('punycode');
-const mime = require('mime-types');
+const createCurlsSubdomain = require('./AmpCurlUrlGenerator');
 
 /**
  * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
+ * Example:
+ * createCacheUrl('cdn.ampproject.org', 'https://hello-world.com')
+ * Should resolve: 'https://hello--world-com.cdn.ampproject.org/c/s/hello-world.com'
+ *
  * @param {string} domainSuffix the AMP Cache domain suffix
  * @param {string} url the canonical URL
+ * @return {!Promise<string>} The converted AMP cache URL
  */
 function createCacheUrl(domainSuffix, url) {
-  const cacheUrl = new Url(url);
-  const originalHostname = cacheUrl.hostname;
-  let unicodeHostname = punycode.toUnicode(originalHostname);
-  unicodeHostname = unicodeHostname.replace(/-/g, '--');
-  unicodeHostname = unicodeHostname.replace(/\./g, '-');
+  const canonicalUrl = new Url(url);
+  let pathSegment = _getResourcePath(canonicalUrl.pathname);
+  pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
 
-  let pathSegment = _getResourcePath(cacheUrl.pathname);
-  pathSegment += cacheUrl.protocol === 'https:' ? '/s/' : '/';
-
-  cacheUrl.protocol = 'https';
-  cacheUrl.hostname = punycode.toASCII(unicodeHostname) + '.' + domainSuffix;
-  cacheUrl.pathname = pathSegment + originalHostname + cacheUrl.pathname;
-  return cacheUrl.toString();
+  return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
+    const cacheUrl = new Url(url);
+    cacheUrl.protocol = 'https';
+    cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
+    cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
+    return cacheUrl.toString();
+  });
 }
 
 /**
@@ -46,16 +49,14 @@ function createCacheUrl(domainSuffix, url) {
  * @param {string} pathname the pathname on the canonical url.
  */
 function _getResourcePath(pathname) {
-  const mimetype = mime.lookup(pathname);
-  if (!mimetype) {
-    return '/c';
-  }
+  const imageExtensions = require('./ImageExtensions');
+  const fontExtensions = require('./FontExtensions');
 
-  if (mimetype.indexOf('image/') === 0) {
+  if (imageExtensions.isPathNameAnImage(pathname)) {
     return '/i';
   }
 
-  if (mimetype.indexOf('font') >= 0) {
+  if (fontExtensions.isPathNameAFont(pathname)) {
     return '/r';
   }
 
