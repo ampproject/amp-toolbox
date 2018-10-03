@@ -13,12 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 const sizeOf = require('image-size');
 const jimp = require('jimp');
+const {skipNodeAndChildren} = require('../HtmlDomHelper');
+
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
-
-const {skipNodeAndChildren} = require('../HtmlDomHelper');
+const ESCAPE_TABLE = {
+  '#': '%23',
+  '%': '%25',
+  ':': '%3A',
+  '<': '%3C',
+  '>': '%3E',
+  '"': '\'',
+};
+const ESCAPE_REGEX = new RegExp(Object.keys(ESCAPE_TABLE).join('|'), 'g');
+function escaper(match) {
+  return ESCAPE_TABLE[match];
+}
 
 /**
  * Adds placeholders for certain amp-img's and posters for amp-videos that are
@@ -54,17 +67,20 @@ class AddBlurryImagePlaceholders {
       if (tagName === 'amp-video' && node.attribs.poster) {
         src = node.attribs.poster;
       }
-      if (placeholders >= MAX_BLURRED_PLACEHOLDERS) {
-        break;
-      }
+
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
         const p = this.addBlurryPlaceholder_(tree, src).then((img) => {
           node.appendChild(img);
         });
         promises.push(p);
+
+        if (placeholders >= MAX_BLURRED_PLACEHOLDERS) {
+          break;
+        }
       }
     }
+
     return Promise.all(promises);
   }
 
@@ -84,8 +100,8 @@ class AddBlurryImagePlaceholders {
     img.attribs.placeholder = '';
     img.attribs.src = src;
     return this.getDataURI_(img).then((dataURI) => {
-      const html = `<svg xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink" 
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
                       viewBox="0 0 ${dataURI.width} ${dataURI.height}">
                       <filter id="b" color-interpolation-filters="sRGB">
                         <feGaussianBlur stdDeviation=".5"></feGaussianBlur>
@@ -93,22 +109,19 @@ class AddBlurryImagePlaceholders {
                           <feFuncA type="discrete" tableValues="1 1"></feFuncA>
                         </feComponentTransfer>
                       </filter>
-                      <image filter="url(#b)" x="0" y="0" 
-                        height="100%" width="100%" 
+                      <image filter="url(#b)" x="0" y="0"
+                        height="100%" width="100%"
                         xlink:href="${dataURI.src}">
-                      </image>  
+                      </image>
                     </svg>`;
-      let svg = html.replace(/"/g, '\'');
-      svg = encodeURI(svg);
 
-      // Optimizes dataURI length by deleting line breaks, decoding spaces, and
+      // Optimizes dataURI length by deleting line breaks, and
       // removing unnecessary spaces.
-      svg = svg.replace(/%0A/g, '');
-      svg = svg.replace(/%20/g, ' ');
       svg = svg.replace(/\s+/g, ' ');
-      svg = svg.replace(/\%3E %3C/g, '\%3E%3C');
+      svg = svg.replace(/> </g, '><');
+      svg = svg.replace(ESCAPE_REGEX, escaper);
 
-      img.attribs.src = 'data:image/svg+xml,' + svg;
+      img.attribs.src = 'data:image/svg+xml;charset=utf-8,' + svg;
       return img;
     }).catch((err) => {
       console.error('AddBlurryImagePlaceholders transformer error during the ' +
