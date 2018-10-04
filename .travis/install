@@ -2,6 +2,9 @@
 
 set -e
 
+# Install npx globally for packages that use it
+npm install -g npx
+
 for d in * ; do
   if [[ ! -d "$d" || ! -e "$d/package.json" ]]; then
     continue
