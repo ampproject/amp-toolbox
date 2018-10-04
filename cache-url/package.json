@@ -6,8 +6,8 @@
   "module": "dist/amp-toolbox-cache-url.esm.js",
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
-    "build": "rollup -c",
-    "test": "npx jasmine && npx eslint .",
+    "build": "npx rollup -c",
+    "test": "npm run build && npx jasmine && npx eslint .",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix"
   },
@@ -38,6 +38,7 @@
     "rollup-plugin-commonjs": "9.1.8",
     "rollup-plugin-json": "3.1.0",
     "rollup-plugin-node-builtins": "2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "3.4.0"
   }
 }

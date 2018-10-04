@@ -17,9 +17,9 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
   });
 
   // Transform a domain to an AMP Cache subdomain
-  ampToolboxCacheUrl.constructCurlsDomain('https://www.example.com').then((curlDomain) => {
+  ampToolboxCacheUrl.createCurlsSubdomain('https://www.example.com').then((curlsSubdomain) => {
     // This would log: 
     // 'www-example-com'
-    console.log(curlDomain);
+    console.log(curlsSubdomain);
   });
 ```

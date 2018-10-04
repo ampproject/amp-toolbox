@@ -21,13 +21,17 @@ import json from 'rollup-plugin-json';
 import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import pkg from './package.json';
 
+const externals = ['crypto'];
+
 const plugins = [
   resolve({
     preferBuiltins: false,
   }),
   commonjs(),
   json(),
-  builtins(),
+  builtins({
+    crypto: false,
+  }),
   compiler(),
 ];
 
@@ -42,6 +46,7 @@ export default [
     },
     context: 'window',
     plugins: plugins,
+    external: externals,
   },
   {
     input: 'index.js',
@@ -52,6 +57,7 @@ export default [
     },
     context: 'window',
     plugins: plugins,
+    external: externals,
   },
   {
     input: 'index.js',
@@ -62,5 +68,6 @@ export default [
     },
     context: 'global',
     plugins: plugins,
+    external: externals,
   },
 ];

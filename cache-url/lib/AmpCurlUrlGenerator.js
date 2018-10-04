@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-const Url = require('url').URL;
-
+const Url = require('url');
 const punycode = require('punycode');
 
 /** @type {string} */
@@ -68,7 +67,7 @@ const MAX_DOMAIN_LABEL_LENGTH_ = 63;
  */
 function createCurlsSubdomain(url) {
   // Get our domain from the passed url string
-  const domain = new Url(url).hostname;
+  const domain = Url.parse(url).hostname;
   if (isEligibleForHumanReadableCacheEncoding_(domain)) {
     const curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
     if (curlsEncoding.length > MAX_DOMAIN_LABEL_LENGTH_) {

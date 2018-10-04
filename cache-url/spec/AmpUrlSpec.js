@@ -16,8 +16,8 @@
 
 'use strict';
 
-const createCacheUrl = require('../lib/AmpCacheUrlGenerator');
-const createCurlsSubdomain = require('../lib/AmpCurlUrlGenerator');
+const modulePath = '../dist/amp-toolbox-cache-url.cjs';
+const {createCacheUrl, createCurlsSubdomain} = require(modulePath);
 
 describe('AmpUrl', () => {
   const domainSuffix = 'cdn.ampproject.org';

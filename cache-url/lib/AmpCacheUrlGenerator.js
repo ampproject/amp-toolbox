@@ -16,8 +16,7 @@
 
 'use strict';
 
-
-const Url = require('url').URL;
+const Url = require('url');
 const createCurlsSubdomain = require('./AmpCurlUrlGenerator');
 
 /**
@@ -31,16 +30,19 @@ const createCurlsSubdomain = require('./AmpCurlUrlGenerator');
  * @return {!Promise<string>} The converted AMP cache URL
  */
 function createCacheUrl(domainSuffix, url) {
-  const canonicalUrl = new Url(url);
+  const canonicalUrl = Url.parse(url);
   let pathSegment = _getResourcePath(canonicalUrl.pathname);
   pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
 
-  return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
-    const cacheUrl = new Url(url);
+  return createCurlsSubdomain(Url.format(canonicalUrl)).then((curlsSubdomain) => {
+    const cacheUrl = Url.parse(url);
     cacheUrl.protocol = 'https';
-    cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
+    const hostname = curlsSubdomain + '.' + domainSuffix;
+    cacheUrl.host = hostname;
+    cacheUrl.hostname = hostname;
     cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
-    return cacheUrl.toString();
+    console.log(cacheUrl);
+    return Url.format(cacheUrl);
   });
 }
 
