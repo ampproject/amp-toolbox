@@ -41,7 +41,6 @@ function createCacheUrl(domainSuffix, url) {
     cacheUrl.host = hostname;
     cacheUrl.hostname = hostname;
     cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
-    console.log(cacheUrl);
     return Url.format(cacheUrl);
   });
 }

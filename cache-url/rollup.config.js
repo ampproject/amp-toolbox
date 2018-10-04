@@ -32,7 +32,6 @@ const plugins = [
   builtins({
     crypto: false,
   }),
-  compiler(),
 ];
 
 export default [
@@ -45,7 +44,10 @@ export default [
       exports: 'named',
     },
     context: 'window',
-    plugins: plugins,
+    plugins: [
+      ...plugins,
+      compiler(),
+    ],
     external: externals,
   },
   {
@@ -56,7 +58,10 @@ export default [
       exports: 'named',
     },
     context: 'window',
-    plugins: plugins,
+    plugins: [
+      ...plugins,
+      compiler(),
+    ],
     external: externals,
   },
   {
