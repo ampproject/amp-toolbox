@@ -6,8 +6,9 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 ## Usage
 
 ```javascript
-  // Import the module
-  const ampToolboxCacheUrl = require('amp-toolbox-cache-url');
+  // Import the module using the node OR ES6 syntax
+  const ampToolboxCacheUrl = require('amp-toolbox-cache-url'); // node
+  import ampToolboxCacheUrl from 'amp-toolbox-cache-url'; // ES6 
 
   // Get an AMP Cache URL
   ampToolboxCacheUrl.createCacheUrl('cdn.ampproject.org', 'https://www.example.com').then((cacheUrl) => {

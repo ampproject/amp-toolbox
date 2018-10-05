@@ -7,8 +7,8 @@
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
     "build": "npx rollup -c",
+    "serve": "npx rollup -c -w",
     "test": "npm run build && npx jasmine && npx eslint .",
-    "test-karma": "npx karma start --single-run --browsers ChromeHeadless spec/support/karma.conf.js",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix"
   },
