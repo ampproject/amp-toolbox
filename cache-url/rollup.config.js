@@ -19,9 +19,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
 import json from 'rollup-plugin-json';
 import ignore from 'rollup-plugin-ignore';
-import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import serve from 'rollup-plugin-serve';
-import filesize from 'rollup-plugin-filesize';
 import semver from 'semver';
 import pkg from './package.json';
 
@@ -39,13 +37,6 @@ const browserPlugins = [
   ...nodePlugins,
 ];
 
-
-if (semver.gt(process.version, '7.99.99')) {
-  browserPlugins.push(
-      compiler()
-  );
-}
-
 // Start our server if we are watching
 if (process.env.ROLLUP_WATCH) {
   const servePlugin = serve({
@@ -58,8 +49,15 @@ if (process.env.ROLLUP_WATCH) {
   browserPlugins.push(servePlugin);
 }
 
-nodePlugins.push(filesize());
-browserPlugins.push(filesize());
+if (semver.gt(process.version, '7.99.99')) {
+  const compiler = require('@ampproject/rollup-plugin-closure-compiler');
+  const filesize = require('rollup-plugin-filesize');
+  browserPlugins.push(
+      compiler()
+  );
+  nodePlugins.push(filesize());
+  browserPlugins.push(filesize());
+}
 
 export default [
   {
