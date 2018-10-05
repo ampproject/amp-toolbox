@@ -36,8 +36,7 @@ const nodePlugins = [
 
 const browserPlugins = [
   ignore(['crypto']),
-  ...nodePlugins,
-  compiler(),
+  ...nodePlugins
 ];
 
 
