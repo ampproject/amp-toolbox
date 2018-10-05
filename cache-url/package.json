@@ -2,11 +2,14 @@
   "name": "amp-toolbox-cache-url",
   "version": "1.0.0",
   "description": "Transform canonical URLs into AMP Cache URLs",
-  "main": "index.js",
+  "main": "dist/amp-toolbox-cache-url.cjs.js",
+  "module": "dist/amp-toolbox-cache-url.esm.js",
+  "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
-    "test": "jasmine && eslint .",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "build": "rollup -c",
+    "test": "npx jasmine && npx eslint .",
+    "lint": "npx eslint .",
+    "lint-fix": "npx eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -23,12 +26,18 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
-  "devDependencies": {
-    "eslint": "5.6.1",
-    "eslint-config-google": "0.10.0",
-    "jasmine": "3.2.0"
-  },
   "dependencies": {
     "punycode": "^2.1.1"
+  },
+  "devDependencies": {
+    "@ampproject/rollup-plugin-closure-compiler": "0.7.3",
+    "eslint": "5.6.1",
+    "eslint-config-google": "0.10.0",
+    "jasmine": "3.2.0",
+    "rollup": "0.66.2",
+    "rollup-plugin-commonjs": "9.1.8",
+    "rollup-plugin-json": "3.1.0",
+    "rollup-plugin-node-builtins": "2.1.2",
+    "rollup-plugin-node-resolve": "3.4.0"
   }
 }
