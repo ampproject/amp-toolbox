@@ -18,21 +18,42 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
 import json from 'rollup-plugin-json';
+import ignore from 'rollup-plugin-ignore';
 import compiler from '@ampproject/rollup-plugin-closure-compiler';
+import serve from 'rollup-plugin-serve';
+import filesize from 'rollup-plugin-filesize';
 import pkg from './package.json';
 
-const externals = ['crypto'];
-
-const plugins = [
+const nodePlugins = [
   resolve({
-    preferBuiltins: false,
+    preferBuiltins: true,
   }),
-  commonjs(),
   json(),
-  builtins({
-    crypto: false,
-  }),
+  commonjs(),
+  builtins(),
 ];
+
+const browserPlugins = [
+  ignore(['crypto']),
+  ...nodePlugins,
+  compiler(),
+];
+
+// Start our server if we are watching
+if (process.env.ROLLUP_WATCH) {
+  
+  const servePlugin = serve({
+    contentBase: ['dist', 'examples'],
+    host: 'localhost',
+    port: 8000,
+  });
+  
+  nodePlugins.push(servePlugin);
+  browserPlugins.push(servePlugin);
+}
+
+nodePlugins.push(filesize());
+browserPlugins.push(filesize());
 
 export default [
   {
@@ -41,14 +62,10 @@ export default [
       name: 'amp-toolbox-cache-url',
       file: pkg.browser,
       format: 'umd',
-      exports: 'named',
+      exports: 'named'
     },
     context: 'window',
-    plugins: [
-      ...plugins,
-      compiler(),
-    ],
-    external: externals,
+    plugins: browserPlugins,
   },
   {
     input: 'index.js',
@@ -58,11 +75,7 @@ export default [
       exports: 'named',
     },
     context: 'window',
-    plugins: [
-      ...plugins,
-      compiler(),
-    ],
-    external: externals,
+    plugins: browserPlugins,
   },
   {
     input: 'index.js',
@@ -72,7 +85,6 @@ export default [
       exports: 'named',
     },
     context: 'global',
-    plugins: plugins,
-    external: externals,
+    plugins: nodePlugins,
   },
 ];
