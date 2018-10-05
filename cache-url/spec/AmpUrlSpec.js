@@ -26,11 +26,11 @@ describe('AmpUrl', () => {
     const tests = [
       {
         url: 'https://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com',
       },
       {
         url: 'http://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com',
       },
       {
         url: 'https://www.example.com/index.html',
@@ -62,7 +62,7 @@ describe('AmpUrl', () => {
       },
       {
         url: 'https://點看.com',
-        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/xn--c1yn36f.com/',
+        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/點看.com',
       },
     ];
 

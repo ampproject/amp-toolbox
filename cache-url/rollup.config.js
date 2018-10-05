@@ -41,13 +41,12 @@ const browserPlugins = [
 
 // Start our server if we are watching
 if (process.env.ROLLUP_WATCH) {
-  
   const servePlugin = serve({
     contentBase: ['dist', 'examples'],
     host: 'localhost',
     port: 8000,
   });
-  
+
   nodePlugins.push(servePlugin);
   browserPlugins.push(servePlugin);
 }
@@ -62,7 +61,7 @@ export default [
       name: 'amp-toolbox-cache-url',
       file: pkg.browser,
       format: 'umd',
-      exports: 'named'
+      exports: 'named',
     },
     context: 'window',
     plugins: browserPlugins,

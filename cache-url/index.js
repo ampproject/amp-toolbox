@@ -21,8 +21,8 @@ import createCurlsSubdomain from './lib/AmpCurlUrlGenerator';
 
 /** @module AmpUrl */
 const exports = {
-  createCacheUrl: createCacheUrl, 
-  createCurlsSubdomain: createCurlsSubdomain
+  createCacheUrl: createCacheUrl,
+  createCurlsSubdomain: createCurlsSubdomain,
 };
 export {createCacheUrl, createCurlsSubdomain};
 export default exports;

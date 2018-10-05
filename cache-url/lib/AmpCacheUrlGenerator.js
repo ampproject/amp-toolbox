@@ -52,7 +52,6 @@ function createCacheUrl(domainSuffix, url) {
  * @param {string} pathname the pathname on the canonical url.
  */
 function _getResourcePath(pathname) {
-
   if (imageExtensions.isPathNameAnImage(pathname)) {
     return '/i';
   }
