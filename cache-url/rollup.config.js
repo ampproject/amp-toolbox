@@ -22,6 +22,7 @@ import ignore from 'rollup-plugin-ignore';
 import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import serve from 'rollup-plugin-serve';
 import filesize from 'rollup-plugin-filesize';
+import semver from 'semver';
 import pkg from './package.json';
 
 const nodePlugins = [
@@ -38,6 +39,13 @@ const browserPlugins = [
   ...nodePlugins,
   compiler(),
 ];
+
+
+if (semver.gt(process.version, '7.99.99')) {
+  browserPlugins.push(
+      compiler()
+  );
+}
 
 // Start our server if we are watching
 if (process.env.ROLLUP_WATCH) {
@@ -62,6 +70,7 @@ export default [
       file: pkg.browser,
       format: 'umd',
       exports: 'named',
+      name: 'AmpToolboxCacheUrl',
     },
     context: 'window',
     plugins: browserPlugins,

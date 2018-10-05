@@ -16,13 +16,23 @@
 
 'use strict';
 
-const modulePath = '../dist/amp-toolbox-cache-url.cjs';
-const {createCacheUrl, createCurlsSubdomain} = require(modulePath);
+// Check if we are in a browser environment
+let createCacheUrl;
+let createCurlsSubdomain;
+if (typeof window !== 'undefined') {
+  createCacheUrl = window.AmpToolboxCacheUrl.createCacheUrl;
+  createCurlsSubdomain = window.AmpToolboxCacheUrl.createCurlsSubdomain;
+} else {
+  const ampToolboxCacheUrl = require('../dist/amp-toolbox-cache-url.cjs.js');
+  createCacheUrl = ampToolboxCacheUrl.createCacheUrl;
+  createCurlsSubdomain = ampToolboxCacheUrl.createCurlsSubdomain;
+}
+
 
 describe('AmpUrl', () => {
   const domainSuffix = 'cdn.ampproject.org';
 
-  describe('cacheUrl', () => {
+  describe('createCacheUrl', () => {
     const tests = [
       {
         url: 'https://www.example.com',
@@ -76,7 +86,7 @@ describe('AmpUrl', () => {
     });
   });
 
-  describe('curlsUrl', () => {
+  describe('createCurlsSubdomain', () => {
     const tests = [
       {
         url: 'https://something.com',

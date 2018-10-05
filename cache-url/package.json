@@ -8,7 +8,9 @@
   "scripts": {
     "build": "npx rollup -c",
     "serve": "npx rollup -c -w",
-    "test": "npm run build && npx jasmine && npx eslint .",
+    "test": "npm run build && npm run test-node && npm run test-browser && npm run lint",
+    "test-node": "npx jasmine --config=jasmine.json",
+    "test-browser": "npx karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix"
   },
@@ -36,6 +38,9 @@
     "eslint": "5.6.1",
     "eslint-config-google": "0.10.0",
     "jasmine": "3.2.0",
+    "karma": "^3.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.2",
     "rollup": "0.66.2",
     "rollup-plugin-commonjs": "9.1.8",
     "rollup-plugin-filesize": "^4.0.1",
@@ -43,6 +48,7 @@
     "rollup-plugin-json": "3.1.0",
     "rollup-plugin-node-builtins": "2.1.2",
     "rollup-plugin-node-resolve": "3.4.0",
-    "rollup-plugin-serve": "^0.6.0"
+    "rollup-plugin-serve": "^0.6.0",
+    "semver": "^5.5.1"
   }
 }
