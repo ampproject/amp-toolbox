@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "parse-url": "^3.0.2",
     "punycode": "^2.1.1",
     "url-parse": "^1.4.3"
   },
