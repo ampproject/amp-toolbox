@@ -16,9 +16,10 @@
 
 'use strict';
 
-
-const Url = require('url').URL;
-const createCurlsSubdomain = require('./AmpCurlUrlGenerator');
+import imageExtensions from './ImageExtensions';
+import fontExtensions from './FontExtensions';
+import createCurlsSubdomain from './AmpCurlUrlGenerator';
+import Url from 'url-parse';
 
 /**
  * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
@@ -38,7 +39,9 @@ function createCacheUrl(domainSuffix, url) {
   return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
     const cacheUrl = new Url(url);
     cacheUrl.protocol = 'https';
-    cacheUrl.hostname = curlsSubdomain + '.' + domainSuffix;
+    const hostname = curlsSubdomain + '.' + domainSuffix;
+    cacheUrl.host = hostname;
+    cacheUrl.hostname = hostname;
     cacheUrl.pathname = pathSegment + canonicalUrl.hostname + canonicalUrl.pathname;
     return cacheUrl.toString();
   });
@@ -49,9 +52,6 @@ function createCacheUrl(domainSuffix, url) {
  * @param {string} pathname the pathname on the canonical url.
  */
 function _getResourcePath(pathname) {
-  const imageExtensions = require('./ImageExtensions');
-  const fontExtensions = require('./FontExtensions');
-
   if (imageExtensions.isPathNameAnImage(pathname)) {
     return '/i';
   }
@@ -65,4 +65,4 @@ function _getResourcePath(pathname) {
 }
 
 /** @module AmpUrl */
-module.exports = createCacheUrl;
+export default createCacheUrl;

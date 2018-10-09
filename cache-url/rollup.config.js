@@ -18,18 +18,46 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
 import json from 'rollup-plugin-json';
-import compiler from '@ampproject/rollup-plugin-closure-compiler';
+import ignore from 'rollup-plugin-ignore';
+import serve from 'rollup-plugin-serve';
+import semver from 'semver';
 import pkg from './package.json';
 
-const plugins = [
+const nodePlugins = [
   resolve({
-    preferBuiltins: false,
+    preferBuiltins: true,
   }),
-  commonjs(),
   json(),
+  commonjs(),
   builtins(),
-  compiler(),
 ];
+
+const browserPlugins = [
+  ignore(['crypto']),
+  ...nodePlugins,
+];
+
+// Start our server if we are watching
+if (process.env.ROLLUP_WATCH) {
+  const servePlugin = serve({
+    contentBase: ['dist', 'examples'],
+    host: 'localhost',
+    port: 8000,
+  });
+
+  nodePlugins.push(servePlugin);
+  browserPlugins.push(servePlugin);
+}
+
+if (semver.gt(process.version, '7.99.99')) {
+  const compiler = require('@ampproject/rollup-plugin-closure-compiler');
+  const filesize = require('rollup-plugin-filesize');
+  browserPlugins.push(
+      compiler()
+  );
+  nodePlugins.push(filesize());
+  browserPlugins.push(filesize());
+}
 
 export default [
   {
@@ -39,9 +67,10 @@ export default [
       file: pkg.browser,
       format: 'umd',
       exports: 'named',
+      name: 'AmpToolboxCacheUrl',
     },
     context: 'window',
-    plugins: plugins,
+    plugins: browserPlugins,
   },
   {
     input: 'index.js',
@@ -51,7 +80,7 @@ export default [
       exports: 'named',
     },
     context: 'window',
-    plugins: plugins,
+    plugins: browserPlugins,
   },
   {
     input: 'index.js',
@@ -61,6 +90,6 @@ export default [
       exports: 'named',
     },
     context: 'global',
-    plugins: plugins,
+    plugins: nodePlugins,
   },
 ];

@@ -142,7 +142,7 @@ const imageExtensions = [
   'tga',
 ];
 
-module.exports = {
+const exports = {
   isPathNameAnImage: ((filePath) => {
     return imageExtensions.some((extension) => {
       if (filePath.endsWith(extension)) {
@@ -152,3 +152,5 @@ module.exports = {
     });
   }),
 };
+
+export default exports;

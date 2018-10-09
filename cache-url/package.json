@@ -6,8 +6,11 @@
   "module": "dist/amp-toolbox-cache-url.esm.js",
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
-    "build": "rollup -c",
-    "test": "npx jasmine && npx eslint .",
+    "build": "npx rollup -c",
+    "serve": "npx rollup -c -w",
+    "test": "npm-run-all build test-node test-browser lint",
+    "test-node": "npx jasmine --config=jasmine.json",
+    "test-browser": "npx karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix"
   },
@@ -27,17 +30,26 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "punycode": "^2.1.1"
+    "punycode": "^2.1.1",
+    "url-parse": "^1.4.3"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.7.3",
     "eslint": "5.6.1",
     "eslint-config-google": "0.10.0",
     "jasmine": "3.2.0",
+    "karma": "^3.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.2",
+    "npm-run-all": "^4.1.3",
     "rollup": "0.66.4",
     "rollup-plugin-commonjs": "9.1.8",
+    "rollup-plugin-filesize": "^4.0.1",
+    "rollup-plugin-ignore": "^1.0.3",
     "rollup-plugin-json": "3.1.0",
     "rollup-plugin-node-builtins": "2.1.2",
-    "rollup-plugin-node-resolve": "3.4.0"
+    "rollup-plugin-node-resolve": "3.4.0",
+    "rollup-plugin-serve": "^0.6.0",
+    "semver": "^5.5.1"
   }
 }

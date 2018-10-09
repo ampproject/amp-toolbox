@@ -16,21 +16,31 @@
 
 'use strict';
 
-const createCacheUrl = require('../lib/AmpCacheUrlGenerator');
-const createCurlsSubdomain = require('../lib/AmpCurlUrlGenerator');
+// Check if we are in a browser environment
+let createCacheUrl;
+let createCurlsSubdomain;
+if (typeof window !== 'undefined') {
+  createCacheUrl = window.AmpToolboxCacheUrl.createCacheUrl;
+  createCurlsSubdomain = window.AmpToolboxCacheUrl.createCurlsSubdomain;
+} else {
+  const ampToolboxCacheUrl = require('../dist/amp-toolbox-cache-url.cjs.js');
+  createCacheUrl = ampToolboxCacheUrl.createCacheUrl;
+  createCurlsSubdomain = ampToolboxCacheUrl.createCurlsSubdomain;
+}
+
 
 describe('AmpUrl', () => {
   const domainSuffix = 'cdn.ampproject.org';
 
-  describe('cacheUrl', () => {
+  describe('createCacheUrl', () => {
     const tests = [
       {
         url: 'https://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com/',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/s/www.example.com',
       },
       {
         url: 'http://www.example.com',
-        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com/',
+        cache: 'https://www-example-com.cdn.ampproject.org/c/www.example.com',
       },
       {
         url: 'https://www.example.com/index.html',
@@ -62,7 +72,7 @@ describe('AmpUrl', () => {
       },
       {
         url: 'https://點看.com',
-        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/xn--c1yn36f.com/',
+        cache: 'https://xn---com-k47jg78q.cdn.ampproject.org/c/s/點看.com',
       },
     ];
 
@@ -76,7 +86,7 @@ describe('AmpUrl', () => {
     });
   });
 
-  describe('curlsUrl', () => {
+  describe('createCurlsSubdomain', () => {
     const tests = [
       {
         url: 'https://something.com',

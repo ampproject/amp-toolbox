@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-const Url = require('url').URL;
-
-const punycode = require('punycode');
+import Url from 'url-parse';
+import punycode from 'punycode';
 
 /** @type {string} */
 const LTR_CHARS =
@@ -68,7 +67,7 @@ const MAX_DOMAIN_LABEL_LENGTH_ = 63;
  */
 function createCurlsSubdomain(url) {
   // Get our domain from the passed url string
-  const domain = new Url(url).hostname;
+  const domain = (new Url(url)).hostname;
   if (isEligibleForHumanReadableCacheEncoding_(domain)) {
     const curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
     if (curlsEncoding.length > MAX_DOMAIN_LABEL_LENGTH_) {
@@ -256,6 +255,5 @@ function encode32_(paddedHexString) {
   return parts.join('');
 }
 
-
 /** @module AmpCurlUrl */
-module.exports = createCurlsSubdomain;
+export default createCurlsSubdomain;

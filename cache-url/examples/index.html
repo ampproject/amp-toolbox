@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AMP Toolbox Cache URL Module</title>
+    <style>
+      @keyframes loading-spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      #loading {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #7983ff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: loading-spin 1.0s linear infinite;
+      }
+
+      .vertical-space {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
+    <script type="module">
+      import ampToolboxCacheUrl from '/amp-toolbox-cache-url.esm.js';
+
+      window.convertUrl = () => {
+        // Get the input value
+        const canonicalUrl = document.getElementById('canonical-input').value;
+
+        const cacheUrlPromise = ampToolboxCacheUrl.createCacheUrl('cdn.ampproject.org', canonicalUrl);
+        const curlsSubdomainPromise = ampToolboxCacheUrl.createCurlsSubdomain(canonicalUrl);
+
+        Promise.all([cacheUrlPromise, curlsSubdomainPromise]).then(responses => {
+          document.getElementById('cache-url').innerHTML = 'Cache URL: ' + responses[0];
+          document.getElementById('curls-subdomain').innerHTML = 'Curls Subdomain: ' + responses[1];
+          document.getElementById('loading').style = 'display: none;';
+        }).catch(err => {
+          document.getElementById('catch-promises').innerHTML = err.message;
+          document.getElementById('loading').style = 'display: none;';
+        });
+        
+        // Reset the fields
+        document.getElementById('cache-url').innerHTML = '';
+        document.getElementById('curls-subdomain').innerHTML = '';
+        document.getElementById('catch-promises').innerHTML = '';
+        document.getElementById('loading').style = 'display: block;';
+      }
+      
+      console.log('ampToolboxCacheUrl:');
+      console.log(ampToolboxCacheUrl);
+
+      document.getElementById('loading').style = 'display: none;';
+     </script>
+  </head>
+  <body>
+    <h1>AMP Toolbox Cache URL ES6 Module Example</h1>
+    <h4><i>Uses "cdn.ampproject.org" as the Cache CDN URL</i></h4>
+
+
+    <div class="vertical-space">
+      <label for="canonical-input">
+        Canonical URL:
+      </label>
+      <input id="canonical-input">
+      </input>
+      <button onclick="convertUrl()">
+        Convert Url
+      </button>
+    </div>
+
+    <div id="loading">
+    </div>
+    
+    <div id="cache-url" class="vertical-space">
+    </div>
+    <div id="curls-subdomain" class="vertical-space">
+    </div>
+    <div id="catch-promises" class="vertical-space">
+    </div>
+  </body>
+</html>

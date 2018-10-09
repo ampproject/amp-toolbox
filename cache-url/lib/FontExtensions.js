@@ -216,7 +216,7 @@ const fontExtensions = [
   '_v',
 ];
 
-module.exports = {
+const exports = {
   isPathNameAFont: ((filePath) => {
     return fontExtensions.some((extension) => {
       if (filePath.endsWith(extension)) {
@@ -226,3 +226,5 @@ module.exports = {
     });
   }),
 };
+
+export default exports;
