@@ -28,18 +28,22 @@ describe('UpdateCacheUrlProvider', () => {
   const updateCacheUrl = new UpdateCacheUrlProvider(signature, caches);
 
   describe('calculateFromCacheUrl', () => {
-    it('Generates the correct signature', () => {
+    it('Generates the correct signature', (done) => {
       const timestamp = 1;
-      const result = updateCacheUrl.calculateFromCacheUrl('https://test.com', timestamp);
-      const expected =
+      updateCacheUrl.calculateFromCacheUrl('https://test.com', timestamp).then((result) => {
+        const expected =
           'https://test.com/update-cache/?amp_action=flush&amp_ts=1&amp_url_signature=RESULT_SIGNATURE';
-      expect(result).toBe(expected);
+        expect(result).toBe(expected);
+        done();
+      });
     });
 
-    it('Generates signature with default timestamp', () => {
-      const result = updateCacheUrl.calculateFromCacheUrl('https://test.com');
-      const regex = /amp_ts=\d+/;
-      expect(result).toMatch(regex);
+    it('Generates signature with default timestamp', (done) => {
+      updateCacheUrl.calculateFromCacheUrl('https://test.com').then((result) => {
+        const regex = /amp_ts=\d+/;
+        expect(result).toMatch(regex);
+        done();
+      });
     });
   });
 
@@ -49,6 +53,8 @@ describe('UpdateCacheUrlProvider', () => {
       updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp)
           .then((result) => {
             expect(result.length).toBe(2);
+            expect(result[0].cacheId).toBe('test');
+            expect(result[1].cacheId).toBe('example');
           });
     });
   });
