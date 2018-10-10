@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "amp-toolbox-update-cache": "^0.1.2",
+    "amp-toolbox-update-cache": "^1.0.0",
     "minimist": "^1.2.0",
     "node-fetch": "^2.1.2"
   },
