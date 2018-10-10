@@ -1,12 +1,13 @@
 {
   "name": "amp-toolbox-cache-url",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "dist/amp-toolbox-cache-url.cjs.js",
   "module": "dist/amp-toolbox-cache-url.esm.js",
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
     "build": "npx rollup -c",
+    "prepublish": "npm run build",
     "serve": "npx rollup -c -w",
     "test": "npm-run-all build test-node test-browser lint",
     "test-node": "npx jasmine --config=jasmine.json",

@@ -16,7 +16,7 @@
 
 'use strict';
 
-const createCacheUrl = require('amp-toolbox-cache-url');
+const {createCacheUrl} = require('amp-toolbox-cache-url');
 const Signature = require('./Signature');
 const Caches = require('amp-toolbox-cache-list');
 
@@ -37,18 +37,23 @@ class UpdateCacheUrlProvider {
    *
    * @param {string} originUrl the URL for the content on the origin (ex: https://example.com)
    * @param {Number} [timestamp] as a UNIX Epoch in seconds
-   * @returns {Array<Object>} an array with objects containing the cache ID, cache name and
+   * @returns {Promise<Array<Object>>} an array with objects containing the cache ID, cache name and
    * update-cache url.
    */
   calculateFromOriginUrl(originUrl, timestamp = defaultTimestamp_()) {
-    return this._caches.list()
-        .then((caches) => {
-          return caches.map((cache) => {
-            const cacheUrl = createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl);
-            const updateCacheUrl = this.calculateFromCacheUrl(cacheUrl, timestamp);
-            return {cacheId: cache.id, cacheName: cache.name, updateCacheUrl: updateCacheUrl};
-          });
-        });
+    return this._caches.list().then((caches) => Promise.all(
+        caches.map((cache) =>
+          createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl)
+              .then((cacheUrl) => this.calculateFromCacheUrl(cacheUrl, timestamp))
+              .then((updateCacheUrl) => {
+                return {
+                  cacheId: cache.id,
+                  cacheName: cache.name,
+                  updateCacheUrl: updateCacheUrl,
+                };
+              })
+        )
+    ));
   }
 
   /**
@@ -58,7 +63,7 @@ class UpdateCacheUrlProvider {
    * @param {String} cacheUrl the URL for the content on an AMP Cache
    * (eg: https://example_com.cdn.ampproject.org/example.com/)
    * @param {Number} [timestamp] as a UNIX Epoch in seconds
-   * @return {String} the signed update-cache URL.
+   * @return {Promise<String>} the signed update-cache URL.
    */
   calculateFromCacheUrl(cacheUrl, timestamp = defaultTimestamp_()) {
     const url = new URL(cacheUrl);
@@ -71,7 +76,7 @@ class UpdateCacheUrlProvider {
     // Append the signature to the Cache Refresh Url.
     const urlSignature = this._sig.generate(url.pathname + url.search);
     url.searchParams.append('amp_url_signature', urlSignature);
-    return url.toString();
+    return Promise.resolve(url.toString());
   }
 
   /**
