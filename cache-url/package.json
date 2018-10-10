@@ -29,6 +29,12 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
+  "files": [
+    "dist",
+    "package.json",
+    "../LICENSE",
+    "README.md"
+  ],
   "dependencies": {
     "punycode": "^2.1.1",
     "url-parse": "^1.4.3"
