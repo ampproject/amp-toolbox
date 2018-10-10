@@ -10,13 +10,13 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 #### ES Module (Browser)
 
 ```javascript
-import ampToolboxCacheUrl from 'amp-toolbox-cache-url';
+import {ampToolboxCacheUrl} from 'amp-toolbox-cache-url';
 ```
 
 #### CommonJs (Node)
 
 ```javascript
-const ampToolboxCacheUrl = require('amp-toolbox-cache-url');
+const ampToolboxCacheUrl = require('amp-toolbox-cache-url').createCacheUrl;
 ```
 
 
@@ -25,7 +25,7 @@ const ampToolboxCacheUrl = require('amp-toolbox-cache-url');
 In the browser, include the UMD module in an HTML `<script>` tag. If using node, replace `window` with `global`.
 
 ```javascript
-const ampToolboxCacheUrl = window.AmpToolboxCacheUrl;
+const {ampToolboxCacheUrl} = window.AmpToolboxCacheUrl;
 ```
 
 ### Using the module
