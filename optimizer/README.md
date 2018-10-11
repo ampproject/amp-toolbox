@@ -81,6 +81,7 @@ You can find a sample implementation [here](demo/simple/). If you're using the e
 Currently the following options are supported:
 
 * **ampUrl**: an URL string pointing to the valid AMP version. Required by the AddAmpLink transformer.
+* **imageBasePath**: a base URL or path required for resolving an image file from a given image `src` attribute. Required by the AddBlurryImagePlaceholder transformer.
 * **ampRuntimeVersion** specifies a [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version") of the AMP runtime. For example: `ampRuntimeVersion: "001515617716922"` will result in AMP runtime URLs being re-written from:
 
   ```
