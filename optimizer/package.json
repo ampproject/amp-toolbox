@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-optimizer",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "amp-toolbox-core": "^0.1.0",
     "amp-toolbox-runtime-version": "^0.2.0",
     "parse5": "^5.1.0",
+    "jimp": "0.5.3",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
   },
   "devDependencies": {
@@ -31,7 +32,6 @@
     "html-minifier": "3.5.20",
     "jasmine": "3.2.0",
     "jasmine-spec-reporter": "4.2.1",
-    "jimp": "0.5.3",
     "nock": "10.0.1"
   }
 }
