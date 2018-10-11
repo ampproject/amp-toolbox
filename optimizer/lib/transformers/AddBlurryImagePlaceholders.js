@@ -166,6 +166,10 @@ class AddBlurryImagePlaceholders {
             width: width,
             height: height,
           };
+        })
+        .catch((e) => {
+          e.message = `Could not create placeholder for ${imageSrc}. Reason: ${e.message}`;
+          throw e;
         });
   }
 
@@ -178,7 +182,7 @@ class AddBlurryImagePlaceholders {
    */
   resolvePath_(base, path) {
     try {
-      return new URL(base, path).toString();
+      return new URL(path, base).toString();
     } catch (e) {
       return resolve(join(base, path));
     }
