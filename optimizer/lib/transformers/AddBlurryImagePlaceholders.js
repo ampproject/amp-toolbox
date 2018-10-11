@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-const sizeOf = require('image-size');
+const {join, resolve} = require('path');
+const {URL} = require('url');
 const jimp = require('jimp');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 
@@ -40,16 +41,22 @@ function escaper(match) {
  * is loaded. The current requirements of appending a blurry placeholder is for
  * the element is to be a JPEG that is either responsive or a poster for an
  * amp-video.
+ *
+ * This transformer supports the following option:
+ *
+ * * `imageBasePath`: specifies a base path used to resolve an image during build.
  */
 class AddBlurryImagePlaceholders {
   /**
    * Parses the document to add blurred placedholders in all appropriate
    * locations.
    * @param {TreeAdapter} tree A parse5 treeAdapter.
+   * @param {Object} runtime parameters
    * @return {Array} An array of promises that all represents the resolution of
    * a blurred placeholder being added in an appropriate place.
    */
-  transform(tree) {
+  transform(tree, params) {
+    params = params || {};
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
@@ -70,7 +77,7 @@ class AddBlurryImagePlaceholders {
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
-        const p = this.addBlurryPlaceholder_(tree, src).then((img) => {
+        const p = this.addBlurryPlaceholder_(tree, src, params).then((img) => {
           node.appendChild(img);
         });
         promises.push(p);
@@ -89,18 +96,20 @@ class AddBlurryImagePlaceholders {
    * Adds a child image that is a blurry placeholder.
    * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
+   * @param {Object} runtime parameters
    * @return {!Promise} A promise that signifies that the img has been updated
    * to have correct attributes to be a blurred placeholder along with the
    * placeholder itself.
    * @private
    */
-  addBlurryPlaceholder_(tree, src) {
+  addBlurryPlaceholder_(tree, src, params) {
     const img = tree.createElement('img');
     img.attribs.class = 'i-amphtml-blurry-placeholder';
     img.attribs.placeholder = '';
     img.attribs.src = src;
-    return this.getDataURI_(img).then((dataURI) => {
-      let svg = `<svg xmlns="http://www.w3.org/2000/svg"
+    return this.getDataURI_(img, params)
+        .then((dataURI) => {
+          let svg = `<svg xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       viewBox="0 0 ${dataURI.width} ${dataURI.height}">
                       <filter id="b" color-interpolation-filters="sRGB">
@@ -115,38 +124,68 @@ class AddBlurryImagePlaceholders {
                       </image>
                     </svg>`;
 
-      // Optimizes dataURI length by deleting line breaks, and
-      // removing unnecessary spaces.
-      svg = svg.replace(/\s+/g, ' ');
-      svg = svg.replace(/> </g, '><');
-      svg = svg.replace(ESCAPE_REGEX, escaper);
+          // Optimizes dataURI length by deleting line breaks, and
+          // removing unnecessary spaces.
+          svg = svg.replace(/\s+/g, ' ');
+          svg = svg.replace(/> </g, '><');
+          svg = svg.replace(ESCAPE_REGEX, escaper);
 
-      img.attribs.src = 'data:image/svg+xml;charset=utf-8,' + svg;
-      return img;
-    }).catch((err) => {
-      console.error('AddBlurryImagePlaceholders transformer error during the ' +
-       'calculation of bitmap size from the source image: ' + err);
-    });
+          img.attribs.src = 'data:image/svg+xml;charset=utf-8,' + svg;
+          return img;
+        })
+        .catch((err) => {
+          console.error(`[AddBlurryImagePlaceholders]  ${err.message}`);
+        });
   }
 
   /**
    * Creates the bitmap in a dataURI format.
    * @param {Node} img The DOM element that needs a dataURI for the
    * placeholder.
+   * @param {Object} runtime parameters
    * @return {!Promise} A promise that is resolved once the img's src is updated
-   * to be a dataURI of a bitmap.
+   * to be a dataURI of a bitmap including width and height.
    * @private
    */
-  getDataURI_(img) {
-    const bitMapDims = this.getBitmapDimensions_(img);
-    return this.createBitmap_(img, bitMapDims.width, bitMapDims.height)
+  getDataURI_(img, params) {
+    const basePath = params.imageBasePath || '';
+    const imageSrc = this.resolvePath_(basePath, img.attribs.src);
+    let width;
+    let height;
+    return jimp.read(imageSrc)
+        .then((image) => {
+          const imgDimension = this.getBitmapDimensions_(image.bitmap.width, image.bitmap.height);
+          image.resize(imgDimension.width, imgDimension.height, jimp.RESIZE_BEZIER);
+          width = image.bitmap.width;
+          height = image.bitmap.height;
+          return image.getBase64Async('image/png');
+        })
         .then((dataURI) => {
           return {
             src: dataURI,
-            width: bitMapDims.width,
-            height: bitMapDims.height,
+            width: width,
+            height: height,
           };
+        })
+        .catch((e) => {
+          e.message = `Could not create placeholder for ${imageSrc}. Reason: ${e.message}`;
+          throw e;
         });
+  }
+
+  /**
+   * Resolves an URL or relative path.
+   * @param {String} the base (might be empty)
+   * @param {String} the path
+   * @return {String} the resolved path or URL
+   * @private
+   */
+  resolvePath_(base, path) {
+    try {
+      return new URL(path, base).toString();
+    } catch (e) {
+      return resolve(join(base, path));
+    }
   }
 
   /**
@@ -156,11 +195,7 @@ class AddBlurryImagePlaceholders {
    * @return {Record} The aspect ratio of the bitmap of the image.
    * @private
    */
-  getBitmapDimensions_(img) {
-    // Gets the original aspect ratio of the image.
-    const imgDims = sizeOf(img.attribs.src);
-    const imgWidth = imgDims.width;
-    const imgHeight = imgDims.height;
+  getBitmapDimensions_(imgWidth, imgHeight) {
     // Aims for a bitmap of ~P pixels (w * h = ~P).
     // Gets the ratio of the width to the height. (r = w0 / h0 = w / h)
     const ratioWH = imgWidth / imgHeight;
@@ -181,26 +216,6 @@ class AddBlurryImagePlaceholders {
   }
 
   /**
-   * Reads and transforms an image to a blurry placeholder format.
-   * @param {Node} img The DOM element that will need a bitmap.
-   * placeholder.
-   * @return {!Promise} A promise that is resolved when the image has been read
-   * and transformed.
-   * @private
-   */
-  createBitmap_(img, width, height) {
-    return jimp.read(img.attribs.src)
-        .then((image) => {
-          image.resize(width, height, jimp.RESIZE_BEZIER);
-          return image.getBase64Async('image/png');
-        })
-        .catch((err) => {
-          console.error('Jimp error during the creation of the bitmap/the' +
-          'encoding of the data URI: ' + err);
-        });
-  }
-
-  /**
    * Checks if an element has a placeholder.
    * @param {Node} node The DOM element that is being checked for a placeholder.
    * @return {boolean} Whether or not the element already has a placeholder
@@ -208,12 +223,9 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   hasPlaceholder_(node) {
-    node.childNodes.forEach((child) => {
-      if (child.attribs && child.attribs.placeholder) {
-        return true;
-      }
-    });
-    return false;
+    return node.childNodes.find((child) => {
+      return child.attribs && child.attribs.placeholder !== undefined;
+    }) !== undefined;
   }
 
   /**
@@ -237,7 +249,10 @@ class AddBlurryImagePlaceholders {
    */
   shouldAddBlurryPlaceholder_(node, src, tagName) {
     // Ensures current placeholders are not overridden.
-    if (!src || this.hasPlaceholder_(node)) {
+    if (!src) {
+      return false;
+    }
+    if (this.hasPlaceholder_(node)) {
       return false;
     }
 

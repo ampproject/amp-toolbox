@@ -26,6 +26,9 @@ const TRANSFORMER_PARAMS = {
   ampUrl: 'https://example.com/amp-version.html',
 };
 
+const CONFIG_START_TOKEN = '<!--';
+const CONFIG_END_TOKEN = '-->';
+
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach((testDir) => {
@@ -39,13 +42,13 @@ module.exports = function(testConfig) {
 
         // parse input and extract params
         let input = getFileContents(join(testDir, 'input.html'));
-        if (input.startsWith('<!--')) {
-          const match = input.match(/<!--([^]+)-->/);
-          if (match) {
-            params = JSON.parse(match[1]);
-            // trim params from input string
-            input = input.substring(match[0].length + 1);
-          }
+        if (input.startsWith(CONFIG_START_TOKEN)) {
+          const indexStartConfig = CONFIG_START_TOKEN.length;
+          const indexEndConfig = input.indexOf(CONFIG_END_TOKEN);
+          const paramsString = input.substring(indexStartConfig, indexEndConfig);
+          params = JSON.parse(paramsString);
+          // trim params from input string
+          input = input.substring(indexEndConfig + CONFIG_END_TOKEN.length);
         }
         const inputTree = treeParser.parse(input);
 
