@@ -223,7 +223,9 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   hasPlaceholder_(node) {
-    return node.childNodes.find((child) => child.attribs && child.attribs.placeholder);
+    return node.childNodes.find((child) => {
+      return child.attribs && child.attribs.placeholder !== undefined;
+    }) !== undefined;
   }
 
   /**
@@ -247,7 +249,10 @@ class AddBlurryImagePlaceholders {
    */
   shouldAddBlurryPlaceholder_(node, src, tagName) {
     // Ensures current placeholders are not overridden.
-    if (!src || this.hasPlaceholder_(node)) {
+    if (!src) {
+      return false;
+    }
+    if (this.hasPlaceholder_(node)) {
       return false;
     }
 

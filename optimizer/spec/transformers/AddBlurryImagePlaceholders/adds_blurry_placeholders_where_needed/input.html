@@ -50,6 +50,11 @@
   <!-- Skip because of noloading attribute-->
   <amp-img width="360" height="200" layout="responsive" src="bball.jpg" noloading></amp-img>
 
+  <!-- Skip because of placeholder -->
+  <amp-img width="360" height="200" layout="responsive" src="bball.jpg">
+    <div placeholder></div>
+  </amp-img>
+
   <!-- amp-video test -->
   <!-- Should append placeholder -->
   <amp-video id="intro-vid" src="./media/cover.mp4" layout= "fill" poster="bball.jpg" autoplay loop noaudio></amp-video>
