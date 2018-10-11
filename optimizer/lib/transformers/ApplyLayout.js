@@ -50,7 +50,7 @@ function apply(layout, width, height, node) {
   let styles = '';
   switch (layout) {
     case 'nodisplay':
-      styles = 'display:none;';
+      node.attribs.hidden = 'hidden';
       break;
     case 'fixed':
       styles = `width:${width.numeral}${width.unit};height:${height.numeral}${height.unit};`;
