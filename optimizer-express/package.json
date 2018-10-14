@@ -29,7 +29,7 @@
     "whatwg-url": "^7.0.0"
   },
   "devDependencies": {
-    "eslint": "5.6.1",
+    "eslint": "5.7.0",
     "eslint-config-google": "0.10.0",
     "jasmine": "3.2.0",
     "mock-express-request": "0.2.2",
