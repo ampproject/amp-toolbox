@@ -6,5 +6,5 @@ node_js:
 sudo: required
 addons:
   chrome: stable 
-install: npx lerna bootstrap  
+install: npm install -g npx && npx lerna bootstrap  
 script: npx lerna run test
