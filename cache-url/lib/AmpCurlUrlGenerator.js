@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "hex_", "argsIgnorePattern": "str" }]*/
+
 import Url from 'url-parse';
 import punycode from 'punycode';
 
@@ -130,7 +132,6 @@ function constructFallbackCurlsCacheDomain_(domain) {
   return sha256_(domain).then((digest) => encodeHexToBase32_(digest));
 }
 
-
 /**
  * Function to run sha256 over a string.
  * Uses rollup-plugin-replace, to import/use any platform
@@ -140,22 +141,22 @@ function constructFallbackCurlsCacheDomain_(domain) {
  * @private
  */
 function sha256_(str) {
-  /*ROLLUP_REPLACE_BROWSER
+  /* ROLLUP_REPLACE_BROWSER
   // Transform the string into an arraybuffer.
   const buffer = new TextEncoder('utf-8').encode(str);
   return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
     return hex_(hash);
   });
-  ROLLUP_REPLACE_BROWSER*/
+  ROLLUP_REPLACE_BROWSER */
 
-  /*ROLLUP_REPLACE_NODE
+  /* ROLLUP_REPLACE_NODE
   const buffer = Buffer.from(str, 'utf-8');
   const crypto = require('crypto');
   return new Promise((resolve) => {
     const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
     resolve(sha256);
   });
-  ROLLUP_REPLACE_NODE*/
+  ROLLUP_REPLACE_NODE */
 }
 
 /**

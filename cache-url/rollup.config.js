@@ -40,16 +40,16 @@ const browserPlugins = [
 nodePlugins.unshift(replace({
   delimiters: ['', ''],
   values: {
-    '/*ROLLUP_REPLACE_NODE': '',
-    'ROLLUP_REPLACE_NODE*/': ''
-  }
+    '/* ROLLUP_REPLACE_NODE': '',
+    'ROLLUP_REPLACE_NODE */': '',
+  },
 }));
 browserPlugins.unshift(replace({
   delimiters: ['', ''],
   values: {
-    '/*ROLLUP_REPLACE_BROWSER': '',
-    'ROLLUP_REPLACE_BROWSER*/': ''
-  }
+    '/* ROLLUP_REPLACE_BROWSER': '',
+    'ROLLUP_REPLACE_BROWSER */': '',
+  },
 }));
 
 
