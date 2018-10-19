@@ -132,25 +132,30 @@ function constructFallbackCurlsCacheDomain_(domain) {
 
 
 /**
+ * Function to run sha256 over a string.
+ * Uses rollup-plugin-replace, to import/use any platform
+ * specific crypto code, and then use accordingly.
  * @param {string} str The string to convert to sha256
  * @return {!Promise<string>}
  * @private
  */
 function sha256_(str) {
-  if (typeof window !== 'undefined') {
-    // Transform the string into an arraybuffer.
-    const buffer = new TextEncoder('utf-8').encode(str);
-    return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
-      return hex_(hash);
-    });
-  } else {
-    const buffer = Buffer.from(str, 'utf-8');
-    const crypto = require('crypto');
-    return new Promise((resolve) => {
-      const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
-      resolve(sha256);
-    });
-  }
+  /*ROLLUP_REPLACE_BROWSER
+  // Transform the string into an arraybuffer.
+  const buffer = new TextEncoder('utf-8').encode(str);
+  return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
+    return hex_(hash);
+  });
+  ROLLUP_REPLACE_BROWSER*/
+
+  /*ROLLUP_REPLACE_NODE
+  const buffer = Buffer.from(str, 'utf-8');
+  const crypto = require('crypto');
+  return new Promise((resolve) => {
+    const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
+    resolve(sha256);
+  });
+  ROLLUP_REPLACE_NODE*/
 }
 
 /**

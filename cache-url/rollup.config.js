@@ -18,7 +18,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
 import json from 'rollup-plugin-json';
-import ignore from 'rollup-plugin-ignore';
+import replace from 'rollup-plugin-replace';
 import serve from 'rollup-plugin-serve';
 import semver from 'semver';
 import pkg from './package.json';
@@ -33,9 +33,25 @@ const nodePlugins = [
 ];
 
 const browserPlugins = [
-  ignore(['crypto']),
   ...nodePlugins,
 ];
+
+// Add our replacements to uncomment browser vs. node
+nodePlugins.unshift(replace({
+  delimiters: ['', ''],
+  values: {
+    '/*ROLLUP_REPLACE_NODE': '',
+    'ROLLUP_REPLACE_NODE*/': ''
+  }
+}));
+browserPlugins.unshift(replace({
+  delimiters: ['', ''],
+  values: {
+    '/*ROLLUP_REPLACE_BROWSER': '',
+    'ROLLUP_REPLACE_BROWSER*/': ''
+  }
+}));
+
 
 // Start our server if we are watching
 if (process.env.ROLLUP_WATCH) {
