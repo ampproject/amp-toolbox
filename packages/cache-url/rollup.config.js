@@ -31,21 +31,21 @@ const plugins = [
 ];
 
 const nodeFilterImports = {
-  "imports": {
-    "debugging-tools": [ "warn" ]
-  }
+  'imports': {
+    './AmpCurlUrlBrowserSha256': ['default'],
+  },
 };
 
 const browserFilterImports = {
-  "imports": {
-    "debugging-tools": [ "warn" ]
-  }
-}
+  'imports': {
+    './AmpCurlUrlNodeSha256': ['default'],
+  },
+};
 
 const nodePlugins = [
   babel({
     exclude: ['node_modules/**'],
-    plugins: [["filter-imports", nodeFilterImports]]
+    plugins: [['filter-imports', nodeFilterImports]],
   }),
   ...plugins,
 ];
@@ -53,7 +53,7 @@ const nodePlugins = [
 const browserPlugins = [
   babel({
     exclude: ['node_modules/**'],
-    plugins: [["filter-imports", browserFilterImports]]
+    plugins: [['filter-imports', browserFilterImports]],
   }),
   ...plugins,
 ];
