@@ -24,14 +24,10 @@ import pkg from './package.json';
 
 const plugins = [
   resolve({
-    preferBuiltins: true,
+    preferBuiltins: false,
   }),
   json(),
   commonjs(),
-];
-
-const browserPlugins = [
-
 ];
 
 const nodeFilterImports = {
