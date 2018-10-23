@@ -120,7 +120,7 @@ describe('Tree Parser', () => {
 });
 
 describe('Tree', () => {
-  let tree = treeParser.parse('<html><head></head></html>');
+  const tree = treeParser.parse('<html><head></head></html>');
   describe('createElement', () => {
     it('works without attributes', () => {
       const element = tree.createElement('test');
@@ -136,7 +136,7 @@ describe('Tree', () => {
     let secondElement;
     let head;
     beforeEach(() => {
-      let tree = treeParser.parse('<html><head></head></html>');
+      const tree = treeParser.parse('<html><head></head></html>');
       head = tree.root.firstChild.firstChild;
 
       firstElement = tree.createElement('meta');
