@@ -19,8 +19,8 @@ import punycode from 'punycode';
 
 // Our imports that are dynamically filtered
 // by rollup
-import ampCurlUrlBrowserSha256 from './AmpCurlUrlBrowserSha256';
-import ampCurlUrlNodeSha256 from './AmpCurlUrlNodeSha256';
+import browserSha256 from './browser/Sha256';
+import nodeSha256 from './node/Sha256';
 
 /** @type {string} */
 const LTR_CHARS =
@@ -137,15 +137,18 @@ function constructFallbackCurlsCacheDomain_(domain) {
 
 
 /**
+ * Function to get a sha256 representation of the specified string.
+ * This uses babel-plugin-filer-imports, so that the import
+ * that is not for the specified platform is removed.
  * @param {string} str The string to convert to sha256
  * @return {!Promise<string>}
  * @private
  */
 function sha256_(str) {
   if (typeof window !== 'undefined') {
-    return ampCurlUrlBrowserSha256(str);
+    return browserSha256(str);
   } else {
-    return ampCurlUrlNodeSha256(str);
+    return nodeSha256(str);
   }
 }
 

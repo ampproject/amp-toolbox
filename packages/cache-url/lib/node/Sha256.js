@@ -19,7 +19,7 @@
  * @return {!Promise<string>}
  * @private
  */
-export default function ampCurlUrlNodeSha256(str) {
+export default function nodeSha256(str) {
   const buffer = Buffer.from(str, 'utf-8');
   const crypto = require('crypto');
   return new Promise((resolve) => {

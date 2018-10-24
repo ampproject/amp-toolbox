@@ -32,13 +32,13 @@ const plugins = [
 
 const nodeFilterImports = {
   'imports': {
-    './AmpCurlUrlBrowserSha256': ['default'],
+    './browser/Sha256': ['default'],
   },
 };
 
 const browserFilterImports = {
   'imports': {
-    './AmpCurlUrlNodeSha256': ['default'],
+    './node/Sha256': ['default'],
   },
 };
 

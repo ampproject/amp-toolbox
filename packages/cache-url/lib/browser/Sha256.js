@@ -19,7 +19,7 @@
  * @return {!Promise<string>}
  * @private
  */
-export default function ampCurlUrlBrowserSha256(str) {
+export default function browserSha256(str) {
   // Transform the string into an arraybuffer.
   const buffer = new TextEncoder('utf-8').encode(str);
   return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
