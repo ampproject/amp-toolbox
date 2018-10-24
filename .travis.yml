@@ -8,6 +8,6 @@ addons:
   chrome: stable 
 cache:
   directories:
-    - "node_modules"
-install: npm install -g npx && npx lerna bootstrap  
+    - ~/.npm
+install: npm ci * && npm i packages/* 
 script: npx lerna run test

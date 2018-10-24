@@ -20,11 +20,5 @@
   "dependencies": {
     "amp-toolbox-core": "^0.1.0",
     "axios": "^0.18.0"
-  },
-  "devDependencies": {
-    "eslint": "5.7.0",
-    "eslint-config-google": "0.11.0",
-    "jasmine": "3.2.0",
-    "jasmine-spec-reporter": "4.2.1"
   }
 }

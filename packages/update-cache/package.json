@@ -28,10 +28,5 @@
     "amp-toolbox-cache-list": "^0.1.0",
     "amp-toolbox-cache-url": "^1.0.2",
     "jsrsasign": "^8.0.12"
-  },
-  "devDependencies": {
-    "eslint": "5.7.0",
-    "eslint-config-google": "0.11.0",
-    "jasmine": "3.2.0"
   }
 }
