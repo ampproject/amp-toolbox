@@ -3,11 +3,6 @@
   "version": "0.2.0",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
-  "scripts": {
-    "test": "jasmine && npm run lint",
-    "lint": "eslint . --config ../.eslintrc.json",
-    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
-  },
   "bin": {
     "outside": "bin/amp-toolbox"
   },

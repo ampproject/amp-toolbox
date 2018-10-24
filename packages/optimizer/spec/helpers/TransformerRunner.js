@@ -37,6 +37,9 @@ module.exports = function(testConfig) {
             .get('/rtv/001515617716922/v0.css')
             .reply(200, '/* v0.css */');
       });
+      afterEach(() => {
+        nock.restore();
+      });
       it(basename(testDir), (done) => {
         let params = TRANSFORMER_PARAMS;
 

@@ -1,6 +1,14 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "build": "npx lerna run build",
+    "test": "npm-run-all build test-node test-browser lint",
+    "test-node": "jasmine --config=jasmine.json",
+    "test-browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "lint": "eslint \"**/*.js\" --ignore-path .gitignore",
+    "lint-fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
+  },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.8.2",
     "@babel/core": "7.1.2",

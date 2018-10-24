@@ -6,14 +6,9 @@
   "module": "dist/amp-toolbox-cache-url.esm.js",
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
-    "build": "npx rollup -c",
+    "build": "rollup -c",
     "prepublish": "npm run build",
-    "serve": "npx rollup -c -w",
-    "test": "npm-run-all build test-node test-browser lint",
-    "test-node": "npx jasmine --config=jasmine.json",
-    "test-browser": "npx karma start --single-run --browsers ChromeHeadless karma.conf.js",
-    "lint": "npx eslint .",
-    "lint-fix": "npx eslint . --fix"
+    "serve": "rollup -c -w"
   },
   "repository": {
     "type": "git",

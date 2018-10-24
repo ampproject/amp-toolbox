@@ -47,7 +47,7 @@ describe('update-cache', () => {
   it('Displays an Error if privateKey is invalid', (done) => {
     const args = {
       '_': ['', 'https://www.example.com'],
-      'privateKey': './spec/cmds/invalidKey.pem',
+      'privateKey': __dirname + '/invalidKey.pem',
     };
 
     updateCacheCmd(args, mockLogger)

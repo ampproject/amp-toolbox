@@ -3,11 +3,6 @@
   "version": "0.2.1",
   "description": "AMP Runtime versions",
   "main": "index.js",
-  "scripts": {
-    "test": "jasmine && npm run lint",
-    "lint": "eslint . --config ../.eslintrc.json",
-    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
-  },
   "keywords": [
     "amp"
   ],
