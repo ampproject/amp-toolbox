@@ -128,7 +128,7 @@ class ServerSideRendering {
       }
     }
 
-    for (let n of toRemove) {
+    for (const n of toRemove) {
       n.remove();
     }
   }

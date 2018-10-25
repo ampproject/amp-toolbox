@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "Implements the AMP update-cache API, as described at https://developers.google.com/amp/cache/update-cache ",
   "main": "index.js",
-  "scripts": {
-    "test": "jasmine && npm run lint",
-    "lint": "eslint . --config ../.eslintrc.json",
-    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git"
@@ -28,10 +23,5 @@
     "amp-toolbox-cache-list": "^0.1.0",
     "amp-toolbox-cache-url": "^1.0.2",
     "jsrsasign": "^8.0.12"
-  },
-  "devDependencies": {
-    "eslint": "5.7.0",
-    "eslint-config-google": "0.10.0",
-    "jasmine": "3.2.0"
   }
 }

@@ -3,11 +3,6 @@
   "version": "0.4.1",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
-  "scripts": {
-    "test": "jasmine && npm run lint",
-    "lint": "eslint . --config ../.eslintrc.json",
-    "lint-fix": "eslint . --config ../.eslintrc.json --fix"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git"
@@ -23,15 +18,5 @@
     "parse5": "^5.1.0",
     "jimp": "0.5.4",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
-  },
-  "devDependencies": {
-    "colors": "1.3.2",
-    "diff": "3.5.0",
-    "eslint": "5.7.0",
-    "eslint-config-google": "0.10.0",
-    "html-minifier": "3.5.20",
-    "jasmine": "3.2.0",
-    "jasmine-spec-reporter": "4.2.1",
-    "nock": "10.0.1"
   }
 }

@@ -1,5 +1,9 @@
 {
   "extends": "google",
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
   "rules": {
     "max-len": [2, 100, {
       "ignoreComments": true,
@@ -26,9 +30,6 @@
     "valid-jsdoc": 0,
     "prefer-arrow-callback": 1,
     "no-var": 1
-  },
-  "parserOptions": {
-    "ecmaVersion": 2017
   },
   "env": {
     "node": true,

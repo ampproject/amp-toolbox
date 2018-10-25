@@ -60,14 +60,14 @@ class PreloadImages {
 
     let referenceNode = findMetaViewport(head);
 
-    for (let preload of preloadImageMap.values()) {
+    for (const preload of preloadImageMap.values()) {
       head.insertAfter(preload, referenceNode);
       referenceNode = preload;
     }
   }
 
   addImage(preloadImageMap, tree, node) {
-    let imageUrl = this.extractImageUrl(node);
+    const imageUrl = this.extractImageUrl(node);
     if (!imageUrl) {
       return;
     }

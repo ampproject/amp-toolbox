@@ -27,7 +27,7 @@ describe('ParseLayout', () => {
   describe('cssLength', () => {
     it('parses the units correctly', () => {
       const allowedUnits = ['px', 'em', 'rem', 'vh', 'vmin', 'vmax'];
-      for (let unit of allowedUnits) {
+      for (const unit of allowedUnits) {
         const parsed = cssLength('10' + unit, false);
         expect(parsed.isSet).toBe(true);
         expect(parsed.isValid).toBe(true);

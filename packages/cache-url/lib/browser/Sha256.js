@@ -33,7 +33,7 @@ export default function browserSha256(str) {
  * @private
  */
 function hex_(buffer) {
-  let hexCodes = [];
+  const hexCodes = [];
   const view = new DataView(buffer);
   for (let i = 0; i < view.byteLength; i += 4) {
     // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)

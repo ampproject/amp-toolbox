@@ -195,7 +195,7 @@ function encode32_(paddedHexString) {
   const base32 = 'abcdefghijklmnopqrstuvwxyz234567';
   const leftover = bytes.length % 5;
   let quanta = Math.floor((bytes.length / 5));
-  let parts = [];
+  const parts = [];
 
   if (leftover != 0) {
     for (let i = 0; i < (5-leftover); i++) {

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-## AMP Toolbox
+# AMP Toolbox
 
 [![Build Status](https://travis-ci.org/ampproject/amp-toolbox.svg?branch=master)](https://travis-ci.org/ampproject/amp-toolbox)
 
@@ -26,6 +26,54 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 - **[amp-cache-url](./packages/cache-url):** a javascript library for translating origin URLs to the [AMP Cache URL format](https://developers.google.com/amp/cache/overview).
 - **[amp-cache-list](./packages/cache-list):** a javascript library for listing the known AMP Caches.
 - **[amp-update-cache](./packages/update-cache):** a javascript library for updating AMP documents in AMP Caches.
+
+## Development
+
+### Setting up your environment
+
+After forking amp-toolbox to your own github org, do the following steps to get started:
+
+```
+# clone your fork to your local machine
+git clone https://github.com/your-fork/amp-toolbox.git
+
+# step into local repo
+cd amp-toolbox
+
+# install dependencies via https://lernajs.io/
+npx lerna bootstrap --hoist
+```
+
+### Adding new dependencies
+
+amp-toolbox uses [Lerna](https://lernajs.io/) to manage it's packages. To keep build times low, `devDependencies` must be added to the root [package.json](package.json) file. Runtime dependencies are managed for each package individually.
+
+### Running Tests
+
+The test suite runs for all packages and must be run from the root directory.
+
+```
+# run tests on node and browser
+npm test
+
+# run only in node (fastest)
+npm run test:node
+
+# run only in browser
+npm run test:browser
+```
+
+### Style & Linting
+
+This codebase adheres to the [Googe Javascript Styleguide](https://google.github.io/styleguide/jsguide.html) and is enforced using ESLint. ESLint is run as part of the test suite, but you can also explicity run it via:
+
+```
+# run ESLint
+npm run lint
+
+# run ESLint with `--fix` option to automatically fix errors (if possible)
+npm run lint-fix
+```
 
 ## Contributing
 
