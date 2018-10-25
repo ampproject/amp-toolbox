@@ -17,6 +17,11 @@
 import Url from 'url-parse';
 import punycode from 'punycode';
 
+// Our imports that are dynamically filtered
+// by rollup
+import browserSha256 from './browser/Sha256';
+import nodeSha256 from './node/Sha256';
+
 /** @type {string} */
 const LTR_CHARS =
   'A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF' +
@@ -132,48 +137,19 @@ function constructFallbackCurlsCacheDomain_(domain) {
 
 
 /**
+ * Function to get a sha256 representation of the specified string.
+ * This uses babel-plugin-filer-imports, so that the import
+ * that is not for the specified platform is removed.
  * @param {string} str The string to convert to sha256
  * @return {!Promise<string>}
  * @private
  */
 function sha256_(str) {
   if (typeof window !== 'undefined') {
-    // Transform the string into an arraybuffer.
-    const buffer = new TextEncoder('utf-8').encode(str);
-    return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
-      return hex_(hash);
-    });
+    return browserSha256(str);
   } else {
-    const buffer = Buffer.from(str, 'utf-8');
-    const crypto = require('crypto');
-    return new Promise((resolve) => {
-      const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
-      resolve(sha256);
-    });
+    return nodeSha256(str);
   }
-}
-
-/**
- * @param {string} buffer
- * @return {string}
- * @private
- */
-function hex_(buffer) {
-  let hexCodes = [];
-  const view = new DataView(buffer);
-  for (let i = 0; i < view.byteLength; i += 4) {
-    // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
-    const value = view.getUint32(i);
-    // toString(16) will give the hex representation of the number without padding
-    const stringValue = value.toString(16);
-    // Use concatenation and slice for padding
-    const padding = '00000000';
-    const paddedValue = (padding + stringValue).slice(-padding.length);
-    hexCodes.push(paddedValue);
-  }
-
-  // Join all the hex strings into one
-  return hexCodes.join('');
 }
 
 /**

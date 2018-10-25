@@ -16,26 +16,48 @@
 
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import builtins from 'rollup-plugin-node-builtins';
 import json from 'rollup-plugin-json';
-import ignore from 'rollup-plugin-ignore';
+import babel from 'rollup-plugin-babel';
 import serve from 'rollup-plugin-serve';
 import semver from 'semver';
 import pkg from './package.json';
 
-const nodePlugins = [
+const plugins = [
   resolve({
-    preferBuiltins: true,
+    preferBuiltins: false,
   }),
   json(),
   commonjs(),
-  builtins(),
+];
+
+const nodeFilterImports = {
+  'imports': {
+    './browser/Sha256': ['default'],
+  },
+};
+
+const browserFilterImports = {
+  'imports': {
+    './node/Sha256': ['default'],
+  },
+};
+
+const nodePlugins = [
+  babel({
+    exclude: ['node_modules/**'],
+    plugins: [['filter-imports', nodeFilterImports]],
+  }),
+  ...plugins,
 ];
 
 const browserPlugins = [
-  ignore(['crypto']),
-  ...nodePlugins,
+  babel({
+    exclude: ['node_modules/**'],
+    plugins: [['filter-imports', browserFilterImports]],
+  }),
+  ...plugins,
 ];
+
 
 // Start our server if we are watching
 if (process.env.ROLLUP_WATCH) {
