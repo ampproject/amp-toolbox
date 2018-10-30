@@ -18,7 +18,7 @@
 const parse5 = require('parse5');
 const htmlparser2 = require('parse5-htmlparser2-tree-adapter');
 
-// Extend Node close with methods required by transformers
+// Extend Node class with methods required by transformers
 const Node = Object.getPrototypeOf(htmlparser2.createDocument());
 
 // Depth-first walk through the DOM tree.
