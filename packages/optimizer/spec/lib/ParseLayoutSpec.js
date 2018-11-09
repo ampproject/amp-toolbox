@@ -84,6 +84,11 @@ describe('ParseLayout', () => {
         expect(parsed.isValid).toBe(true);
         expect(parsed.isAuto).toBe(true);
       }
+      {
+        const parsed = cssLength('fluid', false, true);
+        expect(parsed.isValid).toBe(true);
+        expect(parsed.isFluid).toBe(true);
+      }
     });
   });
   describe('getLayoutClass', () => {

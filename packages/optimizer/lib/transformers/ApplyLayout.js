@@ -102,11 +102,18 @@ function maybeAddSizerInto(node, tree, layout, width, height) {
 module.exports = {
   applyLayout: function(customElement, tree) {
     const ampLayout = parseLayout(customElement.attribs.layout);
-    const inputWidth = cssLength(getAttributeOrNull(customElement, 'width'), false);
+    const inputWidth = cssLength(
+        getAttributeOrNull(customElement, 'width'),
+        /* allow_auto=*/true,
+        /* allow_fluid=*/false);
     if (!inputWidth.isValid) {
       return false;
     }
-    const inputHeight = cssLength(getAttributeOrNull(customElement, 'height'), false);
+    const inputHeight = cssLength(
+        getAttributeOrNull(customElement, 'height'),
+        /* allow_auto=*/true,
+        /* allow_fluid=*/ampLayout === 'fluid'
+    );
     if (!inputHeight.isValid) {
       return false;
     }
