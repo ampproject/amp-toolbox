@@ -36,14 +36,14 @@ function updateCaches_(privateKey, url, logger) {
 }
 
 function updateCache_(cacheUpdateUrlInfo, logger) {
-  const tag = cacheUpdateUrlInfo.cacheName;
-  logger.info(`Invalidating ${cacheUpdateUrlInfo.cacheName}`, tag);
-  logger.info(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`, tag);
+  logger = logger.tag(cacheUpdateUrlInfo.cacheName);
+  logger.info(`Invalidating ${cacheUpdateUrlInfo.cacheName}`);
+  logger.info(`Using Invalidation URL: ${cacheUpdateUrlInfo.updateCacheUrl}`);
 
   fetch(cacheUpdateUrlInfo.updateCacheUrl)
       .then((response) => {
         if (response.status === 200) {
-          logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`, tag);
+          logger.success(`${cacheUpdateUrlInfo.cacheName} Updated`);
           return;
         }
         return response.text()
@@ -52,18 +52,18 @@ function updateCache_(cacheUpdateUrlInfo, logger) {
               if (match) {
                 logger.error(
                     `Error Invalidating Cache URL. Received response code "${response.status}" ` +
-                    `with message: "${match[1]}"`, tag
+                    `with message: "${match[1]}"`
                 );
               } else {
                 logger.error(
                     `Error Invalidating Cache URL. Received response code "${response.status}"` +
-                    'with an unknown error', tag
+                    'with an unknown error'
                 );
               }
             });
       })
       .catch((e) => {
-        logger.warn(`Error connecting to the AMP Cache with message: "${e.message}"`, tag);
+        logger.warn(`Error connecting to the AMP Cache with message: "${e.message}"`);
       });
 }
 

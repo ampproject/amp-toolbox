@@ -7,7 +7,7 @@
     "test:node": "jasmine --config=jasmine.json",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "eslint \"**/*.js\" --ignore-path .gitignore",
-    "lint-fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
+    "lint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.8.3",

@@ -17,6 +17,7 @@
 'use strict';
 
 const {findMetaViewport} = require('../HtmlDomHelper');
+const log = require('../log.js');
 
 /**
  * Adds a preconnect instruction to `fonts.gstatic.com` when the Google Fonts CSS
@@ -41,11 +42,15 @@ class GoogleFontsPreconnect {
       if (this.isGoogleFontsLinkNode_(node)) {
         // Preconnect to fonts.gstatic.com, where the final fonts are downloaded.
         const linkPreconnect = tree.createElement('link');
-        linkPreconnect.attribs.rel = 'preconnect';
+        linkPreconnect.attribs.rel = 'dns-prefetch preconnect';
         linkPreconnect.attribs.href = 'https://fonts.gstatic.com';
         linkPreconnect.attribs.crossorigin = '';
         const referenceNode = findMetaViewport(head);
         head.insertAfter(linkPreconnect, referenceNode);
+        log.debug(
+            'Adding <link rel="dns=prefetch preconnect" href="' +
+            linkPreconnect.attribs.href +
+            '">');
 
         // We only need 1 preconnect, so we can skip the remaining elements and return.
         return;

@@ -21,7 +21,7 @@ const {findMetaViewport} = require('../HtmlDomHelper');
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
  *
- * This transformer supports two options:
+ * This transformer supports two parameters:
  *
  * * `ampRuntimeVersion`: specifies a
  *   [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version")

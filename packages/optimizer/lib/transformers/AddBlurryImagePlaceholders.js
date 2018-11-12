@@ -18,6 +18,7 @@ const {join, resolve} = require('path');
 const {URL} = require('url');
 const jimp = require('jimp');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
+const {log} = require('../log.js');
 
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
@@ -134,7 +135,7 @@ class AddBlurryImagePlaceholders {
           return img;
         })
         .catch((err) => {
-          console.error(`[AddBlurryImagePlaceholders]  ${err.message}`);
+          log.error(`[AddBlurryImagePlaceholders]  ${err.message}`);
         });
   }
 
