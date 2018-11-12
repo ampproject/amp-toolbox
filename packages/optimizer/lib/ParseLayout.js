@@ -17,12 +17,12 @@
 
 const VALID_UNITS = ['px', 'em', 'rem', 'vh', 'vw', 'vmin', 'vmax'];
 const AMP_LAYOUTS = ['nodisplay', 'fixed', 'responsive', 'fixed-height',
-  'fill', 'container', 'flex-item'];
+  'fill', 'container', 'flex-item', 'fluid', 'intrinsic'];
 const SIZE_DEFINED_LAYOUTS = ['fixed', 'fixed-height', 'responsive', 'fill', 'flex-item'];
-const CSS_LENGTH_ONE_PX = cssLength('1', false);
-const CSS_LENGTH_AUTO = cssLength('auto', true);
-const CSS_LENGTH_FOURTY_FOUR_PX = cssLength('44px', false);
-const CSS_LENGTH_SIXTY_PX = cssLength('60px', false);
+const CSS_LENGTH_ONE_PX = cssLength('1', false, false);
+const CSS_LENGTH_AUTO = cssLength('auto', true, false);
+const CSS_LENGTH_FOURTY_FOUR_PX = cssLength('44px', false, false);
+const CSS_LENGTH_SIXTY_PX = cssLength('60px', false, false);
 
 function getLayoutClass(layout) {
   if (!layout) {
@@ -115,11 +115,12 @@ function calculateLayout(inputLayout, width, height, sizesAttr, heightsAttr) {
   return 'fixed';
 }
 
-function cssLength(input, allowAuto) {
+function cssLength(input, allowAuto=false, allowFluid=false) {
   const result = {
     isValid: false,
     isSet: false,
     isAuto: false,
+    isFluid: false,
     numeral: Number.NaN,
     unit: 'px',
   };
@@ -134,6 +135,12 @@ function cssLength(input, allowAuto) {
   if (input === 'auto') {
     result.isAuto = true;
     result.isValid = allowAuto;
+    return result;
+  }
+
+  if (input === 'fluid') {
+    result.isFluid = true;
+    result.isValid = allowFluid;
     return result;
   }
 
