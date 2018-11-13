@@ -107,8 +107,9 @@ class DomTransformer {
   /**
    * Set the config.
    * @param {Object} config - The config.
-   * @param {boolean} config.verbose - true if verbose mode should be enabled.
-   * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
+   * @param {boolean} config.verbose - true if verbose mode should be enabled [default: false].
+   * @param {boolean} config.validAmp - true if AMP pages should stay valid [default: false].
+   * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied [default: all available transformers].
    */
   setConfig(config) {
     log.verbose(config.verbose);
