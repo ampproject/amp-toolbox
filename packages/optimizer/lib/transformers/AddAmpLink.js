@@ -18,6 +18,10 @@
 /**
  * AddAmpLink - adds a reference to the valid AMP
  * version of this document.
+ *
+ * This transformer supports the following parameter(s):
+ *
+ * * `ampUrl`: specifying an URL pointing to the valid AMP version of this document.
  */
 class AddAmpLink {
   transform(tree, params) {

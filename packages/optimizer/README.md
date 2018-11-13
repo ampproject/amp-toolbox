@@ -220,6 +220,26 @@ A few notable changes are:
 
 ## Best Practices
 
+### Debugging
+
+Enable `verbose` mode to find out why the AMP boilerplate is not being removed.
+
+```
+// globally
+ampOptimizer.setConfig({
+  verbose: true
+});
+ampOptimizer.transformHtml(originalHtml, {
+  ampUrl: 'canonical.amp.html'
+})
+
+// per transformation
+ampOptimizer.transformHtml(originalHtml, {
+  ampUrl: 'canonical.amp.html',
+  verbose: true
+})
+```
+
 ### Transform AMP pages at build time if possible
 
 Applying the transformations to an AMP file consumes additional server

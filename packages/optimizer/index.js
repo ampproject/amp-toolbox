@@ -17,26 +17,4 @@
 
 const DomTransformer = require('./lib/DomTransformer.js');
 
-const defaultConfig = {
-  transformers: [
-    // Adds a link to the valid AMP version
-    'AddAmpLink',
-    // Applies server-side-rendering optimizations
-    'ServerSideRendering',
-    // Removes ⚡ or 'amp' from the html tag
-    'RemoveAmpAttribute',
-    // Removes the boilerplate
-    // needs to run after ServerSideRendering
-    'AmpBoilerplateTransformer',
-    // Optimizes script import order
-    // needs to run after ServerSideRendering
-    'ReorderHeadTransformer',
-    // needs to run after ReorderHeadTransformer
-    'RewriteAmpUrls',
-    'GoogleFontsPreconnect',
-    'PruneDuplicateResourceHints',
-    'AddBlurryImagePlaceholders',
-  ],
-};
-
-module.exports = new DomTransformer(defaultConfig);
+module.exports = new DomTransformer();

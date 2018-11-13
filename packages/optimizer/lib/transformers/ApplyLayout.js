@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const log = require('../log.js');
 const {
   parseLayout,
   cssLength,
@@ -102,19 +103,22 @@ function maybeAddSizerInto(node, tree, layout, width, height) {
 module.exports = {
   applyLayout: function(customElement, tree) {
     const ampLayout = parseLayout(customElement.attribs.layout);
+    const widthAttribute = getAttributeOrNull(customElement, 'width');
     const inputWidth = cssLength(
-        getAttributeOrNull(customElement, 'width'),
+        widthAttribute,
         /* allow_auto=*/true,
         /* allow_fluid=*/false);
     if (!inputWidth.isValid) {
+      log.debug('Cannot perform SSR: invalid input width\n', widthAttribute);
       return false;
     }
-    const inputHeight = cssLength(
-        getAttributeOrNull(customElement, 'height'),
+    const heightAttribute = getAttributeOrNull(customElement, 'height');
+    const inputHeight = cssLength(heightAttribute,
         /* allow_auto=*/true,
         /* allow_fluid=*/ampLayout === 'fluid'
     );
     if (!inputHeight.isValid) {
+      log.debug('Cannot perform SSR: invalid input height\n', heightAttribute);
       return false;
     }
 
@@ -126,6 +130,7 @@ module.exports = {
         getAttributeOrNull(customElement, 'sizes'), getAttributeOrNull(customElement, 'heights'));
 
     if (!isSupportedLayout(layout)) {
+      log.debug('Cannot perform SSR: unsupported layout', layout);
       return false;
     }
 

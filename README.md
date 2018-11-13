@@ -72,7 +72,7 @@ This codebase adheres to the [Googe Javascript Styleguide](https://google.github
 npm run lint
 
 # run ESLint with `--fix` option to automatically fix errors (if possible)
-npm run lint-fix
+npm run lint:fix
 ```
 
 ## Contributing
