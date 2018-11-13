@@ -1,0 +1,16 @@
+{
+  "name": "amp-toolbox-cors-demo",
+  "version": "1.0.0",
+  "private": true,
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "AMPHTML Authors",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "amp-toolbox-cors": "<1.0.0",
+    "express": "^4.16.4"
+  }
+}
