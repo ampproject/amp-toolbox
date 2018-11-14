@@ -21,7 +21,9 @@ const port = 3000;
 
 const ampCors = require('amp-toolbox-cors');
 
-app.use(ampCors());
+app.use(ampCors({
+  verbose: true,
+}));
 
 app.get('/', (req, res) => {
 /* eslint-disable max-len */

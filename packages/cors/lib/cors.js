@@ -127,16 +127,19 @@ module.exports = (options, caches=new Caches()) => {
     const cacheSubdomain = `https://${await createCacheSubdomain(sourceOrigin)}.`;
     // Check all caches listed on ampproject.org
     for (const cache of officialCacheList) {
-      if (origin === cacheSubdomain + cache.cacheDomain) {
+      const cachedOrigin = cacheSubdomain + cache.cacheDomain;
+      if (origin === cachedOrigin) {
         return true;
       }
     }
     // Check all caches not yet listed on ampproject.org
     for (const cacheDomain of OTHER_CACHES) {
-      if (origin === cacheSubdomain + cacheDomain) {
+      const cachedOrigin = cacheSubdomain + cacheDomain;
+      if (origin === cachedOrigin) {
         return true;
       }
     }
     return false;
   }
+
 };

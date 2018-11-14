@@ -1,9 +1,9 @@
 # AMP CORS Middleware
 
-The AMP CORS middleware adds CORS and 
-[AMP CORS](https://www.ampproject.org/docs/fundamentals/amp-cors-requests) headers to all CORS 
-requests initiated by the AMP runtime. These requests are identified by the `__amp_source_origin` 
-query parameter. All other requests remain unchanged.
+The AMP CORS middleware adds CORS and
+[AMP CORS](https://www.ampproject.org/docs/fundamentals/amp-cors-requests) headers to all CORS
+requests initiated by the AMP runtime. The middleware will only add these headers if the
+`__amp_source_origin` query parameter is present. All other requests remain unchanged.
 
 ## Installation
 
@@ -15,7 +15,7 @@ npm install amp-toolbox-cors --save
 
 ## Usage
 
-Example when using [Express](https://expressjs.com):
+Here is an example using [Express](https://expressjs.com):
 
 ```js
 const express = require('express');
@@ -28,6 +28,11 @@ app.use(ampCors());
 ...
 ```
 
+Please note that AMP CORS does not depend on Express and is based on Node's HTTP Request and
+Response objects.
+
+### Filtering by source origin
+
 You can additionally filter requests by source origin. For example:
 
 ```
@@ -38,6 +43,29 @@ app.use(ampCors({
 
 This will only allow requests with `https://ampbyexample.com` set as the source origin. Requests from all other origins
 will receive a `403` response,
+
+### Origin verification
+
+By default, the AMP CPRS middleware will only allow requests from AMP Caches listed on
+https://cdn.ampproject.org/caches.json (with the addition of `bing-amp.com`). All other
+origins will receive a `403` response. To allow requests from all origins, disable this
+via the `verifyOrigin` option:
+
+```
+app.use(ampCors({
+  verifyOrigin: false
+}));
+```
+
+### Logging
+
+For debugging requests, you can enable the verbose loggin mode via the `verbose` option:
+
+```
+app.use(ampCors({
+  verbose: false
+}));
+```
 
 ## Example
 
