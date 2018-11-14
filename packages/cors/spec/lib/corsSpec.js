@@ -43,55 +43,23 @@ describe('AMP Cors', () => {
     };
     cors = ampCors(options);
   });
-  it('ignores requests without __amp_source_origin', (done) => {
-    cors(request, response, () => {
-      expect(response.headers).toEqual({});
-      done();
-    });
-  });
-  it('ignores requests with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
-    request.query.__amp_source_origin = 'https://ampbyexample.com';
-    cors(request, response, () => {
-      expect(response.headers).toEqual({});
-      done();
-    });
-  });
-  describe('__amp_source_origin validation', () => {
-    let next;
-    beforeEach(() => {
-      options = {};
-      options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
-      next = jasmine.createSpy('next');
-    });
-    describe('successful validation', () => {
-      beforeEach(() => {
-        request.query.__amp_source_origin = 'https://ampbyexample.com';
-      });
-      it('does not change the status code', (done) => {
-        cors(request, response, () =>{
-          expect(response.status_).toEqual(200);
-          done();
-        });
+  describe('ignores requests', () => {
+    it('without __amp_source_origin', (done) => {
+      cors(request, response, () => {
+        expect(response.headers).toEqual({});
+        done();
       });
     });
-    describe('failed validation', () => {
-      beforeEach(() => {
-        request.query.__amp_source_origin = 'https://example.com';
-        cors(request, response, next);
-      });
-      it('returns status 403', () => {
-        expect(response.status_).toEqual(403);
-      });
-      it('ends the response', () => {
-        expect(response.end_).toEqual(true);
-      });
-      it('ends middleware chain', () => {
-        expect(next).not.toHaveBeenCalled();
+    it('with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
+      request.query.__amp_source_origin = 'https://ampbyexample.com';
+      cors(request, response, () => {
+        expect(response.headers).toEqual({});
+        done();
       });
     });
   });
-  describe('same origin', () => {
-    it('allows __amp_source_origin', (done) => {
+  describe('cors headers are set for', () => {
+    it('same origin requests', (done) => {
       request.headers['AMP-Same-Origin'] = 'true';
       request.query.__amp_source_origin = 'https://ampbyexample.com';
       cors(request, response, () => {
@@ -103,9 +71,7 @@ describe('AMP Cors', () => {
         done();
       });
     });
-  });
-  describe('different origin', () => {
-    it('allows __amp_source_origin', (done) => {
+    it('foreign origins', (done) => {
       request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
       request.query.__amp_source_origin = 'https://ampbyexample.com';
       cors(request, response, () => {
@@ -115,6 +81,42 @@ describe('AMP Cors', () => {
           'AMP-Access-Control-Allow-Source-Origin': 'https://ampbyexample.com',
         });
         done();
+      });
+    });
+  });
+  describe('options', () => {
+    describe('sourceOriginPattern', () => {
+      let next;
+      beforeEach(() => {
+        options = {};
+        options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
+        next = jasmine.createSpy('next');
+      });
+      describe('matches sourceOrigin', () => {
+        beforeEach(() => {
+          request.query.__amp_source_origin = 'https://ampbyexample.com';
+        });
+        it('does not change the status code', (done) => {
+          cors(request, response, () =>{
+            expect(response.status_).toEqual(200);
+            done();
+          });
+        });
+      });
+      describe('does not match sourceOrigin', () => {
+        beforeEach(() => {
+          request.query.__amp_source_origin = 'https://example.com';
+          cors(request, response, next);
+        });
+        it('returns status 403', () => {
+          expect(response.status_).toEqual(403);
+        });
+        it('ends the response', () => {
+          expect(response.end_).toEqual(true);
+        });
+        it('ends middleware chain', () => {
+          expect(next).not.toHaveBeenCalled();
+        });
       });
     });
   });
