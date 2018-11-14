@@ -24,7 +24,6 @@ let options = {verbose: true};
 describe('AMP Cors', () => {
   beforeEach(() => {
     request = {
-      query: {},
       headers: {
         host: 'ampbyexample.com',
       },
@@ -61,7 +60,7 @@ describe('AMP Cors', () => {
   });
   describe('sends 400', () => {
     it('with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
-      request.query.__amp_source_origin = 'https://ampbyexample.com';
+      request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {}).then(() => {
         expect(response.status_).toEqual(400);
         done();
@@ -71,7 +70,7 @@ describe('AMP Cors', () => {
   describe('cors headers are set for', () => {
     it('same origin requests', (done) => {
       request.headers['AMP-Same-Origin'] = 'true';
-      request.query.__amp_source_origin = 'https://ampbyexample.com';
+      request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {
         expect(response.headers).toEqual({
           'Access-Control-Allow-Origin': 'https://ampbyexample.com',
@@ -83,7 +82,7 @@ describe('AMP Cors', () => {
     });
     it('foreign origins', (done) => {
       request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
-      request.query.__amp_source_origin = 'https://ampbyexample.com';
+      request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {
         expect(response.headers).toEqual({
           'Access-Control-Allow-Origin': 'https://ampbyexample-com.cdn.ampproject.org',
@@ -102,7 +101,7 @@ describe('AMP Cors', () => {
         });
         it('allows official origins', (done) => {
           request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
-          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
           cors(request, response, () => {
             expect(response.status_).toEqual(200);
             done();
@@ -110,7 +109,7 @@ describe('AMP Cors', () => {
         });
         it('allows bing', (done) => {
           request.headers['Origin'] = 'https://ampbyexample-com.bing-amp.com';
-          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
           cors(request, response, () => {
             expect(response.status_).toEqual(200);
             done();
@@ -118,7 +117,7 @@ describe('AMP Cors', () => {
         });
         it('blocks all other origins', (done) => {
           request.headers['Origin'] = 'https://ampbyexample-com.cdn.invalid.org';
-          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
           cors(request, response, () => {}).then(() => {
             expect(response.status_).toEqual(403);
             done();
@@ -133,7 +132,7 @@ describe('AMP Cors', () => {
         });
         it('allows all origins', (done) => {
           request.headers['Origin'] = 'https://example.com';
-          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
           cors(request, response, () => {
             expect(response.status_).toEqual(200);
             done();
@@ -152,7 +151,7 @@ describe('AMP Cors', () => {
       });
       describe('matches sourceOrigin', () => {
         beforeEach(() => {
-          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
         });
         it('does not change the status code', (done) => {
           cors(request, response, () =>{
@@ -163,7 +162,7 @@ describe('AMP Cors', () => {
       });
       describe('does not match sourceOrigin', () => {
         beforeEach(() => {
-          request.query.__amp_source_origin = 'https://example.com';
+          request.url = '/sample?__amp_source_origin=https://example.com';
           cors(request, response, next);
         });
         it('returns status 403', () => {

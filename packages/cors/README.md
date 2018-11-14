@@ -69,7 +69,7 @@ app.use(ampCors({
 
 ## Example
 
-See [app.js](demo/app.js) for a sample implementation. There are two scenarios in which the AMP CORS header will be added:
+See [express.js](demo/express.js) for a sample implementation. There are two scenarios in which the AMP CORS header will be added:
 
 1. AMP CORS header will be set if the `__amp_source_origin` query parameter is set together with the `AMP-SAME-ORIGIN` header:
 

@@ -18,6 +18,8 @@
 const Caches = require('amp-toolbox-cache-list');
 const createCacheSubdomain = require('amp-toolbox-cache-url').createCurlsSubdomain;
 const log = require('amp-toolbox-core').log.tag('AMP CORS');
+const url = require('url');
+
 
 // Caches not yet listed on https://cdn.ampproject.org/caches.json
 const OTHER_CACHES = [
@@ -47,7 +49,7 @@ module.exports = (options, caches=new Caches()) => {
   log.verbose(options.verbose);
   return async (request, response, next) => {
     // Get source origin from query
-    const sourceOrigin = request.query.__amp_source_origin;
+    const sourceOrigin = url.parse(request.url, true).query.__amp_source_origin;
     if (!sourceOrigin) {
       // it's not an AMP CORS request
       next();
@@ -76,7 +78,6 @@ module.exports = (options, caches=new Caches()) => {
       response.status(403).end(); // forbidden
       return;
     }
-
     // Add CORS and AMP CORS headers
     response.setHeader('Access-Control-Allow-Origin', originHeaders.origin || sourceOrigin);
     response.setHeader('Access-Control-Expose-Headers', ['AMP-Access-Control-Allow-Source-Origin']);
