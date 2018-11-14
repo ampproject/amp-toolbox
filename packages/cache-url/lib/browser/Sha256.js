@@ -21,14 +21,28 @@
  */
 export default function browserSha256(str) {
   // Transform the string into an arraybuffer.
-  const buffer = new TextEncoder('utf-8').encode(str);
+  const buffer = stringToBuffer_(str);
   return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
     return hex_(hash);
   });
 }
 
 /**
- * @param {string} buffer
+ * Function to convert a UTF-8 String to a buffer
+ * @param {string} str
+ * @return {Array<number>}
+ * @private
+ */
+function stringToBuffer_(str) {
+  const array = new Uint8Array(str.length);
+  for (let i = 0; i < str.length; i++) {
+    array[i] = str.charCodeAt(i);
+  }
+  return array.buffer;
+}
+
+/**
+ * @param {Array<number>} buffer
  * @return {string}
  * @private
  */
