@@ -16,7 +16,10 @@
 
 const ampCors = require('../../lib/cors.js');
 
-let request; let response; let cors; let options;
+let request;
+let response;
+let cors;
+let options = {verbose: true};
 
 describe('AMP Cors', () => {
   beforeEach(() => {
@@ -25,6 +28,8 @@ describe('AMP Cors', () => {
       headers: {
         host: 'ampbyexample.com',
       },
+      method: 'GET',
+      url: '/sample',
       protocol: 'https',
     };
     response = {
@@ -41,7 +46,10 @@ describe('AMP Cors', () => {
         this.end_ = true;
       },
     };
-    cors = ampCors(options);
+    caches = {
+      list: () => Promise.resolve([{cacheDomain: 'cdn.ampproject.org'}]),
+    };
+    cors = ampCors(options, caches);
   });
   describe('ignores requests', () => {
     it('without __amp_source_origin', (done) => {
@@ -50,10 +58,12 @@ describe('AMP Cors', () => {
         done();
       });
     });
+  });
+  describe('sends 400', () => {
     it('with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
       request.query.__amp_source_origin = 'https://ampbyexample.com';
-      cors(request, response, () => {
-        expect(response.headers).toEqual({});
+      cors(request, response, () => {}).then(() => {
+        expect(response.status_).toEqual(400);
         done();
       });
     });
@@ -80,17 +90,65 @@ describe('AMP Cors', () => {
           'Access-Control-Expose-Headers': ['AMP-Access-Control-Allow-Source-Origin'],
           'AMP-Access-Control-Allow-Source-Origin': 'https://ampbyexample.com',
         });
-        done();
-      });
+      }).then(() => done());
     });
   });
   describe('options', () => {
+    describe('verifyOrigin', () => {
+      describe('true', () => {
+        beforeEach(() => {
+          options = {};
+          options.verifyOrigin = true;
+        });
+        it('allows official origins', (done) => {
+          request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
+          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          cors(request, response, () => {
+            expect(response.status_).toEqual(200);
+            done();
+          });
+        });
+        it('allows bing', (done) => {
+          request.headers['Origin'] = 'https://ampbyexample-com.bing-amp.com';
+          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          cors(request, response, () => {
+            expect(response.status_).toEqual(200);
+            done();
+          });
+        });
+        it('blocks all other origins', (done) => {
+          request.headers['Origin'] = 'https://ampbyexample-com.cdn.invalid.org';
+          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          cors(request, response, () => {}).then(() => {
+            expect(response.status_).toEqual(403);
+            done();
+          });
+        });
+      });
+      describe('false', () => {
+        beforeEach(() => {
+          options = {};
+          options.verifyOrigin = false;
+          cors = ampCors(options, caches);
+        });
+        it('allows all origins', (done) => {
+          request.headers['Origin'] = 'https://example.com';
+          request.query.__amp_source_origin = 'https://ampbyexample.com';
+          cors(request, response, () => {
+            expect(response.status_).toEqual(200);
+            done();
+          });
+        });
+      });
+    });
     describe('sourceOriginPattern', () => {
       let next;
       beforeEach(() => {
         options = {};
         options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
+        cors = ampCors(options, caches);
         next = jasmine.createSpy('next');
+        request.headers['AMP-Same-Origin'] = 'true';
       });
       describe('matches sourceOrigin', () => {
         beforeEach(() => {

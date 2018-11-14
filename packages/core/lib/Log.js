@@ -18,7 +18,7 @@ class Log {
   }
 
   warn(message, ...args) {
-    this._log(this.output_.warn, this.yellow_('WARNING ' + message), args);
+    this.log_(this.output_.warn, this.yellow_('WARNING ' + message), args);
   }
 
   error(message, ...args) {
