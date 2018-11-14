@@ -41,7 +41,6 @@ describe('AMP Cors', () => {
         this.end_ = true;
       },
     };
-    options = {};
     cors = ampCors(options);
   });
   it('ignores requests without __amp_source_origin', (done) => {
@@ -50,9 +49,17 @@ describe('AMP Cors', () => {
       done();
     });
   });
+  it('ignores requests with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
+    request.query.__amp_source_origin = 'https://ampbyexample.com';
+    cors(request, response, () => {
+      expect(response.headers).toEqual({});
+      done();
+    });
+  });
   describe('__amp_source_origin validation', () => {
     let next;
     beforeEach(() => {
+      options = {};
       options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
       next = jasmine.createSpy('next');
     });

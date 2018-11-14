@@ -25,6 +25,7 @@
  * @return {Function} middleware function
  */
 module.exports = (options) => {
+  options = options || {};
   return (request, response, next) => {
     // Get source origin from query
     const sourceOrigin = request.query.__amp_source_origin;
@@ -40,6 +41,10 @@ module.exports = (options) => {
     }
     // Get either the source origin or the cache origin
     const origin = calculateOrigin_(request.headers, sourceOrigin);
+    if (!origin) {
+      next();
+      return;
+    }
     // Add CORS and AMP CORS headers
     response.setHeader('Access-Control-Allow-Origin', origin);
     response.setHeader('Access-Control-Expose-Headers', ['AMP-Access-Control-Allow-Source-Origin']);
