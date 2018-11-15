@@ -66,14 +66,16 @@ module.exports = (options, caches=new Caches()) => {
 
     // If neither AMP-SAME-ORIGIN nor Origin set are set, don't add any headers
     const originHeaders = extractOriginHeaders_(request.headers);
-    if (!originHeaders.isSameOrigin && !originHeaders.origin) {
+    if (!originHeaders) {
       log.warn('AMP-SAME-ORIGIN and Origin header missing');
       response.status(400).end(); // bad request
       return;
     }
 
     // Check if origin is a valid AMP cache
-    if (options.verifyOrigin && !await isValidOrigin(originHeaders.origin, sourceOrigin)) {
+    if (originHeaders.origin &&
+        options.verifyOrigin &&
+        !await isValidOrigin(originHeaders.origin, sourceOrigin)) {
       log.warn('invalid Origin', originHeaders.origin);
       response.status(403).end(); // forbidden
       return;
@@ -89,25 +91,29 @@ module.exports = (options, caches=new Caches()) => {
    * Extracts the `AMP-Same-Origin` and `Origin` header values.
    *
    * @param {Object} headers
-   * @returns {Object} object containing the origin and isSameOrigin value
+   * @returns {Object} object containing the origin or isSameOrigin value
    * @private
    */
   function extractOriginHeaders_(headers) {
-    const result = {};
+    const result = {
+      isSameOrigin: false,
+    };
     for (const key in headers) {
       if (headers.hasOwnProperty(key)) {
         const normalizedKey = key.toLowerCase();
         // for same-origin requests where the Origin header is missing, AMP sets the amp-same-origin header
         if (normalizedKey === 'amp-same-origin') {
           result.isSameOrigin = true;
+          return result;
         }
         // use the origin header otherwise
         if (normalizedKey === 'origin') {
           result.origin = headers[key];
+          return result;
         }
       }
     }
-    return result;
+    return null;
   }
 
   /**
@@ -118,9 +124,6 @@ module.exports = (options, caches=new Caches()) => {
    * @private
    */
   async function isValidOrigin(origin, sourceOrigin) {
-    if (!origin) {
-      return true;
-    }
     // This will fetch the caches from https://cdn.ampproject.org/caches.json the first time it's
     // called. Subsequent calls will receive a cached version.
     const officialCacheList = await caches.list();
