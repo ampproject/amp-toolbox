@@ -23,6 +23,6 @@
   "dependencies": {
     "amp-toolbox-update-cache": "^1.0.0",
     "minimist": "^1.2.0",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.3.0"
   }
 }

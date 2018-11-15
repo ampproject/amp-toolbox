@@ -18,7 +18,7 @@
 const {OneBehindFetch} = require('amp-toolbox-core');
 const log = require('amp-toolbox-core').log.tag('AMP Runtime Version');
 
-const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
+// const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
 const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
 
 /**

@@ -20,7 +20,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
     "amp-toolbox-optimizer": "^0.4.1",
-    "mime-types": "^2.1.19",
+    "mime-types": "^2.1.21",
     "whatwg-url": "^7.0.0"
   }
 }
