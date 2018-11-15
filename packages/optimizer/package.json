@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "amp-toolbox-core": "^0.1.0",
-    "amp-toolbox-runtime-version": "^0.2.0",
+    "amp-toolbox-runtime-version": "^0.2.1",
     "parse5": "^5.1.0",
     "jimp": "0.5.6",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"

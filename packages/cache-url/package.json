@@ -33,6 +33,6 @@
   ],
   "dependencies": {
     "punycode": "^2.1.1",
-    "url-parse": "^1.4.3"
+    "url-parse": "^1.4.4"
   }
 }
