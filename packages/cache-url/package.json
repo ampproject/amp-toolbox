@@ -6,9 +6,9 @@
   "module": "dist/amp-toolbox-cache-url.esm.js",
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "npx rollup -c",
     "prepublish": "npm run build",
-    "serve": "rollup -c -w"
+    "serve": "npx rollup -c -w"
   },
   "repository": {
     "type": "git",
@@ -34,5 +34,6 @@
   "dependencies": {
     "punycode": "^2.1.1",
     "url-parse": "^1.4.4"
-  }
+  },
+  "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }

@@ -22,5 +22,6 @@
     "amp-toolbox-optimizer": "^0.4.3",
     "mime-types": "^2.1.21",
     "whatwg-url": "^7.0.0"
-  }
+  },
+  "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }

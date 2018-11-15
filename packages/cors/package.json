@@ -16,5 +16,6 @@
   "dependencies": {
     "amp-toolbox-cache-url": "^1.0.4",
     "amp-toolbox-core": "^0.1.1"
-  }
+  },
+  "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }
