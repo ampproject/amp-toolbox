@@ -40,13 +40,19 @@ git clone https://github.com/your-fork/amp-toolbox.git
 # step into local repo
 cd amp-toolbox
 
-# install dependencies via https://lernajs.io/
-npx lerna bootstrap --hoist
+# install dependencies 
+npm i packages/*
 ```
 
 ### Adding new dependencies
 
 amp-toolbox uses [Lerna](https://lernajs.io/) to manage it's packages. To keep build times low, `devDependencies` must be added to the root [package.json](package.json) file. Runtime dependencies are managed for each package individually.
+
+When adding a new package inside the `packages` directory, register the package via:
+
+```
+npx lerna bootstrap --hoist
+```
 
 ### Running Tests
 
