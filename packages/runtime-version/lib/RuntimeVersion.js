@@ -16,6 +16,7 @@
 'use strict';
 
 const {OneBehindFetch} = require('amp-toolbox-core');
+const log = require('amp-toolbox-core').log.tag('AMP Runtime Version');
 
 const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
 const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
@@ -39,7 +40,9 @@ class RuntimeVersion {
    */
   currentVersion(options = {}) {
     if (options.canary) {
-      return this.fetchVersion_(CANARY_ENDPOINT, (data) => this.padVersionString(data[0]));
+      // the endpoint is no longer available
+      // return this.fetchVersion_(CANARY_ENDPOINT, (data) => this.padVersionString(data[0]));
+      log.warn('canary version is currently not supported, returning prod version instead');
     }
     return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.ampRuntimeVersion);
   }
