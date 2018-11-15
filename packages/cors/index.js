@@ -13,17 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use strict';
 
-const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+module.exports = require('./lib/cors.js');
 
-jasmine.getEnv().clearReporters(); // remove default reporter logs
-jasmine.getEnv().addReporter(new SpecReporter({ // add jasmine-spec-reporter
-  spec: {
-    displayPending: true,
-    displayStacktrace: false,
-    displaySuccessful: false,
-  },
-  summary: {
-    displayStacktrace: true,
-  },
-}));

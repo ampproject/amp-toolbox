@@ -8,11 +8,9 @@ passing a custom fetch strategy to the constructor.
 ## Usage
 ```javascript
   const Caches = require('amp-toolbox-cache-list');
-   
-  const caches = new Caches();
 
   // Lists known AMP Caches
-  const caches = await caches.list();
+  const caches = await new Caches().list();
 
   // Retrieves a specific AMP cache
   const googleAmpCache = await caches.get('google');

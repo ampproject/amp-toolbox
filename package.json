@@ -41,6 +41,7 @@
     "amp-toolbox-cache-url": "file:packages/cache-url",
     "amp-toolbox-cli": "file:packages/cli",
     "amp-toolbox-core": "file:packages/core",
+    "amp-toolbox-cors": "file:packages/cors",
     "amp-toolbox-optimizer": "file:packages/optimizer",
     "amp-toolbox-optimizer-express": "file:packages/optimizer-express",
     "amp-toolbox-runtime-version": "file:packages/runtime-version",
