@@ -1,5 +1,7 @@
 # AMP Optimizer
 
+[![npm version](https://badge.fury.io/js/amp-toolbox-optimizer.svg)](https://badge.fury.io/js/amp-toolbox-optimizer)
+
 AMP Optimizer - the performance optimizations of the AMP Cache on your own site.
 
 ![AMP Optimizer in Action](https://user-images.githubusercontent.com/380472/36001450-96cfbce2-0d26-11e8-8b65-4ffc3182d57c.gif)

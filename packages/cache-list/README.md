@@ -1,5 +1,7 @@
 # AMP-Toolbox Cache List
 
+[![npm version](https://badge.fury.io/js/amp-toolbox-cache-list.svg)](https://badge.fury.io/js/amp-toolbox-cache-list)
+
 Lists known AMP Caches, as available at `https://cdn.ampproject.org/caches.json`.
 
 By default, it uses a one-behind strategy to fetch the caches. This can be customised by
