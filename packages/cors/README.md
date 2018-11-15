@@ -46,7 +46,7 @@ will receive a `403` response,
 
 ### Origin verification
 
-By default, the AMP CPRS middleware will only allow requests from AMP Caches listed on
+By default, the AMP CORS middleware will only allow requests from AMP Caches listed on
 https://cdn.ampproject.org/caches.json (with the addition of `bing-amp.com`). All other
 origins will receive a `403` response. To allow requests from all origins, disable this
 via the `verifyOrigin` option:
