@@ -10,7 +10,7 @@
   "author": "AMPHTML Authors",
   "license": "Apache-2.0",
   "dependencies": {
-    "amp-toolbox-cors": "<1.0.0",
-    "express": "^4.16.4"
+    "amp-toolbox-cors": "0.1.2",
+    "express": "4.16.4"
   }
 }
