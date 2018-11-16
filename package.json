@@ -10,7 +10,7 @@
     "lint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
   },
   "devDependencies": {
-    "@ampproject/rollup-plugin-closure-compiler": "0.9.0-beta.5",
+    "@ampproject/rollup-plugin-closure-compiler": "0.9.0-beta.7",
     "@babel/core": "7.1.6",
     "babel-plugin-filter-imports": "2.0.4",
     "colors": "1.3.2",
