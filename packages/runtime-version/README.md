@@ -1,5 +1,7 @@
 # AMP Runtime Version
 
+[![npm version](https://badge.fury.io/js/amp-toolbox-runtime-version.svg)](https://badge.fury.io/js/amp-toolbox-runtime-version)
+
 Use it to query `cdn.ampproject.org` for the current release or canary version of the AMP Runtime. Uses a stale-while-revalidate caching strategy to avoid network requests in the critical path.
 
 You can use the API to re-write AMP runtime URLs to their versioned counter parts to improve browser caching, e.g. to replace:

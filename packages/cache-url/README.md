@@ -1,5 +1,7 @@
 # AMP-Toolbox Cache URL
 
+[![npm version](https://badge.fury.io/js/amp-toolbox-cache-url.svg)](https://badge.fury.io/js/amp-toolbox-cache-url)
+
 Translates an URL from the origin to the AMP Cache URL format, according to the specification
 available in the [AMP documentation](https://developers.google.com/amp/cache/overview). This includes the SHA256 fallback URLs used by the AMP Cache on invalid human-readable cache urls.
 

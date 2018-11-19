@@ -1,5 +1,7 @@
 # AMP-Toolbox update-cache
 
+[![npm version](https://badge.fury.io/js/amp-toolbox-update-cache.svg)](https://badge.fury.io/js/amp-toolbox-update-cache)
+
 Generates AMP Cache invalidation URLs for all known AMP Caches. For more info see the [Google AMP Cache documentation](
 https://developers.google.com/amp/cache/update-ping#update-cache-request).
 
