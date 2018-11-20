@@ -22,9 +22,9 @@ class Log {
   }
 
   error(message, ...args) {
-    this.log_(this.output_.error, '\n');
+    this.output_.log('\n');
     this.log_(this.output_.error, this.red_('ERROR ' + message), args);
-    this.log_(this.output_.error, '\n');
+    this.output_.log('\n');
   }
 
   verbose(isVerbose=true) {
