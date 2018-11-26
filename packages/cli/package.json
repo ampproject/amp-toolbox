@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "amp-toolbox-update-cache": "^1.0.1",
+    "amp-toolbox-update-cache": "^1.0.2",
     "minimist": "^1.2.0",
     "node-fetch": "^2.3.0"
   },
