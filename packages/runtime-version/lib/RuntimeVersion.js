@@ -18,12 +18,34 @@
 const {OneBehindFetch} = require('amp-toolbox-core');
 const log = require('amp-toolbox-core').log.tag('AMP Runtime Version');
 
-// const CANARY_ENDPOINT = 'https://cdn.ampproject.org/diversions';
-const RELEASE_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
+const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
 
 /**
- * Queries cdn.ampproject.org for the lastest AMP runtime version. Uses a
+ * Queries https://cdn.ampproject.org/rtv/metadata for the lastest AMP runtime version. Uses a
  * stale-while-revalidate caching strategy to avoid refreshing the version.
+ *
+ * More details: https://cdn.ampproject.org/rtv/metadata returns the following metadata:
+ *
+ * <pre>
+ * {
+ *    "ampRuntimeVersion": "CURRENT_PROD",
+ *    "ampCssUrl": "https://cdn.ampproject.org/rtv/CURRENT_PROD/v0.css",
+ *    "canaryPercentage": "0.1",
+ *    "diversions": [
+ *      "CURRENT_OPTIN",
+ *      "CURRENT_1%",
+ *      "CURRENT_CONTROL"
+ *    ]
+ *  }
+ *  </pre>
+ *
+ *  where:
+ *
+ *  <ul>
+ *    <li> CURRENT_OPTION: is when you go to https://cdn.ampproject.org/experiments.html and toggle "dev-channel". It's the earliest possible time to get new code.</li>
+ *    <li> CURRENT_1%: 1% is the same code as opt-in that we're now comfortable releasing to 1% of the population.</li>
+ *    <li> CURRENT_CONTROL is the same thing as production, but with a different URL. This is to compare experiments against, since prod's immutable caching would affect metrics.</li>
+ *  </ul>
  */
 class RuntimeVersion {
   constructor(request = OneBehindFetch.create()) {
@@ -38,28 +60,29 @@ class RuntimeVersion {
    * @param {bool} options.canary - true if canary should be returned.
    * @returns {Promise<Number>} a promise containing the current version
    */
-  currentVersion(options = {}) {
+  async currentVersion(options = {}) {
+    const data = await this.fetchVersion_(RUNTIME_METADATA_ENDPOINT);
+    let version;
     if (options.canary) {
-      // the endpoint is no longer available
-      // return this.fetchVersion_(CANARY_ENDPOINT, (data) => this.padVersionString(data[0]));
-      log.warn('canary version is currently not supported, returning prod version instead');
+      version = data.diversions[0];
+      log.debug('canary version', version);
+    } else {
+      version = data.ampRuntimeVersion;
+      log.debug('prod version', version);
     }
-    return this.fetchVersion_(RELEASE_ENDPOINT, (data) => data.ampRuntimeVersion);
+    return this.padVersionString_(version);
   }
 
   /* PRIVATE */
-  fetchVersion_(url, process) {
-    return this.request_.get(url)
-        .then((data) => {
-          return this.padVersionString(process(data));
-        });
+  fetchVersion_(url) {
+    return this.request_.get(url);
   }
 
-  padVersionString(version) {
-    return this.pad(version, 15, 0);
+  padVersionString_(version) {
+    return this.pad_(version, 15, 0);
   }
 
-  pad(n, width, z) {
+  pad_(n, width, z) {
     z = z || '0';
     n = String(n);
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
