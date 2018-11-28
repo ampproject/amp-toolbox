@@ -59,6 +59,18 @@ app.use(ampCors({
 }));
 ```
 
+### Allow Crendentials 
+
+By default, the AMP CORS middleware will allow crendentials for AMP CORS requests.
+To disable this, set `allowCredentials` to false. 
+
+```
+app.use(ampCors({
+  allowCredentials: false
+}));
+// => will not set "Access-Control-Allow-Credentials", "true"
+```
+
 ### Logging
 
 For debugging requests, you can enable the verbose loggin mode via the `verbose` option:
