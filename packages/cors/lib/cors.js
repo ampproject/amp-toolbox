@@ -29,6 +29,7 @@ const OTHER_CACHES = [
 // the default options
 const DEFAULT_OPTIONS = {
   allowCredentials: true,
+  enableAmpRedirectTo: true,
   sourceOriginPattern: false,
   verbose: false,
   verifyOrigin: true,
@@ -83,7 +84,11 @@ module.exports = (options, caches=new Caches()) => {
     }
     // Add CORS and AMP CORS headers
     response.setHeader('Access-Control-Allow-Origin', originHeaders.origin || sourceOrigin);
-    response.setHeader('Access-Control-Expose-Headers', 'AMP-Access-Control-Allow-Source-Origin');
+    const headersToExpose = ['AMP-Access-Control-Allow-Source-Origin'];
+    if (options.enableAmpRedirectTo) {
+      headersToExpose.push('AMP-Redirect-To');
+    }
+    response.setHeader('Access-Control-Expose-Headers', headersToExpose);
     response.setHeader('AMP-Access-Control-Allow-Source-Origin', sourceOrigin);
     if (options.allowCredentials) {
       response.setHeader('Access-Control-Allow-Credentials', 'true');

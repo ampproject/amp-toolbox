@@ -61,14 +61,26 @@ app.use(ampCors({
 
 ### Allow Crendentials 
 
-By default, the AMP CORS middleware will allow crendentials for AMP CORS requests.
-To disable this, set `allowCredentials` to false. 
+By default, the AMP CORS middleware will allow [crendentials mode](https://fetch.spec.whatwg.org/#concept-request-credentials-mode) for AMP CORS requests.
+To disable this, set `allowCredentials` to `false`. 
 
 ```
 app.use(ampCors({
   allowCredentials: false
 }));
 // => will not set "Access-Control-Allow-Credentials", "true"
+```
+
+### Allow AMP-Redirect-To 
+
+By default, the AMP CORS middleware will allow redirects via [AMP-Redirect-To](https://www.ampproject.org/docs/reference/components/amp-form#redirecting-after-a-submission). To disable this, set `enableAmpRedirectTo` to `false`. 
+
+```
+app.use(ampCors({
+  enableAmpRedirectTo: false
+}));
+// => Access-Control-Expose-Headers: AMP-Access-Control-Allow-Source-Origin instead of 
+// Access-Control-Expose-Headers: AMP-Access-Control-Allow-Source-Origin, AMP-Redirect-To
 ```
 
 ### Logging
