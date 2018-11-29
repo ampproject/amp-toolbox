@@ -15,7 +15,7 @@
   "dependencies": {
     "amp-toolbox-core": "^0.1.2",
     "amp-toolbox-runtime-version": "^0.2.3",
-    "jimp": "0.5.6",
+    "jimp": "0.6.0",
     "parse5": "^5.1.0",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
   },
