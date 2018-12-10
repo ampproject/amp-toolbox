@@ -13,7 +13,7 @@
     "@ampproject/rollup-plugin-closure-compiler": "0.9.0-beta.7",
     "@babel/core": "7.1.6",
     "babel-plugin-filter-imports": "2.0.4",
-    "colors": "1.3.2",
+    "colors": "1.3.3",
     "diff": "3.5.0",
     "eslint": "5.9.0",
     "eslint-config-google": "0.11.0",
