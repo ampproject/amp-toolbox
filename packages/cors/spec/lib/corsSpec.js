@@ -105,14 +105,6 @@ describe('AMP Cors', () => {
             done();
           });
         });
-        it('allows bing', (done) => {
-          request.headers['Origin'] = 'https://ampbyexample-com.bing-amp.com';
-          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
-          cors(request, response, () => {
-            expect(response.status_).toEqual(200);
-            done();
-          });
-        });
         it('blocks all other origins', (done) => {
           request.headers['Origin'] = 'https://ampbyexample-com.cdn.invalid.org';
           request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
