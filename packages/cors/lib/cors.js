@@ -20,12 +20,6 @@ const createCacheSubdomain = require('amp-toolbox-cache-url').createCurlsSubdoma
 const log = require('amp-toolbox-core').log.tag('AMP CORS');
 const url = require('url');
 
-
-// Caches not yet listed on https://cdn.ampproject.org/caches.json
-const OTHER_CACHES = [
-  'bing-amp.com',
-];
-
 // the default options
 const DEFAULT_OPTIONS = {
   allowCredentials: true,
@@ -141,13 +135,6 @@ module.exports = (options, caches=new Caches()) => {
     // Check all caches listed on ampproject.org
     for (const cache of officialCacheList) {
       const cachedOrigin = cacheSubdomain + cache.cacheDomain;
-      if (origin === cachedOrigin) {
-        return true;
-      }
-    }
-    // Check all caches not yet listed on ampproject.org
-    for (const cacheDomain of OTHER_CACHES) {
-      const cachedOrigin = cacheSubdomain + cacheDomain;
       if (origin === cachedOrigin) {
         return true;
       }
