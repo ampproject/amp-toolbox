@@ -46,6 +46,7 @@ function escaper(match) {
  * This transformer supports the following option:
  *
  * * `imageBasePath`: specifies a base path used to resolve an image during build.
+ * * `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
  */
 class AddBlurryImagePlaceholders {
   /**
@@ -77,13 +78,15 @@ class AddBlurryImagePlaceholders {
       }
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
+        log.debug('Adding blurry image placeholder for', src);
         placeholders++;
         const p = this.addBlurryPlaceholder_(tree, src, params).then((img) => {
           node.appendChild(img);
         });
         promises.push(p);
 
-        if (placeholders >= MAX_BLURRED_PLACEHOLDERS) {
+        const maxBlurredPlaceholders = params.maxBlurredPlaceholders || MAX_BLURRED_PLACEHOLDERS;
+        if (placeholders >= maxBlurredPlaceholders) {
           break;
         }
       }
@@ -183,8 +186,10 @@ class AddBlurryImagePlaceholders {
    */
   resolvePath_(base, path) {
     try {
-      return new URL(path, base).toString();
+      return new URL(path).toString();
     } catch (e) {
+      // not an absolute URL
+      path = new URL(path, 'https://example.com').pathname;
       return resolve(join(base, path));
     }
   }
@@ -234,8 +239,9 @@ class AddBlurryImagePlaceholders {
    * The current criteria for determining if a blurry image placeholder should
    * be appended is as follows:
    * - The source for the image should be a JPEG.
-   * - If the element is an amp-img that is responsive and does not have a no
-   * loading attribute OR the element is a poster on an amp-video
+   * - If the element is:
+   *    - an amp-img using a responsive layout (responsive, fill or intrinsic)
+   *    - an amp-video with a poster
    *
    * This criteria was found to be the most common places where a blurry image
    * placeholder would likely want to be used through manual examination of
@@ -259,21 +265,18 @@ class AddBlurryImagePlaceholders {
 
     // Non-JPEG images are not commonly featured in a role where blurred
     // image placeholders would be wanted.
-    if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
-      return false;
-    }
-
-    // Images with noloading attributes should not have any indicators that they
-    // are loading.
-    if (tagName == 'amp-img' && node.attribs.noloading != null) {
+    const url = new URL(src, 'https://example.com');
+    if (!url.pathname.endsWith('.jpg') && !url.pathname.endsWith('jpeg')) {
       return false;
     }
 
     // Checks if the image is a poster or a responsive image as these are the
     // two most common cases where blurred placeholders would be wanted.
     const isPoster = tagName == 'amp-video';
-    const isResponsiveImgWithLoading = (tagName == 'amp-img' &&
-      node.attribs.layout == 'responsive');
+    const isResponsiveImgWithLoading = tagName == 'amp-img' &&
+          (node.attribs.layout == 'intrinsic' ||
+            node.attribs.layout == 'responsive' ||
+            node.attribs.layout == 'fill');
     return isPoster || isResponsiveImgWithLoading;
   }
 }
