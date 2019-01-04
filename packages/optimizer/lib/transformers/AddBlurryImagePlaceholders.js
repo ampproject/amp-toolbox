@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-const {join, resolve} = require('path');
 const {URL} = require('url');
 const jimp = require('jimp');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
