@@ -18,7 +18,8 @@ const {join, resolve} = require('path');
 const {URL} = require('url');
 const jimp = require('jimp');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
-const log = require('../log.js');
+const PathResolver = require('../PathResolver');
+const log = require('../log');
 
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
@@ -59,6 +60,7 @@ class AddBlurryImagePlaceholders {
    */
   transform(tree, params) {
     params = params || {};
+    const pathResolver = new PathResolver(params.imageBasePath);
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
@@ -78,9 +80,9 @@ class AddBlurryImagePlaceholders {
       }
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
-        log.debug('Adding blurry image placeholder for', src);
         placeholders++;
-        const p = this.addBlurryPlaceholder_(tree, src, params).then((img) => {
+        const p = this.addBlurryPlaceholder_(tree, src, pathResolver).then((img) => {
+          node.attribs.noloading = '';
           node.appendChild(img);
         });
         promises.push(p);
@@ -106,12 +108,12 @@ class AddBlurryImagePlaceholders {
    * placeholder itself.
    * @private
    */
-  addBlurryPlaceholder_(tree, src, params) {
+  addBlurryPlaceholder_(tree, src, pathResolver) {
     const img = tree.createElement('img');
     img.attribs.class = 'i-amphtml-blurry-placeholder';
     img.attribs.placeholder = '';
     img.attribs.src = src;
-    return this.getDataURI_(img, params)
+    return this.getDataURI_(img, pathResolver)
         .then((dataURI) => {
           let svg = `<svg xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -151,9 +153,9 @@ class AddBlurryImagePlaceholders {
    * to be a dataURI of a bitmap including width and height.
    * @private
    */
-  getDataURI_(img, params) {
-    const basePath = params.imageBasePath || '';
-    const imageSrc = this.resolvePath_(basePath, img.attribs.src);
+  getDataURI_(img, pathResolver) {
+    const imageSrc = pathResolver.resolve(img.attribs.src);
+    log.debug('Adding blurry image placeholder for (src / resolved):', img.attribs.src, imageSrc);
     let width;
     let height;
     return jimp.read(imageSrc)
@@ -175,23 +177,6 @@ class AddBlurryImagePlaceholders {
           e.message = `Could not create placeholder for ${imageSrc}. Reason: ${e.message}`;
           throw e;
         });
-  }
-
-  /**
-   * Resolves an URL or relative path.
-   * @param {String} the base (might be empty)
-   * @param {String} the path
-   * @return {String} the resolved path or URL
-   * @private
-   */
-  resolvePath_(base, path) {
-    try {
-      return new URL(path).toString();
-    } catch (e) {
-      // not an absolute URL
-      path = new URL(path, 'https://example.com').pathname;
-      return resolve(join(base, path));
-    }
   }
 
   /**
@@ -267,6 +252,12 @@ class AddBlurryImagePlaceholders {
     // image placeholders would be wanted.
     const url = new URL(src, 'https://example.com');
     if (!url.pathname.endsWith('.jpg') && !url.pathname.endsWith('jpeg')) {
+      return false;
+    }
+
+    // Images or videos with noloading attributes should not have any indicators that they
+    // are loading.
+    if (node.attribs.noloading != null) {
       return false;
     }
 

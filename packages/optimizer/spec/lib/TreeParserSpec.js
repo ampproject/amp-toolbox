@@ -147,13 +147,13 @@ describe('Tree', () => {
       head.appendChild(secondElement);
     });
     it('appends child', () => {
-      expect(head.firstChild).toBe(firstElement);
+      expect(head.firstChild).toEqual(firstElement);
     });
     it('sets previous', () => {
-      expect(head.children[1].prev).toBe(firstElement);
+      expect(head.children[1].prev).toEqual(firstElement);
     });
     it('sets next', () => {
-      expect(head.firstChild.next).toBe(secondElement);
+      expect(head.firstChild.next).toEqual(secondElement);
     });
     it('clears next', () => {
       expect(head.children[1].next).toBe(null);
