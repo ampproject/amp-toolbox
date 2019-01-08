@@ -48,17 +48,17 @@ ampOptimizer.setConfig({
     'AddAmpLink',
     'ServerSideRendering',
     'RemoveAmpAttribute',
-    // needs to run after ServerSideRendering
     'AmpBoilerplateTransformer',
-    // needs to run after ServerSideRendering
     'ReorderHeadTransformer',
-    // needs to run after ReorderHeadTransformer
     'RewriteAmpUrls',
+    'GoogleFontsPreconnect',
+    'PruneDuplicateResourceHints',
+    'AddBlurryImagePlaceholders',
   ],
 });
 
-const SRC_DIR = 'src';
-const DIST_DIR = 'dist';
+const SRC_DIR = path.join(__dirname, 'src');
+const DIST_DIR = path.join(__dirname, 'dist');
 
 runAmpOptimizerTransformations();
 
@@ -103,7 +103,9 @@ async function copyAndTransform(file, ampRuntimeVersion) {
 
 function readFile(fileName) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path.join(SRC_DIR, fileName), 'utf8', (err, contents) => {
+    const filePath = path.join(SRC_DIR, fileName);
+    console.log('optimizing', filePath);
+    fs.readFile(filePath, 'utf8', (err, contents) => {
       if (err) {
         return reject(err);
       }

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-const {join, resolve} = require('path');
 const {URL} = require('url');
 const jimp = require('jimp');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
-const log = require('../log.js');
+const PathResolver = require('../PathResolver');
+const log = require('../log');
 
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
@@ -46,6 +46,7 @@ function escaper(match) {
  * This transformer supports the following option:
  *
  * * `imageBasePath`: specifies a base path used to resolve an image during build.
+ * * `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
  */
 class AddBlurryImagePlaceholders {
   /**
@@ -58,6 +59,7 @@ class AddBlurryImagePlaceholders {
    */
   transform(tree, params) {
     params = params || {};
+    const pathResolver = new PathResolver(params.imageBasePath);
     const html = tree.root.firstChildByTag('html');
     const body = html.firstChildByTag('body');
     const promises = [];
@@ -78,12 +80,14 @@ class AddBlurryImagePlaceholders {
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
-        const p = this.addBlurryPlaceholder_(tree, src, params).then((img) => {
+        const p = this.addBlurryPlaceholder_(tree, src, pathResolver).then((img) => {
+          node.attribs.noloading = '';
           node.appendChild(img);
         });
         promises.push(p);
 
-        if (placeholders >= MAX_BLURRED_PLACEHOLDERS) {
+        const maxBlurredPlaceholders = params.maxBlurredPlaceholders || MAX_BLURRED_PLACEHOLDERS;
+        if (placeholders >= maxBlurredPlaceholders) {
           break;
         }
       }
@@ -103,12 +107,12 @@ class AddBlurryImagePlaceholders {
    * placeholder itself.
    * @private
    */
-  addBlurryPlaceholder_(tree, src, params) {
+  addBlurryPlaceholder_(tree, src, pathResolver) {
     const img = tree.createElement('img');
     img.attribs.class = 'i-amphtml-blurry-placeholder';
     img.attribs.placeholder = '';
     img.attribs.src = src;
-    return this.getDataURI_(img, params)
+    return this.getDataURI_(img, pathResolver)
         .then((dataURI) => {
           let svg = `<svg xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -148,9 +152,9 @@ class AddBlurryImagePlaceholders {
    * to be a dataURI of a bitmap including width and height.
    * @private
    */
-  getDataURI_(img, params) {
-    const basePath = params.imageBasePath || '';
-    const imageSrc = this.resolvePath_(basePath, img.attribs.src);
+  getDataURI_(img, pathResolver) {
+    const imageSrc = pathResolver.resolve(img.attribs.src);
+    log.debug('Adding blurry image placeholder for (src / resolved):', img.attribs.src, imageSrc);
     let width;
     let height;
     return jimp.read(imageSrc)
@@ -172,21 +176,6 @@ class AddBlurryImagePlaceholders {
           e.message = `Could not create placeholder for ${imageSrc}. Reason: ${e.message}`;
           throw e;
         });
-  }
-
-  /**
-   * Resolves an URL or relative path.
-   * @param {String} the base (might be empty)
-   * @param {String} the path
-   * @return {String} the resolved path or URL
-   * @private
-   */
-  resolvePath_(base, path) {
-    try {
-      return new URL(path, base).toString();
-    } catch (e) {
-      return resolve(join(base, path));
-    }
   }
 
   /**
@@ -234,8 +223,9 @@ class AddBlurryImagePlaceholders {
    * The current criteria for determining if a blurry image placeholder should
    * be appended is as follows:
    * - The source for the image should be a JPEG.
-   * - If the element is an amp-img that is responsive and does not have a no
-   * loading attribute OR the element is a poster on an amp-video
+   * - If the element is:
+   *    - an amp-img using a responsive layout (responsive, fill or intrinsic)
+   *    - an amp-video with a poster
    *
    * This criteria was found to be the most common places where a blurry image
    * placeholder would likely want to be used through manual examination of
@@ -259,21 +249,24 @@ class AddBlurryImagePlaceholders {
 
     // Non-JPEG images are not commonly featured in a role where blurred
     // image placeholders would be wanted.
-    if (!src.endsWith('.jpg') && !src.endsWith('jpeg')) {
+    const url = new URL(src, 'https://example.com');
+    if (!url.pathname.endsWith('.jpg') && !url.pathname.endsWith('jpeg')) {
       return false;
     }
 
-    // Images with noloading attributes should not have any indicators that they
+    // Images or videos with noloading attributes should not have any indicators that they
     // are loading.
-    if (tagName == 'amp-img' && node.attribs.noloading != null) {
+    if (node.attribs.noloading != null) {
       return false;
     }
 
     // Checks if the image is a poster or a responsive image as these are the
     // two most common cases where blurred placeholders would be wanted.
     const isPoster = tagName == 'amp-video';
-    const isResponsiveImgWithLoading = (tagName == 'amp-img' &&
-      node.attribs.layout == 'responsive');
+    const isResponsiveImgWithLoading = tagName == 'amp-img' &&
+          (node.attribs.layout == 'intrinsic' ||
+            node.attribs.layout == 'responsive' ||
+            node.attribs.layout == 'fill');
     return isPoster || isResponsiveImgWithLoading;
   }
 }

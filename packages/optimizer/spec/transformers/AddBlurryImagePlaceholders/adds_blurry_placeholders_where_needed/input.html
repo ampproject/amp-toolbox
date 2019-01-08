@@ -1,6 +1,7 @@
 <!--
 {
-  "imageBasePath": "packages/optimizer/spec/assets"
+  "imageBasePath": "packages/optimizer/spec/assets",
+  "maxBlurredPlaceholders": 11
 }
 -->
 <!doctype html>
@@ -36,6 +37,12 @@
   <!-- amp-img test -->
   <!-- Should append placeholder -->
   <amp-img width="360" height="200" layout="responsive" src="bball.jpg"></amp-img>
+  <amp-img width="360" height="200" layout="responsive" src="bball.jpg?get=true"></amp-img>
+  <amp-img width="360" height="200" layout="responsive" src="bball.jpg#hash=true"></amp-img>
+  <amp-img width="360" height="200" layout="responsive" src="bball.jpg?get=true#hash=true"></amp-img>
+  <amp-img width="360" height="200" layout="responsive" src="https://raw.githubusercontent.com/ampproject/amp-toolbox/master/packages/optimizer/spec/assets/bball.jpg"></amp-img>
+  <amp-img width="360" height="200" layout="intrinsic" src="bball.jpg"></amp-img>
+  <amp-img layout="fill" src="bball.jpg"></amp-img>
 
   <!-- Skip because of file ending/dataURI -->
   <amp-img width="360" height="200" layout="responsive" src="tree.png"></amp-img>
@@ -45,15 +52,13 @@
   <!-- Skip because of layout -->
   <amp-img width="360" height="200" layout="nodisplay" src="bball.jpg"></amp-img>
   <amp-img width="360" height="200" layout="fixed" src="bball.jpg"></amp-img>
-  <amp-img width="360" height="200" layout="fill" src="bball.jpg"></amp-img>
-
-  <!-- Skip because of noloading attribute-->
-  <amp-img width="360" height="200" layout="responsive" src="bball.jpg" noloading></amp-img>
 
   <!-- Skip because of placeholder -->
   <amp-img width="360" height="200" layout="responsive" src="bball.jpg">
     <div placeholder></div>
   </amp-img>
+  <!-- Skip because of noloading -->
+  <amp-img width="360" height="200" layout="responsive" src="bball.jpg" noloading></amp-img>
 
   <!-- amp-video test -->
   <!-- Should append placeholder -->
