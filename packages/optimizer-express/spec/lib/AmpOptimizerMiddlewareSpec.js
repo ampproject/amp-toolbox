@@ -18,20 +18,22 @@ const MockExpressRequest = require('mock-express-request');
 const MockExpressResponse = require('mock-express-response');
 const AmpOptimizerMiddleware = require('../../lib/AmpOptimizeMiddleware.js');
 
+const AMP_DOC = '<html amp>original</html>';
+
 class TestTransformer {
   transformHtml(body, options) {
     return Promise.resolve('transformed: ' + options.ampUrl);
   }
 }
 
-function runMiddlewareForUrl(middleware, url, accepts = () => 'html') {
+function runMiddlewareForUrl(middleware, url, options={accepts: () => 'html', input: AMP_DOC}) {
   return new Promise((resolve) => {
     const mockResponse = new MockExpressResponse();
-    const next = () => mockResponse.send('original');
+    const next = () => mockResponse.send(options.input);
     const mockRequest = new MockExpressRequest({
       url: url,
     });
-    mockRequest.accepts = accepts;
+    mockRequest.accepts = options.accepts;
 
     const end = mockResponse.end;
     mockResponse.end = (chunks) => {
@@ -44,20 +46,20 @@ function runMiddlewareForUrl(middleware, url, accepts = () => 'html') {
 }
 
 describe('Express Middleware', () => {
-  describe('Default configuration', () => {
+  describe('default configuration', () => {
     const middleware = AmpOptimizerMiddleware.create({ampOptimizer: new TestTransformer()});
 
-    it('Transforms URLs', () => {
+    it('transforms URLs', () => {
       runMiddlewareForUrl(middleware, '/stuff?q=thing')
           .then((result) => {
             expect(result).toEqual('transformed: /stuff?q=thing&amp=');
           });
     });
 
-    it('Skips Urls starting the "amp" query parameter', () => {
+    it('skips URLs starting with the "amp" query parameter', () => {
       runMiddlewareForUrl(middleware, '/stuff?q=thing&amp')
           .then((result) => {
-            expect(result).toEqual('original');
+            expect(result).toEqual(AMP_DOC);
           });
     });
 
@@ -69,39 +71,39 @@ describe('Express Middleware', () => {
     };
 
     ['/image.jpg', '/image.svg', '/script.js', '/style.css'].forEach((url) => {
-      it(`Does not transform ${url}`, () => runStaticTest(url, 'original'));
+      it(`Does not transform ${url}`, () => runStaticTest(url, AMP_DOC));
     });
 
     ['/', '/path.com/', '', 'path.jpg/'].forEach((url) => {
       it(`Transforms path url ${url}`, () => runStaticTest(url, `transformed: ${url}?amp=`));
     });
 
-    it('Applies transformation if req.accept method does not exist', () => {
-      runMiddlewareForUrl(middleware, '/page.html', null)
+    it('applies transformation if req.accept method does not exist', () => {
+      runMiddlewareForUrl(middleware, '/page.html', {accepts: null, input: AMP_DOC})
           .then((result) => {
             expect(result).toEqual('transformed: /page.html?amp=');
           });
     });
 
-    it('Skips transformation if request does not accept HTML', () => {
-      runMiddlewareForUrl(middleware, '/page.html', () => '')
+    it('skips transformation if request does not accept HTML', () => {
+      runMiddlewareForUrl(middleware, '/page.html', {accepts: () => '', input: AMP_DOC})
           .then((result) => {
-            expect(result).toEqual('original');
+            expect(result).toEqual(AMP_DOC);
           });
     });
   });
 
-  describe('Handles transformation errors', () => {
+  describe('handles transformation errors', () => {
     const transformer = {
-      transformHtml: () => Promise.reject('error'),
+      transformHtml: () => Promise.reject(new Error('error')),
     };
 
     const middleware = AmpOptimizerMiddleware.create({ampOptimizer: transformer});
 
-    it('Sends the original content when optimizer fails', () => {
+    it('sends the original content when optimizer fails', () => {
       runMiddlewareForUrl(middleware, '/page.html')
           .then((result) => {
-            expect(result).toEqual('original');
+            expect(result).toEqual(AMP_DOC);
           });
     });
   });
@@ -111,7 +113,7 @@ describe('Express Middleware', () => {
       transformHtml: (body, options) => Promise.resolve(options.ampRuntimeVersion || ''),
     };
 
-    it('Default runtimeVersion is null', () => {
+    it('default runtimeVersion is null', () => {
       const middleware = AmpOptimizerMiddleware.create({ampOptimizer: transformer});
       runMiddlewareForUrl(middleware, '/page.html')
           .then((result) => {
@@ -119,7 +121,7 @@ describe('Express Middleware', () => {
           });
     });
 
-    it('Uses runtimeVersion when set', () => {
+    it('uses runtimeVersion when set', () => {
       const runtimeVersion = (() => Promise.resolve('1'));
       const middleware = AmpOptimizerMiddleware.create({
         ampOptimizer: transformer,
@@ -131,8 +133,8 @@ describe('Express Middleware', () => {
           });
     });
 
-    it('Uses null if runtimeVersion fails', () => {
-      const runtimeVersion = (() => Promise.reject('error'));
+    it('uses null if runtimeVersion fails', () => {
+      const runtimeVersion = (() => Promise.reject(new Error('error')));
       const middleware = AmpOptimizerMiddleware.create({
         ampOptimizer: transformer,
         runtimeVersion: runtimeVersion,
@@ -140,6 +142,67 @@ describe('Express Middleware', () => {
       runMiddlewareForUrl(middleware, '/page.html')
           .then((result) => {
             expect(result).toBe('');
+          });
+    });
+  });
+  describe('options.versionedRuntime', () => {
+    const transformer = {
+      transformHtml: (body, options) => Promise.resolve(options.ampRuntimeVersion || ''),
+    };
+
+    it('default versionedRuntime is false', () => {
+      const middleware = AmpOptimizerMiddleware.create({ampOptimizer: transformer});
+      runMiddlewareForUrl(middleware, '/page.html')
+          .then((result) => {
+            expect(result).toBe('');
+          });
+    });
+
+    it('uses versioned runtime when set', () => {
+      const middleware = AmpOptimizerMiddleware.create({
+        ampOptimizer: transformer,
+        versionedRuntime: true,
+      });
+      runMiddlewareForUrl(middleware, '/page.html')
+          .then((result) => {
+            expect(result).not.toBe('');
+          });
+    });
+  });
+  describe('options.ampOnly', () => {
+    const transformer = {
+      transformHtml: () => Promise.resolve('transformed'),
+    };
+
+    describe('default is true', () => {
+      it('transform if amp', () => {
+        const middleware = AmpOptimizerMiddleware.create({
+          ampOptimizer: transformer,
+        });
+        runMiddlewareForUrl(middleware, '/page.html', {input: '<html amp>'})
+            .then((result) => {
+              expect(result).toBe('transformed');
+            });
+      });
+      it('does not transform if no amp', () => {
+        const middleware = AmpOptimizerMiddleware.create({
+          ampOptimizer: transformer,
+        });
+        runMiddlewareForUrl(middleware, '/page.html', {input: '<html>'})
+            .then((result) => {
+              expect(result).toBe('<html>');
+            });
+      });
+    });
+
+    it('false always transforms', () => {
+      const middleware = AmpOptimizerMiddleware.create({
+        ampOptimizer: transformer,
+        ampOnly: false,
+      });
+      runMiddlewareForUrl(middleware, '/page.html', {input: '<html>'})
+          .then((result) => {
+            expect(result).toBe('transformed');
           });
     });
   });
