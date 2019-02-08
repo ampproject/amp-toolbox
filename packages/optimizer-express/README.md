@@ -57,6 +57,21 @@ const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);
 ```
 
+## Options
+
+The following options are supported:
+
+   * `runtimeVersion`: true if the optimizer should use versioned runtime imports (default is false).
+   * `ampOnly`: true if the optimizer should only be applied to AMP files (indicated by the lightning bolt in the header).
+
+Example:
+
+```
+app.use(AmpOptimizerMiddleware.create({
+  runtimeVersion: true
+});
+```
+
 ## Best Practice: Cache server-side-rendered AMPs
 
 To achieve best performance, those transformations shouldn't be applied for

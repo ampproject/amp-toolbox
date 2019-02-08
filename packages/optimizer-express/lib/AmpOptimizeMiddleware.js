@@ -24,6 +24,8 @@
 const mime = require('mime-types');
 const UrlMapping = require('./UrlMapping');
 const ampOptimizer = require('amp-toolbox-optimizer');
+const ampRuntimeVersionProvider = require('amp-toolbox-runtime-version');
+const {isAmp} = require('amp-toolbox-core');
 
 const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
@@ -38,19 +40,26 @@ class AmpOptimizerMiddleware {
    * Creates a new amp-server-side-rendering middleware, using the specified
    * ampOptimizer and options.
    *
-   * @param {Object} options an optional object containing custom configurations for
+   * @param {Object} [options] an optional object containing custom configurations for
    * the middleware.
-   * @param {ampOptimizer} options.ampOptimizer the ampOptimizer used to apply server-side render transformations.
-   * @param {UrlMapping} options.urlMapping The mapper to be used when checking for AMP pages,
+   * @param {DomTransformer} [options.ampOptimizer] AMP Optimizer instance used to apply server-side render transformations.
+   * @param {UrlMapping} [options.urlMapping] a mapper between AMP and canonical URLs.
    * rewriting to * canonical and generating amphtml links.
-   * @param {runtimeVersion} options.runtimeVersion a function used to generate the runtimeVersion,
-   *  to be passed to ampOptimizer.
+   * @param {function() : Promise<string>} [options.runtimeVersion] a function returning a version string promise.
+   * @param {boolean} [options.runtimeVersion=false] true if the optimizer should use versioned runtime imports (default is false).
+   * @param {boolean} [options.ampOnly=true] true if the optimizer should only be applied to AMP files (indicated by the lightning bolt in the header).
    */
   static create(options) {
     options = options || {};
     const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
     const optimizer = options.ampOptimizer || ampOptimizer;
-    const runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
+    let runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
+    if (options.versionedRuntime) {
+      runtimeVersion = () => ampRuntimeVersionProvider.currentVersion();
+    }
+    if (options.ampOnly === undefined) {
+      options.ampOnly = true;
+    }
 
     return (req, res, next) => {
       // If this is a request for a resource, such as image, JS or CSS, do not apply optimizations.
@@ -87,7 +96,7 @@ class AmpOptimizerMiddleware {
         chunks.push(chunk);
       };
 
-      res.end = (chunk) => {
+      res.end = async (chunk) => {
         // Replace methods with the original implementation.
         res.write = originalWrite;
         res.end = originalEnd;
@@ -110,31 +119,30 @@ class AmpOptimizerMiddleware {
           return;
         }
 
-        const body = Buffer.concat(chunks).toString('utf8');
 
         // This is a request for the canonical URL. Generate the AMP equivalent
         // in order to add it to the link rel tag.
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
 
-        runtimeVersion()
-            .catch((err) => {
-              console.error('Error retrieving ampRuntimeVersion: ', err);
-              return null;
-            })
-            .then((version) => {
-              const ampOptimizerParams = req.ampOptimizerParams || {};
-              ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
-              ampOptimizerParams.ampRuntimeVersion = version;
-              return optimizer.transformHtml(body, ampOptimizerParams);
-            })
-            .then((transformedBody) => {
-              res.setHeader('Content-Length', Buffer.byteLength(transformedBody, 'utf-8'));
-              res.end(transformedBody, 'utf-8');
-            })
-            .catch((err) => {
-              console.error('Error applying AMP Optimizer. Sending original page', err);
-              res.end(body);
-            });
+        let version = null;
+        try {
+          version = await runtimeVersion();
+        } catch (err) {
+          console.error('Error retrieving ampRuntimeVersion: ', err);
+        }
+        const ampOptimizerParams = req.ampOptimizerParams || {};
+        ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
+        ampOptimizerParams.ampRuntimeVersion = version;
+        try {
+          let body = Buffer.concat(chunks).toString('utf8');
+          if (!(options.ampOnly && !isAmp(body))) {
+            body = await optimizer.transformHtml(body, ampOptimizerParams);
+          }
+          res.setHeader('Content-Length', Buffer.byteLength(body, 'utf-8'));
+          res.end(body, 'utf-8');
+        } catch (err) {
+          console.error('Error applying AMP Optimizer. Sending original page', err);
+        }
       };
 
       next();
@@ -153,8 +161,8 @@ class AmpOptimizerMiddleware {
     // as it is probably a directory request.
     const mimeType = mime.lookup(req.url) || 'text/html';
     return (req.accepts && req.accepts('html') !== 'html') ||
-       mimeType !== 'text/html' &&
-       !req.url.endsWith('/'); // adjust for /abc.com/, which return application/x-msdownload
+      mimeType !== 'text/html' &&
+      !req.url.endsWith('/'); // adjust for /abc.com/, which return application/x-msdownload
   }
 }
 

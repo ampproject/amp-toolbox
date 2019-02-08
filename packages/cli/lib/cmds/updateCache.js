@@ -83,7 +83,7 @@ function updateCache(args, logger) {
   try {
     privateKey = fs.readFileSync(privateKeyFile, 'utf8');
   } catch (e) {
-    return Promise.reject(`Error reading Private Key: ${privateKeyFile} (${e.message})`);
+    return Promise.reject(new Error(`Error reading Private Key: ${privateKeyFile} (${e.message})`));
   }
 
   return updateCaches_(privateKey, canonicalUrl, logger);
