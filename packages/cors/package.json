@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-cors",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "AMP CORS",
   "main": "index.js",
   "keywords": [
@@ -14,9 +14,9 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "amp-toolbox-cache-list": "^0.1.2",
+    "amp-toolbox-cache-list": "^0.1.3",
     "amp-toolbox-cache-url": "^1.0.5",
-    "amp-toolbox-core": "^0.1.2"
+    "amp-toolbox-core": "^0.1.3"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }

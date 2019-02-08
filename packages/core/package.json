@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Commonly used functionality for amp-toolbox",
   "main": "index.js",
   "repository": {
