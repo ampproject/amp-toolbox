@@ -43,7 +43,7 @@ class AmpOptimizerMiddleware {
    * @param {Object} [options] an optional object containing custom configurations for
    * the middleware.
    * @param {DomTransformer} [options.ampOptimizer] AMP Optimizer instance used to apply server-side render transformations.
-   * @param {UrlMapping} [options.urlMapping] The mapper to be used when checking for AMP pages,
+   * @param {UrlMapping} [options.urlMapping] a mapper between AMP and canonical URLs.
    * rewriting to * canonical and generating amphtml links.
    * @param {function() : Promise<string>} [options.runtimeVersion] a function returning a version string promise.
    * @param {boolean} [options.runtimeVersion=false] true if the optimizer should use versioned runtime imports (default is false).
