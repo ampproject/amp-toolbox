@@ -48,7 +48,7 @@ class UrlMapping {
   toAmpUrl(canonicalUrl) {
     const parsedUrl = URL.parse(canonicalUrl);
     const searchParams = this.parseUrlSearchParams_(parsedUrl);
-    searchParams.set(this.prefix_, '');
+    searchParams.set(this.prefix_, '1');
     return this.formatUrl_(parsedUrl, searchParams);
   }
 

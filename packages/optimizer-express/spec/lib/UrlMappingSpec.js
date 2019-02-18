@@ -21,7 +21,7 @@ describe('UrlMapping', () => {
 
   describe('isAmpUrl', () => {
     it('correctly identifies AMP urls', () => {
-      const result = urlMapping.isAmpUrl('/page?amp=');
+      const result = urlMapping.isAmpUrl('/page?amp=1');
       expect(result).toBe(true);
     });
 
@@ -39,13 +39,13 @@ describe('UrlMapping', () => {
   describe('toAmpUrl', () => {
     it('correctly transforms canonical URLs to AMP', () => {
       const result = urlMapping.toAmpUrl('/page');
-      expect(result).toBe('/page?amp=');
+      expect(result).toBe('/page?amp=1');
     });
   });
 
   describe('toCanonicalUrl', () => {
     it('correctly transforms AMP URLs to Canonical', () => {
-      const result = urlMapping.toCanonicalUrl('/page?amp=');
+      const result = urlMapping.toCanonicalUrl('/page?amp=1');
       expect(result).toBe('/page');
     });
   });
