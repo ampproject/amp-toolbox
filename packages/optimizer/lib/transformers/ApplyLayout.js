@@ -109,7 +109,7 @@ module.exports = {
         /* allow_auto=*/true,
         /* allow_fluid=*/false);
     if (!inputWidth.isValid) {
-      log.debug('Cannot perform SSR: invalid input width\n', widthAttribute);
+      log.debug('cannot perform SSR: invalid input width\n', widthAttribute);
       return false;
     }
     const heightAttribute = getAttributeOrNull(customElement, 'height');
@@ -118,7 +118,7 @@ module.exports = {
         /* allow_fluid=*/ampLayout === 'fluid'
     );
     if (!inputHeight.isValid) {
-      log.debug('Cannot perform SSR: invalid input height\n', heightAttribute);
+      log.debug('cannot perform SSR: invalid input height\n', heightAttribute);
       return false;
     }
 
@@ -130,7 +130,7 @@ module.exports = {
         getAttributeOrNull(customElement, 'sizes'), getAttributeOrNull(customElement, 'heights'));
 
     if (!isSupportedLayout(layout)) {
-      log.debug('Cannot perform SSR: unsupported layout', layout);
+      log.debug('cannot perform SSR: unsupported layout', layout);
       return false;
     }
 

@@ -119,7 +119,6 @@ class AmpOptimizerMiddleware {
           return;
         }
 
-
         // This is a request for the canonical URL. Generate the AMP equivalent
         // in order to add it to the link rel tag.
         const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
@@ -133,16 +132,16 @@ class AmpOptimizerMiddleware {
         const ampOptimizerParams = req.ampOptimizerParams || {};
         ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
         ampOptimizerParams.ampRuntimeVersion = version;
-        try {
-          let body = Buffer.concat(chunks).toString('utf8');
-          if (!(options.ampOnly && !isAmp(body))) {
+        let body = Buffer.concat(chunks).toString('utf8');
+        if (!(options.ampOnly && !isAmp(body))) {
+          try {
             body = await optimizer.transformHtml(body, ampOptimizerParams);
+          } catch (err) {
+            console.error('Error applying AMP Optimizer. Sending original page', err);
           }
-          res.setHeader('Content-Length', Buffer.byteLength(body, 'utf-8'));
-          res.end(body, 'utf-8');
-        } catch (err) {
-          console.error('Error applying AMP Optimizer. Sending original page', err);
         }
+        res.setHeader('Content-Length', Buffer.byteLength(body, 'utf-8'));
+        res.end(body, 'utf-8');
       };
 
       next();

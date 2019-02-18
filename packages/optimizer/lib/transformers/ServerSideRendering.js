@@ -63,7 +63,7 @@ class ServerSideRendering {
       // boilerplate.
       if (node.attribs.heights || node.attribs.media || node.attribs.sizes) {
         log.debug(
-            'Cannot remove boilerplate as either heights, media are sizes attribute is set:\n',
+            'cannot remove boilerplate as either heights, media or sizes attribute is set:\n',
             node.attribs
         );
         canRemoveBoilerplate = false;
@@ -74,7 +74,7 @@ class ServerSideRendering {
       // of the amp-experiment script in IsRenderDelayingExtension below.
       if (node.tagName === 'amp-experiment') {
         canRemoveBoilerplate = false;
-        log.debug('Cannot remove boilerplate: amp-experiment');
+        log.debug('cannot remove boilerplate: amp-experiment');
       }
 
       // amp-audio requires knowing the dimensions of the browser. Do not
@@ -82,7 +82,7 @@ class ServerSideRendering {
       // document.
       if (node.tagName === 'amp-audio') {
         canRemoveBoilerplate = false;
-        log.debug('Cannot remove boilerplate: amp-audio');
+        log.debug('cannot remove boilerplate: amp-audio');
         continue;
       }
 
@@ -90,7 +90,7 @@ class ServerSideRendering {
       // any unsupported layout, the applyLayout function returns
       // false and we can't remove the boilerplate.
       if (!applyLayout(node, tree)) {
-        log.debug('Cannot remove boilerplate: unsupported layout');
+        log.debug('cannot remove boilerplate: unsupported layout');
         canRemoveBoilerplate = false;
         continue;
       }
@@ -112,7 +112,7 @@ class ServerSideRendering {
         continue;
       }
       if (isRenderDelayingExtension(node)) {
-        log.debug('Cannot remove boilerplate: amp-dynamic-css-classes');
+        log.debug('cannot remove boilerplate: amp-dynamic-css-classes');
         canRemoveBoilerplate = false;
       }
     }

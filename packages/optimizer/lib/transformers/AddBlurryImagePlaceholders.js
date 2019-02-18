@@ -18,7 +18,7 @@ const {URL} = require('url');
 const jimp = require('jimp');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const PathResolver = require('../PathResolver');
-const log = require('../log');
+const log = require('../log').tag('AddBlurryImagePlaceholders');
 
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 5;
@@ -136,10 +136,12 @@ class AddBlurryImagePlaceholders {
           svg = svg.replace(ESCAPE_REGEX, escaper);
 
           img.attribs.src = 'data:image/svg+xml;charset=utf-8,' + svg;
+          log.debug(src, '[SUCCESS]');
           return img;
         })
         .catch((err) => {
-          log.error(`[AddBlurryImagePlaceholders]  ${err.message}`);
+          log.debug(img.attribs.src, '[FAIL]');
+          log.error(err.message);
         });
   }
 
@@ -154,7 +156,6 @@ class AddBlurryImagePlaceholders {
    */
   getDataURI_(img, pathResolver) {
     const imageSrc = pathResolver.resolve(img.attribs.src);
-    log.debug('Adding blurry image placeholder for (src / resolved):', img.attribs.src, imageSrc);
     let width;
     let height;
     return jimp.read(imageSrc)
@@ -171,10 +172,6 @@ class AddBlurryImagePlaceholders {
             width: width,
             height: height,
           };
-        })
-        .catch((e) => {
-          e.message = `Could not create placeholder for ${imageSrc}. Reason: ${e.message}`;
-          throw e;
         });
   }
 
