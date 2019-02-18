@@ -48,7 +48,7 @@ class GoogleFontsPreconnect {
         const referenceNode = findMetaViewport(head);
         head.insertAfter(linkPreconnect, referenceNode);
         log.debug(
-            'Adding <link rel="dns=prefetch preconnect" href="' +
+            'adding <link rel="dns=prefetch preconnect" href="' +
             linkPreconnect.attribs.href +
             '">');
 
