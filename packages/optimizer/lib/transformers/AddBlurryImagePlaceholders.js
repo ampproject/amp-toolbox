@@ -136,9 +136,11 @@ class AddBlurryImagePlaceholders {
           svg = svg.replace(ESCAPE_REGEX, escaper);
 
           img.attribs.src = 'data:image/svg+xml;charset=utf-8,' + svg;
+          log.debug(src, '[SUCCESS]');
           return img;
         })
         .catch((err) => {
+          log.debug(img.attribs.src, '[FAIL]');
           log.error(err.message);
         });
   }
@@ -165,17 +167,11 @@ class AddBlurryImagePlaceholders {
           return image.getBase64Async('image/png');
         })
         .then((dataURI) => {
-          log.debug(img.attribs.src);
           return {
             src: dataURI,
             width: width,
             height: height,
           };
-        })
-        .catch((e) => {
-          log.debug('failed loading image from', imageSrc);
-          e.message = `failed for ${img.attribs.src}. Reason: ${e.message}`;
-          throw e;
         });
   }
 
