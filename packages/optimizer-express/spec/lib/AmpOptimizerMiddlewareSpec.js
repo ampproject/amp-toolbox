@@ -52,7 +52,7 @@ describe('Express Middleware', () => {
     it('transforms URLs', () => {
       runMiddlewareForUrl(middleware, '/stuff?q=thing')
           .then((result) => {
-            expect(result).toEqual('transformed: /stuff?q=thing&amp=');
+            expect(result).toEqual('transformed: /stuff?q=thing&amp=1');
           });
     });
 
@@ -75,13 +75,13 @@ describe('Express Middleware', () => {
     });
 
     ['/', '/path.com/', '', 'path.jpg/'].forEach((url) => {
-      it(`Transforms path url ${url}`, () => runStaticTest(url, `transformed: ${url}?amp=`));
+      it(`Transforms path url ${url}`, () => runStaticTest(url, `transformed: ${url}?amp=1`));
     });
 
     it('applies transformation if req.accept method does not exist', () => {
       runMiddlewareForUrl(middleware, '/page.html', {accepts: null, input: AMP_DOC})
           .then((result) => {
-            expect(result).toEqual('transformed: /page.html?amp=');
+            expect(result).toEqual('transformed: /page.html?amp=1');
           });
     });
 
