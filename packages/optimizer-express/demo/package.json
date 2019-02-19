@@ -27,7 +27,7 @@
     "amp-toolbox-optimizer-express": "^0.5.0",
     "apicache": "1.2.0",
     "compression": "1.7.1",
-    "express": "4.16.2",
+    "express": "4.16.4",
     "http-proxy": "1.16.2"
   }
 }
