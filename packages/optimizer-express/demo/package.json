@@ -28,6 +28,6 @@
     "apicache": "1.2.0",
     "compression": "1.7.1",
     "express": "4.16.2",
-    "http-proxy": "1.16.2"
+    "http-proxy": "1.17.0"
   }
 }
