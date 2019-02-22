@@ -19,5 +19,9 @@
     "parse5": "^5.1.0",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
   },
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer",
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }

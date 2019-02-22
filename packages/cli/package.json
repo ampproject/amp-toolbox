@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox#readme",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cli",
   "dependencies": {
     "amp-toolbox-update-cache": "^1.0.3",
     "minimist": "^1.2.0",

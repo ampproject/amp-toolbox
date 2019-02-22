@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox#readme",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cache-url",
   "files": [
     "dist",
     "package.json",

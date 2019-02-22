@@ -12,6 +12,10 @@
   ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/core",
   "dependencies": {
     "axios": "0.18.0"
   },
