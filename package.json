@@ -9,6 +9,10 @@
     "lint": "eslint \"**/*.js\" --ignore-path .gitignore",
     "lint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.9.0-beta.7",
     "@babel/core": "7.3.3",
