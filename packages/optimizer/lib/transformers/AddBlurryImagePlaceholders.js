@@ -112,6 +112,7 @@ class AddBlurryImagePlaceholders {
     img.attribs.class = 'i-amphtml-blurry-placeholder';
     img.attribs.placeholder = '';
     img.attribs.src = src;
+    img.attribs.alt = '';
     return this.getDataURI_(img, pathResolver)
         .then((dataURI) => {
           let svg = `<svg xmlns="http://www.w3.org/2000/svg"

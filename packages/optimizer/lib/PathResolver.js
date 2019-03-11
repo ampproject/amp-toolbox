@@ -27,10 +27,10 @@ const DUMMY_HOST = 'https://example.com';
 class PathResolver {
   /**
    * Create a PathResolver.
-   * @param {string}  [base=''] - relative path or base URL
+   * @param {string|funtion}  [base=''] - relative path or base URL
    */
-  constructor(base) {
-    this.base_ = base || '';
+  constructor(base='') {
+    this.base_ = base;
     try {
       new URL(base);
       this.baseSpecifiesHost_ = true;
