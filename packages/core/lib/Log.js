@@ -28,7 +28,7 @@ class Log {
   }
 
   verbose(isVerbose=true) {
-    this.verbose_ = Boolean.valueOf(isVerbose);
+    this.verbose_ = !!isVerbose;
   }
 
   tag(newTag) {
