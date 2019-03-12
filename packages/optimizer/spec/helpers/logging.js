@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-require('../../lib/log.js').verbose();
+require('../../lib/log').verbose(true);

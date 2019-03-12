@@ -27,7 +27,7 @@ const DUMMY_HOST = 'https://example.com';
 class PathResolver {
   /**
    * Create a PathResolver.
-   * @param {string|funtion}  [base=''] - relative path or base URL
+   * @param {string}  [base=''] - relative path or base URL
    */
   constructor(base='') {
     this.base_ = base;
