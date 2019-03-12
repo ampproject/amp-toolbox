@@ -83,7 +83,7 @@ You can find a sample implementation [here](demo/simple/). If you're using the e
 Currently the following options are supported:
 
 * **ampUrl**: an URL string pointing to the valid AMP version. Required by the AddAmpLink transformer.
-* **blurredPlaceholders**: Enables blurry image placeholder generation. Default is `false`. Make sure to only enable  **Important:** blurry image placeholder computation is expensive. Make sure to only use it for static or cached pages.
+* **blurredPlaceholders**: enables blurry image placeholder generation. Default is `false`. **Important:** blurry image placeholder computation is expensive. Make sure to only use it for static or cached pages.
 * **imageBasePath**: a base URL or path required for resolving an image file from a given image `src` attribute. Used by for blurry image placeholder generation.
 * **maxBlurredPlaceholders**: specifies the max number of blurred images. Defaults to 5.
 * **ampRuntimeVersion** specifies a [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version") of the AMP runtime. For example: `ampRuntimeVersion: "001515617716922"` will result in AMP runtime URLs being re-written from:
