@@ -19,7 +19,7 @@
     "babel-plugin-filter-imports": "2.0.4",
     "colors": "1.3.3",
     "diff": "4.0.1",
-    "eslint": "5.14.1",
+    "eslint": "5.15.1",
     "eslint-config-google": "0.12.0",
     "html-minifier": "3.5.21",
     "jasmine": "3.3.1",
