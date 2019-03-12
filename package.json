@@ -24,7 +24,7 @@
     "html-minifier": "3.5.21",
     "jasmine": "3.3.1",
     "jasmine-spec-reporter": "4.2.1",
-    "karma": "4.0.0",
+    "karma": "4.0.1",
     "karma-chrome-launcher": "2.2.0",
     "karma-jasmine": "2.0.1",
     "mock-express-request": "0.2.2",
