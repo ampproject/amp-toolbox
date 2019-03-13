@@ -45,8 +45,12 @@ function escaper(match) {
  *
  * This transformer supports the following option:
  *
+ * * `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
  * * `imageBasePath`: specifies a base path used to resolve an image during build.
  * * `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
+ *
+ * Important: blurry image placeholder computation is expensive. Make sure to
+ * only use it for static or cached pages.
  */
 class AddBlurryImagePlaceholders {
   /**
@@ -58,6 +62,9 @@ class AddBlurryImagePlaceholders {
    * a blurred placeholder being added in an appropriate place.
    */
   transform(tree, params) {
+    if (!params.blurredPlaceholders) {
+      return;
+    }
     params = params || {};
     const pathResolver = new PathResolver(params.imageBasePath);
     const html = tree.root.firstChildByTag('html');
