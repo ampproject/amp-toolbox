@@ -31,16 +31,16 @@ app.use((req, res, next) => {
 app.use(AmpOptimizerMiddleware.create());
 
 app.use(minifyHTML({
-  override:      true,
+  override: true,
   exception_url: false,
   htmlMinifier: {
-    removeComments:            true,
-    collapseWhitespace:        true,
+    removeComments: true,
+    collapseWhitespace: true,
     collapseBooleanAttributes: true,
-    removeAttributeQuotes:     true,
-    removeEmptyAttributes:     true,
-    minifyJS:                  true
-  }
+    removeAttributeQuotes: true,
+    removeEmptyAttributes: true,
+    minifyJS: true,
+  },
 }));
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));

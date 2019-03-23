@@ -28,7 +28,7 @@ const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
  * runtime version is specified, v0.css will be inlined.
  */
 class AmpBoilerplateTransformer {
-  constructor(fetch = OneBehindFetch.create()) {
+  constructor(config, fetch = OneBehindFetch.create()) {
     this.fetch_ = fetch;
   }
 
@@ -82,4 +82,5 @@ class AmpBoilerplateTransformer {
   }
 }
 
-module.exports = new AmpBoilerplateTransformer();
+new AmpBoilerplateTransformer();
+module.exports = AmpBoilerplateTransformer;

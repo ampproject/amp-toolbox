@@ -41,4 +41,4 @@ class AddAmpLink {
   }
 }
 
-module.exports = new AddAmpLink();
+module.exports = AddAmpLink;

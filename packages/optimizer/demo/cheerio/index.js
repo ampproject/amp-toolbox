@@ -74,7 +74,7 @@ class CheerioTransformer {
 
 optimizer.setConfig({
   transformers: [
-    new CheerioTransformer(),
+    CheerioTransformer,
     'AddAmpLink',
     'ServerSideRendering',
     'RemoveAmpAttribute',

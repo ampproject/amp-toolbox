@@ -207,4 +207,4 @@ class ReorderHeadTransformer {
   }
 }
 
-module.exports = new ReorderHeadTransformer();
+module.exports = ReorderHeadTransformer;

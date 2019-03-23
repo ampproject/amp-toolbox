@@ -117,11 +117,11 @@ class DomTransformer {
   }
 
   initTransformers_(config) {
-    this.transformers_ = this.getTransformersFromConfig_(config).map((transformer) => {
-      if (typeof transformer === 'string') {
-        return require(path.join(__dirname, 'transformers', transformer + '.js'));
+    this.transformers_ = this.getTransformersFromConfig_(config).map((Transformer) => {
+      if (typeof Transformer === 'string') {
+        Transformer = require(path.join(__dirname, 'transformers', Transformer + '.js'));
       }
-      return transformer;
+      return new Transformer(config);
     });
   }
 

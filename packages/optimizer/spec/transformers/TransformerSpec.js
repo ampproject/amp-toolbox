@@ -29,7 +29,7 @@ function loadTestConfigs() {
     return {
       name: transformerName,
       testDir: testDir,
-      transformer: require(join('../../lib/transformers', transformerName + '.js')),
+      transformer: new (require(join('../../lib/transformers', transformerName + '.js'))),
     };
   });
 }

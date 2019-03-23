@@ -16,6 +16,8 @@
 
 const {URL} = require('url');
 const jimp = require('jimp');
+const LRU = require('lru-cache');
+
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const PathResolver = require('../PathResolver');
 const log = require('../log').tag('AddBlurryImagePlaceholders');
@@ -277,4 +279,4 @@ class AddBlurryImagePlaceholders {
 }
 
 /** @module AddBlurryImagePlaceholders */
-module.exports = new AddBlurryImagePlaceholders();
+module.exports = AddBlurryImagePlaceholders;

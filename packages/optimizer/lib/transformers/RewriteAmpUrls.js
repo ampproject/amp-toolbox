@@ -96,4 +96,4 @@ class RewriteAmpUrls {
   }
 }
 
-module.exports = new RewriteAmpUrls();
+module.exports = RewriteAmpUrls;
