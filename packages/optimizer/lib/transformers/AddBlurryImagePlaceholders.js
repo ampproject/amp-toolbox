@@ -23,7 +23,9 @@ const PathResolver = require('../PathResolver');
 const log = require('../log').tag('AddBlurryImagePlaceholders');
 
 const PIXEL_TARGET = 60;
-const MAX_BLURRED_PLACEHOLDERS = 5;
+const MAX_BLURRED_PLACEHOLDERS = 100;
+const DEFAULT_CACHED_PLACEHOLDERS = 30;
+
 const ESCAPE_TABLE = {
   '#': '%23',
   '%': '%25',
@@ -50,11 +52,28 @@ function escaper(match) {
  * * `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
  * * `imageBasePath`: specifies a base path used to resolve an image during build.
  * * `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
+ * * `blurredPlaceholdersCacheSize`: Specifies the max number of blurred images to be cached
+ *   to avoid expensive recalculation. Set to 0 if all placeholders should be cached. Defaults
+ *   to 30.
  *
  * Important: blurry image placeholder computation is expensive. Make sure to
  * only use it for static or cached pages.
  */
 class AddBlurryImagePlaceholders {
+  constructor(config) {
+    const maxCacheSize = config.blurredPlaceholdersCacheSize || DEFAULT_CACHED_PLACEHOLDERS;
+    // use a Map if all placeholders should be cached (good for static sites)
+    if (maxCacheSize === 0) {
+      log.debug('caching all placeholders');
+      this.cache = new Map();
+    } else {
+      log.debug('using LRU cache for regularily used placeholders', maxCacheSize);
+      // use a LRU cache otherwise
+      this.cache = new LRU({
+        max: maxCacheSize,
+      });
+    }
+  }
   /**
    * Parses the document to add blurred placedholders in all appropriate
    * locations.
@@ -89,11 +108,11 @@ class AddBlurryImagePlaceholders {
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
-        const p = this.addBlurryPlaceholder_(tree, src, pathResolver).then((img) => {
+        const promise = this.addBlurryPlaceholder_(tree, src, pathResolver).then((img) => {
           node.attribs.noloading = '';
           node.appendChild(img);
         });
-        promises.push(p);
+        promises.push(promise);
 
         const maxBlurredPlaceholders = params.maxBlurredPlaceholders || MAX_BLURRED_PLACEHOLDERS;
         if (placeholders >= maxBlurredPlaceholders) {
@@ -165,9 +184,16 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   getDataURI_(img, pathResolver) {
+    const existingPlaceholder = this.cache.get(img.attribs.src);
+    if (existingPlaceholder) {
+      log.debug(img.attribs.src, '[CACHE HIT]');
+      return Promise.resolve(existingPlaceholder);
+    }
+    log.debug(img.attribs.src, '[CACHE MISS]');
     const imageSrc = pathResolver.resolve(img.attribs.src);
     let width;
     let height;
+
     return jimp.read(imageSrc)
         .then((image) => {
           const imgDimension = this.getBitmapDimensions_(image.bitmap.width, image.bitmap.height);
@@ -177,11 +203,13 @@ class AddBlurryImagePlaceholders {
           return image.getBase64Async('image/png');
         })
         .then((dataURI) => {
-          return {
+          const result = {
             src: dataURI,
             width: width,
             height: height,
           };
+          this.cache.set(img.attribs.src, result);
+          return result;
         });
   }
 
@@ -271,9 +299,9 @@ class AddBlurryImagePlaceholders {
     // two most common cases where blurred placeholders would be wanted.
     const isPoster = tagName == 'amp-video';
     const isResponsiveImgWithLoading = tagName == 'amp-img' &&
-          (node.attribs.layout == 'intrinsic' ||
-            node.attribs.layout == 'responsive' ||
-            node.attribs.layout == 'fill');
+      (node.attribs.layout == 'intrinsic' ||
+        node.attribs.layout == 'responsive' ||
+        node.attribs.layout == 'fill');
     return isPoster || isResponsiveImgWithLoading;
   }
 }

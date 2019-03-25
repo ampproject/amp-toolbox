@@ -26,10 +26,11 @@ function loadTestConfigs() {
   const transfomerTestDirs = getDirectories(__dirname);
   return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
+    const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
     return {
       name: transformerName,
       testDir: testDir,
-      transformer: new (require(join('../../lib/transformers', transformerName + '.js'))),
+      transformer: new Transformer({}),
     };
   });
 }
