@@ -16,7 +16,12 @@
 'use strict';
 
 const endingBracketRegex = /}\s+}/g;
-const keyframesRegex = /@(-moz-|-webkit-|-o-|)(media|keyframes|supports).+?{[\s\S]+?}}/gmi;
+const nestedEndingBracketRegex = /}\s+}\s+}/g;
+const nestedKeyframesRegex =
+    /@(-moz-|-webkit-|-o-|)(media|supports).+?{[\s\S]+?}}}/gmi;
+
+const keyframesRegex =
+  /@(-moz-|-webkit-|-o-|)(media|keyframes|supports).+?{[\s\S]+?}}/gmi;
 
 /**
  * SeparateKeyframes - moves keyframes, media, and support from amp-custom
@@ -54,11 +59,26 @@ class SeparateKeyframes {
     stylesText = stylesText.data;
 
     // Remove spacing between ending brackets e.g. }\n }
-    stylesText = stylesText.replace(endingBracketRegex, '}}');
+    stylesText = stylesText
+        .replace(nestedEndingBracketRegex, '}}}')
+        .replace(endingBracketRegex, '}}');
+
+    const nestedKeyframes = stylesText.match(nestedKeyframesRegex) || {length: 0};
+
+    for (let i = 0; i < nestedKeyframes.length; i++) {
+      const match = nestedKeyframes[i];
+      if (keyframesText.indexOf(match) > -1) continue;
+      // remove keyframe from original css
+      css = css.replace(match, '');
+      // add keyframes to separate string
+      keyframesText += match;
+    }
+
     const keyframes = stylesText.match(keyframesRegex) || {length: 0};
 
     for (let i = 0; i < keyframes.length; i++) {
       const match = keyframes[i];
+      if (keyframesText.indexOf(match) > -1) continue;
       // Remove keyframe from original css
       stylesText = stylesText.replace(match, '');
       // Add keyframes to separate string
