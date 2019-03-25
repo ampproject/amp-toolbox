@@ -89,4 +89,4 @@ class PruneDuplicateResourceHints {
   }
 }
 
-module.exports = new PruneDuplicateResourceHints();
+module.exports = PruneDuplicateResourceHints;

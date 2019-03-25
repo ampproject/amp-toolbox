@@ -44,7 +44,7 @@ class CustomTransformer {
 // otherwise a default configuration is used.
 ampOptimizer.setConfig({
   transformers: [
-    new CustomTransformer(),
+    CustomTransformer,
     'AddAmpLink',
     'ServerSideRendering',
     'RemoveAmpAttribute',

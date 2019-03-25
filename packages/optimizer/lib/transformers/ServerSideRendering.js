@@ -143,4 +143,4 @@ class ServerSideRendering {
   }
 }
 
-module.exports = new ServerSideRendering();
+module.exports = ServerSideRendering;

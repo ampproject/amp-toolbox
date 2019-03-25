@@ -27,4 +27,4 @@ class RemoveAmpAttribute {
   }
 }
 
-module.exports = new RemoveAmpAttribute();
+module.exports = RemoveAmpAttribute;

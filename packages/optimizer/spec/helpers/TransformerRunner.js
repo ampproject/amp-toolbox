@@ -32,16 +32,14 @@ const CONFIG_END_TOKEN = '-->';
 
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
+    afterAll(() => {
+      nock.cleanAll();
+    });
     getDirectories(testConfig.testDir).forEach((testDir) => {
-      beforeEach(() => {
+      it(basename(testDir), async (done) => {
         nock('https://cdn.ampproject.org')
             .get('/rtv/001515617716922/v0.css')
             .reply(200, '/* v0.css */');
-      });
-      afterEach(() => {
-        nock.restore();
-      });
-      it(basename(testDir), (done) => {
         let params = TRANSFORMER_PARAMS;
 
         // parse input and extract params
@@ -58,13 +56,13 @@ module.exports = function(testConfig) {
 
         // parse expected output
         const expectedOutput = getFileContents(join(testDir, 'expected_output.html'));
-        const expectedOutputTree = treeParser.parse(expectedOutput);
-
-        Promise.resolve(
-            testConfig.transformer.transform(inputTree, params)
-        ).then(() => {
+        try {
+          const expectedOutputTree = treeParser.parse(expectedOutput);
+          await testConfig.transformer.transform(inputTree, params);
           compare(inputTree, expectedOutputTree, done);
-        }).catch((error) => done.fail(error));
+        } catch (error) {
+          done.fail(error);
+        }
       });
     });
   });

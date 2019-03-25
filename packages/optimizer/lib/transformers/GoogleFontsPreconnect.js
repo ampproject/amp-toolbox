@@ -66,4 +66,4 @@ class GoogleFontsPreconnect {
 }
 
 /** @module GoogleFontsPreconnect */
-module.exports = new GoogleFontsPreconnect();
+module.exports = GoogleFontsPreconnect;

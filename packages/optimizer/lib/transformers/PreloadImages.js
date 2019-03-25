@@ -101,4 +101,4 @@ class PreloadImages {
 }
 
 /** @module PreloadImages */
-module.exports = new PreloadImages();
+module.exports = PreloadImages;
