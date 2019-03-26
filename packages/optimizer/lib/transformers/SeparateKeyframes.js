@@ -30,19 +30,20 @@ class SeparateKeyframes {
     const body = html.firstChildByTag('body') || head;
     let stylesCustomTag;
     let stylesKeyframesTag;
-    const headTags = head.children;
 
-    for (let i = 0; i < headTags.length; i++) {
-      const tag = headTags[i];
-      if (tag.tagName !== 'style') continue;
+    // Get style[amp-custom] and remove style[amp-keyframes]
+    head.children = head.children.filter((tag) => {
+      if (tag.tagName !== 'style') return true;
 
       if (!stylesKeyframesTag && tag.hasAttribute('amp-keyframes')) {
         stylesKeyframesTag = tag;
+        return false;
       }
       if (!stylesCustomTag && tag.hasAttribute('amp-custom')) {
         stylesCustomTag = tag;
       }
-    }
+      return true;
+    });
 
     // If no custom styles, there's nothing to do
     if (!stylesCustomTag) return;
@@ -73,15 +74,18 @@ class SeparateKeyframes {
 
     // if no rules moved nothing to do
     if (!keyframesTree.stylesheet.rules.length) return;
-    let hadKeyframesTag = true;
 
     if (!stylesKeyframesTag) {
-      stylesKeyframesTag = body.firstChildByTag('style');
+      // Check body for keyframes tag, removing it if found
+      body.children = body.children.filter((tag) => {
+        if (tag.tagName === 'style' && tag.hasAttribute('amp-keyframes')) {
+          stylesKeyframesTag = tag;
+          return false;
+        }
+        return true;
+      });
 
-      if (!stylesKeyframesTag ||
-        !stylesKeyframesTag.hasAttribute('amp-keyframes')
-      ) {
-        hadKeyframesTag = false;
+      if (!stylesKeyframesTag) {
         stylesKeyframesTag = tree.createElement('style', {'amp-keyframes': ''});
       }
     }
@@ -91,8 +95,8 @@ class SeparateKeyframes {
         keyframesTextNode && keyframesTextNode.data || ''
     );
     currentKeyframesTree.stylesheet.rules = (
-      currentKeyframesTree.stylesheet.rules.concat(
-          keyframesTree.stylesheet.rules
+      keyframesTree.stylesheet.rules.concat(
+          currentKeyframesTree.stylesheet.rules
       )
     );
     const keyframesText = css.stringify(currentKeyframesTree, stringifyOptions);
@@ -103,8 +107,8 @@ class SeparateKeyframes {
       keyframesTextNode.data = keyframesText;
     }
 
-    // Add keyframes tag to end of document or end of head if no body
-    if (!hadKeyframesTag) body.children.push(stylesKeyframesTag);
+    // Add keyframes tag to end of body
+    body.children.push(stylesKeyframesTag);
     // Update stylesCustomTag with filtered styles
     stylesCustomTag.children[0].data = css.stringify(cssTree, stringifyOptions);
   }

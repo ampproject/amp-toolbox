@@ -12,5 +12,12 @@
 </head>
 <body>
   <p>I should come before style[amp-keyframes]</p>
+  <style amp-keyframes>
+    @keyframes existing {
+      from {height:0px;}
+      to {height:100px;}
+    }
+  </style>
+  <p>I should also come before style[amp-keyframes]</p>
 </body>
 </html>
