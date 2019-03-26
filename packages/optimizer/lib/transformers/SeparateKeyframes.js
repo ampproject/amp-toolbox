@@ -61,15 +61,25 @@ class SeparateKeyframes {
     };
 
     cssTree.stylesheet.rules = cssTree.stylesheet.rules.filter((rule) => {
-      const doMove = (
-        rule.type === 'media' ||
-        rule.type === 'supports' ||
-        rule.type === 'keyframes'
-      );
-      if (doMove) {
+      if (rule.type === 'keyframes') {
         keyframesTree.stylesheet.rules.push(rule);
+        return false;
       }
-      return !doMove;
+      // if rule has any keyframes duplicate rule and move just
+      // the keyframes
+      if (rule.type === 'media' || rule.type === 'supports') {
+        const copiedRule = Object.assign({}, rule, {rules: []});
+        rule.rules = rule.rules.filter((rule) => {
+          if (rule.type !== 'keyframes') return true;
+          copiedRule.rules.push(rule);
+        });
+        if (copiedRule.rules.length) {
+          keyframesTree.stylesheet.rules.push(copiedRule);
+        }
+        // if no remaining rules remove it
+        return rule.rules.length;
+      }
+      return true;
     });
 
     // if no rules moved nothing to do
