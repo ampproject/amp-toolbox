@@ -15,6 +15,7 @@
   "dependencies": {
     "amp-toolbox-core": "^0.1.5",
     "amp-toolbox-runtime-version": "^0.2.6",
+    "css": "^2.2.4",
     "jimp": "0.6.0",
     "lru-cache": "^5.1.1",
     "parse5": "^5.1.0",

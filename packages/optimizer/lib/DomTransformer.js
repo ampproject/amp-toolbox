@@ -30,6 +30,7 @@ const TRANSFORMATIONS_VALID_AMP = [
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
+  'SeparateKeyframes',
 ];
 
 /**
@@ -53,6 +54,7 @@ const TRANSFORMATIONS_ALL = [
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
+  'SeparateKeyframes',
 ];
 
 const DEFAULT_CONFIG = {
