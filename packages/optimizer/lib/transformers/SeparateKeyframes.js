@@ -15,14 +15,8 @@
  */
 'use strict';
 
-const endingBracketRegex = /}\s+}/g;
-const nestedEndingBracketRegex = /}\s+}\s+}/g;
-const nestedKeyframesRegex =
-    /@(-moz-|-webkit-|-o-|)(media|supports).+?{[\s\S]+?}}}/gmi;
-
-const keyframesRegex =
-  /@(-moz-|-webkit-|-o-|)(media|keyframes|supports).+?{[\s\S]+?}}/gmi;
-
+const css = require('css');
+const stringifyOptions = {indent: 0, compress: true};
 /**
  * SeparateKeyframes - moves keyframes, media, and support from amp-custom
  * to amp-keyframes.
@@ -36,7 +30,6 @@ class SeparateKeyframes {
     const body = html.firstChildByTag('body') || head;
     let stylesCustomTag;
     let stylesKeyframesTag;
-    let keyframesText = '';
     const headTags = head.children;
 
     for (let i = 0; i < headTags.length; i++) {
@@ -58,46 +51,62 @@ class SeparateKeyframes {
     if (!stylesText || !stylesText.data) return;
     stylesText = stylesText.data;
 
-    // Remove spacing between ending brackets e.g. }\n }
-    stylesText = stylesText
-        .replace(nestedEndingBracketRegex, '}}}')
-        .replace(endingBracketRegex, '}}');
+    const cssTree = css.parse(stylesText);
+    const keyframesTree = {
+      type: 'stylesheet',
+      stylesheet: {
+        rules: [],
+      },
+    };
 
-    const nestedKeyframes = stylesText.match(nestedKeyframesRegex) || {length: 0};
+    cssTree.stylesheet.rules = cssTree.stylesheet.rules.filter((rule) => {
+      const doMove = (
+        rule.type === 'media' ||
+        rule.type === 'supports' ||
+        rule.type === 'keyframes'
+      );
+      if (doMove) {
+        keyframesTree.stylesheet.rules.push(rule);
+      }
+      return !doMove;
+    });
 
-    for (let i = 0; i < nestedKeyframes.length; i++) {
-      const match = nestedKeyframes[i];
-      if (keyframesText.indexOf(match) > -1) continue;
-      // remove keyframe from original css
-      css = css.replace(match, '');
-      // add keyframes to separate string
-      keyframesText += match;
-    }
-
-    const keyframes = stylesText.match(keyframesRegex) || {length: 0};
-
-    for (let i = 0; i < keyframes.length; i++) {
-      const match = keyframes[i];
-      if (keyframesText.indexOf(match) > -1) continue;
-      // Remove keyframe from original css
-      stylesText = stylesText.replace(match, '');
-      // Add keyframes to separate string
-      keyframesText += match;
-    }
+    // if no rules moved nothing to do
+    if (!keyframesTree.stylesheet.rules.length) return;
+    let hadKeyframesTag = true;
 
     if (!stylesKeyframesTag) {
       stylesKeyframesTag = body.firstChildByTag('style');
 
-      if (!stylesKeyframesTag || !stylesKeyframesTag.hasAttribute('amp-keyframes')) {
+      if (!stylesKeyframesTag ||
+        !stylesKeyframesTag.hasAttribute('amp-keyframes')
+      ) {
+        hadKeyframesTag = false;
         stylesKeyframesTag = tree.createElement('style', {'amp-keyframes': ''});
       }
     }
     // Insert keyframes styles to Node
-    stylesKeyframesTag.insertText(keyframesText);
+    const keyframesTextNode = stylesKeyframesTag.children[0];
+    const currentKeyframesTree = css.parse(
+        keyframesTextNode && keyframesTextNode.data || ''
+    );
+    currentKeyframesTree.stylesheet.rules = (
+      currentKeyframesTree.stylesheet.rules.concat(
+          keyframesTree.stylesheet.rules
+      )
+    );
+    const keyframesText = css.stringify(currentKeyframesTree, stringifyOptions);
+
+    if (!keyframesTextNode) {
+      stylesKeyframesTag.insertText(keyframesText);
+    } else {
+      keyframesTextNode.data = keyframesText;
+    }
+
     // Add keyframes tag to end of document or end of head if no body
-    body.children.push(stylesKeyframesTag);
+    if (!hadKeyframesTag) body.children.push(stylesKeyframesTag);
     // Update stylesCustomTag with filtered styles
-    stylesCustomTag.children[0].data = stylesText;
+    stylesCustomTag.children[0].data = css.stringify(cssTree, stringifyOptions);
   }
 }
 
