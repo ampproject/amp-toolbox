@@ -17,8 +17,10 @@
       }
     }
     .foo { height:0 }
-    @keyframes alsoInvalid { 
-      from { overflow: visible; } to{ overflow: hidden; }
+    @supports (display:grid) {
+      @keyframes alsoInvalid { 
+        from { overflow: visible; } to{ overflow: hidden; }
+      }
     }
     @keyframes validAnim {
       from {
