@@ -16,7 +16,24 @@
 'use strict';
 
 const css = require('css');
+const log = require('../log').tag('SeparateKeyframes');
 const stringifyOptions = {indent: 0, compress: true};
+const allowedKeyframeProps = new Set([
+  'animation-timing-function',
+  'offset-distance',
+  'opacity',
+  'visibility',
+  'transform',
+  '-webkit-transform',
+  '-moz-transform',
+  '-o-transform',
+  '-ms-transform',
+]);
+
+const logInvalid = (name, property) => {
+  log.warn(`Found invalid keyframe property '${
+    property}' in '${name}' not moving to style[amp-keyframes]`);
+};
 /**
  * SeparateKeyframes - moves keyframes, media, and support from amp-custom
  * to amp-keyframes.
@@ -60,8 +77,29 @@ class SeparateKeyframes {
       },
     };
 
+    const isInvalidKeyframe = (keyframe) => {
+      let invalidProperty;
+      for (const frame of keyframe.keyframes) {
+        for (const declaration of frame.declarations) {
+          if (!allowedKeyframeProps.has(declaration.property)) {
+            invalidProperty = declaration.property;
+            break;
+          }
+        }
+        if (invalidProperty) break;
+      }
+      return invalidProperty;
+    };
+
     cssTree.stylesheet.rules = cssTree.stylesheet.rules.filter((rule) => {
       if (rule.type === 'keyframes') {
+        // We can't move a keyframe with an invalid property
+        // or else the style[amp-keyframes] is invalid
+        const invalidProperty = isInvalidKeyframe(rule);
+        if (invalidProperty) {
+          logInvalid(rule.name, invalidProperty);
+          return true;
+        }
         keyframesTree.stylesheet.rules.push(rule);
         return false;
       }
@@ -71,6 +109,11 @@ class SeparateKeyframes {
         const copiedRule = Object.assign({}, rule, {rules: []});
         rule.rules = rule.rules.filter((rule) => {
           if (rule.type !== 'keyframes') return true;
+          const invalidProperty = isInvalidKeyframe(rule);
+          if (invalidProperty) {
+            logInvalid(rule.name, invalidProperty);
+            return true;
+          }
           copiedRule.rules.push(rule);
         });
         if (copiedRule.rules.length) {
