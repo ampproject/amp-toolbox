@@ -19,6 +19,11 @@
     "amp-toolbox",
     "amp-url-api"
   ],
+  "files": [
+    "index.js",
+    "dist",
+    "lib"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
