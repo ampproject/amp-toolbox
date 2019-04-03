@@ -82,5 +82,4 @@ class AmpBoilerplateTransformer {
   }
 }
 
-new AmpBoilerplateTransformer();
 module.exports = AmpBoilerplateTransformer;
