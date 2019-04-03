@@ -8,7 +8,7 @@
   <link href=https://example.com/favicon.ico rel=icon>
   <style amp-custom>
     .another{ display:block }
-    @keyframes anim1{
+    @keyframes invalidKeyframe {
       from{
         height: 0;
       }
@@ -17,10 +17,10 @@
       }
     }
     .foo { height:0 }
-    @keyframes anim2 { 
+    @keyframes alsoInvalid { 
       from { overflow: visible; } to{ overflow: hidden; }
     }
-    @keyframes anim3 {
+    @keyframes validAnim {
       from {
         opacity: 0;
       }
