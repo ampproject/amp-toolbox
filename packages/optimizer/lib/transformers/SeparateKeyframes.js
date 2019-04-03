@@ -17,6 +17,14 @@
 
 const css = require('css');
 const stringifyOptions = {indent: 0, compress: true};
+
+const allowedKeyframeProps = {
+  'animation-timing-function': 1,
+  'offset-distance': 1,
+  'opacity': 1,
+  'transform': 1,
+  'visibility': 1,
+};
 /**
  * SeparateKeyframes - moves keyframes, media, and support from amp-custom
  * to amp-keyframes.
@@ -60,8 +68,19 @@ class SeparateKeyframes {
       },
     };
 
+    const isInvalidKeyframe = (keyframe) => {
+      return keyframe.keyframes.some((k) => {
+        return k.declarations.some((d) => {
+          return !allowedKeyframeProps[d.property];
+        });
+      });
+    };
+
     cssTree.stylesheet.rules = cssTree.stylesheet.rules.filter((rule) => {
       if (rule.type === 'keyframes') {
+        // We can't move a keyframe with an invalid property
+        // or else the style[amp-keyframes] is invalid
+        if (isInvalidKeyframe(rule)) return true;
         keyframesTree.stylesheet.rules.push(rule);
         return false;
       }
@@ -70,7 +89,9 @@ class SeparateKeyframes {
       if (rule.type === 'media' || rule.type === 'supports') {
         const copiedRule = Object.assign({}, rule, {rules: []});
         rule.rules = rule.rules.filter((rule) => {
-          if (rule.type !== 'keyframes') return true;
+          if (rule.type !== 'keyframes' || isInvalidKeyframe(rule)) {
+            return true;
+          }
           copiedRule.rules.push(rule);
         });
         if (copiedRule.rules.length) {
