@@ -31,10 +31,6 @@
     "parse5": "^5.1.0",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
   },
-  "devDependencies": {
-    "jimp": "0.6.0",
-    "lru-cache": "^5.1.1"
-  },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },

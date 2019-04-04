@@ -12,6 +12,10 @@
     "amp-toolbox",
     "amp-cache"
   ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {

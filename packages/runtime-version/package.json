@@ -6,6 +6,10 @@
   "keywords": [
     "amp"
   ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git"
