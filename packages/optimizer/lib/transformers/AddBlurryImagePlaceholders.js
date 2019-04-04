@@ -15,8 +15,6 @@
  */
 
 const {URL} = require('url');
-const jimp = require('jimp');
-const LRU = require('lru-cache');
 
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const PathResolver = require('../PathResolver');
@@ -37,6 +35,15 @@ const ESCAPE_TABLE = {
 const ESCAPE_REGEX = new RegExp(Object.keys(ESCAPE_TABLE).join('|'), 'g');
 function escaper(match) {
   return ESCAPE_TABLE[match];
+}
+
+function isDependencyInstalled(dependency) {
+  try {
+    require.resolve(dependency)
+    return true
+  } catch (err) {
+    return false
+  }
 }
 
 /**
@@ -62,17 +69,7 @@ function escaper(match) {
 class AddBlurryImagePlaceholders {
   constructor(config) {
     const maxCacheSize = config.blurredPlaceholdersCacheSize || DEFAULT_CACHED_PLACEHOLDERS;
-    // use a Map if all placeholders should be cached (good for static sites)
-    if (maxCacheSize === 0) {
-      log.debug('caching all placeholders');
-      this.cache = new Map();
-    } else {
-      log.debug('using LRU cache for regularily used placeholders', maxCacheSize);
-      // use a LRU cache otherwise
-      this.cache = new LRU({
-        max: maxCacheSize,
-      });
-    }
+    this.maxCacheSize = maxCacheSize
   }
   /**
    * Parses the document to add blurred placedholders in all appropriate
@@ -85,6 +82,31 @@ class AddBlurryImagePlaceholders {
   transform(tree, params) {
     if (!params.blurredPlaceholders) {
       return;
+    }
+
+    if(!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
+      log.warn('jimp and lru-cache need to be installed via `npm install jimp lru-cache` for this transformer to work')
+      return
+    }
+
+    // This makes sure jimp is only required when the transform is enabled.
+    if(!this.jimp) {
+      this.jimp = require('jimp')
+    }
+
+    if(!this.cache) {
+      // use a Map if all placeholders should be cached (good for static sites)
+      if (this.maxCacheSize === 0) {
+        log.debug('caching all placeholders');
+        this.cache = new Map();
+      } else {
+        const LRU = require('lru-cache');
+        log.debug('using LRU cache for regularily used placeholders', this.maxCacheSize);
+        // use a LRU cache otherwise
+        this.cache = new LRU({
+          max: this.maxCacheSize,
+        });
+      }
     }
     params = params || {};
     const pathResolver = new PathResolver(params.imageBasePath);
@@ -194,10 +216,10 @@ class AddBlurryImagePlaceholders {
     let width;
     let height;
 
-    return jimp.read(imageSrc)
+    return this.jimp.read(imageSrc)
         .then((image) => {
           const imgDimension = this.getBitmapDimensions_(image.bitmap.width, image.bitmap.height);
-          image.resize(imgDimension.width, imgDimension.height, jimp.RESIZE_BEZIER);
+          image.resize(imgDimension.width, imgDimension.height, this.jimp.RESIZE_BEZIER);
           width = image.bitmap.width;
           height = image.bitmap.height;
           return image.getBase64Async('image/png');
