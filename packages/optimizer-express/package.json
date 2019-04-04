@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-optimizer-express",
-  "version": "0.6.1",
+  "version": "0.6.2-beta.4+814f254",
   "description": "Express middleware for amp-toolbox-optimizer",
   "main": "index.js",
   "repository": {
@@ -20,10 +20,10 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer-express",
   "dependencies": {
     "amp-toolbox-core": "^0.1.5",
-    "amp-toolbox-optimizer": "^0.5.1",
+    "amp-toolbox-optimizer": "^0.5.2-beta.4+814f254",
     "amp-toolbox-runtime-version": "^0.2.6",
     "mime-types": "^2.1.21",
     "whatwg-url": "^7.0.0"
   },
-  "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
+  "gitHead": "814f2549e1bbb86296fcbfadd1ea71bc6bd08cc2"
 }
