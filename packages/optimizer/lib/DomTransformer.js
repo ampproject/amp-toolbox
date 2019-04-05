@@ -116,6 +116,7 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied [default: all available transformers].
    */
   setConfig(config) {
+    config = Object.assign({}, DEFAULT_CONFIG, config);
     log.verbose(config.verbose);
     this.initTransformers_(config);
   }
