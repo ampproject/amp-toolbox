@@ -18,7 +18,7 @@ Supported commands:
 Displays the help menu, listing all available commands:
 
 ```
-./amp-toolbox-cli help
+$ ./amp-toolbox-cli help
 ```
 
 
@@ -32,7 +32,7 @@ Pass a command to get more information about this specific command
 Example:
 
 ```shell
-./amp-toolbox help update-cache
+$ ./amp-toolbox help update-cache
 ```
 
 
@@ -42,9 +42,16 @@ Prints the current version
 
 Example:
 ```shell
-./amp-toolbox version
+$ ./amp-toolbox version
 ```
 
+### runtime-version
+
+Prints the current version of the AMP runtime.
+
+Example:
+```shell
+$ ./amp-toolbox runtime-version
 
 ### update-cache
 
@@ -55,11 +62,11 @@ It requires the public and private keys to be generated, as [described on the do
 By default, the application will look for the private key on a file called `privateKey.pem`, on the current working directory.
 
 ```shell
-./amp-toolbox-cli update-cache https://www.example.com/
+$ ./amp-toolbox-cli update-cache https://www.example.com/
 ```
 
 Optionally, use the `--privateKey` parameter to specify the path for the private key.
 
 ```shell
-./amp-toolbox-cli update-cache https://www.example.com/ --privateKey /path/to/private-key.pem
+$ ./amp-toolbox-cli update-cache https://www.example.com/ --privateKey /path/to/private-key.pem
 ```
