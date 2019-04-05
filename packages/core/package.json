@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/core",
   "dependencies": {
-    "axios": "0.18.0"
+    "node-fetch": "^2.3.0"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }

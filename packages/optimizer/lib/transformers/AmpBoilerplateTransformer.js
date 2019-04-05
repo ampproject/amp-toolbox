@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const {OneBehindFetch} = require('amp-toolbox-core');
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
 
 const V0_CSS = 'v0.css';
@@ -28,8 +27,8 @@ const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
  * runtime version is specified, v0.css will be inlined.
  */
 class AmpBoilerplateTransformer {
-  constructor(config, fetch = OneBehindFetch.create()) {
-    this.fetch_ = fetch;
+  constructor(config) {
+    this.fetch_ = config.fetch;
   }
 
   transform(tree, params) {
@@ -74,11 +73,12 @@ class AmpBoilerplateTransformer {
     node.parent.insertBefore(cssStyleNode, node);
   }
 
-  _inlineCss(node, version) {
+  async _inlineCss(node, version) {
     const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
     node.attribs['i-amphtml-version'] = version;
-    return this.fetch_.get(versionedV0CssUrl)
-        .then((body) => node.insertText(body));
+    const response = await this.fetch_(versionedV0CssUrl);
+    const body = await response.text();
+    node.insertText(body);
   }
 }
 

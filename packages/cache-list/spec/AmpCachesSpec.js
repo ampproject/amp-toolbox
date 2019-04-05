@@ -17,6 +17,7 @@
 'use strict';
 
 const AmpCaches = require('../index');
+const fetchMock = require('fetch-mock').sandbox();
 
 const CACHES_JSON = JSON.parse(
     `{
@@ -30,33 +31,39 @@ const CACHES_JSON = JSON.parse(
   ]
 }`);
 
-describe('Caches', () => {
-  const fetchStrategy = {
-    get: () => Promise.resolve(CACHES_JSON),
-  };
-  const caches = new AmpCaches(fetchStrategy);
+const caches = new AmpCaches(fetchMock);
 
+describe('Caches', () => {
+  beforeEach(() => {
+    fetchMock.get('https://cdn.ampproject.org/caches.json', CACHES_JSON);
+  });
+  afterEach(() => {
+    fetchMock.restore();
+  });
   describe('list', () => {
-    it('returns an array with the caches', () => {
+    it('returns an array with the caches', (done) => {
       caches.list()
           .then((cacheList) => {
             expect(cacheList.length).toBe(1);
+            done();
           });
     });
   });
 
   describe('get', () => {
-    it('returns the correct cache', () => {
+    it('returns the correct cache', (done) => {
       caches.get('google')
           .then((googleCache) => {
-            expect(googleCache).toBe(CACHES_JSON.caches[0]);
+            expect(googleCache).toEqual(CACHES_JSON.caches[0]);
+            done();
           });
     });
 
-    it('returns undefined for unexisting cache', () => {
+    it('returns undefined for unexisting cache', (done) => {
       caches.get('unexisting')
           .then((cache) => {
             expect(cache).toBeUndefined();
+            done();
           });
     });
   });

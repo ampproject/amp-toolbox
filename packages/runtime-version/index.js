@@ -16,5 +16,6 @@
 'use strict';
 
 const RuntimeVersion = require('./lib/RuntimeVersion.js');
-module.exports = new RuntimeVersion();
+const {oneBehindFetch} = require('amp-toolbox-core');
+module.exports = new RuntimeVersion(oneBehindFetch);
 

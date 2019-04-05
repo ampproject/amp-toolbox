@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {OneBehindFetch} = require('amp-toolbox-core');
+const {oneBehindFetch} = require('amp-toolbox-core');
 const CACHE_LIST_ENDPOINT = 'https://cdn.ampproject.org/caches.json';
 
 /**
@@ -27,11 +27,10 @@ class AmpCaches {
   /**
    * Creates a new instance of AmpCaches.
    *
-   * @param {Object} [fetchStrategy = OneBehindFetch] The fetch strategy to be used when fetching
-   * data from the caches endpoint. Defaults to OneBehindFetch.
+   * @param {Function} fetch - a fetch implementation
    */
-  constructor(fetchStrategy = OneBehindFetch.create()) {
-    this.fetchStrategy_ = fetchStrategy;
+  constructor(fetch=oneBehindFetch) {
+    this.fetch_ = fetch;
   }
 
   /**
@@ -50,14 +49,15 @@ class AmpCaches {
    * @returns {Promise<object>} the Cache which the matching id or undefined, if a cache with the
    * id was not found.
    */
-  get(cacheId) {
-    return this.list()
-        .then((caches) => caches.find((cache) => cache.id === cacheId));
+  async get(cacheId) {
+    const caches = await this.list();
+    return caches.find((cache) => cache.id === cacheId);
   }
 
-  getCaches_() {
-    return this.fetchStrategy_.get(CACHE_LIST_ENDPOINT)
-        .then((json) => json.caches);
+  async getCaches_() {
+    const response = await this.fetch_(CACHE_LIST_ENDPOINT);
+    const data = await response.json();
+    return data.caches;
   }
 }
 
