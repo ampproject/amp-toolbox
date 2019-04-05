@@ -35,19 +35,23 @@ async function oneBehindFetch(input, init) {
     };
     cache.set(input, cachedResponse);
   }
-  if (!(await cachedResponse.maxAge).isExpired()) {
-    return cachedResponse.responsePromise;
+  const maxAge = await cachedResponse.maxAge;
+  if (!maxAge.isExpired()) {
+    // we have to clone the response to enable multiple reads
+    return cachedResponse.responsePromise.then((response) => response.clone());
   }
   const staleResponsePromise = cachedResponse.responsePromise;
   const newResponsePromise = fetch(input, init);
   cachedResponse = {
     responsePromise: newResponsePromise,
     maxAge: newResponsePromise.then(
-        (response) => MaxAge.parse(response.headers.get['cache-control'])
+        (response) => MaxAge.parse(response.headers.get('cache-control'))
     ),
   };
   cache.set(input, cachedResponse);
-  return staleResponsePromise || newResponsePromise;
+  const result = staleResponsePromise || newResponsePromise;
+  // we have to clone the response to enable multiple reads
+  return result.then((response) => response.clone());
 }
 
 oneBehindFetch.clearCache = () => cache.clear();
