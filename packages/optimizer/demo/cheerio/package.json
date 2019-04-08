@@ -12,6 +12,6 @@
     "cheerio": "^1.0.0-rc.2"
   },
   "devDependencies": {
-    "amp-toolbox-optimizer": "0.4.7"
+    "amp-toolbox-optimizer": "0.5.1"
   }
 }
