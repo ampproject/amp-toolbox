@@ -15,58 +15,48 @@
  */
 'use strict';
 
-const axios = require('axios');
+let fetch = require('node-fetch');
 const MaxAge = require('./MaxAge.js');
+
+const cache = new Map();
 
 /**
  * Implements fetch with a one-behind-caching strategy.
+ *
+ * @param {String|Request} input - path or Request instance
+ * @param {Object} init - fetch options
+ * @return Promise<Response>
  */
-class OneBehindFetch {
-  /**
-   * Creates a new OneBehindFetch.
-   *
-   * @returns {OneBehindFetch}
-   */
-  static create() {
-    return new OneBehindFetch(axios);
+async function oneBehindFetch(input, init) {
+  let cachedResponse = cache.get(input);
+  if (!cachedResponse) {
+    cachedResponse = {
+      maxAge: Promise.resolve(MaxAge.zero()),
+    };
+    cache.set(input, cachedResponse);
   }
-
-  /**
-   * Creates a new OneBehindFetch.
-   *
-   * @param {Axios} axio request handler
-   * @returns {OneBehindFetch}
-   */
-  constructor(axios) {
-    this.cache_ = {};
-    this.axios_ = axios;
+  const maxAge = await cachedResponse.maxAge;
+  if (!maxAge.isExpired()) {
+    // we have to clone the response to enable multiple reads
+    const response = await cachedResponse.responsePromise;
+    return response.clone();
   }
-
-  /**
-   * Performs a get request. Will always return the last cached value.
-   *
-   * @param {String} url request url
-   * @returns {Promise<json>} a promise containing the JSON repsonse
-   */
-  get(url) {
-    let response = this.cache_[url];
-    if (!response) {
-      response = {
-        maxAge: MaxAge.zero(),
-      };
-      this.cache_[url] = response;
-    }
-    if (!response.maxAge.isExpired()) {
-      return response.data;
-    }
-    const staleData = response.data;
-    response.data = this.axios_.get(url)
-        .then((fetchResponse) => {
-          response.maxAge = MaxAge.parse(fetchResponse.headers['cache-control']);
-          return fetchResponse.data;
-        });
-    return staleData || response.data;
-  }
+  const staleResponsePromise = cachedResponse.responsePromise;
+  const newResponsePromise = fetch(input, init);
+  cachedResponse = {
+    responsePromise: newResponsePromise,
+    maxAge: newResponsePromise.then(
+        (response) => MaxAge.parse(response.headers.get('cache-control'))
+    ),
+  };
+  cache.set(input, cachedResponse);
+  const result = staleResponsePromise || newResponsePromise;
+  // we have to clone the response to enable multiple reads
+  const response = await result;
+  return response.clone();
 }
 
-module.exports = OneBehindFetch;
+oneBehindFetch.clearCache = () => cache.clear();
+oneBehindFetch.setDelegate = (delegate) => fetch = delegate;
+
+module.exports = oneBehindFetch;

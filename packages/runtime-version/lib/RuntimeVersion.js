@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const {OneBehindFetch} = require('amp-toolbox-core');
 const log = require('amp-toolbox-core').log.tag('AMP Runtime Version');
 
 const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
@@ -48,8 +47,8 @@ const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
  *  </ul>
  */
 class RuntimeVersion {
-  constructor(request = OneBehindFetch.create()) {
-    this.request_ = request;
+  constructor(fetch) {
+    this.fetch_ = fetch;
   }
 
   /**
@@ -61,7 +60,8 @@ class RuntimeVersion {
    * @returns {Promise<Number>} a promise containing the current version
    */
   async currentVersion(options = {}) {
-    const data = await this.fetchVersion_(RUNTIME_METADATA_ENDPOINT);
+    const response = await this.fetch_(RUNTIME_METADATA_ENDPOINT);
+    const data = await response.json();
     let version;
     if (options.canary) {
       version = data.diversions[0];
@@ -74,10 +74,6 @@ class RuntimeVersion {
   }
 
   /* PRIVATE */
-  fetchVersion_(url) {
-    return this.request_.get(url);
-  }
-
   padVersionString_(version) {
     return this.pad_(version, 15, 0);
   }

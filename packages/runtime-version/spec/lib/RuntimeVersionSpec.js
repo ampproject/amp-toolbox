@@ -15,9 +15,10 @@
  */
 
 const RuntimeVersion = require('../../lib/RuntimeVersion.js');
+const fetch = require('node-fetch');
 
 describe('RuntimeVersion', () => {
-  const runtimeVersion = new RuntimeVersion();
+  const runtimeVersion = new RuntimeVersion(fetch);
 
   describe('currentVersion', () => {
     it('returns release version by default', (done) => {

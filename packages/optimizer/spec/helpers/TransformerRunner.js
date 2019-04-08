@@ -16,7 +16,6 @@
 const colors = require('colors/safe');
 const jsdiff = require('diff');
 const minify = require('html-minifier').minify;
-const nock = require('nock');
 const {basename, join} = require('path');
 const {getFileContents, getDirectories} = require('../helpers/Utils.js');
 
@@ -32,14 +31,8 @@ const CONFIG_END_TOKEN = '-->';
 
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
-    afterAll(() => {
-      nock.cleanAll();
-    });
     getDirectories(testConfig.testDir).forEach((testDir) => {
       it(basename(testDir), async (done) => {
-        nock('https://cdn.ampproject.org')
-            .get('/rtv/001515617716922/v0.css')
-            .reply(200, '/* v0.css */');
         let params = TRANSFORMER_PARAMS;
 
         // parse input and extract params

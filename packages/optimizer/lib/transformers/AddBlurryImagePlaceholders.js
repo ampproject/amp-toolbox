@@ -39,10 +39,10 @@ function escaper(match) {
 
 function isDependencyInstalled(dependency) {
   try {
-    require.resolve(dependency)
-    return true
+    require.resolve(dependency);
+    return true;
   } catch (err) {
-    return false
+    return false;
   }
 }
 
@@ -69,7 +69,7 @@ function isDependencyInstalled(dependency) {
 class AddBlurryImagePlaceholders {
   constructor(config) {
     const maxCacheSize = config.blurredPlaceholdersCacheSize || DEFAULT_CACHED_PLACEHOLDERS;
-    this.maxCacheSize = maxCacheSize
+    this.maxCacheSize = maxCacheSize;
   }
   /**
    * Parses the document to add blurred placedholders in all appropriate
@@ -84,17 +84,18 @@ class AddBlurryImagePlaceholders {
       return;
     }
 
-    if(!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
-      log.warn('jimp and lru-cache need to be installed via `npm install jimp lru-cache` for this transformer to work')
-      return
+    if (!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
+      log.warn('jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
+               'for this transformer to work');
+      return;
     }
 
     // This makes sure jimp is only required when the transform is enabled.
-    if(!this.jimp) {
-      this.jimp = require('jimp')
+    if (!this.jimp) {
+      this.jimp = require('jimp');
     }
 
-    if(!this.cache) {
+    if (!this.cache) {
       // use a Map if all placeholders should be cached (good for static sites)
       if (this.maxCacheSize === 0) {
         log.debug('caching all placeholders');

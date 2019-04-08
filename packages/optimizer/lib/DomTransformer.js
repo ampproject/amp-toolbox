@@ -18,6 +18,7 @@
 const path = require('path');
 const treeParser = require('./TreeParser.js');
 const log = require('./log.js');
+const {oneBehindFetch} = require('amp-toolbox-core');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
@@ -60,6 +61,7 @@ const TRANSFORMATIONS_ALL = [
 const DEFAULT_CONFIG = {
   verbose: false,
   validAmp: false,
+  fetch: oneBehindFetch,
   transformers: TRANSFORMATIONS_ALL,
 };
 
@@ -114,6 +116,7 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied [default: all available transformers].
    */
   setConfig(config) {
+    config = Object.assign({}, DEFAULT_CONFIG, config);
     log.verbose(config.verbose);
     this.initTransformers_(config);
   }

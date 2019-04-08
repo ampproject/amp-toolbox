@@ -15,55 +15,40 @@
  */
 'mode strict';
 
-const OneBehindFetch = require('../../lib/OneBehindFetch.js');
+const oneBehindFetch = require('../../lib/oneBehindFetch.js');
+const mockFetch = require('fetch-mock');
+const nodeFetch = require('node-fetch');
+const fetch = mockFetch.sandbox();
 
-class RequestHandlerStub {
-  constructor() {
-    this.result = '';
-    this.maxAge = 0;
-  }
-  get(_) {
-    return Promise.resolve({
-      headers: {
-        'cache-control': 'max-age=' + this.maxAge,
-      },
-      data: this.result,
-    });
-  }
-}
-
-let requestHandler;
-let fetch;
 
 describe('OneBehindFetch', () => {
   describe('get', () => {
     beforeEach(() => {
-      requestHandler = new RequestHandlerStub();
-      fetch = new OneBehindFetch(requestHandler);
+      oneBehindFetch.setDelegate(fetch);
+      oneBehindFetch.clearCache();
+      fetch.reset();
     });
-    it('fetches new value', (done) => {
-      const expectedResult = 'hello';
-      requestHandler.result = expectedResult;
-      fetch.get('https://example.com')
-          .then((data) => {
-            expect(data).toBe(expectedResult);
-            done();
-          });
+    afterEach(() => {
+      oneBehindFetch.setDelegate(nodeFetch);
     });
-    it('uses a one behind caching model', (done) => {
-      requestHandler.result = 'hello';
-      requestHandler.maxAge = 0;
-      fetch.get('https://example.com');
-      requestHandler.result = 'world';
-      fetch.get('https://example.com')
-          .then((data) => {
-            expect(data).toBe('hello');
-          });
-      fetch.get('https://example.com')
-          .then((data) => {
-            expect(data).toBe('world');
-            done();
-          });
+    it('fetches new value', async (done) => {
+      fetch.get('https://example.com', 'hello');
+      const data = await oneBehindFetch('https://example.com');
+      expect(await data.text()).toBe('hello');
+      done();
+    });
+    it('uses a one behind caching model', async (done) => {
+      fetch.once('https://example.com', 'hello');
+      await oneBehindFetch('https://example.com');
+      fetch.restore();
+      fetch.once('https://example.com', 'world');
+      let data = await oneBehindFetch('https://example.com');
+      fetch.restore();
+      fetch.once('https://example.com', 'world');
+      expect(await data.text()).toBe('hello');
+      data = await oneBehindFetch('https://example.com');
+      expect(await data.text()).toBe('world');
+      done();
     });
   });
 });

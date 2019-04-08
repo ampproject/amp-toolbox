@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const fetchMock = require('fetch-mock');
 const {basename, join} = require('path');
 const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
@@ -27,10 +28,14 @@ function loadTestConfigs() {
   return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
     const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
+
+    const fetch = fetchMock.sandbox().mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
     return {
       name: transformerName,
       testDir: testDir,
-      transformer: new Transformer({}),
+      transformer: new Transformer({
+        fetch,
+      }),
     };
   });
 }

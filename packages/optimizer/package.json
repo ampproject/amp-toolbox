@@ -25,11 +25,11 @@
     }
   },
   "dependencies": {
-    "amp-toolbox-core": "^0.1.5",
-    "amp-toolbox-runtime-version": "^0.2.6",
-    "css": "^2.2.4",
-    "parse5": "^5.1.0",
-    "parse5-htmlparser2-tree-adapter": "^5.1.0"
+    "amp-toolbox-core": "0.1.5",
+    "amp-toolbox-runtime-version": "0.2.6",
+    "css": "2.2.4",
+    "parse5": "5.1.0",
+    "parse5-htmlparser2-tree-adapter": "5.1.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
