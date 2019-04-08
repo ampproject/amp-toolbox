@@ -21,35 +21,33 @@ const nodeFetch = require('node-fetch');
 const fetch = mockFetch.sandbox();
 
 
-describe('OneBehindFetch', () => {
-  describe('get', () => {
-    beforeEach(() => {
-      oneBehindFetch.setDelegate(fetch);
-      oneBehindFetch.clearCache();
-      fetch.reset();
-    });
-    afterEach(() => {
-      oneBehindFetch.setDelegate(nodeFetch);
-    });
-    it('fetches new value', async (done) => {
-      fetch.get('https://example.com', 'hello');
-      const data = await oneBehindFetch('https://example.com');
-      expect(await data.text()).toBe('hello');
-      done();
-    });
-    it('uses a one behind caching model', async (done) => {
-      fetch.once('https://example.com', 'hello');
-      await oneBehindFetch('https://example.com');
-      fetch.restore();
-      fetch.once('https://example.com', 'world');
-      let data = await oneBehindFetch('https://example.com');
-      fetch.restore();
-      fetch.once('https://example.com', 'world');
-      expect(await data.text()).toBe('hello');
-      data = await oneBehindFetch('https://example.com');
-      expect(await data.text()).toBe('world');
-      done();
-    });
+describe('oneBehindFetch', () => {
+  beforeEach(() => {
+    oneBehindFetch.setDelegate(fetch);
+    oneBehindFetch.clearCache();
+    fetch.reset();
+  });
+  afterEach(() => {
+    oneBehindFetch.setDelegate(nodeFetch);
+  });
+  it('fetches new value', async (done) => {
+    fetch.get('https://example.com', 'hello');
+    const data = await oneBehindFetch('https://example.com');
+    expect(await data.text()).toBe('hello');
+    done();
+  });
+  it('uses a one behind caching model', async (done) => {
+    fetch.once('https://example.com', 'hello');
+    await oneBehindFetch('https://example.com');
+    fetch.restore();
+    fetch.once('https://example.com', 'world');
+    let data = await oneBehindFetch('https://example.com');
+    fetch.restore();
+    fetch.once('https://example.com', 'world');
+    expect(await data.text()).toBe('hello');
+    data = await oneBehindFetch('https://example.com');
+    expect(await data.text()).toBe('world');
+    done();
   });
 });
 
