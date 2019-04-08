@@ -38,7 +38,8 @@ async function oneBehindFetch(input, init) {
   const maxAge = await cachedResponse.maxAge;
   if (!maxAge.isExpired()) {
     // we have to clone the response to enable multiple reads
-    return cachedResponse.responsePromise.then((response) => response.clone());
+    const response = await cachedResponse.responsePromise;
+    return response.clone();
   }
   const staleResponsePromise = cachedResponse.responsePromise;
   const newResponsePromise = fetch(input, init);
@@ -51,7 +52,8 @@ async function oneBehindFetch(input, init) {
   cache.set(input, cachedResponse);
   const result = staleResponsePromise || newResponsePromise;
   // we have to clone the response to enable multiple reads
-  return result.then((response) => response.clone());
+  const response = await result;
+  return response.clone();
 }
 
 oneBehindFetch.clearCache = () => cache.clear();
