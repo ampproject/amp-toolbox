@@ -33,6 +33,8 @@ class Cli {
         return require('./cmds/help')(args, this.logger_);
       case 'version':
         return require('./cmds/version')(args, this.logger_);
+      case 'runtime-version':
+        return require('./cmds/runtimeVersion')(args, this.logger_);
       case 'update-cache':
         return require('./cmds/updateCache')(args, this.logger_);
       default:
