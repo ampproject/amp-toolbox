@@ -23,8 +23,9 @@ const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
 /**
  * AmpBoilerplateTransformer - This DOM transformer adds
  * https://cdn.ampproject.org/v0.css if server-side-rendering is applied
- * (known by the presence of <style amp-runtime> tag). If a specific AMP
- * runtime version is specified, v0.css will be inlined.
+ * (known by the presence of <style amp-runtime> tag). AMP runtime css (v0.css)
+ * will always be inlined as it'll get automatically updated to the latest version
+ * once the AMP runtime has loaded.
  */
 class AmpBoilerplateTransformer {
   constructor(config) {
@@ -57,11 +58,9 @@ class AmpBoilerplateTransformer {
   }
 
   _addStaticCss(tree, node, params) {
-    if (params.ampRuntimeVersion && !params.linkCss) {
-      return this._inlineCss(node, params.ampRuntimeVersion)
-          .catch(() => this._linkCss(tree, node));
-    }
-    this._linkCss(tree, node);
+    // we can always inline v0.css as the AMP runtime will take care of keeping v0.css in sync
+    return this._inlineCss(node, params.ampRuntimeVersion)
+        .catch(() => this._linkCss(tree, node));
   }
 
   _linkCss(tree, node) {
