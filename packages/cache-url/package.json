@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "punycode": "^2.1.1",
-    "url-parse": "^1.4.4"
+    "url-parse": "^1.4.6"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }
