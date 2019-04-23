@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const log = require('../log').tag('AmpBoilerplateTransformer');
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
 
 const V0_CSS = 'v0.css';
@@ -23,12 +24,14 @@ const V0_CSS_URL = AMP_CACHE_HOST + '/' + V0_CSS;
 /**
  * AmpBoilerplateTransformer - This DOM transformer adds
  * https://cdn.ampproject.org/v0.css if server-side-rendering is applied
- * (known by the presence of <style amp-runtime> tag). If a specific AMP
- * runtime version is specified, v0.css will be inlined.
+ * (known by the presence of <style amp-runtime> tag). AMP runtime css (v0.css)
+ * will always be inlined as it'll get automatically updated to the latest version
+ * once the AMP runtime has loaded.
  */
 class AmpBoilerplateTransformer {
   constructor(config) {
     this.fetch_ = config.fetch;
+    this.runtimeVersion_ = config.runtimeVersion;
   }
 
   transform(tree, params) {
@@ -56,12 +59,14 @@ class AmpBoilerplateTransformer {
     return null;
   }
 
-  _addStaticCss(tree, node, params) {
-    if (params.ampRuntimeVersion && !params.linkCss) {
-      return this._inlineCss(node, params.ampRuntimeVersion)
-          .catch(() => this._linkCss(tree, node));
+  async _addStaticCss(tree, node, params) {
+    // we can always inline v0.css as the AMP runtime will take care of keeping v0.css in sync
+    try {
+      return this._inlineCss(node, params.ampRuntimeVersion);
+    } catch (error) {
+      log.error(error);
+      this._linkCss(tree, node);
     }
-    this._linkCss(tree, node);
   }
 
   _linkCss(tree, node) {
@@ -74,9 +79,23 @@ class AmpBoilerplateTransformer {
   }
 
   async _inlineCss(node, version) {
-    const versionedV0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
+    // use version passed in via params if available
+    // otherwise fetch the current prod version
+    let v0CssUrl;
+    if (version) {
+      v0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + '/' + V0_CSS;
+    } else {
+      v0CssUrl = V0_CSS_URL;
+      version = await this.runtimeVersion_.currentVersion();
+    }
     node.attribs['i-amphtml-version'] = version;
-    const response = await this.fetch_(versionedV0CssUrl);
+
+    // Fetch and inline contents of v0.css
+    const response = await this.fetch_(v0CssUrl);
+    if (!response.ok) {
+      throw new Error(`Could not inline v0.css. Request to ${v0CssUrl} failed with status ` +
+          `${response.status}.`);
+    }
     const body = await response.text();
     node.insertText(body);
   }

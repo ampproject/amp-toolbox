@@ -18,7 +18,9 @@ require('fetch-mock');
 const createSpec = require('../helpers/TransformerRunner.js');
 const ampOptimizer = require('../../index.js');
 const fetchMock = require('fetch-mock');
-const fetch = fetchMock.sandbox().mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
+const fetch = fetchMock.sandbox()
+    .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */')
+    .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
 
 ampOptimizer.setConfig({
   fetch,
