@@ -11,4 +11,3 @@ cache:
     - ~/.npm
 before_install: if [[ `npm -v` != 6* ]]; then npm i -g npm@6; fi
 install: npm ci * && npm i packages/* 
-script: npx lerna run test
