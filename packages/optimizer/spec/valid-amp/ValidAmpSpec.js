@@ -29,7 +29,6 @@ describe('Optimizer produces valid AMP', () => {
   files.forEach((filePath) => {
     const fileName = basename(filePath);
     it(fileName, async (done) => {
-      console.log('running', filePath);
       const contents = getFileContents(filePath);
       const optimizedContents = await ampOptimizer.transformHtml(contents);
       const validatorInstance = await validator.getInstance();
