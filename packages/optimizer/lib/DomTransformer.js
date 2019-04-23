@@ -127,6 +127,7 @@ class DomTransformer {
     config = Object.assign({}, DEFAULT_CONFIG, config);
     log.verbose(config.verbose);
     this.initTransformers_(config);
+    this.verifyConfig(config);
   }
 
   initTransformers_(config) {
@@ -146,6 +147,12 @@ class DomTransformer {
       return TRANSFORMATIONS_VALID_AMP;
     }
     return TRANSFORMATIONS_ALL;
+  }
+
+  verifyConfig(config) {
+    if (!config.validAmp) {
+      return;
+    }
   }
 }
 
