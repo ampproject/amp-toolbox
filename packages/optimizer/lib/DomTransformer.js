@@ -25,6 +25,11 @@ const runtimeVersion = require('amp-toolbox-runtime-version');
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
  */
 const TRANSFORMATIONS_VALID_AMP = [
+  // Applies server-side-rendering optimizations
+  'ServerSideRendering',
+  // Removes the boilerplate
+  // needs to run after ServerSideRendering
+  'AmpBoilerplateTransformer',
   // Optimizes script import order
   // needs to run after ServerSideRendering
   'ReorderHeadTransformer',
@@ -32,7 +37,9 @@ const TRANSFORMATIONS_VALID_AMP = [
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
+  'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
+  'AddTransformedFlag',
 ];
 
 /**
@@ -60,10 +67,11 @@ const TRANSFORMATIONS_ALL = [
 ];
 
 const DEFAULT_CONFIG = {
-  verbose: false,
-  validAmp: false,
   fetch: oneBehindFetch,
   runtimeVersion,
+  log: log,
+  validAmp: false,
+  verbose: false,
 };
 
 
@@ -78,7 +86,6 @@ class DomTransformer {
    */
   constructor(config=DEFAULT_CONFIG) {
     this.setConfig(config);
-    this.log_ = log;
   }
 
   /**
@@ -103,7 +110,7 @@ class DomTransformer {
     const sequence = (promise, transformer) => {
       return promise.then(() => {
         // not all transformers return a promise
-        return Promise.resolve(transformer.transform(tree, params, this.log_));
+        return Promise.resolve(transformer.transform(tree, params));
       });
     };
     return this.transformers_.reduce(sequence, Promise.resolve());

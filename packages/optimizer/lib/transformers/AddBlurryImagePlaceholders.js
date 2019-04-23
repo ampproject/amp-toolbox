@@ -18,7 +18,6 @@ const {URL} = require('url');
 
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const PathResolver = require('../PathResolver');
-const log = require('../log').tag('AddBlurryImagePlaceholders');
 
 const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 100;
@@ -70,6 +69,7 @@ class AddBlurryImagePlaceholders {
   constructor(config) {
     const maxCacheSize = config.blurredPlaceholdersCacheSize || DEFAULT_CACHED_PLACEHOLDERS;
     this.maxCacheSize = maxCacheSize;
+    this.log_ = config.log.tag('AddBlurryImagePlaceholders');
   }
   /**
    * Parses the document to add blurred placedholders in all appropriate
@@ -85,7 +85,7 @@ class AddBlurryImagePlaceholders {
     }
 
     if (!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
-      log.warn('jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
+      this.log_.warn('jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
                'for this transformer to work');
       return;
     }
@@ -98,11 +98,11 @@ class AddBlurryImagePlaceholders {
     if (!this.cache) {
       // use a Map if all placeholders should be cached (good for static sites)
       if (this.maxCacheSize === 0) {
-        log.debug('caching all placeholders');
+        this.log_.debug('caching all placeholders');
         this.cache = new Map();
       } else {
         const LRU = require('lru-cache');
-        log.debug('using LRU cache for regularily used placeholders', this.maxCacheSize);
+        this.log_.debug('using LRU cache for regularily used placeholders', this.maxCacheSize);
         // use a LRU cache otherwise
         this.cache = new LRU({
           max: this.maxCacheSize,
@@ -188,12 +188,12 @@ class AddBlurryImagePlaceholders {
           svg = svg.replace(ESCAPE_REGEX, escaper);
 
           img.attribs.src = 'data:image/svg+xml;charset=utf-8,' + svg;
-          log.debug(src, '[SUCCESS]');
+          this.log_.debug(src, '[SUCCESS]');
           return img;
         })
         .catch((err) => {
-          log.debug(img.attribs.src, '[FAIL]');
-          log.error(err.message);
+          this.log_.debug(img.attribs.src, '[FAIL]');
+          this.log_.error(err.message);
         });
   }
 
@@ -209,10 +209,10 @@ class AddBlurryImagePlaceholders {
   getDataURI_(img, pathResolver) {
     const existingPlaceholder = this.cache.get(img.attribs.src);
     if (existingPlaceholder) {
-      log.debug(img.attribs.src, '[CACHE HIT]');
+      this.log_.debug(img.attribs.src, '[CACHE HIT]');
       return Promise.resolve(existingPlaceholder);
     }
-    log.debug(img.attribs.src, '[CACHE MISS]');
+    this.log_.debug(img.attribs.src, '[CACHE MISS]');
     const imageSrc = pathResolver.resolve(img.attribs.src);
     let width;
     let height;

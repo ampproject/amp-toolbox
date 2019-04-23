@@ -16,6 +16,7 @@
 
 const fetchMock = require('fetch-mock');
 const {basename, join} = require('path');
+const log = require('../../lib/log.js');
 const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
 
@@ -38,6 +39,7 @@ function loadTestConfigs() {
       testDir: testDir,
       transformer: new Transformer({
         fetch,
+        log,
         runtimeVersion: {
           currentVersion: () => Promise.resolve('012345678900000'),
         },
