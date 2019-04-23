@@ -1,13 +1,12 @@
 language: node_js
 node_js:
-  - "node"
-  - "6"
   - "8"
+  - "10"
+  - "11"
 sudo: required
 addons:
   chrome: stable 
 cache:
   directories:
     - ~/.npm
-before_install: if [[ `npm -v` != 6* ]]; then npm i -g npm@6; fi
 install: npm ci * && npm i packages/* 

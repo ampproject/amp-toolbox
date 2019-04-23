@@ -15,7 +15,7 @@
  */
 'use strict';
 
-
+const URL = require('url').URL;
 const {join, resolve} = require('path');
 
 const DUMMY_HOST = 'https://example.com';
