@@ -27,14 +27,20 @@ function loadTestConfigs() {
   const transfomerTestDirs = getDirectories(__dirname);
   return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
-    const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
 
-    const fetch = fetchMock.sandbox().mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
+    const fetch = fetchMock.sandbox()
+        .mock('https://cdn.ampproject.org/rtv/metadata', '{"ampRuntimeVersion":"012345678900000"}')
+        .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */')
+        .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
+    const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
     return {
       name: transformerName,
       testDir: testDir,
       transformer: new Transformer({
         fetch,
+        runtimeVersion: {
+          currentVersion: () => Promise.resolve('012345678900000'),
+        },
       }),
     };
   });
