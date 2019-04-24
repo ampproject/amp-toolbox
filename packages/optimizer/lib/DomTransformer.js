@@ -19,7 +19,7 @@ const path = require('path');
 const treeParser = require('./TreeParser.js');
 const log = require('./log.js');
 const {oneBehindFetch} = require('amp-toolbox-core');
-const {runtimeVersion} = require('amp-toolbox-runtime-version');
+const runtimeVersion = require('amp-toolbox-runtime-version');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
@@ -64,7 +64,6 @@ const DEFAULT_CONFIG = {
   validAmp: false,
   fetch: oneBehindFetch,
   runtimeVersion,
-  transformers: TRANSFORMATIONS_ALL,
 };
 
 
