@@ -16,20 +16,27 @@
 
 require('fetch-mock');
 const createSpec = require('../helpers/TransformerRunner.js');
-const ampOptimizer = require('../../index.js');
+const DomTransformer = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock.sandbox()
-    .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */')
+    .mock('https://cdn.ampproject.org/rtv/1234567890/v0.css', '/* v0.css */')
     .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
 
-ampOptimizer.setConfig({
-  fetch,
-});
 
-createSpec({
-  name: 'End-to-End',
-  testDir: __dirname,
-  transformer: {
-    transform: (tree, params) => ampOptimizer.transformTree(tree, params),
-  },
+[true, false].forEach((validAmp) => {
+  createSpec({
+    name: `End-to-End ${validAmp ? '[valid amp]' : ''}`,
+    testDir: __dirname,
+    validAmp,
+    transformer: {
+      transform: (tree, params) => {
+        const ampOptimizer = new DomTransformer({
+          validAmp,
+          fetch,
+          runtimeVersion: {currentVersion: () => Promise.resolve('1234567890')},
+        });
+        return ampOptimizer.transformTree(tree, params);
+      },
+    },
+  });
 });

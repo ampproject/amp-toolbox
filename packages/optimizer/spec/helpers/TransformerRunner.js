@@ -48,10 +48,12 @@ module.exports = function(testConfig) {
         const inputTree = treeParser.parse(input);
 
         // parse expected output
-        const expectedOutput = getFileContents(join(testDir, 'expected_output.html'));
+        const expectedOutputPath =
+          testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html';
+        const expectedOutput = getFileContents(join(testDir, expectedOutputPath));
         try {
           const expectedOutputTree = treeParser.parse(expectedOutput);
-          await testConfig.transformer.transform(inputTree, params);
+          await testConfig.transformer.transform(inputTree, testConfig.validAmp ? {} : params);
           compare(inputTree, expectedOutputTree, done);
         } catch (error) {
           done.fail(error);
