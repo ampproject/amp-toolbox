@@ -1,0 +1,59 @@
+{
+  "name": "amp-toolbox-linter",
+  "version": "0.0.15",
+  "description": "A linter for AMP documents",
+  "repository": "https://github.com/ampproject/amp-toolbox/tree/amp-toolbox-linter",
+  "license": "Apache-2.0",
+  "author": "AMPHTML Team",
+  "dependencies": {
+    "amp-toolbox-cache-list": "^0.1.6",
+    "amp-toolbox-cache-url": "^1.0.7",
+    "amphtml-validator": "^1.0.23",
+    "cheerio": "^1.0.0-rc.2",
+    "commander": "^2.20.0",
+    "debug": "^4.1.1",
+    "execa": "^1.0.0",
+    "node-fetch": "^2.4.1",
+    "probe-image-size": "^4.0.0",
+    "throat": "^4.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "engines": {
+    "node": "8.x.x"
+  },
+  "scripts": {
+    "//": "See README for more information about these scripts",
+    "build": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
+    "test": "cd tests && for t in helper.js local.js network.js ; do ( test -e $t || $npm_execpath run build ) && ( node $t | tap-parser -t ) || exit 1 ; done ; exit 0",
+    "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'",
+    "watch": "tsc --watch --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
+    "package": "$npm_execpath run lint && pack build",
+    "publish": "pack publish --any-branch",
+    "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json"
+  },
+  "devDependencies": {
+    "@pika/pack": "^0.3.7",
+    "prettier": "^1.17.0",
+    "tap-parser": "^9.3.2",
+    "typescript": "^3.4.5"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-ts-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-simple-bin",
+        {
+          "bin": "amplint"
+        }
+      ]
+    ]
+  },
+  "prettier": {}
+}

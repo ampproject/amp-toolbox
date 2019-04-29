@@ -1,0 +1,121 @@
+[
+    {
+        "scope": "https://swift-track.glitch.me:443",
+        "method": "GET",
+        "path": "/",
+        "body": "",
+        "status": 200,
+        "response": "<!doctype html>\n<html ⚡>\n<head>\n  <meta charset=\"utf-8\">\n  <title>My AMP Page</title>\n  <link rel=\"canonical\" href=\"self.html\" />\n  <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1\">\n  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>\n  <script async src=\"https://cdn.ampproject.org/v0.js\"></script>\n  <script async custom-template=\"amp-mustache\" src=\"https://cdn.ampproject.org/v0/amp-mustache-0.2.js\"></script>\n  <script async custom-element=\"amp-list\" src=\"https://cdn.ampproject.org/v0/amp-list-0.1.js\"></script>\n</head>\n  <body>\n    <amp-list width=\"auto\"\n              height=\"100\"\n              layout=\"fixed-height\"\n              src=\"https://ampbyexample.com/json/examples.json\">\n      <template type=\"amp-mustache\"\n                id=\"amp-template-id\">\n        <div>\n          <a href=\"{{url}}\">{{title}}</a>\n        </div>\n      </template>\n    </amp-list>\n  </body>\n</html>\n",
+        "rawHeaders": [
+            "Date",
+            "Tue, 02 Oct 2018 14:14:51 GMT",
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Content-Length",
+            "1619",
+            "Connection",
+            "close",
+            "X-Powered-By",
+            "Express",
+            "vary",
+            "Origin",
+            "last-modified",
+            "Tue, 25 Sep 2018 22:57:48 GMT",
+            "cache-control",
+            "max-age=0",
+            "etag",
+            "W/\"653-16612f3ede0\""
+        ]
+    },
+    {
+        "scope": "https://ampbyexample.com:443",
+        "method": "GET",
+        "path": "/json/examples.json?__amp_source_origin=https%3A%2F%2Fswift-track.glitch.me",
+        "body": "",
+        "status": 404,
+        "response": {
+            "items": [
+                {
+                    "title": "amp-carousel",
+                    "url": "/components/amp-carousel/"
+                },
+                {
+                    "title": "amp-img",
+                    "url": "/components/amp-img/"
+                },
+                {
+                    "title": "amp-ad",
+                    "url": "/components/amp-ad/"
+                },
+                {
+                    "title": "amp-accordion",
+                    "url": "/components/amp-accordion/"
+                }
+            ]
+        },
+        "rawHeaders": [
+            "Cache-Control",
+            "max-age=60, public, must-revalidate",
+            "Accept-Ranges",
+            "bytes",
+            "Access-Control-Allow-Methods",
+            "POST, GET, OPTIONS",
+            "Access-Control-Allow-Credentials",
+            "true",
+            "Access-Control-Expose-Headers",
+            "AMP-Access-Control-Allow-Source-Origin",
+            "Amp-Access-Control-Allow-Source-Origin",
+            "https://swift-track.glitch.me",
+            "Content-Type",
+            "application/json",
+            "Access-Control-Allow-Origin",
+            "https://swift-track.glitch.me",
+            "Access-Control-Allow-Headers",
+            "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token",
+            "X-Cloud-Trace-Context",
+            "58fd0f16816bf66d4f8bdcd201bb40b4",
+            "X-Google-AppEngine-Module",
+            "default",
+            "X-Google-AppEngine-Version",
+            "1.412896646405420526",
+            "X-Google-AppEngine-AppId",
+            "s~amp-by-example",
+            "X-Google-AppEngine-RuntimeId",
+            "go",
+            "X-Google-AppEngine-Frontend-Response-Code",
+            "1",
+            "X-Google-AppEngine-AppServer-Error-Code",
+            "1",
+            "X-Google-AppEngine-Clone-Time",
+            "1286us",
+            "X-Google-GFE-Cloud-Project-Number",
+            "641018061714",
+            "Date",
+            "Tue, 02 Oct 2018 14:14:51 GMT",
+            "Server",
+            "Google Frontend",
+            "X-Google-Netmon-Label",
+            "/bns/ir/borg/ir/bns/apphosting/prod-appengine.frontend/114",
+            "Content-Length",
+            "322",
+            "X-Google-Cookie-Filter-Tenant-Name",
+            "641018061714",
+            "X-Google-GFE-Request-Trace",
+            "wmcp14-v6:9839,waeq11:9840,/bns/ir/borg/ir/bns/apphosting/prod-appengine.frontend/114,waeq11:9840,wmcp14-v6:9839",
+            "X-Google-GSLB-Service",
+            "apphosting-frontend-l2",
+            "X-Google-Backends",
+            "/bns/ir/borg/ir/bns/apphosting/prod-appengine.appserver/367,/bns/ir/borg/ir/bns/apphosting/prod-appengine.frontend/114,waeq11:9840,/bns/wa/borg/wa/bns/cloud-gfe-prod-dedicated/cloud-layer2-gfe/1,wmcp14-v6:9839",
+            "X-Google-DOS-Service-Trace",
+            "cloud-l7:apphosting-frontend-l2-zone-ir,main:cloud-layer2-gfe-apphosting",
+            "X-Google-Service",
+            "apphosting-frontend-l2,apphosting-dasher",
+            "X-Google-GFE-Response-Code-Details-Trace",
+            "response_code_set_by_backend,response_code_set_by_backend",
+            "X-Google-GFE-Service-Trace",
+            "apphosting-frontend-l2,shared-layer2-gfe-dasher,apphosting-dasher",
+            "Connection",
+            "close"
+        ]
+    }
+]

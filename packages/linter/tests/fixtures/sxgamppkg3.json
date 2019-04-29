@@ -1,0 +1,63 @@
+[
+  {
+    "scope": "https://azei-package-test.com:443",
+    "method": "GET",
+    "path": "/",
+    "body": "",
+    "status": 200,
+    "response": [
+      "1f8b0800000000000003ad56cd6edc3610beef534cd5431260b5da6d9ad690b54282a08d03d4ad812c904b2f9438d232a64895a476bd71fd063d14e8ad97a0973e589f208fd021a5fd331cb4318c008e96e47cfce69b3f665f705dba4d8bb0748dcc4799ff0ffef9f32fff898ce72380ac41c7a05c3263d1cda3ce55f1491436a450976050cea39229ad44c964044b83d53c4a2248f6c68a35388f5602d7ad362e82522b878ac0d682bbe59ce34a9418871fe34628d1744d6c090de7b3fe26eb361281356d5c6821d1b49239cc0bcd37d7f11a8b4be1624666cc09add2d89fb38e19072716acc3d63e9e8d51f12730b53003a54dc32414da2d4fe346bfbfb7a9bda7e5bda8de3cdf7a7a899bca90a216f69e5e574637d72b614521a4709b7429384775e3f4e162d897784358deef8701b20f83a31f04e6015cca92906d79a6b42d8d685d9e7d56fa5125e0edbc1ad60e13262ced33c1ffbcd95d9deceef605d8d3006637aa046bca79b474aeb56992945c4d28db5ba3df61e926dad4c96a3a7967a39ca07af20160573e65679d6e7c65021500dfc075f80c3f5979591bdd291e975a6a93c297d594fe7d75ba3bd230530b95c274bfd432ce85aa8fd62a2aefb8628d909b14a29f5a54f086291b8d213a43b942479d027ec40e6965b7308617463039064b47638b4654fd2d37e17a2e56075c43ab48e19be9b4bdda73d9d27b860db0cee9fdce8ee5b32383e20e97abe1da5e21c3d1c48671d1d91466d81c5262a96f806360a9af2b87fc80e056c1a7275f9f9c1c203abc7231c7529bbe575133a26c091ef67e3e6f900b068f1b76d537c414bef55e3e3900bf15b84f05efd0931edc9f3c16d2af0c621e2be637b67a4e6fa9e9f70a7d24cd4146f8dd9dde3bc9fc6a4fa2ff5b6a8e3b97d64b922fb62d2b3185d61c08b2ad08522873c249cc2961a4f623eae387df7efff8e18fbfb3a4df1865493fb232af0f0d30f2341fd11c9bdd6543aba3accd478ba5b0c075c38402fa620af08a2a8aa6cdb05869031c1badacf3315335bc38bf80b758c005650fa37aa82774759b7bb4d715380fd8b21a3d9cd48c535ef8e60c6c183c72e3e75f25eaced0164d2f288c5e53c28fc916699ebace28e4239acc5d435392e223255841a43650d014dce390d18a303ca1ede9099ce935ae3c9a3820332232067fe990c621876243281d59134dbac02d99034b03d206065e4534360d5e91803e54f98bb2c4d6a5c0da5652f9fa419b585113d118afe871a06a3c5dcd8ba7232213bf64e512e385a14a26f99a146aad6be90f44b3886003222107fda93b78bfb70ef4ee929f5b2168813455c4f84db80fbe1bee0b1b70b638ff6144a1e9afa208fa6ed8522b71083e765e231f35dd5ff32a30099205967dec7a2edfd3f121fa6392c75b796695a68c5bfb5f65672405af6998e2c7f2849df80c1efd5f9d1ec1cfa1ea2118fd9766fbd3825e6a7def67ef51c454329483183b0aec849825f02b48b4f658e4736d281d958f45881cd07bcda752e5bb3d50f08fddf46d6d1ffe8ede85547d52e4191b5e775b0aebf5faf6f889729f8d17fd40ca124683882c3f05505368bb22107ffbfae5ab84aa61f028ca87689f2d1617bb90dbcf41dc0fc6843efdcb3629a42e9286511198c4b658fa8db80cd9ba4ba149c38313b7b318fabab83f83c1333348d447ceecf1b2c44b1daac267a20fa94fbab633adb6f4dad38ae6e9b628ef880a2b3089f2059941458fe403adb6c8496889593234c8a47ff4ff0b1d3eed15050c0000"
+    ],
+    "rawHeaders": [
+      "Server",
+      "nginx/1.10.3",
+      "Date",
+      "Wed, 27 Mar 2019 22:43:41 GMT",
+      "Content-Type",
+      "text/html",
+      "Last-Modified",
+      "Tue, 05 Mar 2019 00:51:34 GMT",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "ETag",
+      "W/\"5c7dc816-c05\"",
+      "Expires",
+      "Wed, 10 Apr 2019 22:43:41 GMT",
+      "Cache-Control",
+      "max-age=1209600",
+      "Vary",
+      "Accept,AMP-Cache-Transform",
+      "Content-Encoding",
+      "gzip"
+    ]
+  },
+  {
+    "scope": "https://azei-package-test.com:443",
+    "method": "GET",
+    "path": "/amppkg/validity",
+    "body": "",
+    "status": 200,
+    "response": "a0",
+    "rawHeaders": [
+      "Server",
+      "nginx/1.10.3",
+      "Date",
+      "Wed, 27 Mar 2019 22:43:42 GMT",
+      "Content-Type",
+      "text/plain",
+      "Content-Length",
+      "1",
+      "Connection",
+      "close",
+      "Accept-Ranges",
+      "bytes",
+      "Cache-Control",
+      "public, max-age=604800",
+      "X-Content-Type-Options",
+      "nosniff"
+    ],
+    "responseIsBinary": true
+  }
+]

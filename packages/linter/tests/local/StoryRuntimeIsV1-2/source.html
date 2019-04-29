@@ -1,0 +1,72 @@
+<!doctype html>
+<html amp lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-story" src="https://cdn.ampproject.org/v0/amp-story-0.1.js"></script>
+    <title>Hello, Ken Burns!</title>
+    <link rel="canonical" href="https://heavenly-pear.glitch.me/"/>
+    <link href="https://fonts.googleapis.com/css?family=Asap:700" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <style amp-custom>
+      #start, #end {
+        background-color: white;
+      }
+      h1 {
+        font-family: "Asap";
+        font-size: 3rem;
+        font-weight: 700;
+      }
+      @keyframes bridge-model-animation {
+        0% {
+          transform: scale(3) translate(20vw, 10vh);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        100% {
+          transform: scale(4.5) translate(-20vw, 10vh);
+          opacity: 1;
+        }
+      }
+      #ken-burns[active] #bridge-model {
+        animation-duration: 15s;
+        animation-timing-function: ease;
+        animation-name: bridge-model-animation;
+        animation-fill-mode: forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <amp-story
+      standalone
+      title="Hello, Ken Burns"
+      publisher="Michael Stillwell"
+      publisher-logo-src="https://s.gravatar.com/avatar/3928085cafc1e496fb3d990a9959f233?s=150"
+      poster-portrait-src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Cantilever_bridge_human_model.jpg/627px-Cantilever_bridge_human_model.jpg">
+      <amp-story-page id="start">
+        <amp-story-grid-layer template="thirds">
+          <div grid-area="middle-third">
+            <h1>Ready?</h1>
+          </div>
+        </amp-story-grid-layer>
+      </amp-story-page>
+      <amp-story-page id="ken-burns">
+        <amp-story-grid-layer template="fill">
+          <div>
+            <amp-img id="bridge-model" src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Cantilever_bridge_human_model.jpg" layout="responsive" width="2352" height="1800"></amp-img>
+          </div>
+        </amp-story-grid-layer>
+      </amp-story-page>
+      <amp-story-page id="end">
+        <amp-story-grid-layer template="thirds">
+          <div grid-area="middle-third">
+            <h1>Thanks!</h1>
+          </div>
+        </amp-story-grid-layer>
+      </amp-story-page>
+    </amp-story>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+[
+    {
+        "scope": "https://swift-track.glitch.me:443",
+        "method": "GET",
+        "path": "/",
+        "body": "",
+        "status": 200,
+        "response": "<!doctype html>\n<html ⚡>\n<head>\n  <meta charset=\"utf-8\">\n  <title>My AMP Page</title>\n  <link rel=\"canonical\" href=\"self.html\" />\n  <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1\">\n  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>\n  <script async src=\"https://cdn.ampproject.org/v0.js\"></script>\n  <script async custom-template=\"amp-mustache\" src=\"https://cdn.ampproject.org/v0/amp-mustache-0.2.js\"></script>\n  <script async custom-element=\"amp-list\" src=\"https://cdn.ampproject.org/v0/amp-list-0.1.js\"></script>\n</head>\n  <body>\n    <amp-list width=\"auto\"\n              height=\"100\"\n              layout=\"fixed-height\"\n              src=\"https://ampbyexample.com/json/examples.json\">\n      <template type=\"amp-mustache\"\n                id=\"amp-template-id\">\n        <div>\n          <a href=\"{{url}}\">{{title}}</a>\n        </div>\n      </template>\n    </amp-list>\n    <form method=\"GET\"\n  class=\"p2\"\n  action=\"/components/amp-form/submit-form\"\n  target=\"_top\">\n  <p>Form Submission with Page Reload</p>\n  <div class=\"ampstart-input inline-block relative mb3\">\n    <input type=\"search\"\n      placeholder=\"Search...\"\n      name=\"googlesearch\">\n  </div>\n  <input type=\"submit\"\n    value=\"OK\"\n    class=\"ampstart-btn caps\">\n</form>\n  </body>\n</html>\n",
+        "rawHeaders": [
+            "Date",
+            "Tue, 02 Oct 2018 14:46:00 GMT",
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Content-Length",
+            "1983",
+            "Connection",
+            "close",
+            "X-Powered-By",
+            "Express",
+            "vary",
+            "Origin",
+            "last-modified",
+            "Tue, 02 Oct 2018 14:44:29 GMT",
+            "cache-control",
+            "max-age=0",
+            "etag",
+            "W/\"7bf-166353ccda2\""
+        ]
+    }
+]
