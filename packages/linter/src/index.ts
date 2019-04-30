@@ -52,8 +52,8 @@ export interface Context {
 }
 
 export interface Metadata {
-  title: string;
-  publisher: string;
+  "title": string;
+  "publisher": string;
   "publisher-logo-src": string;
   "poster-portrait-src": string;
   "poster-square-src"?: string;

@@ -55,5 +55,7 @@
       ]
     ]
   },
-  "prettier": {}
+  "prettier": {
+    "quoteProps": "consistent"
+  }
 }

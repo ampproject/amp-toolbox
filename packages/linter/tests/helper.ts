@@ -14,23 +14,23 @@ withFixture("getschemametadata", () =>
     {
       "@context": "http://schema.org",
       "@type": "BreadcrumbList",
-      itemListElement: [
+      "itemListElement": [
         {
           "@type": "ListItem",
-          item: {
+          "item": {
             "@id": "https://ampbyexample.com/#/stories#stories/introduction",
-            name: "Introduction"
+            "name": "Introduction"
           },
-          position: 1
+          "position": 1
         },
         {
           "@type": "ListItem",
-          item: {
+          "item": {
             "@id":
               "https://ampbyexample.com/stories/introduction/amp_story_hello_world/",
-            name: " AMP Story Hello World"
+            "name": " AMP Story Hello World"
           },
-          position: 2
+          "position": 2
         }
       ]
     }
@@ -50,10 +50,10 @@ withFixture("getinlinemetadata", () =>
         "Cantilever_bridge_human_model.jpg/",
         "627px-Cantilever_bridge_human_model.jpg"
       ].join(""),
-      publisher: "Michael Stillwell",
+      "publisher": "Michael Stillwell",
       "publisher-logo-src":
         "https://s.gravatar.com/avatar/3928085cafc1e496fb3d990a9959f233?s=150",
-      title: "Hello, Ken Burns"
+      "title": "Hello, Ken Burns"
     }
   )
 );

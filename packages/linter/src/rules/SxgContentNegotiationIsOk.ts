@@ -37,7 +37,7 @@ export class SxgContentNegotiationIsOk extends Rule {
     const opt3 = {
       headers: Object.assign(
         {
-          accept: "application/signed-exchange;v=b3",
+          "accept": "application/signed-exchange;v=b3",
           "amp-cache-transform": `google;v="1"`
         },
         headers

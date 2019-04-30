@@ -10,9 +10,9 @@ function inlineMetadata($: CheerioStatic) {
     "poster-landscape-src": e.attr("poster-landscape-src"), // optional
     "poster-portrait-src": e.attr("poster-portrait-src"),
     "poster-square-src": e.attr("poster-square-src"), // optional
-    publisher: e.attr("publisher"),
+    "publisher": e.attr("publisher"),
     "publisher-logo-src": e.attr("publisher-logo-src"),
-    title: e.attr("title")
+    "title": e.attr("title")
   };
   return metadata;
 }

@@ -9,7 +9,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     const opt = {
       headers: Object.assign(
         {
-          accept: "application/signed-exchange;v=b3",
+          "accept": "application/signed-exchange;v=b3",
           "amp-cache-transform": `google;v="1"`
         },
         headers
