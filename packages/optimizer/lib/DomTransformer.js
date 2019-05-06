@@ -37,7 +37,6 @@ const TRANSFORMATIONS_VALID_AMP = [
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
-  'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
   'AddTransformedFlag',
 ];
