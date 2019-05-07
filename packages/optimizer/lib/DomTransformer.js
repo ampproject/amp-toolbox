@@ -92,10 +92,10 @@ class DomTransformer {
    * @param {string} html - a string containing valid HTML.
    * @param {Object} params - a dictionary containing transformer specific parameters.
    */
-  transformHtml(html, params) {
+  async transformHtml(html, params) {
     const tree = treeParser.parse(html);
-    return this.transformTree(tree, params)
-        .then(() => treeParser.serialize(tree));
+    await this.transformTree(tree, params);
+    return treeParser.serialize(tree);
   }
 
   /**
@@ -106,11 +106,9 @@ class DomTransformer {
   transformTree(tree, params) {
     params = params || {};
     log.verbose(params.verbose || false);
-    const sequence = (promise, transformer) => {
-      return promise.then(() => {
-        // not all transformers return a promise
-        return Promise.resolve(transformer.transform(tree, params));
-      });
+    const sequence = async (promise, transformer) => {
+      await promise;
+      return transformer.transform(tree, params);
     };
     return this.transformers_.reduce(sequence, Promise.resolve());
   }
