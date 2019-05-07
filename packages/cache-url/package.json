@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-cache-url",
-  "version": "1.1.0",
+  "version": "1.2.0-alpha.0",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "dist/amp-toolbox-cache-url.cjs.js",
   "module": "dist/amp-toolbox-cache-url.esm.js",
