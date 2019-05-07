@@ -16,14 +16,15 @@
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.9.0",
     "@babel/core": "7.4.3",
+    "amphtml-validator": "^1.0.23",
     "babel-plugin-filter-imports": "3.0.0",
     "colors": "1.3.3",
     "diff": "4.0.1",
     "eslint": "5.16.0",
     "eslint-config-google": "0.12.0",
+    "fetch-mock": "7.3.3",
     "html-minifier": "4.0.0",
     "jasmine": "3.4.0",
-    "fetch-mock": "7.3.3",
     "jasmine-spec-reporter": "4.2.1",
     "jimp": "0.6.1",
     "karma": "4.1.0",
@@ -51,6 +52,7 @@
     "amp-toolbox-optimizer": "file:packages/optimizer",
     "amp-toolbox-optimizer-express": "file:packages/optimizer-express",
     "amp-toolbox-runtime-version": "file:packages/runtime-version",
-    "amp-toolbox-update-cache": "file:packages/update-cache"
+    "amp-toolbox-update-cache": "file:packages/update-cache",
+    "strip-comments": "^1.0.2"
   }
 }

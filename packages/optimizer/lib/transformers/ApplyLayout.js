@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const log = require('../log.js');
 const {
   parseLayout,
   cssLength,
@@ -101,7 +100,7 @@ function maybeAddSizerInto(node, tree, layout, width, height) {
 }
 
 module.exports = {
-  applyLayout: function(customElement, tree) {
+  applyLayout: function(customElement, tree, log) {
     const ampLayout = parseLayout(customElement.attribs.layout);
     const widthAttribute = getAttributeOrNull(customElement, 'width');
     const inputWidth = cssLength(

@@ -17,9 +17,11 @@
 
 const {isRenderDelayingExtension, isCustomElement} = require('../Extensions.js');
 const {applyLayout} = require('./ApplyLayout.js');
-const log = require('../log.js');
 
 class ServerSideRendering {
+  constructor(config) {
+    this.log_ = config.log.tag('ServerSideRendering');
+  }
   // Determines whether the node |n| has an enclosing ancestor tag
   // identified as |tagname|.
   _hasAncestorWithTag(n, tagname) {
@@ -62,7 +64,7 @@ class ServerSideRendering {
       // the document, we can't remove the boilerplate - they require the
       // boilerplate.
       if (node.attribs.heights || node.attribs.media || node.attribs.sizes) {
-        log.debug(
+        this.log_.debug(
             'cannot remove boilerplate as either heights, media or sizes attribute is set:\n',
             node.attribs
         );
@@ -74,7 +76,7 @@ class ServerSideRendering {
       // of the amp-experiment script in IsRenderDelayingExtension below.
       if (node.tagName === 'amp-experiment') {
         canRemoveBoilerplate = false;
-        log.debug('cannot remove boilerplate: amp-experiment');
+        this.log_.debug('cannot remove boilerplate: amp-experiment');
       }
 
       // amp-audio requires knowing the dimensions of the browser. Do not
@@ -82,15 +84,15 @@ class ServerSideRendering {
       // document.
       if (node.tagName === 'amp-audio') {
         canRemoveBoilerplate = false;
-        log.debug('cannot remove boilerplate: amp-audio');
+        this.log_.debug('cannot remove boilerplate: amp-audio');
         continue;
       }
 
       // Now apply the layout to the custom elements. If we encounter
       // any unsupported layout, the applyLayout function returns
       // false and we can't remove the boilerplate.
-      if (!applyLayout(node, tree)) {
-        log.debug('cannot remove boilerplate: unsupported layout');
+      if (!applyLayout(node, tree, this.log_)) {
+        this.log_.debug('cannot remove boilerplate: unsupported layout');
         canRemoveBoilerplate = false;
         continue;
       }
@@ -112,7 +114,7 @@ class ServerSideRendering {
         continue;
       }
       if (isRenderDelayingExtension(node)) {
-        log.debug('cannot remove boilerplate: amp-dynamic-css-classes');
+        this.log_.debug('cannot remove boilerplate: amp-dynamic-css-classes');
         canRemoveBoilerplate = false;
       }
     }

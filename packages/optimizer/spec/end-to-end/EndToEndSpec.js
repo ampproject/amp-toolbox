@@ -19,7 +19,7 @@ const createSpec = require('../helpers/TransformerRunner.js');
 const DomTransformer = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock.sandbox()
-    .mock('https://cdn.ampproject.org/rtv/1234567890/v0.css', '/* v0.css */')
+    .mock('https://cdn.ampproject.org/rtv/123456789000000/v0.css', '/* v0.css */')
     .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
 
 
@@ -33,7 +33,7 @@ const fetch = fetchMock.sandbox()
         const ampOptimizer = new DomTransformer({
           validAmp,
           fetch,
-          runtimeVersion: {currentVersion: () => Promise.resolve('1234567890')},
+          runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
         });
         return ampOptimizer.transformTree(tree, params);
       },
