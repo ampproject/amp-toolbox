@@ -91,6 +91,7 @@ class DomTransformer {
    * Transforms an html string.
    * @param {string} html - a string containing valid HTML.
    * @param {Object} params - a dictionary containing transformer specific parameters.
+   * @return {string} - the transformed html string
    */
   async transformHtml(html, params) {
     const tree = treeParser.parse(html);
