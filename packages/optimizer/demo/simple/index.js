@@ -27,7 +27,7 @@ const runtimeVersion = require('amp-toolbox-runtime-version');
 const SRC_DIR = path.join(__dirname, 'src');
 const DIST_DIR = path.join(__dirname, 'dist');
 
-// Simple demo transforming a valid AMP file, this is the recommended way 
+// Simple demo transforming a valid AMP file, this is the recommended way
 // to use AMP Optimizer
 async function validAmpTransformation(filePath, html) {
   const optimizer = AmpOptimizer.create();
