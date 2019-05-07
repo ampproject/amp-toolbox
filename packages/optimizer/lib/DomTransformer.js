@@ -23,7 +23,7 @@ const runtimeVersion = require('amp-toolbox-runtime-version');
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
  */
-const TRANSFORMATIONS_VALID_AMP = [
+const TRANSFORMATIONS_AMP_FIRST = [
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes the boilerplate
@@ -45,7 +45,7 @@ const TRANSFORMATIONS_VALID_AMP = [
  *
  * @deprecated
  */
-const TRANSFORMATIONS_ALL = [
+const TRANSFORMATIONS_PAIRED_AMP = [
   // Adds a link to the valid AMP version
   'AddAmpLink',
   // Applies server-side-rendering optimizations
@@ -70,8 +70,8 @@ const DEFAULT_CONFIG = {
   fetch: oneBehindFetch,
   runtimeVersion,
   log: log,
-  validAmp: true,
   verbose: false,
+  transformations: TRANSFORMATIONS_AMP_FIRST,
 };
 
 /**
@@ -119,8 +119,7 @@ class DomTransformer {
    * Set the config.
    * @param {Object} config - The config.
    * @param {boolean} config.verbose - true if verbose mode should be enabled [default: false].
-   * @param {boolean} config.validAmp - true if AMP pages should stay valid [default: false].
-   * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied [default: all available transformers].
+   * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
     config = Object.assign({}, DEFAULT_CONFIG, config);
@@ -128,25 +127,22 @@ class DomTransformer {
     this.initTransformers_(config);
   }
 
+  /**
+   * @private
+   */
   initTransformers_(config) {
-    this.transformers_ = this.getTransformersFromConfig_(config).map((Transformer) => {
+    this.transformers_ = config.transformations.map((Transformer) => {
       if (typeof Transformer === 'string') {
         Transformer = require(`./transformers/${Transformer}.js`);
       }
       return new Transformer(config);
     });
   }
-
-  getTransformersFromConfig_(config) {
-    if (config.transformers) {
-      return config.transformers;
-    }
-    if (config.validAmp) {
-      return TRANSFORMATIONS_VALID_AMP;
-    }
-    return TRANSFORMATIONS_ALL;
-  }
-
 }
 
-module.exports = DomTransformer;
+module.exports = {
+  DomTransformer,
+  DEFAULT_CONFIG,
+  TRANSFORMATIONS_AMP_FIRST,
+  TRANSFORMATIONS_PAIRED_AMP,
+};
