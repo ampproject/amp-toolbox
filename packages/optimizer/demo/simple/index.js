@@ -20,59 +20,84 @@ const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
 
-const ampOptimizer = require('../../index.js');
+const AmpOptimizer = require('../../index.js');
+
 const runtimeVersion = require('amp-toolbox-runtime-version');
 
 const SRC_DIR = path.join(__dirname, 'src');
 const DIST_DIR = path.join(__dirname, 'dist');
 
-runAmpOptimizerTransformations();
-
-async function runAmpOptimizerTransformations() {
-  // This is optional in case AMP runtime URLs should be versioned
-  const ampRuntimeVersion = await runtimeVersion.currentVersion();
-  console.log('amp version: ', ampRuntimeVersion);
-
-  // Collect input files and invoke the transformers
-  const files = await collectInputFiles('/**/*.html');
-  files.forEach((file) => copyAndTransform(file, ampRuntimeVersion));
+// Simple demo transforming a valid AMP file, this is the recommended way 
+// to use AMP Optimizer
+async function validAmpTransformation(filePath, html) {
+  const optimizer = AmpOptimizer.create();
+  const transformedHtml = await optimizer.transformHtml(html);
+  writeFile('valid', filePath, transformedHtml);
 }
 
-// Copy original and transformed AMP file into the dist dir.
-async function copyAndTransform(file, ampRuntimeVersion) {
-  const originalHtml = await readFile(file);
-  const ampFile = file.substring(1, file.length)
+// Advanced demo performing transformations resulting in invalid AMP using
+// paired mode to link to the valid AMP version.
+async function pairedAmpTransformation(filePath, html) {
+  const ampRuntimeVersion = await runtimeVersion.currentVersion();
+  const optimizer = AmpOptimizer.create({
+    transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
+  });
+  const ampFilePath = filePath.substring(1, filePath.length)
       .replace('.html', '.amp.html');
-  const allTransformationsFile = file.substring(1, file.length)
-      .replace('.html', '.all.html');
-  const validTransformationsFile = file.substring(1, file.length)
-      .replace('.html', '.valid.html');
-
-  // Transform into valid optimized AMP
-  ampOptimizer.setConfig({
-    validAmp: true,
-    verbose: true,
-  });
-  const validOptimizedHtml = await ampOptimizer.transformHtml(originalHtml);
-
-  // Run all optimizations including versioned AMP runtime URLs
-  ampOptimizer.setConfig({
-    validAmp: false,
-    verbose: true,
-  });
-  // The transformer needs the path to the original AMP document
-  // to correctly setup AMP to canonical linking
-  const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
-    ampUrl: ampFile,
+  const transformedHtml = await optimizer.transformHtml(html, {
+    ampUrl: ampFilePath,
     ampRuntimeVersion: ampRuntimeVersion,
   });
-  writeFile(allTransformationsFile, optimizedHtml);
-  writeFile(validTransformationsFile, validOptimizedHtml);
-  // We change the path of the original AMP file to match the new
-  // amphtml link and make the canonical link point to the transformed version.
-  writeFile(ampFile, originalHtml);
+  writeFile('paired', filePath, transformedHtml);
+  writeFile('paired', ampFilePath, html);
 }
 
+// Demo how to implement a custom transformer
+async function customAmpTransformation(filePath, html) {
+  // Transformers are easy to implement and integrate
+  class CustomTransformer {
+    constructor(config) {
+      this.log_ = config.log.tag('CUSTOM');
+    }
+    transform(tree, params) {
+      this.log_.info('Running custom transformation for ', params.filePath);
+      const html = tree.root.firstChildByTag('html');
+      if (!html) return;
+      const head = html.firstChildByTag('head');
+      if (!head) return;
+      const desc = tree.createElement('meta', {
+        name: 'description',
+        content: 'this is just a demo',
+      });
+      head.appendChild(desc);
+    }
+  }
+
+  // it's best to run custom transformers first
+  const customTransformations = [CustomTransformer].concat(AmpOptimizer.TRANSFORMATIONS_AMP_FIRST);
+
+  // pass custom transformers when creating the optimizer
+  const optimizer = AmpOptimizer.create({
+    transformations: customTransformations,
+  });
+  // you can add custom parameters on a per document basis
+  const transformedHtml = await optimizer.transformHtml(html, {
+    filePath,
+  });
+  writeFile('custom', filePath, transformedHtml);
+}
+
+[
+  validAmpTransformation,
+  pairedAmpTransformation,
+  customAmpTransformation,
+].forEach(async (transform) => {
+  const files = await collectInputFiles('/**/*.html');
+  files.forEach(async (filePath) => {
+    const html = await readFile(filePath);
+    transform(filePath, html);
+  });
+});
 
 // Collect all files in the src dir.
 function collectInputFiles(pattern) {
@@ -89,7 +114,6 @@ function collectInputFiles(pattern) {
 function readFile(fileName) {
   return new Promise((resolve, reject) => {
     const filePath = path.join(SRC_DIR, fileName);
-    console.log('optimizing', filePath);
     fs.readFile(filePath, 'utf8', (err, contents) => {
       if (err) {
         return reject(err);
@@ -99,8 +123,8 @@ function readFile(fileName) {
   });
 }
 
-function writeFile(filePath, content) {
-  filePath = path.join(DIST_DIR, filePath);
+function writeFile(folder, filePath, content) {
+  filePath = path.join(DIST_DIR, folder, filePath);
   mkdirp(path.dirname(filePath), (err) => {
     if (err) {
       throw err;
