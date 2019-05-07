@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "build": "npx lerna run build",
+    "build": "lerna run build",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jasmine --config=jasmine.json",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
@@ -30,6 +30,7 @@
     "karma": "4.1.0",
     "karma-chrome-launcher": "2.2.0",
     "karma-jasmine": "2.0.1",
+    "lerna": "3.13.1",
     "lru-cache": "5.1.1",
     "mock-express-request": "0.2.2",
     "mock-express-response": "0.2.2",
