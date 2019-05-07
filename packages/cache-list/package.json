@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cache-list",
   "dependencies": {
-    "amp-toolbox-core": "^1.1.0"
+    "amp-toolbox-core": "1.1.0"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }

@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/update-cache",
   "dependencies": {
-    "amp-toolbox-cache-list": "^1.1.0",
-    "amp-toolbox-cache-url": "^1.1.0",
+    "amp-toolbox-cache-list": "1.1.0",
+    "amp-toolbox-cache-url": "1.1.0",
     "jsrsasign": "8.0.12"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"

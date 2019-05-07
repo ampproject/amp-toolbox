@@ -17,7 +17,7 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "amp-toolbox-core": "^1.1.0"
+    "amp-toolbox-core": "1.1.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

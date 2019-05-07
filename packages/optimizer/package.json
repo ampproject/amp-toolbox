@@ -25,8 +25,8 @@
     }
   },
   "dependencies": {
-    "amp-toolbox-core": "^1.1.0",
-    "amp-toolbox-runtime-version": "^1.1.0",
+    "amp-toolbox-core": "1.1.0",
+    "amp-toolbox-runtime-version": "1.1.0",
     "css": "2.2.4",
     "parse5": "5.1.0",
     "parse5-htmlparser2-tree-adapter": "5.1.0"

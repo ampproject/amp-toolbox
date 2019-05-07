@@ -32,8 +32,8 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cache-url",
   "dependencies": {
-    "punycode": "^2.1.1",
-    "url-parse": "^1.4.7"
+    "punycode": "2.1.1",
+    "url-parse": "1.4.7"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }
