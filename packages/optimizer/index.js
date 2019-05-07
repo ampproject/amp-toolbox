@@ -15,14 +15,16 @@
  */
 'use strict';
 
-const {DomTransformer, TRANSFORMATIONS_VALID_AMP} = require('./lib/DomTransformer.js');
+const {
+  DomTransformer,
+  TRANSFORMATIONS_AMP_FIRST,
+  TRANSFORMATIONS_PAIRED_AMP,
+  DEFAULT_CONFIG,
+} = require('./lib/DomTransformer.js');
 
-class AmpOptimizer {
-
-  static create(config=DEFAULT_CONFIG) {
-    return new DomTransformer(config);
-  }
-
-}
-
-module.exports = AmpOptimizer
+module.exports = {
+  create: (config=DEFAULT_CONFIG) => new DomTransformer(config),
+  TRANSFORMATIONS_AMP_FIRST,
+  TRANSFORMATIONS_PAIRED_AMP,
+  DEFAULT_CONFIG,
+};
