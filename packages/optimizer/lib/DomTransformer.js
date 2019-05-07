@@ -69,7 +69,7 @@ const DEFAULT_CONFIG = {
   fetch: oneBehindFetch,
   runtimeVersion,
   log: log,
-  validAmp: false,
+  validAmp: true,
   verbose: false,
 };
 
