@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const path = require('path');
 const treeParser = require('./TreeParser.js');
 const log = require('./log.js');
 const {oneBehindFetch} = require('amp-toolbox-core');
@@ -42,7 +41,9 @@ const TRANSFORMATIONS_VALID_AMP = [
 ];
 
 /**
- * AMP Optimizer Configuration applying all available AMP optimizations including Server-Side_Rendering.
+ * AMP Optimizer Configuration for transformations resulting in invalid AMP pages setting up paired AMP mode.
+ *
+ * @deprecated
  */
 const TRANSFORMATIONS_ALL = [
   // Adds a link to the valid AMP version
@@ -72,7 +73,6 @@ const DEFAULT_CONFIG = {
   validAmp: true,
   verbose: false,
 };
-
 
 /**
  * Applies a set of transformations to a DOM tree.
@@ -132,7 +132,7 @@ class DomTransformer {
   initTransformers_(config) {
     this.transformers_ = this.getTransformersFromConfig_(config).map((Transformer) => {
       if (typeof Transformer === 'string') {
-        Transformer = require(path.join(__dirname, 'transformers', Transformer + '.js'));
+        Transformer = require(`./transformers/${Transformer}.js`);
       }
       return new Transformer(config);
     });
