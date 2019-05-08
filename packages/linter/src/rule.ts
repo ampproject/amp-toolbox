@@ -11,36 +11,36 @@ export abstract class Rule {
   static href = "";
   static info = "";
   abstract run(context: Context): Promise<Result | Array<Result>>;
-  protected pass(s?: string) {
-    return Promise.resolve({
+  protected async pass(s?: string) {
+    return {
       status: Status.PASS,
       message: s,
       url: Rule.href,
       description: Rule.info
-    });
+    };
   }
-  protected fail(s: string) {
-    return Promise.resolve({
+  protected async fail(s: string) {
+    return {
       status: Status.FAIL,
       message: s,
       url: Rule.href,
       description: Rule.info
-    });
+    };
   }
-  protected warn(s: string) {
-    return Promise.resolve({
+  protected async warn(s: string) {
+    return {
       status: Status.WARN,
       message: s,
       url: Rule.href,
       description: Rule.info
-    });
+    };
   }
-  protected info(s: string) {
-    return Promise.resolve({
+  protected async info(s: string) {
+    return {
       status: Status.INFO,
       message: s,
       url: Rule.href,
       description: Rule.info
-    });
+    };
   }
 }
