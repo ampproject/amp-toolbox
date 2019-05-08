@@ -1,4 +1,0 @@
-{
-  "main": "amp-toolbox [command] <options>\n\nupdate-cache .............. removes documents from the AMP Caches\nversion ................... shows version\nhelp ...................... show this menu\n",
-  "update-cache": "Usage:\n\namp-toolbox update-cache [url] <options>\n\nOptions:\n--privateKey .............. Path to the private key file. Defaults to './privateKey.pem'.\n"
-}

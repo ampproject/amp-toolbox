@@ -30,7 +30,7 @@ const UA = {
   ].join(" ")
 };
 
-export function cli(argv: string[]) {
+export function cli(argv: string[], logger = console) {
   program
     // .version(version)
     .usage(`amplint [options] URL|copy_as_cURL`)
@@ -53,10 +53,10 @@ export function cli(argv: string[]) {
       "googlebot_mobile"
     )
     .on("--help", function() {
-      console.log("");
-      console.log("Examples:");
-      console.log("  $ amplint https://www.ampproject.org/");
-      console.log("  $ amplint --force sxg https://www.ampbyexample.org/");
+      logger.log("");
+      logger.log("Examples:");
+      logger.log("  $ amplint https://amp.dev/");
+      logger.log("  $ amplint --force sxg https://amp.dev/");
     });
 
   if (argv.length <= 2) {
@@ -111,9 +111,9 @@ export function cli(argv: string[]) {
     url: string;
     headers: { [k: string]: string };
   })
-    .then(console.log)
+    .then(logger.log)
     .catch(e => {
-      console.error(e.stack || e.message || e);
+      logger.error(e.stack || e.message || e);
       process.exitCode = 1;
     });
 }

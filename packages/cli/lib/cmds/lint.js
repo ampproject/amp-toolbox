@@ -16,15 +16,14 @@
 
 'use strict';
 
-const menus = require('./helpMessages');
+const {cli} = require('amp-toolbox-linter');
 
-function help(args, logger) {
-  const subCmd = args._[0] === 'help'
-    ? args._[1]
-    : args._[0];
+function lint(args, logger) {
+  const url = args._[1];
+  if (!url) {
+    return Promise.reject(new Error('Missing URL'));
+  }
+  return cli(["dummy"].concat(args._)); // "dummy" to simulate process.argv
+}
 
-  logger.info(menus[subCmd] || menus.main);
-  return Promise.resolve();
-};
-
-module.exports = help;
+module.exports = lint;

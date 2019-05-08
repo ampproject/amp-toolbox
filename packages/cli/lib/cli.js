@@ -37,6 +37,8 @@ class Cli {
         return require('./cmds/runtimeVersion')(args, this.logger_);
       case 'update-cache':
         return require('./cmds/updateCache')(args, this.logger_);
+      case 'lint':
+        return require('./cmds/lint')(args, this.logger_);
       default:
         return Promise.reject(new Error(`"${command}" is not a valid command!`));
     }
