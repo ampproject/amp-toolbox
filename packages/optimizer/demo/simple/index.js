@@ -38,15 +38,18 @@ async function validAmpTransformation(filePath, html) {
 // Advanced demo performing transformations resulting in invalid AMP using
 // paired mode to link to the valid AMP version.
 async function pairedAmpTransformation(filePath, html) {
-  const ampRuntimeVersion = await runtimeVersion.currentVersion();
   const optimizer = AmpOptimizer.create({
     transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
   });
   const ampFilePath = filePath.substring(1, filePath.length)
       .replace('.html', '.amp.html');
   const transformedHtml = await optimizer.transformHtml(html, {
+    // needed to calculate the `<link rel=amphtml href=${ampUrl}>`
     ampUrl: ampFilePath,
-    ampRuntimeVersion: ampRuntimeVersion,
+    // sets the AMP runtime version to the latest release
+    ampRuntimeVersion: await runtimeVersion.currentVersion(),
+    // enables blurry image placeholder generation
+    blurredPlaceholders: true,
   });
   writeFile('paired', filePath, transformedHtml);
   writeFile('paired', ampFilePath, html);
