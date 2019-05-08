@@ -31,3 +31,4 @@ module.exports.getDirectories =
   (source) => getResources(source).filter(isDirectory);
 
 module.exports.getFileContents = (filePath) => readFileSync(filePath, 'utf8');
+module.exports.getResources = getResources;

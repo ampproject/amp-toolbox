@@ -17,7 +17,6 @@
 'use strict';
 
 const {findMetaViewport} = require('../HtmlDomHelper');
-const log = require('../log.js');
 
 /**
  * Adds a preconnect instruction to `fonts.gstatic.com` when the Google Fonts CSS
@@ -34,6 +33,10 @@ const log = require('../log.js');
  * The transformer will only issue the preconnect instruction if Google Fonts is used on the page.
  */
 class GoogleFontsPreconnect {
+  constructor(config) {
+    this.log_ = config.log.tag('GoogleFontsPreconnect');
+  }
+
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
@@ -47,7 +50,7 @@ class GoogleFontsPreconnect {
         linkPreconnect.attribs.crossorigin = '';
         const referenceNode = findMetaViewport(head);
         head.insertAfter(linkPreconnect, referenceNode);
-        log.debug(
+        this.log_.debug(
             'adding <link rel="dns=prefetch preconnect" href="' +
             linkPreconnect.attribs.href +
             '">');

@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const log = require('../log').tag('AmpBoilerplateTransformer');
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
 
 const V0_CSS = 'v0.css';
@@ -32,6 +31,7 @@ class AmpBoilerplateTransformer {
   constructor(config) {
     this.fetch_ = config.fetch;
     this.runtimeVersion_ = config.runtimeVersion;
+    this.log_ = config.log.tag('AmpBoilerplateTransformer');
   }
 
   transform(tree, params) {
@@ -64,7 +64,7 @@ class AmpBoilerplateTransformer {
     try {
       return this._inlineCss(node, params.ampRuntimeVersion);
     } catch (error) {
-      log.error(error);
+      this.log_.error(error);
       this._linkCss(tree, node);
     }
   }

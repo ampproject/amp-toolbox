@@ -16,7 +16,6 @@
 'use strict';
 
 const css = require('css');
-const log = require('../log').tag('SeparateKeyframes');
 const stringifyOptions = {indent: 0, compress: true};
 const allowedKeyframeProps = new Set([
   'animation-timing-function',
@@ -30,15 +29,15 @@ const allowedKeyframeProps = new Set([
   '-ms-transform',
 ]);
 
-const logInvalid = (name, property) => {
-  log.warn(`Found invalid keyframe property '${
-    property}' in '${name}' not moving to style[amp-keyframes]`);
-};
 /**
  * SeparateKeyframes - moves keyframes, media, and support from amp-custom
  * to amp-keyframes.
  */
 class SeparateKeyframes {
+  constructor(config) {
+    this.log_ = config.log.tag('SeparateKeyframes');
+  }
+
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     if (!html) return;
@@ -97,7 +96,7 @@ class SeparateKeyframes {
         // or else the style[amp-keyframes] is invalid
         const invalidProperty = isInvalidKeyframe(rule);
         if (invalidProperty) {
-          logInvalid(rule.name, invalidProperty);
+          this.logInvalid(rule.name, invalidProperty);
           return true;
         }
         keyframesTree.stylesheet.rules.push(rule);
@@ -111,7 +110,7 @@ class SeparateKeyframes {
           if (rule.type !== 'keyframes') return true;
           const invalidProperty = isInvalidKeyframe(rule);
           if (invalidProperty) {
-            logInvalid(rule.name, invalidProperty);
+            this.logInvalid(rule.name, invalidProperty);
             return true;
           }
           copiedRule.rules.push(rule);
@@ -164,6 +163,10 @@ class SeparateKeyframes {
     body.children.push(stylesKeyframesTag);
     // Update stylesCustomTag with filtered styles
     stylesCustomTag.children[0].data = css.stringify(cssTree, stringifyOptions);
+  }
+  logInvalid(name, property) {
+    this.log_.warn(`Found invalid keyframe property '${
+      property}' in '${name}' not moving to style[amp-keyframes]`);
   }
 }
 
