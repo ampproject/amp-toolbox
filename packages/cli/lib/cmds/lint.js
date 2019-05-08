@@ -23,7 +23,7 @@ function lint(args, logger) {
   if (!url) {
     return Promise.reject(new Error('Missing URL'));
   }
-  return cli(["dummy"].concat(args._)); // "dummy" to simulate process.argv
+  return cli(['dummy'].concat(args._), logger); // "dummy" to simulate process.argv
 }
 
 module.exports = lint;
