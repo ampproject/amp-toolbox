@@ -16,6 +16,7 @@
 
 require('fetch-mock');
 const createSpec = require('../helpers/TransformerRunner.js');
+const log = require('../../lib/log.js');
 const {DomTransformer, TRANSFORMATIONS_PAIRED_AMP} = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock.sandbox()
@@ -31,6 +32,7 @@ createSpec({
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
         fetch,
+        log,
         runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
       });
       return ampOptimizer.transformTree(tree, params);
