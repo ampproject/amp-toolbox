@@ -17,7 +17,7 @@
 'use strict';
 
 const helpCmd = require('../../lib/cmds/help');
-const messages = require('../../lib/cmds/helpMessages.json');
+const messages = require('../../lib/cmds/helpMessages');
 const MockLogger = require('../helpers/MockLogger');
 
 describe('Version', () => {
