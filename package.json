@@ -44,7 +44,8 @@
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-node-resolve": "4.2.3",
     "rollup-plugin-serve": "1.0.1",
-    "semver": "6.0.0"
+    "semver": "6.0.0",
+    "tar": "^4.4.8"
   },
   "dependencies": {
     "amp-toolbox-cache-list": "file:packages/cache-list",
