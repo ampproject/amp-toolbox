@@ -118,7 +118,7 @@ export function cli(argv: string[], logger = console) {
     });
 }
 
-export function easyLint({
+export async function easyLint({
   url,
   userAgent,
   format,
@@ -133,7 +133,7 @@ export function easyLint({
 }) {
   headers["user-agent"] = UA[userAgent as keyof typeof UA];
 
-  const raw = (async () => {
+  const raw = await (async () => {
     if (url === "-") {
       return Promise.resolve({
         body: readFileSync("/dev/stdin").toString(),
@@ -156,24 +156,24 @@ export function easyLint({
     }
   })();
 
-  return raw
-    .then(r => {
-      const $ = cheerio.load(r.body);
-      const mode = force === "auto" ? guessMode($) : force;
-      return lint({
-        raw: r,
-        $,
-        headers,
-        url,
-        mode
-      });
+  const $ = cheerio.load(raw.body);
+  const mode = force === "auto" ? guessMode($) : force;
+  return printer(
+    format,
+    await lint({
+      raw,
+      $,
+      headers,
+      url,
+      mode
     })
-    .then(outputterForType(format));
+  );
 }
 
-export function outputterForType(
-  type: string
-): (data: { [key: string]: Result | Result[] }) => string {
+function printer(
+  type: string,
+  data: { [key: string]: Result | Result[] }
+): string {
   function flatten(data: { [k: string]: Result | Result[] }): string[][] {
     const rows: string[][] = [];
     rows.push(["name", "status", "message"]);
@@ -194,42 +194,38 @@ export function outputterForType(
   let sep = "\t";
   switch (type) {
     case "tsv":
-      return data =>
-        flatten(data)
-          .map(l => l.join(sep))
-          .join("\n");
+      return flatten(data)
+        .map(l => l.join(sep))
+        .join("\n");
     case "html":
-      return data => {
-        const res = flatten(data).splice(1);
-        const thead = `<tr><th>Name</th><th>Status</th><th>Message</th><tr>`;
-        const tbody = res
-          .map(r => r.map(td => `<td>${escape(td)}</td>`).join(""))
-          .map(r => `<tr>${r}</tr>`)
-          .join("");
-        return [
-          `<table class="amplint">`,
-          `<thead>`,
-          thead,
-          `</thead>`,
-          `<tbody>`,
-          tbody,
-          `</tbody>`,
-          `</table>`
-        ].join("\n");
-      };
+      const res = flatten(data).splice(1);
+      const thead = `<tr><th>Name</th><th>Status</th><th>Message</th><tr>`;
+      const tbody = res
+        .map(r => r.map(td => `<td>${escape(td)}</td>`).join(""))
+        .map(r => `<tr>${r}</tr>`)
+        .join("");
+      return [
+        `<table class="amplint">`,
+        `<thead>`,
+        thead,
+        `</thead>`,
+        `<tbody>`,
+        tbody,
+        `</tbody>`,
+        `</table>`
+      ].join("\n");
     case "json":
-      return (data: any) => JSON.stringify(data, null, 2);
+      return JSON.stringify(data, null, 2);
     case "text":
     default:
-      return data =>
-        flatten(data)
-          .splice(1)
-          .map(l =>
-            l[1] == "PASS"
-              ? `${l[0]} (${l[1]})\n`
-              : `${l[0]} (${l[1]})\n\n  ${l[2]}\n`
-          )
-          .join("\n");
+      return flatten(data)
+        .splice(1)
+        .map(l =>
+          l[1] == "PASS"
+            ? `${l[0]} (${l[1]})\n`
+            : `${l[0]} (${l[1]})\n\n  ${l[2]}\n`
+        )
+        .join("\n");
   }
 }
 
