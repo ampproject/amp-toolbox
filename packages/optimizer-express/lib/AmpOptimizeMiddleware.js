@@ -22,55 +22,20 @@
  * to the network.
  */
 const mime = require('mime-types');
-const UrlMapping = require('./UrlMapping');
-const ampOptimizer = require('amp-toolbox-optimizer');
-const ampRuntimeVersionProvider = require('amp-toolbox-runtime-version');
+const AmpOptimizer = require('amp-toolbox-optimizer');
 const {isAmp} = require('amp-toolbox-core');
-
-const DEFAULT_URL_MAPPING = new UrlMapping('amp');
 
 class AmpOptimizerMiddleware {
   /**
-   * @function runtimeVersion A function used to provide the runtimeVersion when applying the
-   * optimizer transformations.
-   * @returns {Promise<string>} A promise that resolves to the runtime version.
-   */
-
-  /**
    * Creates a new amp-server-side-rendering middleware, using the specified
-   * ampOptimizer and options.
+   * ampOptimizer.
    *
-   * @param {Object} [options] an optional object containing custom configurations for
-   * the middleware.
-   * @param {DomTransformer} [options.ampOptimizer] AMP Optimizer instance used to apply server-side render transformations.
-   * @param {UrlMapping} [options.urlMapping] a mapper between AMP and canonical URLs.
-   * rewriting to * canonical and generating amphtml links.
-   * @param {function() : Promise<string>} [options.runtimeVersion] a function returning a version string promise.
-   * @param {boolean} [options.runtimeVersion=false] true if the optimizer should use versioned runtime imports (default is false).
-   * @param {boolean} [options.ampOnly=true] true if the optimizer should only be applied to AMP files (indicated by the lightning bolt in the header).
+   * @param {AmpOptimizer} [options.ampOptimizer] AMP Optimizer instance used to apply server-side render transformations.
    */
-  static create(options) {
-    options = options || {};
-    const urlMapping = options.urlMapping || DEFAULT_URL_MAPPING;
-    const optimizer = options.ampOptimizer || ampOptimizer;
-    let runtimeVersion = options.runtimeVersion || (() => Promise.resolve(null));
-    if (options.versionedRuntime) {
-      runtimeVersion = () => ampRuntimeVersionProvider.currentVersion();
-    }
-    if (options.ampOnly === undefined) {
-      options.ampOnly = true;
-    }
-
+  static create(ampOptimizer=AmpOptimizer.create()) {
     return (req, res, next) => {
       // If this is a request for a resource, such as image, JS or CSS, do not apply optimizations.
       if (AmpOptimizerMiddleware.isResourceRequest_(req)) {
-        next();
-        return;
-      }
-
-      // This is a request for the AMP URL, rewrite to canonical URL, and do apply optimizations.
-      if (urlMapping.isAmpUrl(req.url)) {
-        req.url = urlMapping.toCanonicalUrl(req.url);
         next();
         return;
       }
@@ -118,24 +83,10 @@ class AmpOptimizerMiddleware {
           res.end();
           return;
         }
-
-        // This is a request for the canonical URL. Generate the AMP equivalent
-        // in order to add it to the link rel tag.
-        const linkRelAmpHtmlUrl = urlMapping.toAmpUrl(req.url);
-
-        let version = null;
-        try {
-          version = await runtimeVersion();
-        } catch (err) {
-          console.error('Error retrieving ampRuntimeVersion: ', err);
-        }
-        const ampOptimizerParams = req.ampOptimizerParams || {};
-        ampOptimizerParams.ampUrl = linkRelAmpHtmlUrl;
-        ampOptimizerParams.ampRuntimeVersion = version;
         let body = Buffer.concat(chunks).toString('utf8');
-        if (!(options.ampOnly && !isAmp(body))) {
+        if (isAmp(body)) {
           try {
-            body = await optimizer.transformHtml(body, ampOptimizerParams);
+            body = await ampOptimizer.transformHtml(body);
           } catch (err) {
             console.error('Error applying AMP Optimizer. Sending original page', err);
           }

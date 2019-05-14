@@ -19,7 +19,7 @@ const {getFileContents, getResources} = require('../helpers/Utils.js');
 const {join, basename} = require('path');
 const {writeFileSync} = require('fs');
 
-const DomTransformer = require('../../lib/DomTransformer.js');
+const {DomTransformer} = require('../../lib/DomTransformer.js');
 
 const ampOptimizer = new DomTransformer({validAmp: true});
 

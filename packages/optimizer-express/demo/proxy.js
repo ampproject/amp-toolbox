@@ -19,32 +19,12 @@
 const express = require('express');
 const app = express();
 const AmpOptimizerMiddleware = require('amp-toolbox-optimizer-express');
-const ampOptimizer = require('amp-toolbox-optimizer');
 const compression = require('compression');
 const httpProxy = require('http-proxy');
 const https = require('https');
-const runtimeVersion = require('amp-toolbox-runtime-version');
 const apicache = require('apicache');
 
 const cache = apicache.middleware;
-
-// Configure the transformers to be used.
-// otherwise a default configuration is used.
-ampOptimizer.setConfig({
-  transformers: [
-    'PreloadImages',
-    'AddAmpLink',
-    'ServerSideRendering',
-    'RemoveAmpAttribute',
-    // needs to run after ServerSideRendering
-    'AmpBoilerplateTransformer',
-    // needs to run after ServerSideRendering
-    'ReorderHeadTransformer',
-    // needs to run after ReorderHeadTransformer
-    'RewriteAmpUrls',
-    'GoogleFontsPreconnect',
-  ],
-});
 
 // Read proxy for command line, or default to ampbyexample.com.
 const target = process.argv[2] || 'https://www.ampbyexample.com';
@@ -75,14 +55,8 @@ app.use(cache('20 minutes'));
 // Enable compression
 app.use(compression());
 
-// Enable versioned AMP urls.
-const currentVersion = () => runtimeVersion.currentVersion();
-
 // Enable the Optimizer middleware.
-app.use(AmpOptimizerMiddleware.create({
-  ampOptimizer: ampOptimizer,
-  runtimeVersion: currentVersion,
-}));
+app.use(AmpOptimizerMiddleware.create());
 
 // Handle requests through the proxy.
 app.use((req, res) => {
