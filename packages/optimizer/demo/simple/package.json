@@ -11,7 +11,7 @@
   "dependencies": {
     "amp-toolbox-runtime-version": "<1.0.0",
     "amp-toolbox-optimizer": "0.5.2-beta.5+2d35887",
-    "glob": "7.1.2",
+    "glob": "7.1.4",
     "mkdirp": "0.5.1"
   }
 }
