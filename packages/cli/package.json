@@ -28,7 +28,7 @@
   "dependencies": {
     "amp-toolbox-update-cache": "^1.2.0-alpha.0",
     "minimist": "1.2.0",
-    "node-fetch": "2.5.0"
+    "node-fetch": "2.6.0"
   },
   "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
 }
