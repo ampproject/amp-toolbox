@@ -1,0 +1,38 @@
+module.exports = {
+  'main': [
+    'amp-toolbox [command] <options>',
+    '',
+    '',
+    'curls ..................... generate AMP cache URL(s)',
+    'help ...................... show this menu',
+    'runtime-version ........... shows the current AMP runtime version [production]',
+    'update-cache .............. removes documents from the AMP Caches',
+    'version ................... shows the current AMP Toolbox version',
+  ].join('\n'),
+  'update-cache': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox update-cache [url] <options>',
+    '',
+    '',
+    'Options:',
+    '--privateKey .............. path to the private key file. Defaults to \'./privateKey.pem\'.',
+  ].join('\n'),
+  'runtime-version': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox runtime-version',
+  ].join('\n'),
+  'curls': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox curls [url] <options>',
+    '',
+    '',
+    'Options:',
+    '--cache ................... AMP cache id as specified here: https://cdn.ampproject.org/caches.json.',
+  ].join('\n'),
+};

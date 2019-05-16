@@ -18,7 +18,7 @@
 
 const ampRuntimeVersionProvider = require('amp-toolbox-runtime-version');
 
-async function runtimeVersion(_, logger) {
+async function runtimeVersion(args, logger) {
   const version = await ampRuntimeVersionProvider.currentVersion();
   logger.info(version);
 };
