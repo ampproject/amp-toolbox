@@ -20,7 +20,7 @@ const OptimizeCmd = require('../../lib/cmds/optimize.js');
 const AmpOptimizer = require('amp-toolbox-optimizer');
 const MockLogger = require('../helpers/MockLogger');
 
-fdescribe('optimize', () => {
+describe('optimize', () => {
   let input;
   let inputUrl;
   let mockLogger;
