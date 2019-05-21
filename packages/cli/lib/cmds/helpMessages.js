@@ -5,6 +5,7 @@ module.exports = {
     '',
     'curls ..................... generate AMP cache URL(s)',
     'help ...................... show this menu',
+    'optimize .................. runs AMP Optimizer for a given URL or file',
     'runtime-version ........... shows the current AMP runtime version [production]',
     'update-cache .............. removes documents from the AMP Caches',
     'version ................... shows the current AMP Toolbox version',
@@ -34,5 +35,11 @@ module.exports = {
     '',
     'Options:',
     '--cache ................... AMP cache id as specified here: https://cdn.ampproject.org/caches.json.',
+  ].join('\n'),
+  'optimize': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox optimize [url|file]',
   ].join('\n'),
 };

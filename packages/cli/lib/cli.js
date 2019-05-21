@@ -29,16 +29,19 @@ class Cli {
     const command = args._[0] || 'help';
 
     switch (command) {
+      case 'curls':
+        return require('./cmds/curls')(args, this.logger_);
       case 'help':
         return require('./cmds/help')(args, this.logger_);
-      case 'version':
-        return require('./cmds/version')(args, this.logger_);
+      case 'optimize':
+        const OptimizeCmd = require('./cmds/optimize.js');
+        return new OptimizeCmd().run(args, this.logger_);
       case 'runtime-version':
         return require('./cmds/runtimeVersion')(args, this.logger_);
       case 'update-cache':
         return require('./cmds/updateCache')(args, this.logger_);
-      case 'curls':
-        return require('./cmds/curls')(args, this.logger_);
+      case 'version':
+        return require('./cmds/version')(args, this.logger_);
       default:
         return Promise.reject(new Error(`"${command}" is not a valid command!`));
     }

@@ -20,7 +20,6 @@ const {createCacheUrl} = require('amp-toolbox-cache-url');
 const AmpCaches = require('amp-toolbox-cache-list');
 const caches = new AmpCaches();
 
-
 async function curls(args, logger) {
   const url = args._[1];
   if (!url) {
