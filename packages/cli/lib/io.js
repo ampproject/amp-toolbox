@@ -19,6 +19,7 @@
 const fetch = require('node-fetch');
 const {promisify} = require('util');
 const {readFile} = require('fs');
+const {URL} = require('url');
 const readFileAsync = promisify(readFile);
 
 async function loadUrlOrFile(urlOrPath) {
