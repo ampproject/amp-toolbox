@@ -18,7 +18,6 @@
 
 const minimist = require('minimist');
 const {log} = require('amp-toolbox-core');
-const OptimizeCmd = require('./cmds/optimize.js');
 
 class Cli {
   constructor(logger=log) {
@@ -35,6 +34,7 @@ class Cli {
       case 'help':
         return require('./cmds/help')(args, this.logger_);
       case 'optimize':
+        const OptimizeCmd = require('./cmds/optimize.js');
         return new OptimizeCmd().run(args, this.logger_);
       case 'runtime-version':
         return require('./cmds/runtimeVersion')(args, this.logger_);
