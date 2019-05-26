@@ -11,6 +11,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "amp-toolbox-cors": "0.2.4",
-    "express": "4.17.0"
+    "express": "4.17.1"
   }
 }
