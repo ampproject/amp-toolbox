@@ -42,7 +42,7 @@
     "rollup-plugin-commonjs": "10.0.0",
     "rollup-plugin-filesize": "6.1.0",
     "rollup-plugin-json": "4.0.0",
-    "rollup-plugin-node-resolve": "5.0.0",
+    "rollup-plugin-node-resolve": "5.0.1",
     "rollup-plugin-serve": "1.0.1",
     "semver": "6.1.0",
     "tar": "4.4.8"
