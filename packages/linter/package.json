@@ -6,16 +6,16 @@
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "amp-toolbox-cache-list": "^0.1.6",
-    "amp-toolbox-cache-url": "^1.0.7",
-    "amphtml-validator": "^1.0.23",
-    "cheerio": "^1.0.0-rc.2",
-    "commander": "^2.20.0",
-    "debug": "^4.1.1",
-    "execa": "^1.0.0",
-    "node-fetch": "^2.4.1",
-    "probe-image-size": "^4.0.0",
-    "throat": "^4.1.0"
+    "amp-toolbox-cache-list": "0.1.6",
+    "amp-toolbox-cache-url": "1.0.7",
+    "amphtml-validator": "1.0.23",
+    "cheerio": "1.0.0-rc.2",
+    "commander": "2.20.0",
+    "debug": "4.1.1",
+    "execa": "1.0.0",
+    "node-fetch": "2.4.1",
+    "probe-image-size": "4.0.0",
+    "throat": "4.1.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
@@ -34,10 +34,10 @@
     "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json"
   },
   "devDependencies": {
-    "@pika/pack": "^0.3.7",
-    "prettier": "^1.17.0",
-    "tap-parser": "^9.3.2",
-    "typescript": "^3.4.5"
+    "@pika/pack": "0.3.7",
+    "prettier": "1.17.0",
+    "tap-parser": "9.3.2",
+    "typescript": "3.4.5"
   },
   "@pika/pack": {
     "pipeline": [
