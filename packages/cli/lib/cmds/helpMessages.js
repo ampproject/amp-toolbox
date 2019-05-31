@@ -7,6 +7,12 @@ module.exports = {
     'update-cache .............. removes documents from the AMP Caches',
     'version ................... shows version',
     'help ...................... show this menu',
+    'curls ..................... generate AMP cache URL(s)',
+    'help ...................... show this menu',
+    'optimize .................. runs AMP Optimizer for a given URL or file',
+    'runtime-version ........... shows the current AMP runtime version [production]',
+    'update-cache .............. removes documents from the AMP Caches',
+    'version ................... shows the current AMP Toolbox version',
   ].join('\n'),
   'update-cache': [
     'Usage:',
@@ -25,6 +31,28 @@ module.exports = {
     'amp-toolbox lint url',
     '',
     'Examples:',
-    '  $ amplint https://amp.dev/',
+    '  $ amplint https://amp.dev/'
+  ].join('\n'),
+  'runtime-version': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox runtime-version',
+  ].join('\n'),
+  'curls': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox curls [url] <options>',
+    '',
+    '',
+    'Options:',
+    '--cache ................... AMP cache id as specified here: https://cdn.ampproject.org/caches.json.',
+  ].join('\n'),
+  'optimize': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox optimize [url|file]',
   ].join('\n'),
 };

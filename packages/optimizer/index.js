@@ -15,6 +15,16 @@
  */
 'use strict';
 
-const DomTransformer = require('./lib/DomTransformer.js');
+const {
+  DomTransformer,
+  TRANSFORMATIONS_AMP_FIRST,
+  TRANSFORMATIONS_PAIRED_AMP,
+  DEFAULT_CONFIG,
+} = require('./lib/DomTransformer.js');
 
-module.exports = new DomTransformer();
+module.exports = {
+  create: (config=DEFAULT_CONFIG) => new DomTransformer(config),
+  TRANSFORMATIONS_AMP_FIRST,
+  TRANSFORMATIONS_PAIRED_AMP,
+  DEFAULT_CONFIG,
+};

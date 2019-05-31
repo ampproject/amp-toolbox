@@ -16,7 +16,8 @@
 
 const fetchMock = require('fetch-mock');
 const {basename, join} = require('path');
-const log = require('../../lib/log.js');
+const log = require('../../lib/log.js').tag('TransformerSpec');
+log.verbose();
 const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
 
@@ -34,16 +35,23 @@ function loadTestConfigs() {
         .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */')
         .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
     const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
+    const config = {
+      fetch,
+      log,
+      runtimeVersion: {
+        currentVersion: () => Promise.resolve('012345678900000'),
+      },
+    };
+    try {
+      const customConfig = require(join(testDir, 'config.json'));
+      Object.assign(config, customConfig);
+    } catch (err) {
+      // no custom config
+    }
     return {
       name: transformerName,
       testDir: testDir,
-      transformer: new Transformer({
-        fetch,
-        log,
-        runtimeVersion: {
-          currentVersion: () => Promise.resolve('012345678900000'),
-        },
-      }),
+      transformer: new Transformer(config),
     };
   });
 }

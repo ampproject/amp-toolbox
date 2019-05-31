@@ -16,7 +16,7 @@
 
 'use strict';
 
-const menus = require('./helpMessages');
+const menus = require('./helpMessages.js');
 
 function help(args, logger) {
   const subCmd = args._[0] === 'help'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const DomTransformer = require('../../lib/DomTransformer.js');
+const {DomTransformer} = require('../../lib/DomTransformer.js');
 
 class SimpleTransformer {
   transform(tree) {
@@ -56,7 +56,7 @@ describe('Dom Transformer', () => {
 
 function domTransformerWith(transformer) {
   return new DomTransformer({
-    transformers: [transformer],
+    transformations: [transformer],
   });
 }
 

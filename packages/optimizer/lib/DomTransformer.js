@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const path = require('path');
 const treeParser = require('./TreeParser.js');
 const log = require('./log.js');
 const {oneBehindFetch} = require('amp-toolbox-core');
@@ -24,7 +23,7 @@ const runtimeVersion = require('amp-toolbox-runtime-version');
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
  */
-const TRANSFORMATIONS_VALID_AMP = [
+const TRANSFORMATIONS_AMP_FIRST = [
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes the boilerplate
@@ -42,9 +41,11 @@ const TRANSFORMATIONS_VALID_AMP = [
 ];
 
 /**
- * AMP Optimizer Configuration applying all available AMP optimizations including Server-Side_Rendering.
+ * AMP Optimizer Configuration for transformations resulting in invalid AMP pages setting up paired AMP mode.
+ *
+ * @deprecated
  */
-const TRANSFORMATIONS_ALL = [
+const TRANSFORMATIONS_PAIRED_AMP = [
   // Adds a link to the valid AMP version
   'AddAmpLink',
   // Applies server-side-rendering optimizations
@@ -69,10 +70,9 @@ const DEFAULT_CONFIG = {
   fetch: oneBehindFetch,
   runtimeVersion,
   log: log,
-  validAmp: false,
   verbose: false,
+  transformations: TRANSFORMATIONS_AMP_FIRST,
 };
-
 
 /**
  * Applies a set of transformations to a DOM tree.
@@ -91,11 +91,12 @@ class DomTransformer {
    * Transforms an html string.
    * @param {string} html - a string containing valid HTML.
    * @param {Object} params - a dictionary containing transformer specific parameters.
+   * @return {string} - the transformed html string
    */
-  transformHtml(html, params) {
+  async transformHtml(html, params) {
     const tree = treeParser.parse(html);
-    return this.transformTree(tree, params)
-        .then(() => treeParser.serialize(tree));
+    await this.transformTree(tree, params);
+    return treeParser.serialize(tree);
   }
 
   /**
@@ -106,11 +107,9 @@ class DomTransformer {
   transformTree(tree, params) {
     params = params || {};
     log.verbose(params.verbose || false);
-    const sequence = (promise, transformer) => {
-      return promise.then(() => {
-        // not all transformers return a promise
-        return Promise.resolve(transformer.transform(tree, params));
-      });
+    const sequence = async (promise, transformer) => {
+      await promise;
+      return transformer.transform(tree, params);
     };
     return this.transformers_.reduce(sequence, Promise.resolve());
   }
@@ -119,40 +118,30 @@ class DomTransformer {
    * Set the config.
    * @param {Object} config - The config.
    * @param {boolean} config.verbose - true if verbose mode should be enabled [default: false].
-   * @param {boolean} config.validAmp - true if AMP pages should stay valid [default: false].
-   * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied [default: all available transformers].
+   * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
     config = Object.assign({}, DEFAULT_CONFIG, config);
     log.verbose(config.verbose);
     this.initTransformers_(config);
-    this.verifyConfig(config);
   }
 
+  /**
+   * @private
+   */
   initTransformers_(config) {
-    this.transformers_ = this.getTransformersFromConfig_(config).map((Transformer) => {
+    this.transformers_ = config.transformations.map((Transformer) => {
       if (typeof Transformer === 'string') {
-        Transformer = require(path.join(__dirname, 'transformers', Transformer + '.js'));
+        Transformer = require(`./transformers/${Transformer}.js`);
       }
       return new Transformer(config);
     });
   }
-
-  getTransformersFromConfig_(config) {
-    if (config.transformers) {
-      return config.transformers;
-    }
-    if (config.validAmp) {
-      return TRANSFORMATIONS_VALID_AMP;
-    }
-    return TRANSFORMATIONS_ALL;
-  }
-
-  verifyConfig(config) {
-    if (!config.validAmp) {
-      return;
-    }
-  }
 }
 
-module.exports = DomTransformer;
+module.exports = {
+  DomTransformer,
+  DEFAULT_CONFIG,
+  TRANSFORMATIONS_AMP_FIRST,
+  TRANSFORMATIONS_PAIRED_AMP,
+};

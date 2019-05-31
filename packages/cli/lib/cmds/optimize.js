@@ -16,11 +16,21 @@
 
 'use strict';
 
-const ampRuntimeVersionProvider = require('amp-toolbox-runtime-version');
+const AmpOptimizer = require('amp-toolbox-optimizer');
+const {loadUrlOrFile} = require('../io.js');
 
-async function runtimeVersion(args, logger) {
-  const version = await ampRuntimeVersionProvider.currentVersion();
-  logger.info(version);
-};
+class OptimizeCmd {
+  constructor(optimizer=AmpOptimizer.create(), load=loadUrlOrFile) {
+    this.optimizer_ = optimizer;
+    this.load_ = load;
+  }
+  async run(args, logger) {
+    const urlOrPath = args._[1];
+    const html = await this.load_(urlOrPath);
+    const optimized = await this.optimizer_.transformHtml(html);
+    logger.info(optimized);
+  };
+}
 
-module.exports = runtimeVersion;
+
+module.exports = OptimizeCmd;

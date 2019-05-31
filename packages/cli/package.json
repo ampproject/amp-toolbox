@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-cli",
-  "version": "1.2.0-alpha.0",
+  "version": "1.2.0-alpha.1",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
@@ -27,9 +27,9 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cli",
   "dependencies": {
     "amp-toolbox-linter": "0.0.16",
-    "amp-toolbox-update-cache": "^1.0.6",
-    "minimist": "^1.2.0",
-    "node-fetch": "^2.3.0"
+    "amp-toolbox-update-cache": "^1.2.0-alpha.1",
+    "minimist": "1.2.0",
+    "node-fetch": "2.6.0"
   },
-  "gitHead": "058a60702136ac24dfd0a4f421877ed23aeee19f"
+  "gitHead": "fd8f6a83d9c444c9fdf6c6eba01dc5b360bbae59"
 }

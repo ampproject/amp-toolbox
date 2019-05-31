@@ -20,7 +20,7 @@ class Log {
   constructor(tag='', verbose=false, output=console) {
     this.tag_ = tag;
     this.verbose_ = verbose;
-    this.prefix_ = this.inverse_(tag);
+    this.prefix_ = tag ? this.inverse_(tag) : '';
     this.output_ = output;
   }
 
