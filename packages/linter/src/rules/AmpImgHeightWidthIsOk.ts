@@ -33,7 +33,7 @@ export class AmpImgHeightWidthIsOk extends Rule {
             `[${src}]: actual ratio [${actualString}] does not match specified [${expectedString}]`
           );
         }
-        // "For responsive images, the width and height do not need to match the exact width and height of the amp-img; those values just need to result in the same aspect-ratio." https://www.ampproject.org/docs/reference/components/amp-img#the-difference-between-responsive-and-intrinsic-layout
+        // "For responsive images, the width and height do not need to match the exact width and height of the amp-img; those values just need to result in the same aspect-ratio." https://amp.dev/documentation/components/amp-img#the-difference-between-responsive-and-intrinsic-layout
         if (layout.toLowerCase() === "responsive") {
           return this.pass();
         }
