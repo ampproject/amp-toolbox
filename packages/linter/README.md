@@ -20,13 +20,13 @@ Command-line (local build):
 ```sh
 $ npm install
 $ npm run build # generates src/cli.js from src/cli.ts
-$ node src/cli.js https://www.ampproject.org/
+$ node src/cli.js https://amp.dev/
 ```
 
 Command-line (from npm):
 
 ```sh
-$ npx amp-toolbox-linter https://www.ampproject.org/
+$ npx amp-toolbox-linter https://amp.dev/
 ```
 
 Node:
@@ -36,11 +36,11 @@ const fs = require("fs");
 const linter = require("amp-toolbox-linter");
 const cheerio = require("cheerio");
 
-const body = fs.readFileSync("ampproject.html");
+const body = fs.readFileSync("amp-dev.html");
 const context = {
   $: cheerio.load(body),
   headers: {},
-  url: "https://www.ampproject.org/"
+  url: "https://amp.dev/"
 };
 
 linter.MetaCharsetIsFirst(context).then(console.log);
