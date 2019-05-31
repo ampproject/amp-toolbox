@@ -58,9 +58,9 @@
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-node-resolve": "5.0.0",
     "rollup-plugin-serve": "1.0.1",
+    "semver": "6.1.1",
     "tap-parser": "9.3.2",
     "typescript": "3.4.5",
-    "semver": "6.1.1",
     "tar": "4.4.8"
   },
   "dependencies": {
