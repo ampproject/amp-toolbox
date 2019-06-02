@@ -33,6 +33,7 @@ export class AmpVideoIsSmall extends Rule {
         [url_1: string]: number;
       }
     );
+    // Over 4MB is too big: https://amp.dev/documentation/guides-and-tutorials/develop/amp_story_best_practices#size/length-of-video
     const large = Object.keys(videos).filter(v => videos[v] > 4000000);
     if (large.length > 0) {
       return this.fail(`videos over 4MB: [${large.join(",")}]`);
