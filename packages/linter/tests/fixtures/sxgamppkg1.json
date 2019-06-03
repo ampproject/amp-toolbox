@@ -1,0 +1,54 @@
+[
+    {
+        "scope": "https://boundless-stealer.glitch.me:443",
+        "method": "GET",
+        "path": "/",
+        "body": "",
+        "status": 200,
+        "response": "<!-- This is a static file -->\n<!-- served from your routes in server.js -->\n\n<!-- You might want to try something fancier: -->\n<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->\n<!-- pug: https://pugjs.org/ -->\n<!-- haml: http://haml.info/ -->\n<!-- hbs(handlebars): http://handlebarsjs.com/ -->\n\n<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <title>Welcome to Glitch!</title>\n    <meta name=\"description\" content=\"A cool thing made with Glitch\">\n    <link id=\"favicon\" rel=\"icon\" href=\"https://glitch.com/edit/favicon-app.ico\" type=\"image/x-icon\">\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n    <!-- import the webpage's stylesheet -->\n    <link rel=\"stylesheet\" href=\"/style.css\">\n    \n    <!-- import the webpage's client-side javascript file -->\n    <script src=\"/client.js\" defer></script>\n  </head>\n  <body>\n    <header>\n      <h1>\n        A Dream of the Future\n      </h1>\n    </header>\n\n    <main>\n      <p class=\"bold\">Oh hi,</p>\n      \n      <p>Tell me your hopes and dreams:</p>\n      \n      <form>\n        <input name=\"dream\" type=\"text\" maxlength=\"100\" placeholder=\"Dreams!\" aria-labelledby=\"submit-dream\">\n        <button type=\"submit\" id=\"submit-dream\">Submit Dream</button>\n      </form>\n      \n      <section class=\"dreams\">\n        <ul id=\"dreams\"></ul>\n      </section>\n    </main>\n\n    <footer>\n      Made with <a href=\"https://glitch.com\">Glitch</a>!\n    </footer>\n\n    <!-- include the Glitch button to show what the webpage is about and\n          to make it easier for folks to view source and remix -->\n    <div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div>\n    <script src=\"https://button.glitch.me/button.js\"></script>\n\n  </body>\n</html>\n",
+        "rawHeaders": [
+            "Date",
+            "Wed, 27 Mar 2019 22:41:56 GMT",
+            "Content-Type",
+            "text/html; charset=UTF-8",
+            "Content-Length",
+            "1820",
+            "Connection",
+            "close",
+            "x-powered-by",
+            "Express",
+            "accept-ranges",
+            "bytes",
+            "cache-control",
+            "public, max-age=0",
+            "last-modified",
+            "Thu, 26 Jul 2018 19:29:07 GMT",
+            "etag",
+            "W/\"71c-164d810f3b8\""
+        ]
+    },
+    {
+        "scope": "https://boundless-stealer.glitch.me:443",
+        "method": "GET",
+        "path": "/amppkg/validity",
+        "body": "",
+        "status": 404,
+        "response": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /amppkg/validity</pre>\n</body>\n</html>\n",
+        "rawHeaders": [
+            "Date",
+            "Wed, 27 Mar 2019 22:41:56 GMT",
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Content-Length",
+            "154",
+            "Connection",
+            "close",
+            "x-powered-by",
+            "Express",
+            "content-security-policy",
+            "default-src 'self'",
+            "x-content-type-options",
+            "nosniff"
+        ]
+    }
+]

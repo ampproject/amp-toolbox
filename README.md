@@ -27,6 +27,7 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 - **[amp-optimizer-express](./packages/optimizer-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
 - **[amp-runtime-version](./packages/runtime-version):** a javascript library for querying the current AMP runtime version.
 - **[amp-update-cache](./packages/update-cache):** a javascript library for updating AMP documents in AMP Caches.
+- **[amp-update-linter](./packages/update-linter):** a javascript library for linting AMP documents (include CLI mode).
 
 ## Development
 
@@ -43,6 +44,9 @@ cd amp-toolbox
 
 # install dependencies 
 npm i packages/*
+
+# run tests
+npm test
 ```
 
 ### Adding new dependencies

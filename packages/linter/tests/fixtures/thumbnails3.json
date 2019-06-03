@@ -1,0 +1,83 @@
+[
+    {
+        "scope": "http://localhost:5000",
+        "method": "GET",
+        "path": "/",
+        "body": "",
+        "status": 200,
+        "response": "<!doctype html>\n<html amp lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <script async src=\"https://cdn.ampproject.org/v0.js\"></script>\n    <script async custom-element=\"amp-story\" src=\"https://cdn.ampproject.org/v0/amp-story-1.0.js\"></script>\n    <title>Hello, Ken Burns!</title>\n    <link rel=\"canonical\" href=\"https://ithinkihaveacat.github.io/hello-world-amp-story/\"/>\n    <link href=\"https://fonts.googleapis.com/css?family=Asap:700\" rel=\"stylesheet\">\n    <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\">\n    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>\n  </head>\n  <body>\n    <amp-story\n      standalone\n      title=\"Hello, Ken Burns\"\n      publisher=\"Michael Stillwell\"\n      publisher-logo-src=\"https://s.gravatar.com/avatar/3928085cafc1e496fb3d990a9959f233?s=150\"\n      poster-portrait-src=\"/not-found.jpg\">\n      <amp-story-page id=\"start\">\n        <amp-story-grid-layer template=\"thirds\">\n          <div grid-area=\"middle-third\">\n            <h1>Ready?</h1>\n          </div>\n        </amp-story-grid-layer>\n      </amp-story-page>\n    </amp-story>\n  </body>\n</html>\n",
+        "rawHeaders": [
+            "Last-Modified",
+            "Mon, 01 Oct 2018 14:55:58 GMT",
+            "Content-Length",
+            "1835",
+            "Content-Disposition",
+            "inline; filename=\"index.html\"",
+            "Accept-Ranges",
+            "bytes",
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Date",
+            "Mon, 01 Oct 2018 15:23:22 GMT",
+            "Connection",
+            "close"
+        ]
+    },
+    {
+        "scope": "http://localhost:5000",
+        "method": "GET",
+        "path": "/not-found.jpg",
+        "body": "",
+        "status": 404,
+        "response": "",
+        "rawHeaders": [
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Date",
+            "Mon, 01 Oct 2018 15:23:22 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ]
+    },
+    {
+        "scope": "https://s.gravatar.com:443",
+        "method": "GET",
+        "path": "/avatar/3928085cafc1e496fb3d990a9959f233?s=150",
+        "body": "",
+        "status": 200,
+        "response": "ffd8ffe000104a46494600010101006000600000fffe003b43524541544f523a2067642d6a7065672076312e3020287573696e6720494a47204a50454720763632292c207175616c697479203d2039300affdb0043000302020302020303030304030304050805050404050a070706080c0a0c0c0b0a0b0b0d0e12100d0e110e0b0b1016101113141515150c0f171816141812141514ffdb00430103040405040509050509140d0b0d1414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414ffc00011080096009603012200021101031101ffc4001f0000010501010101010100000000000000000102030405060708090a0bffc400b5100002010303020403050504040000017d01020300041105122131410613516107227114328191a1082342b1c11552d1f02433627282090a161718191a25262728292a3435363738393a434445464748494a535455565758595a636465666768696a737475767778797a838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae1e2e3e4e5e6e7e8e9eaf1f2f3f4f5f6f7f8f9faffc4001f0100030101010101010101010000000000000102030405060708090a0bffc400b51100020102040403040705040400010277000102031104052131061241510761711322328108144291a1b1c109233352f0156272d10a162434e125f11718191a262728292a35363738393a434445464748494a535455565758595a636465666768696a737475767778797a82838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae2e3e4e5e6e7e8e9eaf2f3f4f5f6f7f8f9faffda000c03010002110311003f00f0e5b7ca161b3db3522c7b461b6f3c74a45ba8231959e37033c236efcb150c9751b49d5db3c6561738fc857a2f43c25ab23d69ade3d22ede7823b945899bca91432b9c703078eb5c06b1f0434468e130a7d8ef6388472f97cc729030c4af6c9e7231838aecb54d421b89ec2d53cc653309645f29812a9f3771fde0a3f1ab33df24c598c372f8f451fd4d649277b9d0a4e3f09e196da5eb5f0a75fcd84df6db09cfef2d1880ee3fd9",
+        "rawHeaders": [
+            "Server",
+            "nginx",
+            "Date",
+            "Mon, 01 Oct 2018 15:23:22 GMT",
+            "Content-Type",
+            "image/jpeg",
+            "Content-Length",
+            "8654",
+            "Connection",
+            "close",
+            "Last-Modified",
+            "Mon, 06 Aug 2012 22:41:59 GMT",
+            "Link",
+            "<https://www.gravatar.com/avatar/3928085cafc1e496fb3d990a9959f233?s=150>; rel=\"canonical\"",
+            "Content-Disposition",
+            "inline; filename=\"3928085cafc1e496fb3d990a9959f233.jpeg\"",
+            "Access-Control-Allow-Origin",
+            "*",
+            "X-nc",
+            "HIT lhr 1",
+            "Accept-Ranges",
+            "bytes",
+            "Expires",
+            "Mon, 01 Oct 2018 15:28:22 GMT",
+            "Cache-Control",
+            "max-age=300",
+            "Source-Age",
+            "7031"
+        ],
+        "responseIsBinary": true
+    }
+]

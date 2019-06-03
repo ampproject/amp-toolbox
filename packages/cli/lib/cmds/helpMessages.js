@@ -5,6 +5,7 @@ module.exports = {
     '',
     'curls ..................... generate AMP cache URL(s)',
     'help ...................... show this menu',
+    'lint ...................... checks document for errors',
     'optimize .................. runs AMP Optimizer for a given URL or file',
     'runtime-version ........... shows the current AMP runtime version [production]',
     'update-cache .............. removes documents from the AMP Caches',
@@ -19,6 +20,15 @@ module.exports = {
     '',
     'Options:',
     '--privateKey .............. path to the private key file. Defaults to \'./privateKey.pem\'.',
+  ].join('\n'),
+  'lint': [
+    'Usage:',
+    '',
+    '',
+    'amp-toolbox lint url',
+    '',
+    'Examples:',
+    '  $ amplint https://amp.dev/',
   ].join('\n'),
   'runtime-version': [
     'Usage:',

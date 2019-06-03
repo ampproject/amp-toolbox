@@ -1,0 +1,30 @@
+[
+    {
+        "scope": "https://precious-sturgeon.glitch.me:443",
+        "method": "GET",
+        "path": "/",
+        "body": "",
+        "status": 200,
+        "response": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <title>Hello!</title>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    \n    <!-- import the webpage's stylesheet -->\n    <link rel=\"stylesheet\" href=\"/style.css\">\n    \n    <!-- import the webpage's javascript file -->\n    <script src=\"/script.js\" defer></script>\n  </head>  \n  <body>\n    <h1>Hi there!</h1>\n    \n    <p>\n      I'm your cool new webpage. Made with <a href=\"https://glitch.com\">Glitch</a>!\n    </p>\n\n    <!-- include the Glitch button to show what the webpage is about and\n          to make it easier for folks to view source and remix -->\n    <div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div>\n    <script src=\"https://button.glitch.me/button.js\"></script>\n  </body>\n</html>\n",
+        "rawHeaders": [
+            "Date",
+            "Wed, 22 Aug 2018 12:11:38 GMT",
+            "Content-Type",
+            "text/html; charset=utf-8",
+            "Content-Length",
+            "875",
+            "Connection",
+            "close",
+            "X-Powered-By",
+            "Express",
+            "vary",
+            "Origin",
+            "last-modified",
+            "Thu, 26 Jul 2018 18:02:04 GMT",
+            "cache-control",
+            "max-age=0",
+            "etag",
+            "W/\"36b-164d7c1423e\""
+        ]
+    }
+]
