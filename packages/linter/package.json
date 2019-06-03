@@ -1,6 +1,6 @@
 {
   "name": "amp-toolbox-linter",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A linter for AMP documents",
   "repository": "https://github.com/ampproject/amp-toolbox/tree/amp-toolbox-linter",
   "license": "Apache-2.0",
