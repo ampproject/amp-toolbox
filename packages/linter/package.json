@@ -13,9 +13,9 @@
     "commander": "2.20.0",
     "debug": "4.1.1",
     "execa": "1.0.0",
-    "node-fetch": "2.4.1",
+    "node-fetch": "2.6.0",
     "probe-image-size": "4.0.0",
-    "throat": "4.1.0"
+    "throat": "5.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "@pika/pack": "0.3.7",
-    "prettier": "1.17.0",
+    "prettier": "1.17.1",
     "tap-parser": "9.3.2",
-    "typescript": "3.4.5"
+    "typescript": "3.5.1"
   },
   "@pika/pack": {
     "pipeline": [
