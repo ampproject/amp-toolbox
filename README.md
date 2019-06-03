@@ -44,6 +44,9 @@ cd amp-toolbox
 
 # install dependencies 
 npm i packages/*
+
+# run tests
+npm test
 ```
 
 ### Adding new dependencies
