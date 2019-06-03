@@ -84,7 +84,7 @@ Automatically rebuild `*.js` whenever `*.ts` changes.
 #### `npm run package`
 
 Generates npm-installable version of the package in `pkg/`. From another
-directory install via `npm install amp-toolbox-linter/pkg`.
+directory install via `npm install amp-toolbox/packages/linter/pkg`.
 
 Note: this command will emit multiple warnings of the form 'Valid relative
 imports must include the ".js" file extension' as well as complaints about
