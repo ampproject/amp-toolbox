@@ -28,7 +28,7 @@ module.exports = {
     'amp-toolbox lint url',
     '',
     'Examples:',
-    '  $ amplint https://amp.dev/'
+    '  $ amplint https://amp.dev/',
   ].join('\n'),
   'runtime-version': [
     'Usage:',
