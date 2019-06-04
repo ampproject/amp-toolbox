@@ -1,13 +1,13 @@
 {
   "name": "amp-toolbox-linter",
-  "version": "0.0.17",
+  "version": "1.2.0-alpha.1",
   "description": "A linter for AMP documents",
   "repository": "https://github.com/ampproject/amp-toolbox/tree/amp-toolbox-linter",
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "amp-toolbox-cache-list": "0.1.6",
-    "amp-toolbox-cache-url": "1.0.7",
+    "amp-toolbox-cache-list": "1.2.0-alpha.1",
+    "amp-toolbox-cache-url": "1.2.0-alpha.1",
     "amphtml-validator": "1.0.23",
     "cheerio": "1.0.0-rc.2",
     "commander": "2.20.0",

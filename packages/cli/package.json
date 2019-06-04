@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cli",
   "dependencies": {
-    "amp-toolbox-linter": "0.0.16",
-    "amp-toolbox-update-cache": "^1.2.0-alpha.1",
+    "amp-toolbox-linter": "1.2.0-alpha.1",
+    "amp-toolbox-update-cache": "1.2.0-alpha.1",
     "minimist": "1.2.0",
     "node-fetch": "2.6.0"
   },

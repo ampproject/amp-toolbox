@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "install": "npm install packages/* && lerna bootstrap --hoist",
     "generate:changelog": "lerna-changelog",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jasmine --config=jasmine.json && cd packages/linter && npm test",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.9.0",
+    "@babel/core": "7.4.5",
     "@pika/pack": "0.3.7",
     "@pika/plugin-build-node": "0.3.16",
     "@pika/plugin-build-types": "0.3.16",
@@ -28,7 +30,6 @@
     "@types/execa": "0.9.0",
     "@types/nock": "10.0.1",
     "@types/node-fetch": "2.3.3",
-    "@babel/core": "7.4.5",
     "amphtml-validator": "1.0.23",
     "babel-plugin-filter-imports": "3.0.0",
     "colors": "1.3.3",
@@ -43,7 +44,7 @@
     "karma": "4.1.0",
     "karma-chrome-launcher": "2.2.0",
     "karma-jasmine": "2.0.1",
-    "lerna": "3.14.1",
+    "lerna": "^3.14.1",
     "lerna-changelog": "0.8.2",
     "lru-cache": "5.1.1",
     "mock-express-request": "0.2.2",
@@ -60,8 +61,8 @@
     "rollup-plugin-serve": "1.0.1",
     "semver": "6.1.1",
     "tap-parser": "9.3.2",
-    "typescript": "3.4.5",
-    "tar": "4.4.8"
+    "tar": "4.4.8",
+    "typescript": "3.4.5"
   },
   "dependencies": {
     "amp-toolbox-cache-list": "file:packages/cache-list",
