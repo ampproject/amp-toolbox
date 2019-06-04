@@ -34,10 +34,6 @@
     "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json"
   },
   "devDependencies": {
-    "@pika/pack": "0.3.7",
-    "prettier": "1.17.1",
-    "tap-parser": "9.3.2",
-    "typescript": "3.5.1"
   },
   "@pika/pack": {
     "pipeline": [
