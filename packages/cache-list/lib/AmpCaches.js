@@ -38,8 +38,10 @@ class AmpCaches {
    *
    * @returns {Promise<Array>} A promise that resolves to an array containing the cache objects.
    */
-  list() {
-    return this.getCaches_();
+  async list() {
+    const response = await this.fetch_(CACHE_LIST_ENDPOINT);
+    const data = await response.json();
+    return data.caches;
   }
 
   /**
@@ -52,12 +54,6 @@ class AmpCaches {
   async get(cacheId) {
     const caches = await this.list();
     return caches.find((cache) => cache.id === cacheId);
-  }
-
-  async getCaches_() {
-    const response = await this.fetch_(CACHE_LIST_ENDPOINT);
-    const data = await response.json();
-    return data.caches;
   }
 }
 
