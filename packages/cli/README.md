@@ -6,10 +6,21 @@ The AMP Toolbox command line interface consists of a Node.js program called `amp
 
 Supported commands:
 
-- [update-cache](#update-cache): updates documents stored in [AMP Caches](https://developers.google.com/amp/cache/update-cache).
-- [version](#version): prints the current `amp-toolbox-cli` version.
-- [help](#help): displays available commands.
+- [curls](#curls): generate AMP cache URL(s)
+- [help](#help): lists all commands
+- [lint](#lint): checks document for errors
+- [optimize](#optimize): runs AMP Optimizer for a given URL or file
+- [runtime-version](#runtime-version): shows the current AMP runtime version [production]
+- [update-cache](#update-cache) removes documents from the AMP Caches
+- [version](#version): shows the current AMP Toolbox version
 
+## Installation
+
+Install via:
+
+```shell
+$ npm install @ampproject/toolbox-cli -g
+```
 
 ## Commands
 
@@ -17,41 +28,52 @@ Supported commands:
 
 Displays the help menu, listing all available commands:
 
+```shell
+$ amp help
 ```
-$ ./amp-toolbox-cli help
-```
-
 
 Pass a command to get more information about this specific command
 
+```shell
+$ amp help [command]
 ```
-./amp-toolbox-cli help [command]
-```
-
 
 Example:
 
 ```shell
-$ ./amp-toolbox help update-cache
+$ amp help update-cache
 ```
 
+### optimize
 
-### version
+Runs AMP Optimizer for the given file or URL:
 
-Prints the current version
-
-Example:
 ```shell
-$ ./amp-toolbox version
+$ amp optimize https://amp.dev
+```
+
+or 
+
+```shell
+$ amp optimize file.html
+```
+
+### lint
+
+Runs the AMP Linter for the given URL:
+
+```shell
+$ amp lint https://amp.dev
 ```
 
 ### runtime-version
 
-Prints the current version of the AMP runtime.
+Prints the current AMP version:
 
-Example:
 ```shell
-$ ./amp-toolbox runtime-version
+$ amp runtime-version
+=> 011905291911450
+```
 
 ### update-cache
 
@@ -62,11 +84,20 @@ It requires the public and private keys to be generated, as [described on the do
 By default, the application will look for the private key on a file called `privateKey.pem`, on the current working directory.
 
 ```shell
-$ ./amp-toolbox-cli update-cache https://www.example.com/
+$ amp update-cache https://www.example.com/
 ```
 
 Optionally, use the `--privateKey` parameter to specify the path for the private key.
 
 ```shell
-$ ./amp-toolbox-cli update-cache https://www.example.com/ --privateKey /path/to/private-key.pem
+$ amp update-cache https://www.example.com/ --privateKey /path/to/private-key.pem
+```
+
+### version
+
+Prints the current AMP Toolbox version:
+```shell
+$ amp version
+
+=> 011905291911450
 ```
