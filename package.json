@@ -62,7 +62,7 @@
     "semver": "6.1.1",
     "tap-parser": "9.3.2",
     "tar": "4.4.8",
-    "typescript": "3.4.5"
+    "typescript": "3.5.1"
   },
   "dependencies": {
     "amp-toolbox-cache-list": "file:packages/cache-list",
