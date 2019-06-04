@@ -9,7 +9,7 @@
     "amp-toolbox-cache-list": "^1.2.0-alpha.2",
     "amp-toolbox-cache-url": "^1.2.0-alpha.2",
     "amphtml-validator": "1.0.23",
-    "cheerio": "1.0.0-rc.2",
+    "cheerio": "1.0.0-rc.3",
     "commander": "2.20.0",
     "debug": "4.1.1",
     "execa": "1.0.0",
