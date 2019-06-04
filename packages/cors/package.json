@@ -1,7 +1,7 @@
 {
   "name": "amp-toolbox-cors",
   "version": "1.2.0-alpha.2",
-  "description": "AMP CORS",
+  "description": "An express middleware implementing the AMP CORS protocol",
   "main": "index.js",
   "keywords": [
     "amp",
