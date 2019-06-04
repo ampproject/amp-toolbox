@@ -33,7 +33,7 @@ Node:
 
 ```js
 const fs = require("fs");
-const linter = require("amp-toolbox-linter");
+const linter = require("@ampproject/toolbox-linter");
 const cheerio = require("cheerio");
 
 const body = fs.readFileSync("amp-dev.html");

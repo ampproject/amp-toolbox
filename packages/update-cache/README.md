@@ -10,7 +10,7 @@ https://developers.google.com/amp/cache/update-ping#update-cache-request).
 Generate a list of update URLs like this:
 
 ```javascript
-  const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
+  const UpdateCacheUrlProvider = require('@ampproject/toolbox-update-cache');
 
   // Load the private key, generated as described on 
   // https://developers.google.com/amp/cache/update-cache#rsa-keys

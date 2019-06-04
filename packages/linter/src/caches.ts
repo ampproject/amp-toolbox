@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "fs";
-import AmpCacheList from "amp-toolbox-cache-list";
+import AmpCacheList from "@ampproject/toolbox-cache-list";
 
 const cacheList = (existsSync("caches.json")
   ? Promise.resolve(JSON.parse(readFileSync("caches.json").toString()).caches)

@@ -21,7 +21,7 @@ Here is an example using [Express](https://expressjs.com):
 
 ```js
 const express = require('express');
-const ampCors = require('amp-toolbox-cors');
+const ampCors = require('@ampproject/toolbox-cors');
 
 const app = express();
 

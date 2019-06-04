@@ -12,13 +12,13 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 #### ES Module (Browser)
 
 ```javascript
-import {ampToolboxCacheUrl} from 'amp-toolbox-cache-url';
+import {ampToolboxCacheUrl} from '@ampproject/toolbox-cache-url';
 ```
 
 #### CommonJs (Node)
 
 ```javascript
-const ampToolboxCacheUrl = require('amp-toolbox-cache-url').createCacheUrl;
+const ampToolboxCacheUrl = require('@ampproject/toolbox-cache-url').createCacheUrl;
 ```
 
 

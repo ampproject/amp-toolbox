@@ -16,8 +16,8 @@
 
 'use strict';
 
-const {createCacheUrl} = require('amp-toolbox-cache-url');
-const AmpCaches = require('amp-toolbox-cache-list');
+const {createCacheUrl} = require('@ampproject/toolbox-cache-url');
+const AmpCaches = require('@ampproject/toolbox-cache-list');
 const caches = new AmpCaches();
 
 async function curls(args, logger) {

@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {cli} = require('amp-toolbox-linter');
+const {cli} = require('@ampproject/toolbox-linter');
 
 function lint(args, logger) {
   const url = args._[1];

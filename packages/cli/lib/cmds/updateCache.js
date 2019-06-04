@@ -18,7 +18,7 @@
 
 const fetch = require('node-fetch');
 const fs = require('fs');
-const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
+const UpdateCacheUrlProvider = require('@ampproject/toolbox-update-cache');
 const errorRegex = /<br><br>\s+(.+?)\s+<ins>/;
 
 function updateCaches_(privateKey, url, logger) {

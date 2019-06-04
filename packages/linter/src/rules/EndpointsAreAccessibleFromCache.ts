@@ -1,6 +1,6 @@
 import { parse } from "url";
 
-import { createCacheUrl } from "amp-toolbox-cache-url";
+import { createCacheUrl } from "@ampproject/toolbox-cache-url";
 import fetch from "node-fetch";
 
 import { caches } from "../caches";

@@ -22,7 +22,7 @@ const mkdirp = require('mkdirp');
 
 const AmpOptimizer = require('../../index.js');
 
-const runtimeVersion = require('amp-toolbox-runtime-version');
+const runtimeVersion = require('@ampproject/toolbox-runtime-version');
 
 const SRC_DIR = path.join(__dirname, 'src');
 const DIST_DIR = path.join(__dirname, 'dist');

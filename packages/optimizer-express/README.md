@@ -47,7 +47,7 @@ The example bellow will transform HTML being loaded by express-static:
 const express = require('express');
 const path = require('path');
 const app = express();
-const AmpOptimizerMiddleware = require('amp-toolbox-optimizer-express');
+const AmpOptimizerMiddleware = require('@ampproject/toolbox-optimizer-express');
 
 // It's important that the AmpOptimizerMiddleware is added *before* the static middleware.
 // This allows us to replace the parts needed before static handles the request.

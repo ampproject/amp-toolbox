@@ -12,13 +12,13 @@ passing a custom fetch strategy to the constructor.
 Install via:
 
 ```
-$ npm install @ampproject/cache-list
+$ npm install @ampproject/toolbox-cache-list
 ```
 
 List all known caches:
 
 ```
-  const Caches = require('@ampproject/cache-list');
+  const Caches = require('@ampproject/toolbox-cache-list');
 
   const allCaches = await Caches.list();
 ```
@@ -57,7 +57,7 @@ Which will return:
 Fetching info about a specific AMP cache via the cache id:
 
 ```
-  const Caches = require('@ampproject/cache-list');
+  const Caches = require('@ampproject/toolbox-cache-list');
 
   const googleAmpCache = await Caches.get('google');
 ```

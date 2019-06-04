@@ -52,13 +52,13 @@ The [Google AMP Cache](https://developers.google.com/amp/cache/overview#cache-op
 Install via:
 
 ```
-npm install amp-toolbox-optimizer
+npm install @ampproject/toolbox-optimizer
 ```
 
 Minimal usage:
 
 ```js
-const ampOptimizer = require('amp-toolbox-optimizer');
+const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
 // Transformer expects a string (streams are not supported)
 const originalHtml = `
@@ -135,10 +135,10 @@ Versioning the AMP runtime URLs has two benefits:
 You can use [amp-toolbox-runtime-version](../amp-toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
 
 ```
-const ampOptimiser = require('amp-toolbox-optimizer');
+const ampOptimiser = require('@ampproject/toolbox-optimizer');
 
 // retrieve the latest runtime version
-const runtimeVersion = require('amp-toolbox-runtime-version');
+const runtimeVersion = require('@ampproject/toolbox-runtime-version');
 
 // retrieve the latest version
 const ampRuntimeVersion = await runtimeVersion.currentVersion();

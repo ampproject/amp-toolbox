@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {oneBehindFetch} = require('amp-toolbox-core');
+const {oneBehindFetch} = require('@ampproject/toolbox-core');
 const CACHE_LIST_ENDPOINT = 'https://cdn.ampproject.org/caches.json';
 
 let INSTANCE = null;
