@@ -19,11 +19,26 @@
 const {oneBehindFetch} = require('amp-toolbox-core');
 const CACHE_LIST_ENDPOINT = 'https://cdn.ampproject.org/caches.json';
 
+let INSTANCE = null;
+
 /**
  * List of known AMP Caches, as available at `https://cdn.ampproject.org/caches.json`.
  *
  */
 class AmpCaches {
+  static list() {
+    if (!INSTANCE) {
+      INSTANCE = new AmpCaches();
+    }
+    return INSTANCE.list();
+  }
+  static get(id) {
+    if (!INSTANCE) {
+      INSTANCE = new AmpCaches();
+    }
+    return INSTANCE.get(id);
+  }
+
   /**
    * Creates a new instance of AmpCaches.
    *
