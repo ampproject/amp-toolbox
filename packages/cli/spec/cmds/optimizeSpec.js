@@ -17,7 +17,7 @@
 'use strict';
 
 const OptimizeCmd = require('../../lib/cmds/optimize.js');
-const AmpOptimizer = require('amp-toolbox-optimizer');
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const MockLogger = require('../helpers/MockLogger');
 
 describe('optimize', () => {

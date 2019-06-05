@@ -17,7 +17,7 @@
 'use strict';
 
 const Cli = require('./lib/cli');
-const {log} = require('amp-toolbox-core');
+const {log} = require('@ampproject/toolbox-core');
 
 module.exports = () => {
   const cli = new Cli(log);

@@ -16,7 +16,7 @@
 
 'use strict';
 
-const {log} = require('amp-toolbox-core');
+const {log} = require('@ampproject/toolbox-core');
 
 module.exports = log.tag('AMP Optimizer');
 

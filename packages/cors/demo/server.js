@@ -17,7 +17,7 @@
 
 const http = require('http');
 
-const ampCors = require('amp-toolbox-cors');
+const ampCors = require('@ampproject/toolbox-cors');
 
 const ampCorsMiddleware = ampCors({
   verbose: true,

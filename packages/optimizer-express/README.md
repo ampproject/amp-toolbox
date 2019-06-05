@@ -1,6 +1,6 @@
 ## Introduction
 
-[![npm version](https://badge.fury.io/js/amp-toolbox-optimizer-express.svg)](https://badge.fury.io/js/amp-toolbox-optimizer-express)
+[![npm version](https://badge.fury.io/js/@ampproject/toolbox-optimizer-express.svg)](https://badge.fury.io/js/@ampproject/toolbox-optimizer-express)
 
 amp-optimizer-express is an [express](http://expressjs.com/) middleware that optimizes page load
 times for websites using AMP for their canonical pages. The middleware uses the same
@@ -47,7 +47,7 @@ The example bellow will transform HTML being loaded by express-static:
 const express = require('express');
 const path = require('path');
 const app = express();
-const AmpOptimizerMiddleware = require('amp-toolbox-optimizer-express');
+const AmpOptimizerMiddleware = require('@ampproject/toolbox-optimizer-express');
 
 // It's important that the AmpOptimizerMiddleware is added *before* the static middleware.
 // This allows us to replace the parts needed before static handles the request.

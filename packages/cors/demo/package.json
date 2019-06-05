@@ -1,5 +1,5 @@
 {
-  "name": "amp-toolbox-cors-demo",
+  "name": "@ampproject/toolbox-cors-demo",
   "version": "1.0.0",
   "private": true,
   "main": "app.js",
@@ -10,7 +10,7 @@
   "author": "AMPHTML Authors",
   "license": "Apache-2.0",
   "dependencies": {
-    "amp-toolbox-cors": "0.2.4",
+    "@ampproject/toolbox-cors": "0.2.4",
     "express": "4.17.0"
   }
 }

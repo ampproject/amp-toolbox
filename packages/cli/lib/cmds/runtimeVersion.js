@@ -16,7 +16,7 @@
 
 'use strict';
 
-const ampRuntimeVersionProvider = require('amp-toolbox-runtime-version');
+const ampRuntimeVersionProvider = require('@ampproject/toolbox-runtime-version');
 
 async function runtimeVersion(args, logger) {
   const version = await ampRuntimeVersionProvider.currentVersion();

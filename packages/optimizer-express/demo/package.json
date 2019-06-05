@@ -1,7 +1,7 @@
 {
-  "name": "amp-toolbox-optimizer-express-demo",
+  "name": "@ampproject/toolbox-optimizer-express-demo",
   "version": "0.1.0",
-  "description": "Demo for the amp-toolbox-optimizer-express component",
+  "description": "Demo for the @ampproject/toolbox-optimizer-express component",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

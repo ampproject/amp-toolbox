@@ -1,5 +1,5 @@
 {
-  "name": "amp-toolbox-optimizer-cheerio-demo",
+  "name": "@ampproject/toolbox-optimizer-cheerio-demo",
   "version": "0.0.1",
   "description": "Transform document via Cheerio",
   "main": "index.js",
@@ -12,6 +12,6 @@
     "cheerio": "^1.0.0-rc.2"
   },
   "devDependencies": {
-    "amp-toolbox-optimizer": "0.5.1"
+    "@ampproject/toolbox-optimizer": "0.5.1"
   }
 }

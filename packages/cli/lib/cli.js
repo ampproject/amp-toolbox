@@ -17,7 +17,7 @@
 'use strict';
 
 const minimist = require('minimist');
-const {log} = require('amp-toolbox-core');
+const {log} = require('@ampproject/toolbox-core');
 
 class Cli {
   constructor(logger=log) {

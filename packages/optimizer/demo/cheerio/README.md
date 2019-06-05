@@ -1,4 +1,4 @@
-# amp-toolbox-optimizer-cheerio-demo
+# toolbox-optimizer-cheerio-demo
 
 This example demonstrates the use of
 [Cheerio](https://github.com/cheeriojs/cheerio) to apply jQuery-like
