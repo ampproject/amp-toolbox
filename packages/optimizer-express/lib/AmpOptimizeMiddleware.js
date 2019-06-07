@@ -22,8 +22,8 @@
  * to the network.
  */
 const mime = require('mime-types');
-const AmpOptimizer = require('amp-toolbox-optimizer');
-const {isAmp} = require('amp-toolbox-core');
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+const {isAmp} = require('@ampproject/toolbox-core');
 
 class AmpOptimizerMiddleware {
   /**

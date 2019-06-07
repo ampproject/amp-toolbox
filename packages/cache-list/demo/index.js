@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 The AMP HTML Authors. All Rights Reserved.
+ * Copyright 2018 The AMP HTML Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,17 @@
 
 'use strict';
 
-const {cli} = require('@ampproject/toolbox-linter');
 
-function lint(args, logger) {
-  const url = args._[1];
-  if (!url) {
-    return Promise.reject(new Error('Missing URL'));
-  }
-  return cli(['dummy'].concat(args._), logger); // "dummy" to simulate process.argv
+const Caches = require('@ampproject/toolbox-cache-list');
+
+async function demo() {
+  // Lists known AMP Caches
+  const allCaches = await Caches.list();
+  console.log(JSON.stringify(allCaches, null, 2));
+
+  // Retrieves a specific AMP cache
+  const googleAmpCache = await Caches.get('google');
+  console.log(JSON.stringify(googleAmpCache, null, 2));
 }
 
-module.exports = lint;
+demo();

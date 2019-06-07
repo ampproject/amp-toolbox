@@ -15,9 +15,9 @@
  */
 'use strict';
 
-const Caches = require('amp-toolbox-cache-list');
-const createCacheSubdomain = require('amp-toolbox-cache-url').createCurlsSubdomain;
-const log = require('amp-toolbox-core').log.tag('AMP CORS');
+const Caches = require('@ampproject/toolbox-cache-list');
+const createCacheSubdomain = require('@ampproject/toolbox-cache-url').createCurlsSubdomain;
+const log = require('@ampproject/toolbox-core').log.tag('AMP CORS');
 const url = require('url');
 
 // the default options

@@ -1,6 +1,6 @@
 # AMP Optimizer 
 
-[![npm version](https://badge.fury.io/js/amp-toolbox-optimizer.svg)](https://badge.fury.io/js/amp-toolbox-optimizer)
+[![npm version](https://badge.fury.io/js/@ampproject/toolbox-optimizer.svg)](https://badge.fury.io/js/@ampproject/toolbox-optimizer)
 
 AMP Optimizer is a tool to server-side enhance the rendering performance of AMP pages. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
@@ -137,13 +137,10 @@ Versioning the AMP runtime URLs has one main benefit: versioned AMP runtime URLs
 
 **Important:** when using versioned AMP runtime URLs make sure to invalidate all caches whenever a new AMP runtime is released. This is to ensure that your AMP pages always use the latest version of the AMP runtime.  
 
-You can use [amp-toolbox-runtime-version](../amp-toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
+You can use [@ampproject/toolbox-runtime-version](../@ampproject/toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
 
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
-const runtimeVersion = require('@ampproject/toolbox-runtime-version');
-
-// retrieve the latest version
 const ampRuntimeVersion = await runtimeVersion.currentVersion();
 
 // The input string

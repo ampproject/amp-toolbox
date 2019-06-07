@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const log = require('amp-toolbox-core').log.tag('AMP Runtime Version');
+const log = require('@ampproject/toolbox-core').log.tag('AMP Runtime Version');
 
 const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
 

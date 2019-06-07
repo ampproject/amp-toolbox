@@ -1,4 +1,4 @@
-# amp-toolbox-optimizer-express-demo
+# toolbox-optimizer-express-demo
 
 Contains a set of examples on how to use the AMP Optimizer Express Middleware.
 

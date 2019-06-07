@@ -20,14 +20,14 @@ declare module "amphtml-validator" {
   }>;
 }
 
-declare module "amp-toolbox-cache-url" {
+declare module "@ampproject/toolbox-cache-url" {
   export function createCacheUrl(
     cacheSuffix: string,
     url: string
   ): Promise<string>;
 }
 
-declare module "amp-toolbox-cache-list" {
+declare module "@ampproject/toolbox-cache-list" {
   export default class Caches {
     constructor();
     list(): Promise<Array<{ cacheDomain: string }>>;
