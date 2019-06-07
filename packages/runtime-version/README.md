@@ -1,6 +1,6 @@
 # AMP Runtime Version
 
-[![npm version](https://badge.fury.io/js/amp-toolbox-runtime-version.svg)](https://badge.fury.io/js/amp-toolbox-runtime-version)
+[![npm version](https://badge.fury.io/js/@ampproject/toolbox-runtime-version.svg)](https://badge.fury.io/js/@ampproject/toolbox-runtime-version)
 
 Use it to query `cdn.ampproject.org` for the current release or canary version of the AMP Runtime. Uses a stale-while-revalidate caching strategy to avoid network requests in the critical path.
 
@@ -22,7 +22,7 @@ https://cdn.ampproject.org/rtv/001515617716922/v0.css
 Install via:
 
 ```sh
-npm install amp-toolbox-runtime-version
+npm install @ampproject/toolbox-runtime-version
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ npm install amp-toolbox-runtime-version
 Basic usage:
 
 ```js
-const runtimeVersion = require('amp-toolbox-runtime-version');
+const runtimeVersion = require('@ampproject/toolbox-runtime-version');
 
 // Release version
 runtimeVersion.currentVersion().then(version => {

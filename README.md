@@ -22,6 +22,7 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 
 - **[amp-cache-url](./packages/cache-url):** a javascript library for translating origin URLs to the [AMP Cache URL format](https://developers.google.com/amp/cache/overview).
 - **[amp-cache-list](./packages/cache-list):** a javascript library for listing the known AMP Caches.
+- **[amp-cli](./packages/cli):** a command line version of AMP Toolbox
 - **[amp-cors](./packages/cors):** a connect/express middleware to automatically add [AMP Cors headers](https://www.ampproject.org/docs/fundamentals/amp-cors-requests).
 - **[amp-optimizer](./packages/optimizer):** a javascript library implementing server-side-rendering for AMP pages.
 - **[amp-optimizer-express](./packages/optimizer-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
@@ -43,7 +44,7 @@ git clone https://github.com/your-fork/amp-toolbox.git
 cd amp-toolbox
 
 # install dependencies 
-npm i packages/*
+npm install
 
 # run tests
 npm test

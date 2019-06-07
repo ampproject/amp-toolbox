@@ -18,7 +18,7 @@
 
 const express = require('express');
 const app = express();
-const AmpOptimizerMiddleware = require('amp-toolbox-optimizer-express');
+const AmpOptimizerMiddleware = require('@ampproject/toolbox-optimizer-express');
 const compression = require('compression');
 const httpProxy = require('http-proxy');
 const https = require('https');

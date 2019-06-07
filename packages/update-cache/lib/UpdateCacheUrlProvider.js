@@ -16,9 +16,9 @@
 
 'use strict';
 
-const {createCacheUrl} = require('amp-toolbox-cache-url');
+const {createCacheUrl} = require('@ampproject/toolbox-cache-url');
 const Signature = require('./Signature');
-const Caches = require('amp-toolbox-cache-list');
+const Caches = require('@ampproject/toolbox-cache-list');
 
 const {URL} = require('url');
 

@@ -1,7 +1,7 @@
 # AMP Linter
 
 [![npm
-version](https://badge.fury.io/js/amp-toolbox-linter.svg)](https://badge.fury.io/js/amp-toolbox-linter)
+version](https://badge.fury.io/js/@ampproject/toolbox-linter.svg)](https://badge.fury.io/js/@ampproject/toolbox-linter)
 
 ## Overview
 
@@ -26,14 +26,14 @@ $ node src/cli.js https://amp.dev/
 Command-line (from npm):
 
 ```sh
-$ npx amp-toolbox-linter https://amp.dev/
+$ npx @ampproject/toolbox-linter https://amp.dev/
 ```
 
 Node:
 
 ```js
 const fs = require("fs");
-const linter = require("amp-toolbox-linter");
+const linter = require("@ampproject/toolbox-linter");
 const cheerio = require("cheerio");
 
 const body = fs.readFileSync("amp-dev.html");

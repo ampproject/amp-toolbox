@@ -1,6 +1,6 @@
 # AMP CORS Middleware
 
-[![npm version](https://badge.fury.io/js/amp-toolbox-cors.svg)](https://badge.fury.io/js/amp-toolbox-cors)
+[![npm version](https://badge.fury.io/js/@ampproject/toolbox-cors.svg)](https://badge.fury.io/js/@ampproject/toolbox-cors)
 
 The AMP CORS middleware adds CORS and
 [AMP CORS](https://www.ampproject.org/docs/fundamentals/amp-cors-requests) headers to all CORS
@@ -12,7 +12,7 @@ requests initiated by the AMP runtime. The middleware will only add these header
 Install via:
 
 ```sh
-npm install amp-toolbox-cors --save
+npm install @ampproject/toolbox-cors --save
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ Here is an example using [Express](https://expressjs.com):
 
 ```js
 const express = require('express');
-const ampCors = require('amp-toolbox-cors');
+const ampCors = require('@ampproject/toolbox-cors');
 
 const app = express();
 

@@ -1,13 +1,13 @@
 {
-  "name": "amp-toolbox-linter",
-  "version": "1.2.0-alpha.2",
+  "name": "@ampproject/toolbox-linter",
+  "version": "1.0.0-beta.0",
   "description": "A linter for AMP documents",
-  "repository": "https://github.com/ampproject/amp-toolbox/tree/amp-toolbox-linter",
+  "repository": "https://github.com/ampproject/amp-toolbox/tree/@ampproject/toolbox-linter",
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "amp-toolbox-cache-list": "^1.2.0-alpha.2",
-    "amp-toolbox-cache-url": "^1.2.0-alpha.2",
+    "@ampproject/toolbox-cache-url": "^1.0.0-beta.0",
+    "@ampproject/toolbox-cache-list": "^1.0.0-beta.0",
     "amphtml-validator": "1.0.23",
     "cheerio": "1.0.0-rc.2",
     "commander": "2.20.0",
@@ -32,8 +32,6 @@
     "package": "$npm_execpath run lint && pack build",
     "publish": "pack publish --any-branch",
     "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json"
-  },
-  "devDependencies": {
   },
   "@pika/pack": {
     "pipeline": [

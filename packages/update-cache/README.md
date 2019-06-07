@@ -1,6 +1,6 @@
 # AMP-Toolbox update-cache
 
-[![npm version](https://badge.fury.io/js/amp-toolbox-update-cache.svg)](https://badge.fury.io/js/amp-toolbox-update-cache)
+[![npm version](https://badge.fury.io/js/@ampproject/toolbox-update-cache.svg)](https://badge.fury.io/js/@ampproject/toolbox-update-cache)
 
 Generates AMP Cache invalidation URLs for all known AMP Caches. For more info see the [Google AMP Cache documentation](
 https://developers.google.com/amp/cache/update-ping#update-cache-request).
@@ -10,7 +10,7 @@ https://developers.google.com/amp/cache/update-ping#update-cache-request).
 Generate a list of update URLs like this:
 
 ```javascript
-  const UpdateCacheUrlProvider = require('amp-toolbox-update-cache');
+  const UpdateCacheUrlProvider = require('@ampproject/toolbox-update-cache');
 
   // Load the private key, generated as described on 
   // https://developers.google.com/amp/cache/update-cache#rsa-keys
