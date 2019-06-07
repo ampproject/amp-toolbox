@@ -12,6 +12,8 @@ AMP Optimizer is a tool to server-side enhance the rendering performance of AMP 
 
 The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/).
 
+**Important: AMP Optimizer will produce valid AMP, if the input is valid AMP.**
+
 * [Usage](#usage)
 * [Best Practices](#best-practices)
   + [Regenerate pages at least once a week](#regenerate-pages-at-least-once-a-week)
@@ -138,7 +140,7 @@ Versioning the AMP runtime URLs has one main benefit: versioned AMP runtime URLs
 You can use [amp-toolbox-runtime-version](../amp-toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
 
 ```
-const ampOptimiser = require('@ampproject/toolbox-optimizer');
+const ampOptimizer = require('@ampproject/toolbox-optimizer');
 const runtimeVersion = require('@ampproject/toolbox-runtime-version');
 
 // retrieve the latest version
@@ -166,7 +168,7 @@ Add placeholders for `amp-img` and `amp-video` posters. The placeholders are blu
 
 **Important: blurry image placeholder computation is computationally expensive. Make sure to only use it for static or cached pages.**
 
-This transformer supports the following option:
+This transformer supports the following options:
 
 * `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
 * `imageBasePath`: specifies a base path used to resolve an image during build.
@@ -192,7 +194,7 @@ It's possible to rewrite the AMP framework and component imports to a different 
 
 Example:
 ```
-const ampOptimiser = require('@ampproject/toolbox-optimizer');
+const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
 // The input string
 const originalHtml = `
