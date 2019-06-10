@@ -7,6 +7,12 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 
 ## Usage
 
+Install via:
+
+```
+$ npm install @ampproject/toolbox-cache-url@beta
+```
+
 ### Including the Module
 
 #### ES Module (Browser)
