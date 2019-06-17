@@ -33,6 +33,9 @@
     "publish": "pack publish --any-branch",
     "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json"
   },
+  "publishConfig": {
+    "directory": "pkg"
+  },
   "@pika/pack": {
     "pipeline": [
       [
