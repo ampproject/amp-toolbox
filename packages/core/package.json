@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-core",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.3",
   "description": "Commonly used functionality for amp-toolbox",
   "main": "index.js",
   "repository": {
@@ -23,5 +23,5 @@
   "dependencies": {
     "node-fetch": "2.6.0"
   },
-  "gitHead": "2b270f726aaffe5e25bbd93ffc97b1a13edf2c34"
+  "gitHead": "cb496f081c871a25dc73113ae1e1fccfb59b2732"
 }
