@@ -164,9 +164,7 @@ withFixture("bookendsameorigin3", () =>
 
 withFixture("bookendsameorgin4", () =>
   assertPass(
-    `${
-      EndpointsAreAccessibleFromOrigin.name
-    } - v0 AMP Story - configured correctly`,
+    `${EndpointsAreAccessibleFromOrigin.name} - v0 AMP Story - configured correctly`,
     runNetworkTest(
       EndpointsAreAccessibleFromOrigin,
       "https://ampbyexample.com/stories/introduction/amp_story_hello_world/preview/embed/"
@@ -386,9 +384,7 @@ withFixture("sxgconneg1", () => {
 
 withFixture("sxgconneg2", () => {
   return assertFail(
-    `${
-      SxgContentNegotiationIsOk.name
-    } - application/signed-exchange not supported`,
+    `${SxgContentNegotiationIsOk.name} - application/signed-exchange not supported`,
     runNetworkTest(
       SxgContentNegotiationIsOk,
       "https://boundless-stealer.glitch.me/"
@@ -398,9 +394,7 @@ withFixture("sxgconneg2", () => {
 
 withFixture("sxgconneg3", () => {
   return assertFail(
-    `${
-      SxgContentNegotiationIsOk.name
-    } - application/signed-exchange incorrectly supported`,
+    `${SxgContentNegotiationIsOk.name} - application/signed-exchange incorrectly supported`,
     runNetworkTest(SxgContentNegotiationIsOk, "https://azei-package-test.com/")
   );
 });
@@ -421,9 +415,7 @@ withFixture("sxgamppkg1", () => {
 
 withFixture("sxgamppkg3", () => {
   return assertFail(
-    `${
-      SxgAmppkgIsForwarded.name
-    } - /amppkg/ not forwarded (wrong content-type)`,
+    `${SxgAmppkgIsForwarded.name} - /amppkg/ not forwarded (wrong content-type)`,
     runNetworkTest(SxgAmppkgIsForwarded, "https://azei-package-test.com/")
   );
 });

@@ -46,9 +46,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     } catch (e) {
       if (e.code === "ENOENT") {
         return this.warn(
-          `not testing: couldn't execute [${
-            e.cmd
-          }] (not installed? not in PATH?)`
+          `not testing: couldn't execute [${e.cmd}] (not installed? not in PATH?)`
         );
       } else {
         const debug = `echo ${body.toString(
