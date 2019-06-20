@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "build": "lerna run build && lerna run package",
+    "build": "lerna run build",
     "install": "npm install packages/* && lerna bootstrap --hoist",
     "generate:changelog": "lerna-changelog",
     "test": "npm-run-all build test:node test:browser lint",
