@@ -19,7 +19,7 @@ Supported commands:
 Install via:
 
 ```shell
-$ npm install @ampproject/toolbox-cli@beta -g
+$ npm install @ampproject/toolbox-cli@canary -g
 ```
 
 ## Commands

@@ -31,7 +31,7 @@ The performance optimizations can improve page rendering times by up to 50%. You
 Install via:
 
 ```
-npm install @ampproject/toolbox-optimizer@beta
+npm install @ampproject/toolbox-optimizer@canary
 ```
 
 Minimal usage:

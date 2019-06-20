@@ -12,7 +12,7 @@ passing a custom fetch strategy to the constructor.
 Install via:
 
 ```
-$ npm install @ampproject/toolbox-cache-list@beta
+$ npm install @ampproject/toolbox-cache-list@canary
 ```
 
 List all known caches:

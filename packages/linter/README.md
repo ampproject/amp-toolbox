@@ -26,7 +26,7 @@ $ node src/cli.js https://amp.dev/
 Command-line (from npm):
 
 ```sh
-$ npx @ampproject/toolbox-linter@beta https://amp.dev/
+$ npx @ampproject/toolbox-linter@canary https://amp.dev/
 ```
 
 Node:

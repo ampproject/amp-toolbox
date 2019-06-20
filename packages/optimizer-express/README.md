@@ -40,7 +40,7 @@ An amphtml link will be added to the server-side-rendered version:
 Install via:
 
 ```
-$ npm install @ampproject/toolbox-optimizer-express@beta
+$ npm install @ampproject/toolbox-optimizer-express@canary
 ```
 
 The AMP Optimizer Middleware can be used like any other express middleware.
