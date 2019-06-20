@@ -57,7 +57,7 @@
   },
   "gitHead": "2b270f726aaffe5e25bbd93ffc97b1a13edf2c34",
   "devDependencies": {
-    "typescript": "^3.5.2",
+    "typescript": "3.5.2",
     "@pika/pack": "0.4.0",
     "@pika/plugin-build-node": "0.4.0",
     "@pika/plugin-build-types": "0.4.0",
