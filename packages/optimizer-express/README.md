@@ -37,6 +37,12 @@ An amphtml link will be added to the server-side-rendered version:
 
 ## Usage
 
+Install via:
+
+```
+$ npm install @ampproject/toolbox-optimizer-express@beta
+```
+
 The AMP Optimizer Middleware can be used like any other express middleware.
 
 It is important that the middleware is used *before* the middleware or route that renders the page.

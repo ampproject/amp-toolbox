@@ -7,6 +7,12 @@ https://developers.google.com/amp/cache/update-ping#update-cache-request).
 
 ## Usage
 
+Install via:
+
+```sh
+npm install @ampproject/toolbox-update-cache@beta
+```
+
 Generate a list of update URLs like this:
 
 ```javascript
