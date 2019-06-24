@@ -33,7 +33,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
       sxg = await execa(CMD, ARGS, { input: body }).then(spawn => {
         const { stdout } = spawn;
         let m: ReturnType<typeof String.prototype.match>;
-        m = stdout.match(/^The exchange has valid signature.$/m);
+        m = stdout.match(/^The exchange has a valid signature.$/m);
         const isValid = !!m;
         m = stdout.match(/^format version: (\S+)$/m);
         const version = m && m[1];
