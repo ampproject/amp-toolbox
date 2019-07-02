@@ -5,6 +5,7 @@ import { RuntimeIsPreloaded } from "../src/rules/RuntimeIsPreloaded";
 import { SchemaMetadataIsNews } from "../src/rules/SchemaMetadataIsNews";
 import { StoryRuntimeIsV1 } from "../src/rules/StoryRuntimeIsV1";
 import { basename } from "path";
+import { BookendExists } from "../src/rules/BookendExists";
 
 assertWarn(
   `${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`,
@@ -86,5 +87,20 @@ assertFail(
   runLocalTest(StoryRuntimeIsV1, "local/StoryRuntimeIsV1-2/source.html")
 );
 
+assertPass(
+  `${BookendExists.name} - external bookend data`,
+  runLocalTest(BookendExists, "local/BookendExists-1/source.html")
+);
+
+assertPass(
+  `${BookendExists.name} - inline bookend data`,
+  runLocalTest(BookendExists, "local/BookendExists-2/source.html")
+);
+
+assertWarn(
+  `${BookendExists.name} - no bookend`,
+  runLocalTest(BookendExists, "local/BookendExists-3/source.html")
+);
+
 console.log(`# ${basename(__filename)} - HTML-only tests`);
-console.log(`1..13`);
+console.log(`1..16`);
