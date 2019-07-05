@@ -1,0 +1,27 @@
+{
+  "name": "@ampproject/validator-query",
+  "version": "1.0.0-beta.3",
+  "description": "A library that helps query AMP Validator rules",
+  "main": "index.js",
+  "keywords": [
+    "amp"
+  ],
+  "scripts": {
+    "fetchRules": "curl https://cdn.ampproject.org/v0/validator.json --output validator.json"
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/validator-query",
+  "gitHead": "cb496f081c871a25dc73113ae1e1fccfb59b2732"
+}
