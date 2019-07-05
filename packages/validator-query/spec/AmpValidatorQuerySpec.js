@@ -24,21 +24,21 @@ describe('AmpValidatorQuery', () => {
       errorFormats: [
         {
           code: 'TEST',
-          format: '%s error'
-        }
+          format: '%s error',
+        },
       ],
       errorSpecificity: [
         {
           code: 'TEST',
-          specificity: 1
-        }
-      ]
+          specificity: 1,
+        },
+      ],
     });
     expect(query.errors).toEqual({
       TEST: {
         format: '%s error',
-        specificity: 1
-      }
+        specificity: 1,
+      },
     });
   });
 
@@ -48,26 +48,26 @@ describe('AmpValidatorQuery', () => {
         {
           extensionSpec: {
             name: 'amp-some-component',
-            version: ['0.1', 'latest']
+            version: ['0.1', 'latest'],
           },
           htmlFormat: ['AMP'],
-          tagName: 'SCRIPT'
-        }
-      ]
+          tagName: 'SCRIPT',
+        },
+      ],
     });
     expect(query.tags).toEqual([]);
     expect(query.extensions).toEqual([
       {
         name: 'amp-some-component',
         version: ['0.1', 'latest'],
-        htmlFormat: ['AMP']
-      }
+        htmlFormat: ['AMP'],
+      },
     ]);
     expect(query.getExtensionsForFormat('AMP')).toEqual({
       'amp-some-component': {
         version: ['0.1', 'latest'],
-        htmlFormat: ['AMP']
-      }
+        htmlFormat: ['AMP'],
+      },
     });
     expect(query.getExtensionsForFormat('AMP4EMAIL')).toEqual({});
   });
@@ -77,68 +77,68 @@ describe('AmpValidatorQuery', () => {
       attrLists: [
         {
           name: '$GLOBAL_ATTRS',
-          attrs: [{ name: 'global' }]
+          attrs: [{name: 'global'}],
         },
         {
           name: '$AMP_LAYOUT_ATTRS',
-          attrs: [{ name: 'layoutattr' }]
+          attrs: [{name: 'layoutattr'}],
         },
         {
           name: 'some-list',
-          attrs: [{ name: 'test' }]
-        }
+          attrs: [{name: 'test'}],
+        },
       ],
       tags: [
         {
           htmlFormat: ['AMP', 'AMP4EMAIL'],
-          attrs: [{ name: 'align' }],
+          attrs: [{name: 'align'}],
           attrLists: ['some-list'],
-          tagName: 'DIV'
+          tagName: 'DIV',
         },
         {
           htmlFormat: ['AMP', 'AMP4EMAIL'],
-          attrs: [{ name: 'align' }],
+          attrs: [{name: 'align'}],
           disabledBy: ['transformed'],
           ampLayout: {
-            supportedLayouts: ['FIXED', 'FIXED_HEIGHT']
+            supportedLayouts: ['FIXED', 'FIXED_HEIGHT'],
           },
-          tagName: 'AMP-IMG'
-        }
-      ]
+          tagName: 'AMP-IMG',
+        },
+      ],
     });
 
     const tags = [
       {
         htmlFormat: ['AMP', 'AMP4EMAIL'],
         attrs: [
-          { name: 'align' },
-          { name: 'test' },
+          {name: 'align'},
+          {name: 'test'},
           {
             name: 'global',
-            global: true
-          }
+            global: true,
+          },
         ],
-        tagName: 'DIV'
+        tagName: 'DIV',
       },
       {
         htmlFormat: ['AMP', 'AMP4EMAIL'],
         attrs: [
-          { name: 'align' },
+          {name: 'align'},
           {
             name: 'layoutattr',
-            layout: true
+            layout: true,
           },
           {
             name: 'global',
-            global: true
-          }
+            global: true,
+          },
         ],
         disabledBy: ['transformed'],
         ampLayout: {
-          supportedLayouts: ['FIXED', 'FIXED_HEIGHT']
+          supportedLayouts: ['FIXED', 'FIXED_HEIGHT'],
         },
-        tagName: 'AMP-IMG'
-      }
+        tagName: 'AMP-IMG',
+      },
     ];
     expect(query.tags).toEqual(tags);
     expect(query.extensions).toEqual([]);
@@ -149,23 +149,23 @@ describe('AmpValidatorQuery', () => {
 
 function makeQuery(rules) {
   return new AmpValidatorQuery(
-    Object.assign(
-      {
-        errorFormats: [],
-        errorSpecificity: [],
-        attrLists: [
+      Object.assign(
           {
-            name: '$AMP_LAYOUT_ATTRS',
-            attrs: []
+            errorFormats: [],
+            errorSpecificity: [],
+            attrLists: [
+              {
+                name: '$AMP_LAYOUT_ATTRS',
+                attrs: [],
+              },
+              {
+                name: '$GLOBAL_ATTRS',
+                attrs: [],
+              },
+            ],
+            tags: [],
           },
-          {
-            name: '$GLOBAL_ATTRS',
-            attrs: []
-          }
-        ],
-        tags: []
-      },
-      rules
-    )
+          rules
+      )
   );
 }

@@ -22,32 +22,32 @@ class AmpValidatorQuery {
   getTagsForFormat(format, transformed) {
     format = format.toLowerCase();
     return this.tags
-      .filter(
-        tag =>
-          tag.htmlFormat.includes(format.toUpperCase()) &&
+        .filter(
+            (tag) =>
+              tag.htmlFormat.includes(format.toUpperCase()) &&
           this.checkEntityFormat_(tag, format) &&
           this.checkEntityTransformed_(tag, transformed)
-      )
-      .map(tag => {
-        tag = Object.assign({}, tag);
-        tag.attrs = tag.attrs.filter(
-          attr =>
-            this.checkEntityFormat_(attr, format) &&
+        )
+        .map((tag) => {
+          tag = Object.assign({}, tag);
+          tag.attrs = tag.attrs.filter(
+              (attr) =>
+                this.checkEntityFormat_(attr, format) &&
             this.checkEntityTransformed_(attr, transformed)
-        );
-        return tag;
-      });
+          );
+          return tag;
+        });
   }
 
   getExtensionsForFormat(format) {
     format = format.toUpperCase();
     return this.extensions
-      .filter(extension => extension.htmlFormat.includes(format))
-      .reduce((result, extension) => {
-        result[extension.name] = Object.assign({}, extension);
-        delete result[extension.name].name;
-        return result;
-      }, {});
+        .filter((extension) => extension.htmlFormat.includes(format))
+        .reduce((result, extension) => {
+          result[extension.name] = Object.assign({}, extension);
+          delete result[extension.name].name;
+          return result;
+        }, {});
   }
 
   checkEntityTransformed_(entity, transformed) {
@@ -98,7 +98,7 @@ class AmpValidatorQuery {
   initAttrLists_(rules) {
     this.attrLists = {};
     this.specialAttrLists = {};
-    for (const { name, attrs } of rules.attrLists) {
+    for (const {name, attrs} of rules.attrLists) {
       if (name.startsWith('$')) {
         this.specialAttrLists[name] = attrs;
       } else {
@@ -106,37 +106,37 @@ class AmpValidatorQuery {
       }
     }
     this.specialAttrLists.$AMP_LAYOUT_ATTRS.forEach(
-      attr => (attr.layout = true)
+        (attr) => (attr.layout = true)
     );
-    this.specialAttrLists.$GLOBAL_ATTRS.forEach(attr => (attr.global = true));
+    this.specialAttrLists.$GLOBAL_ATTRS.forEach((attr) => (attr.global = true));
   }
 
   initTags_(rules) {
     this.tags = rules.tags
-      .filter(tag => !tag.extensionSpec)
-      .map(tag => {
-        tag.attrs = tag.attrs || [];
-        if (tag.attrLists) {
-          for (const attrList of tag.attrLists) {
-            tag.attrs.push(...this.attrLists[attrList]);
+        .filter((tag) => !tag.extensionSpec)
+        .map((tag) => {
+          tag.attrs = tag.attrs || [];
+          if (tag.attrLists) {
+            for (const attrList of tag.attrLists) {
+              tag.attrs.push(...this.attrLists[attrList]);
+            }
+            delete tag.attrLists;
           }
-          delete tag.attrLists;
-        }
-        if (tag.ampLayout) {
-          tag.attrs.push(...this.specialAttrLists.$AMP_LAYOUT_ATTRS);
-        }
-        tag.attrs.push(...this.specialAttrLists.$GLOBAL_ATTRS);
+          if (tag.ampLayout) {
+            tag.attrs.push(...this.specialAttrLists.$AMP_LAYOUT_ATTRS);
+          }
+          tag.attrs.push(...this.specialAttrLists.$GLOBAL_ATTRS);
 
-        return tag;
-      });
+          return tag;
+        });
   }
 
   initExtensions_(rules) {
     this.extensions = rules.tags
-      .filter(tag => tag.extensionSpec)
-      .map(tag =>
-        Object.assign({}, tag.extensionSpec, { htmlFormat: tag.htmlFormat })
-      );
+        .filter((tag) => tag.extensionSpec)
+        .map((tag) =>
+          Object.assign({}, tag.extensionSpec, {htmlFormat: tag.htmlFormat})
+        );
   }
 }
 

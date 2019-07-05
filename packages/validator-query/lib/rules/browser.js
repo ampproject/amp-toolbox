@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-async function load({ source, url }) {
+async function load({source, url}) {
   if (source === 'local') {
     throw new Error('Local loading is not supported in browsers');
   }

@@ -15,7 +15,7 @@
  */
 
 const https = require('https');
-const { promisify } = require('util');
+const {promisify} = require('util');
 const fs = require('fs');
 const path = require('path');
 const readFileAsync = promisify(fs.readFile);
@@ -25,23 +25,23 @@ const VALIDATOR_RULES_LOCAL = path.join(__dirname, '../../validator.json');
 function fetch(url) {
   return new Promise((resolve, reject) => {
     https
-      .get(url, res => {
-        if (res.statusCode != 200) {
-          reject(new Error(`Got status code ${res.statusCode}`));
-          return;
-        }
+        .get(url, (res) => {
+          if (res.statusCode != 200) {
+            reject(new Error(`Got status code ${res.statusCode}`));
+            return;
+          }
 
-        let data = '';
-        res.on('data', buffer => {
-          data += buffer;
+          let data = '';
+          res.on('data', (buffer) => {
+            data += buffer;
+          });
+          res.on('end', () => {
+            resolve(data);
+          });
+        })
+        .on('error', (err) => {
+          reject(err);
         });
-        res.on('end', () => {
-          resolve(data);
-        });
-      })
-      .on('error', err => {
-        reject(err);
-      });
   });
 }
 
@@ -55,7 +55,7 @@ async function loadLocal() {
   return JSON.parse(data);
 }
 
-async function load({ source, url }) {
+async function load({source, url}) {
   switch (source) {
     case 'local':
       return loadLocal();
