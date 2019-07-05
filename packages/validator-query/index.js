@@ -38,4 +38,4 @@ async function load(opt) {
   return cached;
 }
 
-module.exports = load;
+module.exports = { load };
