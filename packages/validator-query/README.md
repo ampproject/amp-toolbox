@@ -16,13 +16,13 @@ $ npm install @ampproject/toolbox-validator-query@canary
 #### ES Module (Browser)
 
 ```javascript
-import { load } from 'amp-toolbox-validator-query';
+import { load } from '@ampproject/toolbox-validator-query';
 ```
 
 #### CommonJs (Node)
 
 ```javascript
-const { load } = require('amp-toolbox-validator-query');
+const { load } = require('@ampproject/toolbox-validator-query');
 ```
 
 ### Using the module
