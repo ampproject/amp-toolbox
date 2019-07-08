@@ -17,7 +17,7 @@
 
 const oneBehindFetch = require('../../lib/oneBehindFetch.js');
 const mockFetch = require('fetch-mock');
-const nodeFetch = require('node-fetch');
+const nodeFetch = require('cross-fetch');
 const fetch = mockFetch.sandbox();
 
 
