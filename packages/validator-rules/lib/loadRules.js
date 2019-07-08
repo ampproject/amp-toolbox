@@ -22,7 +22,7 @@ const VALIDATOR_RULES_LOCAL = '../../validator.json';
 const isNodeJs = typeof process !== 'undefined';
 
 async function loadRemote(url) {
-  const data = await oneBehindFetch(url);
+  const req = await oneBehindFetch(url);
   return req.json();
 }
 
@@ -56,7 +56,8 @@ function getLocalPath() {
   return path.join(__dirname, VALIDATOR_RULES_LOCAL);
 }
 
-async function load({source, url}) {
+async function loadRules({source, url}) {
+  url = url || VALIDATOR_RULES_URL;
   switch (source) {
     case 'local':
       return loadLocal();
@@ -67,4 +68,4 @@ async function load({source, url}) {
   }
 }
 
-module.exports = load;
+module.exports = loadRules;

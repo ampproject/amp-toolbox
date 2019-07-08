@@ -16,8 +16,8 @@
 
 'use strict';
 
-const loadRules = require('./lib/rules');
-const AmpValidatorQuery = require('./lib/AmpValidatorQuery');
+const loadRules = require('./lib/loadRules');
+const AmpValidatorRules = require('./lib/AmpValidatorRules');
 
 let cached = null;
 
@@ -34,7 +34,7 @@ async function load(opt) {
     rules = await loadRules(opt);
   }
 
-  cached = new AmpValidatorQuery(rules);
+  cached = new AmpValidatorRules(rules);
   return cached;
 }
 

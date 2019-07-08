@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-class AmpValidatorQuery {
+class AmpValidatorRules {
   constructor(rules) {
     this.initRules_(rules);
   }
@@ -140,4 +140,4 @@ class AmpValidatorQuery {
   }
 }
 
-module.exports = AmpValidatorQuery;
+module.exports = AmpValidatorRules;

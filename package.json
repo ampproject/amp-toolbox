@@ -75,6 +75,6 @@
     "@ampproject/toolbox-optimizer-express": "file:packages/optimizer-express",
     "@ampproject/toolbox-runtime-version": "file:packages/runtime-version",
     "@ampproject/toolbox-update-cache": "file:packages/update-cache",
-    "@ampproject/validator-query": "file:packages/validator-query"
+    "@ampproject/toolbox-validator-rules": "file:packages/validator-rules"
   }
 }

@@ -16,11 +16,11 @@
 
 'use strict';
 
-const AmpValidatorQuery = require('../lib/AmpValidatorQuery');
+const AmpValidatorRules = require('../lib/AmpValidatorRules');
 
-describe('AmpValidatorQuery', () => {
+describe('AmpValidatorRules', () => {
   it('Loads errors', () => {
-    const query = makeQuery({
+    const rules = makeRules({
       errorFormats: [
         {
           code: 'TEST',
@@ -34,7 +34,7 @@ describe('AmpValidatorQuery', () => {
         },
       ],
     });
-    expect(query.errors).toEqual({
+    expect(rules.errors).toEqual({
       TEST: {
         format: '%s error',
         specificity: 1,
@@ -43,7 +43,7 @@ describe('AmpValidatorQuery', () => {
   });
 
   it('Loads extensions', () => {
-    const query = makeQuery({
+    const rules = makeRules({
       tags: [
         {
           extensionSpec: {
@@ -55,25 +55,25 @@ describe('AmpValidatorQuery', () => {
         },
       ],
     });
-    expect(query.tags).toEqual([]);
-    expect(query.extensions).toEqual([
+    expect(rules.tags).toEqual([]);
+    expect(rules.extensions).toEqual([
       {
         name: 'amp-some-component',
         version: ['0.1', 'latest'],
         htmlFormat: ['AMP'],
       },
     ]);
-    expect(query.getExtensionsForFormat('AMP')).toEqual({
+    expect(rules.getExtensionsForFormat('AMP')).toEqual({
       'amp-some-component': {
         version: ['0.1', 'latest'],
         htmlFormat: ['AMP'],
       },
     });
-    expect(query.getExtensionsForFormat('AMP4EMAIL')).toEqual({});
+    expect(rules.getExtensionsForFormat('AMP4EMAIL')).toEqual({});
   });
 
   it('Loads tags', () => {
-    const query = makeQuery({
+    const rules = makeRules({
       attrLists: [
         {
           name: '$GLOBAL_ATTRS',
@@ -140,15 +140,15 @@ describe('AmpValidatorQuery', () => {
         tagName: 'AMP-IMG',
       },
     ];
-    expect(query.tags).toEqual(tags);
-    expect(query.extensions).toEqual([]);
-    expect(query.getTagsForFormat('AMP4EMAIL')).toEqual(tags);
-    expect(query.getTagsForFormat('AMP', true)).toEqual([tags[0]]);
+    expect(rules.tags).toEqual(tags);
+    expect(rules.extensions).toEqual([]);
+    expect(rules.getTagsForFormat('AMP4EMAIL')).toEqual(tags);
+    expect(rules.getTagsForFormat('AMP', true)).toEqual([tags[0]]);
   });
 });
 
-function makeQuery(rules) {
-  return new AmpValidatorQuery(
+function makeRules(rules) {
+  return new AmpValidatorRules(
       Object.assign(
           {
             errorFormats: [],

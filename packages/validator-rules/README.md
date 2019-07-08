@@ -1,14 +1,14 @@
-# AMP-Toolbox Validator Query
+# AMP-Toolbox Validator Rules
 
-Makes it easier to query published AMP Validator rules and extract information
-about required markup and attributes for all AMP formats.
+Queries published AMP Validator rules and extracts information about required
+markup and attributes for all AMP formats.
 
 ## Usage
 
 Install via:
 
 ```
-$ npm install @ampproject/toolbox-validator-query@canary
+$ npm install @ampproject/toolbox-validator-rules@canary
 ```
 
 ### Including the Module
@@ -16,23 +16,23 @@ $ npm install @ampproject/toolbox-validator-query@canary
 #### ES Module (Browser)
 
 ```javascript
-import { load } from '@ampproject/toolbox-validator-query';
+import { load } from '@ampproject/toolbox-validator-rules';
 ```
 
 #### CommonJs (Node)
 
 ```javascript
-const { load } = require('@ampproject/toolbox-validator-query');
+const { load } = require('@ampproject/toolbox-validator-rules');
 ```
 
 ### Using the module
 
 ```javascript
   // Loads the validator rules remotely with default options
-  const query = load();
+  const rules = load();
 
   // Get all tag names used in AMP for Email
-  const names = query.getTagsForFormat('AMP4EMAIL').map(tag => tag.tagName);
+  const names = rules.getTagsForFormat('AMP4EMAIL').map(tag => tag.tagName);
 ```
 
 ### Options

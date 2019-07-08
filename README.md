@@ -29,7 +29,7 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 - **[amp-runtime-version](./packages/runtime-version):** a javascript library for querying the current AMP runtime version.
 - **[amp-update-cache](./packages/update-cache):** a javascript library for updating AMP documents in AMP Caches.
 - **[amp-update-linter](./packages/linter):** a javascript library for linting AMP documents (includes CLI mode).
-- **[amp-validator-query](./packages/validator-query):** a javascript library for querying AMP validator rules.
+- **[amp-validator-rules](./packages/validator-rules):** a javascript library for querying AMP validator rules.
 
 ## Development
 
