@@ -14,7 +14,7 @@
     "debug": "4.1.1",
     "execa": "1.0.0",
     "node-fetch": "2.6.0",
-    "probe-image-size": "4.0.0",
+    "probe-image-size": "4.1.0",
     "throat": "5.0.0"
   },
   "bugs": {
