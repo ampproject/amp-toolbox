@@ -15,11 +15,44 @@
  */
 
 class AmpValidatorRules {
+  /**
+   * Creates an instance of AmpValidatorRules.
+   * @param {Object} rules - rules imported from validator.json
+   */
   constructor(rules) {
+    /**
+     * Unprocessed validator rules.
+     * @type {Object}
+     */
+    this.raw = rules;
+    /**
+     * List of all the tags processed from rules.
+     * @type {Array<Object>}
+     */
+    this.tags = [];
+    /**
+     * List of all the extensions processed from rules.
+     * @type {Array<Object>}
+     */
+    this.extensions = [];
+    /**
+     * Map of errors and their associated format and specificity.
+     * @type {Object}
+     */
+    this.errors = {};
+
+    this.extensionCache_ = {};
     this.initRules_(rules);
   }
 
-  getTagsForFormat(format, transformed) {
+  /**
+   * Returns the list of supported tags for the given format.
+   *
+   * @param {string} format - Format to return tags for
+   * @param {boolean} [transformed] - Use transformed version of the format
+   * @return {Array<Object>} List of tags supported by the given format
+   */
+  getTagsForFormat(format, transformed = false) {
     format = format.toLowerCase();
     return this.tags
         .filter(
@@ -39,39 +72,48 @@ class AmpValidatorRules {
         });
   }
 
-  getExtensionsForFormat(format) {
-    format = format.toUpperCase();
-    return this.extensions
-        .filter((extension) => extension.htmlFormat.includes(format))
-        .reduce((result, extension) => {
-          result[extension.name] = Object.assign({}, extension);
-          delete result[extension.name].name;
-          return result;
-        }, {});
+  /**
+   * Returns the AMP extension spec for the given format and name.
+   *
+   * @param {string} format - Format to filter on
+   * @param {string} extension - Extension name
+   * @return {Object} Extension spec
+   */
+  getExtensionForFormat(format, extension) {
+    format = format.toLowerCase();
+    extension = extension.toLowerCase();
+    const key = `${format}|${extension}`;
+    return this.extensionCache_[key] || null;
   }
 
   checkEntityTransformed_(entity, transformed) {
+    const isEnabled = this.isEnabled_(entity, 'transformed');
+    const isDisabled = this.isDisabled_(entity, 'transformed');
     if (transformed) {
-      return this.checkEntityFormat_(entity, 'transformed');
+      return isEnabled !== false && isDisabled !== true;
     }
-    if (entity.enabledBy && entity.enabledBy.includes('transformed')) {
-      return false;
-    }
-    if (entity.disabledBy && !entity.disabledBy.includes('transformed')) {
-      return false;
-    }
-    return true;
+    return isEnabled !== true && isDisabled !== false;
   }
 
   checkEntityFormat_(entity, format) {
     format = format.toLowerCase();
-    if (entity.enabledBy && !entity.enabledBy.includes(format)) {
-      return false;
+    const isEnabled = this.isEnabled_(entity, format);
+    const isDisabled = this.isDisabled_(entity, format);
+    return isEnabled !== false && isDisabled !== true;
+  }
+
+  isEnabled_(entity, format) {
+    if (!entity.enabledBy) {
+      return null;
     }
-    if (entity.disabledBy && entity.disabledBy.includes(format)) {
-      return false;
+    return entity.enabledBy.includes(format);
+  }
+
+  isDisabled_(entity, format) {
+    if (!entity.disabledBy) {
+      return null;
     }
-    return true;
+    return entity.disabledBy.includes(format);
   }
 
   initRules_(rules) {
@@ -96,19 +138,19 @@ class AmpValidatorRules {
   }
 
   initAttrLists_(rules) {
-    this.attrLists = {};
-    this.specialAttrLists = {};
+    this.attrLists_ = {};
+    this.specialAttrLists_ = {};
     for (const {name, attrs} of rules.attrLists) {
       if (name.startsWith('$')) {
-        this.specialAttrLists[name] = attrs;
+        this.specialAttrLists_[name] = attrs;
       } else {
-        this.attrLists[name] = attrs;
+        this.attrLists_[name] = attrs;
       }
     }
-    this.specialAttrLists.$AMP_LAYOUT_ATTRS.forEach(
+    this.specialAttrLists_.$AMP_LAYOUT_ATTRS.forEach(
         (attr) => (attr.layout = true)
     );
-    this.specialAttrLists.$GLOBAL_ATTRS.forEach((attr) => (attr.global = true));
+    this.specialAttrLists_.$GLOBAL_ATTRS.forEach((attr) => (attr.global = true));
   }
 
   initTags_(rules) {
@@ -118,14 +160,14 @@ class AmpValidatorRules {
           tag.attrs = tag.attrs || [];
           if (tag.attrLists) {
             for (const attrList of tag.attrLists) {
-              tag.attrs.push(...this.attrLists[attrList]);
+              tag.attrs.push(...this.attrLists_[attrList]);
             }
             delete tag.attrLists;
           }
           if (tag.ampLayout) {
-            tag.attrs.push(...this.specialAttrLists.$AMP_LAYOUT_ATTRS);
+            tag.attrs.push(...this.specialAttrLists_.$AMP_LAYOUT_ATTRS);
           }
-          tag.attrs.push(...this.specialAttrLists.$GLOBAL_ATTRS);
+          tag.attrs.push(...this.specialAttrLists_.$GLOBAL_ATTRS);
 
           return tag;
         });
@@ -137,6 +179,15 @@ class AmpValidatorRules {
         .map((tag) =>
           Object.assign({}, tag.extensionSpec, {htmlFormat: tag.htmlFormat})
         );
+
+    for (const extension of this.extensions) {
+      const name = extension.name.toLowerCase();
+      for (let format of extension.htmlFormat) {
+        format = format.toLowerCase();
+        const key = `${format}|${name}`;
+        this.extensionCache_[key] = extension;
+      }
+    }
   }
 }
 
