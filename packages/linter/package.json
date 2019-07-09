@@ -63,7 +63,7 @@
     "@pika/plugin-build-types": "0.4.0",
     "@pika/plugin-simple-bin": "0.4.0",
     "@pika/plugin-ts-standard-pkg": "0.4.0",
-    "prettier": "^1.18.2",
+    "prettier": "1.18.2",
     "typescript": "3.5.2"
   }
 }
