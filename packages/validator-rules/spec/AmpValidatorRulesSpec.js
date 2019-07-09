@@ -63,12 +63,12 @@ describe('AmpValidatorRules', () => {
         htmlFormat: ['AMP'],
       },
     ]);
-    expect(rules.getExtensionForFormat('AMP', 'amp-some-component')).toEqual({
+    expect(rules.getExtension('AMP', 'amp-some-component')).toEqual({
       name: 'amp-some-component',
       version: ['0.1', 'latest'],
       htmlFormat: ['AMP'],
     });
-    expect(rules.getExtensionForFormat('AMP4EMAIL', 'amp-some-component')).toEqual(null);
+    expect(rules.getExtension('AMP4EMAIL', 'amp-some-component')).toEqual(null);
   });
 
   it('Loads tags', () => {

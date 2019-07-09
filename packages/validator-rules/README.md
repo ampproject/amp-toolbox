@@ -48,7 +48,7 @@ const validatorRules = require('@ampproject/toolbox-validator-rules');
   console.log(tags.map(tag => tag.tagName));
 
   // Get information about an extension
-  const ext = rules.getExtensionForFormat('amp-carousel', 'AMP4EMAIL');
+  const ext = rules.getExtension('amp-carousel', 'AMP4EMAIL');
 
   // Display supported versions
   console.log(ext.versions);
@@ -62,7 +62,8 @@ Specifically:
 
 -   The `raw` property is unprocessed [ValidatorRules](https://github.com/ampproject/amphtml/blob/master/validator/validator.proto#L643)
 -   The result of `getTagsForFormat` and the `tags` property is a list of [TagSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L463)
--   The result of `getExtensionForFormat` and the `extensions` property a list of [ExtensionSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L388)
+-   The result of `getExtension` is [ExtensionSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L388) with the `htmlFormat` field from `TagSpec`
+-   The `extensions` property a list of [ExtensionSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L388) with the `htmlFormat` field from `TagSpec`
 -   The `errors` property combines [ErrorFormat](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L874) and [ErrorSpecificity](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L869)
 
 ### Options

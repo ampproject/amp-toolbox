@@ -79,7 +79,7 @@ class AmpValidatorRules {
    * @param {string} extension - Extension name
    * @return {Object} Extension spec
    */
-  getExtensionForFormat(format, extension) {
+  getExtension(format, extension) {
     format = format.toLowerCase();
     extension = extension.toLowerCase();
     const key = `${format}|${extension}`;
