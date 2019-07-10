@@ -29,7 +29,7 @@ const validatorRules = require('@ampproject/toolbox-validator-rules');
 
 ```javascript
   // Loads the validator rules remotely with default options
-  const rules = validatorRules.fetch();
+  const rules = await validatorRules.fetch();
 
 
   // The raw unprocessed rules
@@ -42,6 +42,7 @@ const validatorRules = require('@ampproject/toolbox-validator-rules');
   console.log(rules.extensions);
 
   // Get all tag names used in AMP for Email
+  // The supported formats are AMP, AMP4EMAIL, AMP4ADS and ACTIONS
   const tags = rules.getTagsForFormat('AMP4EMAIL');
 
   // Display their names
@@ -60,7 +61,7 @@ The rules used closely follow the proto definitions from [validator.proto](https
 
 Specifically:
 
--   The `raw` property is unprocessed [ValidatorRules](https://github.com/ampproject/amphtml/blob/master/validator/validator.proto#L643)
+-   The `raw` property is unprocessed [ValidatorRules](https://github.com/ampproject/amphtml/blob/master/validator/validator.proto#L643), the same format used by `https://cdn.ampproject.org/v0/validator.json`
 -   The result of `getTagsForFormat` and the `tags` property is a list of [TagSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L463)
 -   The result of `getExtension` is [ExtensionSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L388) with the `htmlFormat` field from `TagSpec`
 -   The `extensions` property a list of [ExtensionSpec](https://github.com/ampproject/amphtml/blob/b892d81467594cab5473c803e071af5108f834a6/validator/validator.proto#L388) with the `htmlFormat` field from `TagSpec`

@@ -21,14 +21,12 @@ const AmpValidatorRules = require('./lib/AmpValidatorRules');
 
 let cached = null;
 
-async function load(opt) {
-  opt = opt || {};
+async function fetch(opt = {}) {
   if (!opt.noCache && cached) {
     return cached;
   }
 
   let rules = opt.rules;
-  delete opt.rules;
 
   if (!rules) {
     rules = await loadRules(opt);
@@ -38,4 +36,4 @@ async function load(opt) {
   return cached;
 }
 
-module.exports = {load};
+module.exports = {fetch};

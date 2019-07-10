@@ -158,15 +158,21 @@ class AmpValidatorRules {
         .filter((tag) => !tag.extensionSpec)
         .map((tag) => {
           tag.attrs = tag.attrs || [];
+
+          // Merge global attribute lists into atrrs
           if (tag.attrLists) {
             for (const attrList of tag.attrLists) {
               tag.attrs.push(...this.attrLists_[attrList]);
             }
             delete tag.attrLists;
           }
+
+          // $AMP_LAYOUT_ATTRS are present in all components with ampLayout
           if (tag.ampLayout) {
             tag.attrs.push(...this.specialAttrLists_.$AMP_LAYOUT_ATTRS);
           }
+
+          // $GLOBAL_ATTRS are present in all components
           tag.attrs.push(...this.specialAttrLists_.$GLOBAL_ATTRS);
 
           return tag;
