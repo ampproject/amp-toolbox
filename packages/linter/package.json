@@ -12,9 +12,9 @@
     "cheerio": "1.0.0-rc.2",
     "commander": "2.20.0",
     "debug": "4.1.1",
-    "execa": "1.0.0",
+    "execa": "2.0.3",
     "node-fetch": "2.6.0",
-    "probe-image-size": "4.0.0",
+    "probe-image-size": "4.1.0",
     "throat": "5.0.0"
   },
   "bugs": {
@@ -64,6 +64,6 @@
     "@pika/plugin-simple-bin": "0.4.0",
     "@pika/plugin-ts-standard-pkg": "0.4.0",
     "prettier": "1.18.2",
-    "typescript": "3.5.2"
+    "typescript": "3.5.3"
   }
 }
