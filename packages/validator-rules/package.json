@@ -23,7 +23,7 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^1.0.0-beta.4"
+    "cross-fetch": "3.0.4"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/validator-rules",
   "directories": {

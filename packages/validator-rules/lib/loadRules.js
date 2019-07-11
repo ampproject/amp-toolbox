@@ -17,12 +17,12 @@
 // This solution is temporary and will be replaced when
 // https://github.com/ampproject/amp-toolbox/issues/378 is resolved.
 
-const {oneBehindFetch} = require('@ampproject/toolbox-core');
+const fetch = require('cross-fetch');
 
 const VALIDATOR_RULES_URL = 'https://cdn.ampproject.org/v0/validator.json';
 
 async function loadRemote(url) {
-  const req = await oneBehindFetch(url);
+  const req = await fetch(url);
   return req.json();
 }
 
