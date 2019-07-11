@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-validator-rules",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "A library that helps query AMP Validator rules",
   "main": "index.js",
   "keywords": [
@@ -23,8 +23,11 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^1.0.0-beta.3"
+    "@ampproject/toolbox-core": "^1.0.0-beta.4"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/validator-rules",
-  "gitHead": "cb496f081c871a25dc73113ae1e1fccfb59b2732"
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {}
 }
