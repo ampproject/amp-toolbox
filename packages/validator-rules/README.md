@@ -49,7 +49,7 @@ const validatorRules = require('@ampproject/toolbox-validator-rules');
   console.log(tags.map(tag => tag.tagName));
 
   // Get information about an extension
-  const ext = rules.getExtension('amp-carousel', 'AMP4EMAIL');
+  const ext = rules.getExtension('AMP4EMAIL', 'amp-carousel');
 
   // Display supported versions
   console.log(ext.versions);
