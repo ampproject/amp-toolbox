@@ -159,7 +159,8 @@ class AmpValidatorRules {
         .map((tag) => {
           tag.attrs = tag.attrs || [];
 
-          // Merge global attribute lists into atrrs
+          // `attrLists` contains list IDs that are looked up from the global
+          // attribute lists and merged into `attrs`.
           if (tag.attrLists) {
             for (const attrList of tag.attrLists) {
               tag.attrs.push(...this.attrLists_[attrList]);

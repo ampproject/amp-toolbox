@@ -14,58 +14,21 @@
  * limitations under the License.
  */
 
+// This solution is temporary and will be replaced when
+// https://github.com/ampproject/amp-toolbox/issues/378 is resolved.
+
 const {oneBehindFetch} = require('@ampproject/toolbox-core');
 
 const VALIDATOR_RULES_URL = 'https://cdn.ampproject.org/v0/validator.json';
-const VALIDATOR_RULES_LOCAL = '../../validator.json';
-
-const isNodeJs = typeof process !== 'undefined';
 
 async function loadRemote(url) {
   const req = await oneBehindFetch(url);
   return req.json();
 }
 
-async function loadLocal() {
-  if (!isNodeJs) {
-    throw new Error('Local loading is not supported in browsers');
-  }
-
-  const {promisify} = require('util');
-  const readFileAsync = promisify(require('fs').readFile);
-
-  const data = await readFileAsync(getLocalPath());
-  return JSON.parse(data);
-}
-
-async function loadDefault(url) {
-  if (!isNodeJs) {
-    return loadRemote(url);
-  }
-
-  const {existsSync} = require('fs');
-
-  if (existsSync(getLocalPath())) {
-    return loadLocal();
-  }
-  return loadRemote(url);
-}
-
-function getLocalPath() {
-  const path = require('path');
-  return path.join(__dirname, VALIDATOR_RULES_LOCAL);
-}
-
-async function loadRules({source, url}) {
+async function loadRules({url}) {
   url = url || VALIDATOR_RULES_URL;
-  switch (source) {
-    case 'local':
-      return loadLocal();
-    case 'remote':
-      return loadRemote(url);
-    default:
-      return loadDefault(url);
-  }
+  return loadRemote(url);
 }
 
 module.exports = loadRules;
