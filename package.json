@@ -23,7 +23,7 @@
     "@pika/plugin-build-types": "0.4.0",
     "@pika/plugin-simple-bin": "0.4.0",
     "@pika/plugin-ts-standard-pkg": "0.4.0",
-    "@types/cheerio": "0.22.11",
+    "@types/cheerio": "0.22.12",
     "@types/debug": "4.1.4",
     "@types/diff": "4.0.2",
     "@types/escape-html": "0.0.20",
