@@ -56,9 +56,9 @@ class HeadNodes {
   }
 
   appendToHead(head) {
+    head.appendChild(this._metaCharset);
     head.appendChild(this._styleAmpRuntime);
     head.appendChild(this._linkStyleAmpRuntime);
-    head.appendChild(this._metaCharset);
     head.appendAll(this._resourceHintLinks);
     head.appendAll(this._metaOther);
     head.appendChild(this._scriptAmpEngine);
@@ -178,8 +178,8 @@ class HeadNodes {
 /**
  * ReorderHeadTransformer - This DOM transformer reorders tags
  * within the head. Specifically, it orders the head like so:
- * (0) <style amp-runtime> (inserted by ServerSideRenderingTransformer)
- * (1) meta charset, then remaining meta tags.
+ * (0) meta charset, then remaining meta tags.
+ * (1) <style amp-runtime> (inserted by ServerSideRenderingTransformer)
  * (2) AMP runtime .js <script> tag
  * (3) <script> tags for render delaying extensions
  * (4) <script> tags for remaining extensions
