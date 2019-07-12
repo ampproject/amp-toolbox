@@ -42,7 +42,7 @@
     "jasmine-spec-reporter": "4.2.1",
     "jimp": "0.6.4",
     "karma": "4.1.0",
-    "karma-chrome-launcher": "2.2.0",
+    "karma-chrome-launcher": "3.0.0",
     "karma-jasmine": "2.0.1",
     "lerna": "3.15.0",
     "lerna-changelog": "0.8.2",
