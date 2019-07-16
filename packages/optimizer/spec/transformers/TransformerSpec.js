@@ -22,11 +22,13 @@ const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
 
 describe('Transfomers', () => {
-  loadTestConfigs().forEach(createSpec);
+  ['experimental', 'valid'].forEach((subDir) => {
+    loadTestConfigs(subDir).forEach(createSpec);
+  });
 });
 
-function loadTestConfigs() {
-  const transfomerTestDirs = getDirectories(__dirname);
+function loadTestConfigs(subDir) {
+  const transfomerTestDirs = getDirectories(join(__dirname, subDir));
   return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
 
