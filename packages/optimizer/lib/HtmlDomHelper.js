@@ -33,7 +33,7 @@ function findMetaViewport(head) {
 
 /**
  * Skips the subtree that is descending from the current node.
- * @param {Node} node the node that has its subtree being skipped
+ * @param {Node} the node that has its subtree being skipped
  * @return {Node} the appropriate "next" node that will skip the current
  * subtree.
  */
