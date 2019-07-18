@@ -25,7 +25,7 @@ class AddTransformedFlag {
   transform(tree) {
     const html = tree.root.firstChildByTag('html');
     if (!html) return;
-    html.attribs.transformed = 'google;v=1';
+    html.attribs.transformed = 'self;v=1';
   }
 }
 
