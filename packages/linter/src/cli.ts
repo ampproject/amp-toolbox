@@ -111,7 +111,7 @@ export function cli(argv: string[], logger = console) {
     url: string;
     headers: { [k: string]: string };
   })
-    .then(logger.log)
+    .then(logger.info.bind(logger))
     .catch(e => {
       logger.error(e.stack || e.message || e);
       process.exitCode = 1;
