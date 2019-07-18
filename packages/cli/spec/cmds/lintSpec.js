@@ -19,7 +19,7 @@
 const curlsCmd = require('../../lib/cmds/lint.js');
 const MockLogger = require('../helpers/MockLogger');
 
-describe('curls', () => {
+describe('lint', () => {
   const mockLogger = new MockLogger();
 
   afterEach(() => {
