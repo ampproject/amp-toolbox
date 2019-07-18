@@ -44,7 +44,7 @@
     "karma": "4.2.0",
     "karma-chrome-launcher": "3.0.0",
     "karma-jasmine": "2.0.1",
-    "lerna": "3.15.0",
+    "lerna": "3.16.0",
     "lerna-changelog": "0.8.2",
     "lru-cache": "5.1.1",
     "mock-express-request": "0.2.2",
