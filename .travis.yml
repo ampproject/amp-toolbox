@@ -9,4 +9,4 @@ addons:
 cache:
   directories:
     - ~/.npm
-install: npm ci * && npm i packages/* 
+install: npm ci 

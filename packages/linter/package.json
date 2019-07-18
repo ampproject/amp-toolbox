@@ -23,6 +23,7 @@
   "engines": {
     "node": "8.x.x"
   },
+  "main": "./src/index.js",
   "scripts": {
     "//": "See README for more information about these scripts",
     "build": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
