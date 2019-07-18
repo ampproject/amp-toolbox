@@ -16,7 +16,7 @@
 
 'use strict';
 
-const curlsCmd = require('../../lib/cmds/lint.js');
+const lintCmd = require('../../lib/cmds/lint.js');
 const MockLogger = require('../helpers/MockLogger');
 
 describe('lint', () => {
@@ -27,7 +27,7 @@ describe('lint', () => {
   });
 
   it('runs at least one successful test', (done) => {
-    curlsCmd({_: ['', 'https://amp.dev']}, mockLogger)
+    lintCmd({_: ['', 'https://amp.dev']}, mockLogger)
         .then(() => {
           const output = mockLogger.logs;
           expect(output).toMatch(/PASS/m);
