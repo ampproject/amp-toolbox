@@ -81,7 +81,6 @@ function testsForMode(type: LintMode) {
     SxgDumpSignedExchangeVerify
   ]);
   tests.set(LintMode.Amp, [
-    LinkRelCanonicalIsOk,
     AmpVideoIsSmall,
     AmpVideoIsSpecifiedByAttribute,
     MetaCharsetIsFirst,
@@ -94,6 +93,7 @@ function testsForMode(type: LintMode) {
   tests.set(
     LintMode.AmpStory,
     (tests.get(LintMode.Amp) || []).concat([
+      LinkRelCanonicalIsOk,
       BookendExists,
       SchemaMetadataIsNews,
       StoryRuntimeIsV1,
