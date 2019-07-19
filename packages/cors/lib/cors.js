@@ -78,12 +78,13 @@ module.exports = (options, caches=new Caches()) => {
     }
     // Add CORS and AMP CORS headers
     response.setHeader('Access-Control-Allow-Origin', originHeaders.origin || sourceOrigin);
-    const headersToExpose = ['AMP-Access-Control-Allow-Source-Origin'];
+    const headersToExpose = [];
     if (options.enableAmpRedirectTo) {
       headersToExpose.push('AMP-Redirect-To');
     }
-    response.setHeader('Access-Control-Expose-Headers', headersToExpose);
-    response.setHeader('AMP-Access-Control-Allow-Source-Origin', sourceOrigin);
+    if (headersToExpose.length > 0) {
+      response.setHeader('Access-Control-Expose-Headers', headersToExpose);
+    }
     if (options.allowCredentials) {
       response.setHeader('Access-Control-Allow-Credentials', 'true');
     }

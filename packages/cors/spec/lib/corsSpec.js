@@ -73,9 +73,6 @@ describe('AMP Cors', () => {
       request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {
         expect(response.headers['Access-Control-Allow-Origin']).toBe('https://ampbyexample.com');
-        expect(response.headers['Access-Control-Expose-Headers'])
-            .toContain('AMP-Access-Control-Allow-Source-Origin');
-        expect(response.headers['AMP-Access-Control-Allow-Source-Origin']).toBe('https://ampbyexample.com');
         done();
       });
     });
@@ -84,9 +81,6 @@ describe('AMP Cors', () => {
       request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {
         expect(response.headers['Access-Control-Allow-Origin']).toBe('https://ampbyexample-com.cdn.ampproject.org');
-        expect(response.headers['Access-Control-Expose-Headers'])
-            .toContain('AMP-Access-Control-Allow-Source-Origin');
-        expect(response.headers['AMP-Access-Control-Allow-Source-Origin']).toBe('https://ampbyexample.com');
       }).then(() => done());
     });
   });
@@ -159,7 +153,7 @@ describe('AMP Cors', () => {
       it('is true [default]', (done) => {
         cors(request, response, () => {
           expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual(['AMP-Access-Control-Allow-Source-Origin', 'AMP-Redirect-To']);
+              .toEqual(['AMP-Redirect-To']);
           done();
         });
       });
@@ -169,7 +163,7 @@ describe('AMP Cors', () => {
         cors = ampCors(options, caches);
         cors(request, response, () => {
           expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual(['AMP-Access-Control-Allow-Source-Origin']);
+              .toEqual(undefined);
           done();
         });
       });
