@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
-    "install": "npm install packages/* && lerna bootstrap --hoist",
+    "bootstrap": "lerna bootstrap",
+    "postinstall": "run-s bootstrap link",
+    "link": "lerna link",
     "generate:changelog": "lerna-changelog",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jasmine --config=jasmine.json && cd packages/linter && npm test",

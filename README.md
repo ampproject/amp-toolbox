@@ -58,7 +58,7 @@ amp-toolbox uses [Lerna](https://lernajs.io/) to manage it's packages. To keep b
 When adding a new package inside the `packages` directory, register the package via:
 
 ```
-npx lerna bootstrap --hoist
+npm run bootstrap
 ```
 
 ### Running Tests
