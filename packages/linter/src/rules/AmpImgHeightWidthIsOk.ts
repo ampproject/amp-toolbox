@@ -91,4 +91,11 @@ export class AmpImgHeightWidthIsOk extends Rule {
       })
       .get() as unknown) as Array<Promise<Result>>)).filter(notPass);
   }
+  meta() {
+    return {
+      url: "",
+      title: "All <amp-img> have reasonable width and height?",
+      info: ""
+    };
+  }
 }

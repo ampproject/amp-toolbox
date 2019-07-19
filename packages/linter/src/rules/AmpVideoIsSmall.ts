@@ -33,12 +33,23 @@ export class AmpVideoIsSmall extends Rule {
         [url_1: string]: number;
       }
     );
+    if (args.length === 0) {
+      return [];
+    }
     // Over 4MB is too big: https://amp.dev/documentation/guides-and-tutorials/develop/amp_story_best_practices#size/length-of-video
     const large = Object.keys(videos).filter(v => videos[v] > 4000000);
     if (large.length > 0) {
       return this.fail(`videos over 4MB: [${large.join(",")}]`);
     } else {
-      return this.pass();
+      return this.pass(`[${Object.keys(videos).join(",")}] are all under 4MB`);
     }
+  }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/guides-and-tutorials/develop/amp_story_best_practices#size/length-of-video",
+      title: "All videos are under 4MB?",
+      info: ""
+    };
   }
 }

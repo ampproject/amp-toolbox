@@ -8,39 +8,52 @@ export interface RuleConstructor {
 }
 
 export abstract class Rule {
-  static href = "";
-  static info = "";
   abstract run(context: Context): Promise<Result | Array<Result>>;
-  protected async pass(s?: string) {
+  public meta() {
     return {
-      status: Status.PASS,
-      message: s,
-      url: Rule.href,
-      description: Rule.info
+      url: "",
+      title:
+        this.constructor.name.replace(
+          /([a-z])([A-Z])/g,
+          (_, c1, c2) => `${c1} ${c2.toLowerCase()}`
+        ) + "?",
+      info: ""
     };
+  }
+  protected async pass(s?: string) {
+    return Object.assign(
+      {
+        status: Status.PASS,
+        message: s
+      },
+      this.meta()
+    );
   }
   protected async fail(s: string) {
-    return {
-      status: Status.FAIL,
-      message: s,
-      url: Rule.href,
-      description: Rule.info
-    };
+    return Object.assign(
+      {
+        status: Status.FAIL,
+        message: s
+      },
+      this.meta()
+    );
   }
   protected async warn(s: string) {
-    return {
-      status: Status.WARN,
-      message: s,
-      url: Rule.href,
-      description: Rule.info
-    };
+    return Object.assign(
+      {
+        status: Status.WARN,
+        message: s
+      },
+      this.meta()
+    );
   }
   protected async info(s: string) {
-    return {
-      status: Status.INFO,
-      message: s,
-      url: Rule.href,
-      description: Rule.info
-    };
+    return Object.assign(
+      {
+        status: Status.INFO,
+        message: s
+      },
+      this.meta()
+    );
   }
 }

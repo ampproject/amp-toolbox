@@ -17,4 +17,12 @@ export class RuntimeIsPreloaded extends Rule {
           "<link href=https://cdn.ampproject.org/v0.js rel=preload> is missing"
         );
   }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/#optimize-the-amp-runtime-loading",
+      title: "Runtime is preloaded?",
+      info: ""
+    };
+  }
 }

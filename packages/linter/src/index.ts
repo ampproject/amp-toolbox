@@ -19,6 +19,7 @@ import { SxgContentNegotiationIsOk } from "./rules/SxgContentNegotiationIsOk";
 import { SxgDumpSignedExchangeVerify } from "./rules/SxgDumpSignedExchangeVerify";
 import { SxgAmppkgIsForwarded } from "./rules/SxgAmppkgIsForwarded";
 import { RuleConstructor } from "./rule";
+import { isArray } from "util";
 
 export enum LintMode {
   Amp = "amp",
@@ -39,6 +40,9 @@ export enum Status {
 export interface Result {
   readonly status: Status;
   readonly message?: string;
+  readonly url: string;
+  readonly title: string;
+  readonly info: string;
 }
 
 export interface Context {
@@ -109,7 +113,18 @@ export async function lint(
       const t = new tc();
       try {
         const r = await t.run(context);
-        return [t.constructor.name, r];
+        if (isArray(r) && r.length === 0) {
+          // Hack: if the result of running a test is [], then the test has
+          // tested multiple constructs (e.g. images), and found no issues. In
+          // this case, there's no meta information available, so we
+          // artificially create a "PASS".
+          return [
+            t.constructor.name,
+            [Object.assign({ status: Status.PASS, message: "" }, t.meta())]
+          ];
+        } else {
+          return [t.constructor.name, r];
+        }
       } catch (e) {
         return [
           t.constructor.name,

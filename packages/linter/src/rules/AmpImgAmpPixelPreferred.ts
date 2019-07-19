@@ -19,4 +19,11 @@ export class AmpImgAmpPixelPreferred extends Rule {
       })
       .get() as Array<Promise<Result>>)).filter(notPass);
   }
+  meta() {
+    return {
+      url: "",
+      title: "1x1 images are specified by <amp-pixel>?",
+      info: ""
+    };
+  }
 }

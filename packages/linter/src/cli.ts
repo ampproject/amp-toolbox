@@ -176,16 +176,14 @@ function printer(
 ): string {
   function flatten(data: { [k: string]: Result | Result[] }): string[][] {
     const rows: string[][] = [];
-    rows.push(["name", "status", "message"]);
+    rows.push(["id", "title", "status", "message"]);
     for (const k of Object.keys(data).sort()) {
       const v = data[k];
       if (!isArray(v)) {
-        rows.push([k, v.status, v.message || ""]);
-      } else if (v.length == 0) {
-        rows.push([k, "PASS", ""]);
+        rows.push([k, v.title, v.status, v.message || ""]);
       } else {
         for (const vv of v) {
-          rows.push([k, vv.status, vv.message || ""]);
+          rows.push([k, vv.title, vv.status, vv.message || ""]);
         }
       }
     }
@@ -221,9 +219,9 @@ function printer(
       return flatten(data)
         .splice(1)
         .map(l =>
-          l[1] == "PASS"
-            ? `${l[0]} (${l[1]})\n`
-            : `${l[0]} (${l[1]})\n\n  ${l[2]}\n`
+          l[3] === ""
+            ? `${l[1]} (${l[2]})\n`
+            : `${l[1]} (${l[2]})\n\n  ${l[3]}\n`
         )
         .join("\n");
   }
