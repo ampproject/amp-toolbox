@@ -38,7 +38,7 @@
     "diff": "4.0.1",
     "eslint": "6.1.0",
     "eslint-config-google": "0.13.0",
-    "fetch-mock": "7.3.7",
+    "fetch-mock": "7.3.9",
     "html-minifier": "4.0.0",
     "jasmine": "3.4.0",
     "jasmine-spec-reporter": "4.2.1",
