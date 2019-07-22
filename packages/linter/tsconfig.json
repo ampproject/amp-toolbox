@@ -4,7 +4,7 @@
 {
   // https://www.typescriptlang.org/docs/handbook/compiler-options.html
   "compilerOptions": {
-    "target": "es2018", // required by @pika/pack
+    "target": "es2019", // required by @pika/pack
     "module": "esnext", // required by @pika/pack
     "esModuleInterop": true,
     "noImplicitAny": true,
