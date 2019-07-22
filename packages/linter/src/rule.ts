@@ -21,39 +21,31 @@ export abstract class Rule {
     };
   }
   protected async pass(s?: string) {
-    return Object.assign(
-      {
-        status: Status.PASS,
-        message: s
-      },
-      this.meta()
-    );
+    return {
+      status: Status.PASS,
+      message: s,
+      ...this.meta()
+    };
   }
   protected async fail(s: string) {
-    return Object.assign(
-      {
-        status: Status.FAIL,
-        message: s
-      },
-      this.meta()
-    );
+    return {
+      status: Status.FAIL,
+      message: s,
+      ...this.meta()
+    };
   }
   protected async warn(s: string) {
-    return Object.assign(
-      {
-        status: Status.WARN,
-        message: s
-      },
-      this.meta()
-    );
+    return {
+      status: Status.WARN,
+      message: s,
+      ...this.meta()
+    };
   }
   protected async info(s: string) {
-    return Object.assign(
-      {
-        status: Status.INFO,
-        message: s
-      },
-      this.meta()
-    );
+    return {
+      status: Status.INFO,
+      message: s,
+      ...this.meta()
+    };
   }
 }
