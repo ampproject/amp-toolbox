@@ -4,8 +4,9 @@ import { isArray } from "util";
 import program from "commander";
 import fetch from "node-fetch";
 import cheerio from "cheerio";
+import chalk from "chalk";
 
-import { lint, Result, LintMode, guessMode } from ".";
+import { lint, Result, LintMode, guessMode, Status } from ".";
 import { fetchToCurl } from "./helper";
 
 // import { version } from "../package.json";
@@ -170,6 +171,20 @@ export async function easyLint({
   );
 }
 
+function colorStatus(s: Status) {
+  switch (s) {
+    case Status.PASS:
+      return chalk.green(s);
+    case Status.FAIL:
+      return chalk.red(s);
+    case Status.WARN:
+      return chalk.yellow(s);
+    case Status.INFO:
+    default:
+      return s;
+  }
+}
+
 function printer(
   type: string,
   data: { [key: string]: Result | Result[] }
@@ -220,8 +235,8 @@ function printer(
         .splice(1)
         .map(l =>
           l[3] === ""
-            ? `${l[1]} (${l[2]})\n`
-            : `${l[1]} (${l[2]})\n\n  ${l[3]}\n`
+            ? `${colorStatus(l[2] as Status)} ${l[1]}\n`
+            : `${colorStatus(l[2] as Status)} ${l[1]}\n\n> ${l[3]}\n`
         )
         .join("\n");
   }
