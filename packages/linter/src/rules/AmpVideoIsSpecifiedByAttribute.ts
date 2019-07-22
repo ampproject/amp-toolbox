@@ -14,7 +14,7 @@ export class AmpVideoIsSpecifiedByAttribute extends Rule {
   meta() {
     return {
       url: "",
-      title: "<amp-video><source/></amp-video> syntax is used for video?",
+      title: "<amp-video><source/></amp-video> syntax is used for video",
       info: ""
     };
   }

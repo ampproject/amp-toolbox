@@ -48,7 +48,7 @@ export class AmpVideoIsSmall extends Rule {
     return {
       url:
         "https://amp.dev/documentation/guides-and-tutorials/develop/amp_story_best_practices#size/length-of-video",
-      title: "All videos are under 4MB?",
+      title: "Videos are under 4MB",
       info: ""
     };
   }

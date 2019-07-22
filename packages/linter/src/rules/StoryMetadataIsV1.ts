@@ -27,4 +27,12 @@ export class StoryMetadataIsV1 extends Rule {
       return this.pass();
     }
   }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
+      title: "Preview metadata is specified correctly",
+      info: ""
+    };
+  }
 }

@@ -55,4 +55,11 @@ export class SxgContentNegotiationIsOk extends Rule {
     }
     return this.pass();
   }
+  meta() {
+    return {
+      url: "",
+      title: "application/signed-exchange content negotiation is correct",
+      info: ""
+    };
+  }
 }

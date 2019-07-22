@@ -94,7 +94,7 @@ export class AmpImgHeightWidthIsOk extends Rule {
   meta() {
     return {
       url: "",
-      title: "All <amp-img> have reasonable width and height?",
+      title: "All <amp-img> have reasonable width and height",
       info: ""
     };
   }

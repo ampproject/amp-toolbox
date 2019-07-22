@@ -44,7 +44,7 @@ export class EndpointsAreAccessibleFromOrigin extends Rule {
     return {
       url:
         "https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/",
-      title: "Endpoints are accessible from origin?",
+      title: "Endpoints are accessible from origin",
       info: ""
     };
   }

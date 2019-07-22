@@ -33,7 +33,7 @@ export class LinkRelCanonicalIsOk extends Rule {
     return {
       url:
         "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/discovery/#what-if-i-only-have-one-page?",
-      title: "Story is self-canonical?",
+      title: "Story is self-canonical",
       info: ""
     };
   }

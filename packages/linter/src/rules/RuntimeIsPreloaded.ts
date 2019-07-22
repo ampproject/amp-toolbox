@@ -21,7 +21,7 @@ export class RuntimeIsPreloaded extends Rule {
     return {
       url:
         "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/#optimize-the-amp-runtime-loading",
-      title: "Runtime is preloaded?",
+      title: "Runtime is preloaded",
       info: ""
     };
   }

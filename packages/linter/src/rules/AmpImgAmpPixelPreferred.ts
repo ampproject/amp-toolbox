@@ -22,7 +22,7 @@ export class AmpImgAmpPixelPreferred extends Rule {
   meta() {
     return {
       url: "",
-      title: "1x1 images are specified by <amp-pixel>?",
+      title: "1x1 images are specified by <amp-pixel>",
       info: ""
     };
   }
