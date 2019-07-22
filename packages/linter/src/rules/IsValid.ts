@@ -11,7 +11,7 @@ export class IsValid extends Rule {
   }
   meta() {
     return {
-      url: "https://validator.ampproject.org",
+      url: "https://validator.amp.dev/",
       title: "Document is valid AMP",
       info: ""
     };

@@ -236,7 +236,7 @@ function printer(
         .map(l =>
           l[3] === ""
             ? `${colorStatus(l[2] as Status)} ${l[1]}\n`
-            : `${colorStatus(l[2] as Status)} ${l[1]}\n\n> ${l[3]}\n`
+            : `${colorStatus(l[2] as Status)} ${l[1]}\n> ${l[3]}\n`
         )
         .join("\n");
   }
