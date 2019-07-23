@@ -31,7 +31,7 @@ const DEFAULT_OPTIONS = {
 
 /**
  * Creates a middleware automatically adding AMP CORS headers to requests initiated by the AMP
- * runtime. See also https://www.ampproject.org/docs/fundamentals/amp-cors-requests.
+ * runtime. See also https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/.
  *
  * @param {Object} options
  * @param {RegExp} [options.sourceOriginPattern=false] regex matching allowed source origins
@@ -78,12 +78,8 @@ module.exports = (options, caches=new Caches()) => {
     }
     // Add CORS and AMP CORS headers
     response.setHeader('Access-Control-Allow-Origin', originHeaders.origin || sourceOrigin);
-    const headersToExpose = [];
     if (options.enableAmpRedirectTo) {
-      headersToExpose.push('AMP-Redirect-To');
-    }
-    if (headersToExpose.length > 0) {
-      response.setHeader('Access-Control-Expose-Headers', headersToExpose);
+      response.setHeader('Access-Control-Expose-Headers', 'AMP-Redirect-To');
     }
     if (options.allowCredentials) {
       response.setHeader('Access-Control-Allow-Credentials', 'true');

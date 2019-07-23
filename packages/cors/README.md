@@ -73,7 +73,7 @@ app.use(ampCors({
 
 ### Allow AMP-Redirect-To 
 
-By default, the AMP CORS middleware will allow redirects via [AMP-Redirect-To](https://www.ampproject.org/docs/reference/components/amp-form#redirecting-after-a-submission). To disable this, set `enableAmpRedirectTo` to `false`. 
+By default, the AMP CORS middleware will allow redirects via [AMP-Redirect-To](https://amp.dev/documentation/components/amp-form/?format=websites#redirecting-after-a-submission). To disable this, set `enableAmpRedirectTo` to `false`. 
 
 ```
 app.use(ampCors({
@@ -110,9 +110,9 @@ Content-Type: application/json; charset=utf-8
 2. AMP CORS header will be set if the `__amp_source_origin` query parameter is set together with the `Origin` header:
 
 ```
-$ curl --header "Origin: https://amp.dev.cdn.ampproject.org" -I "http://localhost:3000/items?__amp_source_origin=https://localhost:3000"
+$ curl --header "Origin: https://amp-dev.cdn.ampproject.org" -I "http://localhost:3000/items?__amp_source_origin=https://localhost:3000"
 HTTP/1.1 200 OK
-Access-Control-Allow-Origin: https://amp.dev.cdn.ampproject.org
+Access-Control-Allow-Origin: https://amp-dev.cdn.ampproject.org
 Content-Type: application/json; charset=utf-8
 ...
 ```
