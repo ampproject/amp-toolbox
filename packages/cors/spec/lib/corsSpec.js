@@ -153,7 +153,7 @@ describe('AMP Cors', () => {
       it('is true [default]', (done) => {
         cors(request, response, () => {
           expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual(['AMP-Redirect-To']);
+              .toEqual('AMP-Redirect-To');
           done();
         });
       });
