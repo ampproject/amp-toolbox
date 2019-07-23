@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/@ampproject/toolbox-cors.svg)](https://badge.fury.io/js/@ampproject/toolbox-cors)
 
 The AMP CORS middleware adds CORS and
-[AMP CORS](https://www.ampproject.org/docs/fundamentals/amp-cors-requests) headers to all CORS
+[AMP CORS](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/) headers to all CORS
 requests initiated by the AMP runtime. The middleware will only add these headers if the
 `__amp_source_origin` query parameter is present. All other requests remain unchanged.
 
@@ -43,7 +43,7 @@ app.use(ampCors({
 }));
 ```
 
-This will only allow requests with `https://ampbyexample.com` set as the source origin. Requests from all other origins
+This will only allow requests with `https://amp.dev` set as the source origin. Requests from all other origins
 will receive a `403` response,
 
 ### Origin verification
@@ -73,14 +73,13 @@ app.use(ampCors({
 
 ### Allow AMP-Redirect-To 
 
-By default, the AMP CORS middleware will allow redirects via [AMP-Redirect-To](https://www.ampproject.org/docs/reference/components/amp-form#redirecting-after-a-submission). To disable this, set `enableAmpRedirectTo` to `false`. 
+By default, the AMP CORS middleware will allow redirects via [AMP-Redirect-To](https://amp.dev/documentation/components/amp-form/?format=websites#redirecting-after-a-submission). To disable this, set `enableAmpRedirectTo` to `false`. 
 
 ```
 app.use(ampCors({
   enableAmpRedirectTo: false
 }));
-// => Access-Control-Expose-Headers: AMP-Access-Control-Allow-Source-Origin instead of 
-// Access-Control-Expose-Headers: AMP-Access-Control-Allow-Source-Origin, AMP-Redirect-To
+// Access-Control-Expose-Headers: AMP-Redirect-To
 ```
 
 ### Logging
@@ -104,8 +103,6 @@ $ curl --header "AMP-SAME-ORIGIN: true" -I "http://localhost:3000/items?__amp_so
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Access-Control-Allow-Origin: https://localhost:3000
-Access-Control-Expose-Headers: AMP-Access-Control-Allow-Source-Origin
-AMP-Access-Control-Allow-Source-Origin: https://localhost:3000
 Content-Type: application/json; charset=utf-8
 ...
 ```
@@ -113,12 +110,9 @@ Content-Type: application/json; charset=utf-8
 2. AMP CORS header will be set if the `__amp_source_origin` query parameter is set together with the `Origin` header:
 
 ```
-$ curl --header "Origin: https://ampbyexample-com.cdn.ampproject.org" -I "http://localhost:3000/items?__amp_source_origin=https://localhost:3000"
+$ curl --header "Origin: https://amp-dev.cdn.ampproject.org" -I "http://localhost:3000/items?__amp_source_origin=https://localhost:3000"
 HTTP/1.1 200 OK
-X-Powered-By: Express
-Access-Control-Allow-Origin: https://ampbyexample-com.cdn.ampproject.org
-Access-Control-Expose-Headers: AMP-Access-Control-Allow-Source-Origin
-AMP-Access-Control-Allow-Source-Origin: https://localhost:3000
+Access-Control-Allow-Origin: https://amp-dev.cdn.ampproject.org
 Content-Type: application/json; charset=utf-8
 ...
 ```
@@ -128,7 +122,6 @@ In all other cases, no CORS header will be set.
 ```
 $ curl -I localhost:3000/items
 HTTP/1.1 200 OK
-X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
 ...
 ```
