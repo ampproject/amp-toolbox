@@ -10,4 +10,12 @@ export class StoryRuntimeIsV1 extends Rule {
       ? this.pass()
       : this.fail("amp-story-1.0.js not used (probably 0.1?)");
   }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/components/amp-story/#migrating-from-0.1-to-1.0",
+      title: "AMP Story v1.0 is used",
+      info: ""
+    };
+  }
 }

@@ -20,4 +20,11 @@ export class SxgVaryOnAcceptAct extends Rule {
       return this.fail(`[vary] header is missing value [accept] [${debug}]`);
     return this.pass();
   }
+  meta() {
+    return {
+      url: "",
+      title: "vary header is correct",
+      info: ""
+    };
+  }
 }

@@ -39,7 +39,7 @@ export class EndpointsAreAccessibleFromCache extends Rule {
         .then(isAccessControlHeaders(origin, sourceOrigin))
         .then(isJson)
         .then(
-          () => this.pass(),
+          () => this.pass(`${xhrUrl} is accessible from ${cacheSuffix}`),
           e => this.fail(`can't XHR [${xhrUrl}]: ${e.message} [debug: ${curl}]`)
         );
     };
@@ -48,5 +48,13 @@ export class EndpointsAreAccessibleFromCache extends Rule {
         canXhrCache(absoluteUrl(xhrUrl, context.url) || "", cacheSuffix)
       )
     )).filter(notPass);
+  }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/",
+      title: "Endpoints are accessible from cache",
+      info: ""
+    };
   }
 }

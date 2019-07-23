@@ -15,7 +15,14 @@ export class SchemaMetadataIsNews extends Rule {
         `@type is not 'Article' or 'NewsArticle' or 'ReportageNewsArticle'`
       );
     } else {
-      return this.pass();
+      return this.pass(`@type is ${type}`);
     }
+  }
+  meta() {
+    return {
+      url: "",
+      title: "schema.org metadata has news or article type",
+      info: ""
+    };
   }
 }

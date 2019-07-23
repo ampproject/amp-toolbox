@@ -31,7 +31,7 @@ export class EndpointsAreAccessibleFromOrigin extends Rule {
         .then(isStatusOk)
         .then(isJson)
         .then(
-          () => this.pass(),
+          () => this.pass(`${xhrUrl} is accessible from ${sourceOrigin}`),
           e =>
             this.fail(`can't XHR [${xhrUrl}]: ${e.message} [debug: ${debug}]`)
         );
@@ -39,5 +39,13 @@ export class EndpointsAreAccessibleFromOrigin extends Rule {
     return (await Promise.all(
       e.map(url => canXhrSameOrigin(absoluteUrl(url, context.url) || ""))
     )).filter(notPass);
+  }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/",
+      title: "Endpoints are accessible from origin",
+      info: ""
+    };
   }
 }

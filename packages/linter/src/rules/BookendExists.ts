@@ -11,4 +11,12 @@ export class BookendExists extends Rule {
       ? this.pass()
       : this.warn("<amp-story-bookend> not found");
   }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/components/amp-story/#bookend:-amp-story-bookend",
+      title: "A bookend exists",
+      info: ""
+    };
+  }
 }

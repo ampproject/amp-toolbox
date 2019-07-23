@@ -4,8 +4,9 @@ import { isArray } from "util";
 import program from "commander";
 import fetch from "node-fetch";
 import cheerio from "cheerio";
+import chalk from "chalk";
 
-import { lint, Result, LintMode, guessMode } from ".";
+import { lint, Result, LintMode, guessMode, Status } from ".";
 import { fetchToCurl } from "./helper";
 
 // import { version } from "../package.json";
@@ -170,22 +171,34 @@ export async function easyLint({
   );
 }
 
+function colorStatus(s: Status) {
+  switch (s) {
+    case Status.PASS:
+      return chalk.green(s);
+    case Status.FAIL:
+      return chalk.red(s);
+    case Status.WARN:
+      return chalk.yellow(s);
+    case Status.INFO:
+    default:
+      return s;
+  }
+}
+
 function printer(
   type: string,
   data: { [key: string]: Result | Result[] }
 ): string {
   function flatten(data: { [k: string]: Result | Result[] }): string[][] {
     const rows: string[][] = [];
-    rows.push(["name", "status", "message"]);
+    rows.push(["id", "title", "status", "message"]);
     for (const k of Object.keys(data).sort()) {
       const v = data[k];
       if (!isArray(v)) {
-        rows.push([k, v.status, v.message || ""]);
-      } else if (v.length == 0) {
-        rows.push([k, "PASS", ""]);
+        rows.push([k, v.title, v.status, v.message || ""]);
       } else {
         for (const vv of v) {
-          rows.push([k, vv.status, vv.message || ""]);
+          rows.push([k, vv.title, vv.status, vv.message || ""]);
         }
       }
     }
@@ -221,9 +234,9 @@ function printer(
       return flatten(data)
         .splice(1)
         .map(l =>
-          l[1] == "PASS"
-            ? `${l[0]} (${l[1]})\n`
-            : `${l[0]} (${l[1]})\n\n  ${l[2]}\n`
+          l[3] === ""
+            ? `${colorStatus(l[2] as Status)} ${l[1]}\n`
+            : `${colorStatus(l[2] as Status)} ${l[1]}\n> ${l[3]}\n`
         )
         .join("\n");
   }

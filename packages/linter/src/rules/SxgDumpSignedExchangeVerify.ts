@@ -7,13 +7,11 @@ import { Rule } from "../rule";
 export class SxgDumpSignedExchangeVerify extends Rule {
   async run({ url, headers }: Context) {
     const opt = {
-      headers: Object.assign(
-        {
-          "accept": "application/signed-exchange;v=b3",
-          "amp-cache-transform": `google;v="1"`
-        },
-        headers
-      )
+      headers: {
+        "accept": "application/signed-exchange;v=b3",
+        "amp-cache-transform": `google;v="1"`,
+        ...headers
+      }
     };
     const res = await fetch(url, opt);
     const hdr = res.headers.get("content-type") || "";
@@ -69,5 +67,12 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     } else {
       return this.pass();
     }
+  }
+  meta() {
+    return {
+      url: "",
+      title: "dump-signedexchanged -verify does not report errors",
+      info: ""
+    };
   }
 }

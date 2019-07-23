@@ -24,4 +24,11 @@ export class SxgAmppkgIsForwarded extends Rule {
           )}]`
         );
   }
+  meta() {
+    return {
+      url: "",
+      title: "/amppkg/ not forwarded correctly",
+      info: ""
+    };
+  }
 }

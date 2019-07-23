@@ -10,4 +10,11 @@ export class StoryIsMostlyText extends Rule {
       return this.warn(`minimal text in the story [${text}]`);
     }
   }
+  meta() {
+    return {
+      url: "",
+      title: "Text is HTML (and not embedded into video)",
+      info: ""
+    };
+  }
 }

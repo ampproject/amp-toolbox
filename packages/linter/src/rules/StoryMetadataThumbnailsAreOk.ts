@@ -100,6 +100,14 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     ];
     return (await Promise.all(res)).filter(notPass);
   }
+  meta() {
+    return {
+      url:
+        "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
+      title: "Preview metadata is specified correctly",
+      info: ""
+    };
+  }
 }
 
 export { inlineMetadata as _inlineMetadata };

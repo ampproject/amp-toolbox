@@ -9,4 +9,11 @@ export class IsValid extends Rule {
       ? this.pass()
       : this.fail(JSON.stringify(res.errors));
   }
+  meta() {
+    return {
+      url: "https://validator.amp.dev/",
+      title: "Document is valid AMP",
+      info: ""
+    };
+  }
 }

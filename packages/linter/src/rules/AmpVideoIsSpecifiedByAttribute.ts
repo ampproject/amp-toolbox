@@ -11,4 +11,11 @@ export class AmpVideoIsSpecifiedByAttribute extends Rule {
       return this.pass();
     }
   }
+  meta() {
+    return {
+      url: "",
+      title: "<amp-video><source/></amp-video> syntax is used for video",
+      info: ""
+    };
+  }
 }
