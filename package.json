@@ -9,6 +9,7 @@
     "generate:changelog": "lerna-changelog",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jasmine --config=jasmine.json && cd packages/linter && npm test",
+    "test:node:linter": "cd packages/linter && npm test",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "eslint \"**/*.js\" --ignore-path .gitignore",
     "lint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
