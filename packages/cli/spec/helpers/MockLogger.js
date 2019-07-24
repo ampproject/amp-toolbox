@@ -21,6 +21,10 @@ class MockLogger {
     this.clear();
   }
 
+  log(args) {
+    this.logs.push(args);
+  }
+
   info(args) {
     this.logs.push(args);
   }

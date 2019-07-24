@@ -31,10 +31,10 @@ const UA = {
   ].join(" ")
 };
 
-export function cli(argv: string[], logger = console) {
+export function cli(argv: string[], logger = console, cmd='amplint') {
   program
     // .version(version)
-    .usage(`amplint [options] URL|copy_as_cURL`)
+    .usage(`${cmd} [options] URL|copy_as_cURL`)
     .option(
       `-f, --force <string>`,
       "override test type",
@@ -56,8 +56,8 @@ export function cli(argv: string[], logger = console) {
     .on("--help", function() {
       logger.log("");
       logger.log("Examples:");
-      logger.log("  $ amplint https://amp.dev/");
-      logger.log("  $ amplint --force sxg https://amp.dev/");
+      logger.log(`  $ ${cmd} https://amp.dev/`);
+      logger.log(`  $ ${cmd} --force sxg https://amp.dev/`);
     });
 
   if (argv.length <= 2) {
