@@ -10,7 +10,7 @@
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jasmine --config=jasmine.json && cd packages/linter && npm test",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-    "lint": "eslint \"**/*.js\" --ignore-path .gitignore",
+    "lint": "eslint \"**/*.js\" --ignore-path .gitignore && cd packages/linter && npm run lint",
     "lint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore"
   },
   "repository": {
