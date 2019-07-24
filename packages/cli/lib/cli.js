@@ -24,8 +24,8 @@ class Cli {
     this.logger_ = logger;
   }
 
-  run(args) {
-    args = minimist(args);
+  run(argv) {
+    const args = minimist(argv);
     const command = args._[0] || 'help';
 
     switch (command) {
@@ -41,7 +41,7 @@ class Cli {
       case 'update-cache':
         return require('./cmds/updateCache')(args, this.logger_);
       case 'lint':
-        return require('./cmds/lint')(args, this.logger_);
+        return require('./cmds/lint')(argv, this.logger_);
       case 'version':
         return require('./cmds/version')(args, this.logger_);
       default:
