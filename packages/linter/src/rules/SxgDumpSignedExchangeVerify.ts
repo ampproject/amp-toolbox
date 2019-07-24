@@ -32,14 +32,14 @@ export class SxgDumpSignedExchangeVerify extends Rule {
         const stdout = JSON.parse(spawn.stdout);
         return {
           isValid: stdout.Valid,
-          version: stdout.Valid,
+          version: stdout.Version,
           uri: stdout.RequestURI,
           status: stdout.ResponseStatus
         };
       });
     } catch (e) {
       return this.warn(
-        `not testing: couldn't execute [${e.path}] (not installed? not in PATH?)`
+      `not testing: couldn't execute '${CMD}' (not installed? not in PATH?)`
       );
     }
     const debug = `${fetchToCurl(url, opt, false)} | ${CMD} ${ARGS.join(" ")}`;
@@ -58,7 +58,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
   meta() {
     return {
       url: "",
-      title: "dump-signedexchanged -verify does not report errors",
+      title: "dump-signedexchange -verify does not report errors",
       info: ""
     };
   }
