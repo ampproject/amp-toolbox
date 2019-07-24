@@ -39,7 +39,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
       });
     } catch (e) {
       return this.warn(
-      `not testing: couldn't execute '${CMD}' (not installed? not in PATH?)`
+        `not testing: couldn't execute '${CMD}' (not installed? not in PATH?)`
       );
     }
     const debug = `${fetchToCurl(url, opt, false)} | ${CMD} ${ARGS.join(" ")}`;

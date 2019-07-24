@@ -31,7 +31,7 @@ const UA = {
   ].join(" ")
 };
 
-export function cli(argv: string[], logger = console, cmd='amplint') {
+export function cli(argv: string[], logger = console, cmd = "amplint") {
   program
     // .version(version)
     .usage(`${cmd} [options] URL|copy_as_cURL`)
