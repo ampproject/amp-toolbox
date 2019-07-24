@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cors",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "An express middleware implementing the AMP CORS protocol",
   "main": "index.js",
   "keywords": [
@@ -18,9 +18,9 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^1.0.0-beta.6",
-    "@ampproject/toolbox-cache-url": "^1.0.0-beta.6",
-    "@ampproject/toolbox-core": "^1.0.0-beta.6"
+    "@ampproject/toolbox-cache-list": "^1.0.0-beta.7",
+    "@ampproject/toolbox-cache-url": "^1.0.0-beta.7",
+    "@ampproject/toolbox-core": "^1.0.0-beta.7"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
