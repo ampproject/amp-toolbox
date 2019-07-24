@@ -9,17 +9,15 @@ A [linter](<https://en.wikipedia.org/wiki/Lint_(software)>) for AMP documents:
 reports errors and suspicious constructions such as images missing or
 incorrectly sized, missing CORS headers, or invalid metadata.
 
-## Status
-
-This code is alpha quality.
-
 ## Usage
 
 Command-line (local build):
 
 ```sh
+# from the amp-toolbox root
 $ npm install
-$ npm run build # generates src/cli.js from src/cli.ts
+$ npm run build # generates packages/linter/src/cli.js
+$ cd packages/linter
 $ node src/cli.js https://amp.dev/
 ```
 
@@ -56,11 +54,16 @@ performed.
 
 ## Development
 
+**Important note!** Many of the scripts below rely on binaries that are
+installed in the `../../node_modules/.bin` directory, and *will fail* if invoked
+in the default configuration. To fix this, either:
+
+1. Add `../../node_modules/.bin` to your path. A tool like
+   [direnv](https://direnv.net/) may make this easier.
+2. Invoke via "wrapper" scripts in `../../package.json`. "test:node:linter" is
+   an example of such a script.
+
 ### Commands
-
-#### `npm install`
-
-Installs dependencies. Run this first.
 
 #### `npm run build`
 
@@ -71,7 +74,8 @@ needs slightly different config, but it's essentially hardcoded to read from
 
 #### `npm test`
 
-Runs the tests.
+Runs the tests. (If this doesn't work, try running `npm run test:node:linter`
+from the root directory.
 
 #### `npm run lint`
 
@@ -101,8 +105,8 @@ Uses @pika's `pack publish` to publish to npm.
 
 ### Suggested Development Workflow
 
-1. Create stub function in `index.ts`, that always "fails". e.g. it always
-   returns `qqqqqq`. It should extend the `Rule` class.
+1. Create stub rule in `rules/`, that always "fails". e.g. it always returns
+   `qqqqqq`. It should extend the `Rule` class.
 1. Write tests in `tests/network.ts`. (If HTTP requests are required; if not
    then create a directory in `tests/local/MyNewTest-1` that contains a
    `source.html` (AMP HTML source) and `expected.json` (expected JSON output),
