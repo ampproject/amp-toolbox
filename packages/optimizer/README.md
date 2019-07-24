@@ -75,7 +75,7 @@ enable verbose mode either when creating a new optimizer instance:
 
 ```
 // globally
-const optimizer = AmpOptimzer.create({
+const optimizer = ampOptimizer.create({
   verbose: true
 });
 ```
