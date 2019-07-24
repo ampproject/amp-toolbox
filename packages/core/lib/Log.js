@@ -31,6 +31,10 @@ class Log {
     this.log_(this.output_.log, this.dim_(message), args);
   }
 
+  log(message, ...args) {
+    this.info(message, ...args);
+  }
+
   info(message, ...args) {
     this.log_(this.output_.log, message, ...args);
   }

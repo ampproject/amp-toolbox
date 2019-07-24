@@ -19,11 +19,7 @@
 const {cli} = require('@ampproject/toolbox-linter');
 
 function lint(args, logger) {
-  const url = args._[1];
-  if (!url) {
-    return Promise.reject(new Error('Missing URL'));
-  }
-  return cli(['dummy'].concat(args._), logger); // "dummy" to simulate process.argv
+  return cli(['dummy'].concat(args), logger, 'amp lint'); // "dummy" to simulate process.argv
 }
 
 module.exports = lint;

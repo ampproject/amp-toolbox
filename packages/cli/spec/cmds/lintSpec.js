@@ -27,7 +27,7 @@ describe('lint', () => {
   });
 
   it('runs at least one successful test', (done) => {
-    lintCmd({_: ['', 'https://amp.dev']}, mockLogger)
+    lintCmd(['lint', 'https://amp.dev'], mockLogger)
         .then(() => {
           const output = mockLogger.logs;
           expect(output).toMatch(/PASS/m);

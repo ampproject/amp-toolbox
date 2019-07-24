@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -25,8 +25,8 @@
     }
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^1.0.0-beta.5",
-    "@ampproject/toolbox-runtime-version": "^1.0.0-beta.5",
+    "@ampproject/toolbox-core": "^1.0.0-beta.6",
+    "@ampproject/toolbox-runtime-version": "^1.0.0-beta.6",
     "css": "2.2.4",
     "parse5": "5.1.0",
     "parse5-htmlparser2-tree-adapter": "5.1.0"
@@ -35,5 +35,5 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer",
-  "gitHead": "cb496f081c871a25dc73113ae1e1fccfb59b2732"
+  "gitHead": "4c1963ce6f32ce607ce3925653ab38db250e79c3"
 }

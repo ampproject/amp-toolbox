@@ -25,35 +25,22 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     }
     const body = await res.buffer();
     const CMD = `dump-signedexchange`;
-    const ARGS = [`-verify`];
+    const ARGS = [`-verify`, `-json`];
     let sxg;
     try {
       sxg = await execa(CMD, ARGS, { input: body }).then(spawn => {
-        const { stdout } = spawn;
-        let m: ReturnType<typeof String.prototype.match>;
-        m = stdout.match(/^The exchange has a valid signature.$/m);
-        const isValid = !!m;
-        m = stdout.match(/^format version: (\S+)$/m);
-        const version = m && m[1];
-        m = stdout.match(/^  uri: (\S+)$/m);
-        const uri = m && m[1];
-        m = stdout.match(/^  status: (\S+)$/m);
-        const status = m && parseInt(m[1], 10);
-        return { isValid, version, uri, status };
+        const stdout = JSON.parse(spawn.stdout);
+        return {
+          isValid: stdout.Valid,
+          version: stdout.Version,
+          uri: stdout.RequestURI,
+          status: stdout.ResponseStatus
+        };
       });
     } catch (e) {
-      if (e.code === "ENOENT") {
-        return this.warn(
-          `not testing: couldn't execute [${e.cmd}] (not installed? not in PATH?)`
-        );
-      } else {
-        const debug = `echo ${body.toString(
-          "base64"
-        )} | base64 -D | ${CMD} ${ARGS.join(" ")}`;
-        return this.fail(
-          `error: [${e.cmd}] returned [${e.stderr}] [debug: ${debug}]`
-        );
-      }
+      return this.warn(
+        `not testing: couldn't execute '${CMD}' (not installed? not in PATH?)`
+      );
     }
     const debug = `${fetchToCurl(url, opt, false)} | ${CMD} ${ARGS.join(" ")}`;
     if (
@@ -71,7 +58,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
   meta() {
     return {
       url: "",
-      title: "dump-signedexchanged -verify does not report errors",
+      title: "dump-signedexchange -verify does not report errors",
       info: ""
     };
   }
