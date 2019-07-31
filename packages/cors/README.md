@@ -49,7 +49,7 @@ will receive a `403` response,
 ### Origin verification
 
 By default, the AMP CORS middleware will only allow requests from AMP Caches listed on
-https://cdn.ampproject.org/caches.json (with the addition of `bing-amp.com`). All other
+https://cdn.ampproject.org/caches.json. All other
 origins will receive a `403` response. To allow requests from all origins, disable this
 via the `verifyOrigin` option:
 
@@ -91,6 +91,19 @@ app.use(ampCors({
   verbose: false
 }));
 ```
+
+
+### Email Mode
+
+AMP for Email has [specific AMP CORS requirements](https://developers.google.com/gmail/ampemail/security-requirements). You can enable the AMP for Email CORS mode via the `email option`: 
+
+```
+app.use(ampCors({
+  email: true
+}));
+```
+
+**Note:** the default AMP CORS mode for websites is compatible with AMP for Email's CORS mode. If you want to support both, it's safe to enable email mode by default.
 
 ## Example
 

@@ -22,6 +22,7 @@ const url = require('url');
 
 // the default options
 const DEFAULT_OPTIONS = {
+  email: false,
   allowCredentials: true,
   enableAmpRedirectTo: true,
   sourceOriginPattern: false,
@@ -36,6 +37,7 @@ const DEFAULT_OPTIONS = {
  * @param {Object} options
  * @param {RegExp} [options.sourceOriginPattern=false] regex matching allowed source origins
  * @param {boolean} [options.verbose=false] verbose logging output
+ * @param {boolean} [options.email=false] add additional CORS headers for AMP for Email
  * @param {boolean} [options.verifyOrigin=true] verify origins to match official AMP caches.
  * @param {Caches} [caches=new Caches()]
  * @return {Function} next middleware function
@@ -43,6 +45,10 @@ const DEFAULT_OPTIONS = {
 module.exports = (options, caches=new Caches()) => {
   options = Object.assign(DEFAULT_OPTIONS, options);
   log.verbose(options.verbose);
+  if (options.email === true) {
+    // email origins cannot be verified
+    options.verifyOrigin = false;
+  }
   return async (request, response, next) => {
     // Get source origin from query
     const sourceOrigin = url.parse(request.url, true).query.__amp_source_origin;
@@ -78,9 +84,15 @@ module.exports = (options, caches=new Caches()) => {
     }
     // Add CORS and AMP CORS headers
     response.setHeader('Access-Control-Allow-Origin', originHeaders.origin || sourceOrigin);
+    const headersToExpose = [];
     if (options.enableAmpRedirectTo) {
-      response.setHeader('Access-Control-Expose-Headers', 'AMP-Redirect-To');
+      headersToExpose.push('AMP-Redirect-To');
     }
+    if (options.email) {
+      headersToExpose.push('AMP-Access-Control-Allow-Source-Origin');
+      response.setHeader('AMP-Access-Control-Allow-Source-Origin', sourceOrigin);
+    }
+    response.setHeader('Access-Control-Expose-Headers', headersToExpose);
     if (options.allowCredentials) {
       response.setHeader('Access-Control-Allow-Credentials', 'true');
     }
