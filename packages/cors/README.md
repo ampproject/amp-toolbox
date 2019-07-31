@@ -95,7 +95,7 @@ app.use(ampCors({
 
 ### Email Mode
 
-AMP for Email has [specific AMP CORS requirements](https://developers.google.com/gmail/ampemail/security-requirements). You can enable the AMP for Email CORS mode via the `email option`: 
+Gmail has [specific AMP CORS requirements](https://developers.google.com/gmail/ampemail/security-requirements). You can enable the Email CORS mode via the `email option`: 
 
 ```
 app.use(ampCors({
@@ -103,7 +103,7 @@ app.use(ampCors({
 }));
 ```
 
-**Note:** the default AMP CORS mode for websites is compatible with AMP for Email's CORS mode. If you want to support both, it's safe to enable email mode by default.
+**Note:** the default AMP CORS mode for websites is compatible with email CORS mode (only origin verification is no longer supported). If you want to support both, it's safe to enable email mode by default.
 
 ## Example
 
