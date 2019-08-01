@@ -19,10 +19,11 @@ const ampCors = require('../../lib/cors.js');
 let request;
 let response;
 let cors;
-let options = {verbose: true};
+let options;
 
 describe('AMP Cors', () => {
   beforeEach(() => {
+    options = {verbose: true};
     request = {
       headers: {
         host: 'ampbyexample.com',
@@ -81,52 +82,30 @@ describe('AMP Cors', () => {
       request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {
         expect(response.headers['Access-Control-Allow-Origin']).toBe('https://ampbyexample-com.cdn.ampproject.org');
-      }).then(() => done());
+        done();
+      });
     });
   });
   describe('options', () => {
-    describe('verifyOrigin', () => {
-      describe('true', () => {
-        beforeEach(() => {
-          options = {};
-          options.verifyOrigin = true;
-        });
-        it('allows official origins', (done) => {
-          request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
-          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
-          cors(request, response, () => {
-            expect(response.status_).toEqual(200);
-            done();
-          });
-        });
-        it('blocks all other origins', (done) => {
-          request.headers['Origin'] = 'https://ampbyexample-com.cdn.invalid.org';
-          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
-          cors(request, response, () => {}).then(() => {
-            expect(response.status_).toEqual(403);
-            done();
-          });
-        });
-      });
-      describe('false', () => {
-        beforeEach(() => {
-          options = {};
-          options.verifyOrigin = false;
-          cors = ampCors(options, caches);
-        });
-        it('allows all origins', (done) => {
-          request.headers['Origin'] = 'https://example.com';
-          request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
-          cors(request, response, () => {
-            expect(response.status_).toEqual(200);
-            done();
-          });
-        });
+    describe('email', () => {
+      it('adds cors headers required by gmail', (done) => {
+        options = {
+          email: true,
+        };
+        request.headers['Origin'] = 'https://mail.google.com';
+        request.url = '/sample?__amp_source_origin=sender@example.com';
+        cors(request, response, () => {
+          expect(response.headers['Access-Control-Allow-Origin']).toBe('https://mail.google.com');
+          expect(response.headers['Access-Control-Expose-Headers'])
+              .toContain('AMP-Access-Control-Allow-Source-Origin');
+          expect(response.headers['AMP-Access-Control-Allow-Source-Origin'])
+              .toBe('sender@example.com');
+        }).then(() => done());
       });
     });
     describe('allowCredentials', () => {
       beforeEach(() => {
-        request.headers['Origin'] = 'https://example.com';
+        request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
         request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       });
       it('is true [default]', (done) => {
@@ -136,7 +115,6 @@ describe('AMP Cors', () => {
         });
       });
       it('does not send header if false', (done) => {
-        options = {};
         options.allowCredentials = false;
         cors = ampCors(options, caches);
         cors(request, response, () => {
@@ -147,62 +125,62 @@ describe('AMP Cors', () => {
     });
     describe('enableAmpRedirectTo', () => {
       beforeEach(() => {
-        request.headers['Origin'] = 'https://example.com';
+        request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
         request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       });
       it('is true [default]', (done) => {
         cors(request, response, () => {
           expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual('AMP-Redirect-To');
+              .toEqual(['AMP-Redirect-To']);
           done();
         });
       });
       it('does not send header if false', (done) => {
-        options = {};
         options.enableAmpRedirectTo = false;
         cors = ampCors(options, caches);
         cors(request, response, () => {
           expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual(undefined);
+              .toEqual([]);
           done();
         });
       });
     });
   });
-});
-describe('sourceOriginPattern', () => {
-  let next;
-  beforeEach(() => {
-    options = {};
-    options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
-    cors = ampCors(options, caches);
-    next = jasmine.createSpy('next');
-    request.headers['AMP-Same-Origin'] = 'true';
-  });
-  describe('matches sourceOrigin', () => {
+  describe('sourceOriginPattern', () => {
+    let next;
     beforeEach(() => {
-      request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
+      options = {};
+      options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
+      cors = ampCors(options, caches);
+      next = jasmine.createSpy('next');
+      request.headers['AMP-Same-Origin'] = 'true';
     });
-    it('does not change the status code', (done) => {
-      cors(request, response, () =>{
-        expect(response.status_).toEqual(200);
-        done();
+    describe('matches sourceOrigin', () => {
+      beforeEach(() => {
+        request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
+      });
+      it('does not change the status code', (done) => {
+        cors(request, response, () =>{
+          expect(response.status_).toEqual(200);
+          done();
+        });
+      });
+    });
+    describe('does not match sourceOrigin', () => {
+      beforeEach(() => {
+        request.url = '/sample?__amp_source_origin=https://example.com';
+        cors(request, response, next);
+      });
+      it('returns status 403', () => {
+        expect(response.status_).toEqual(403);
+      });
+      it('ends the response', () => {
+        expect(response.end_).toEqual(true);
+      });
+      it('ends middleware chain', () => {
+        expect(next).not.toHaveBeenCalled();
       });
     });
   });
-  describe('does not match sourceOrigin', () => {
-    beforeEach(() => {
-      request.url = '/sample?__amp_source_origin=https://example.com';
-      cors(request, response, next);
-    });
-    it('returns status 403', () => {
-      expect(response.status_).toEqual(403);
-    });
-    it('ends the response', () => {
-      expect(response.end_).toEqual(true);
-    });
-    it('ends middleware chain', () => {
-      expect(next).not.toHaveBeenCalled();
-    });
-  });
 });
+
