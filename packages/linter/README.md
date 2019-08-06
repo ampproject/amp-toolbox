@@ -1,7 +1,6 @@
 # AMP Linter
 
-[![npm
-version](https://badge.fury.io/js/@ampproject/toolbox-linter.svg)](https://badge.fury.io/js/@ampproject/toolbox-linter)
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-linter.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-linter)
 
 ## Overview
 

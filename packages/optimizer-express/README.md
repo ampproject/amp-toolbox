@@ -1,6 +1,6 @@
 ## Introduction
 
-[![npm version](https://badge.fury.io/js/@ampproject/toolbox-optimizer-express.svg)](https://badge.fury.io/js/@ampproject/toolbox-optimizer-express)
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer-express.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer-express)
 
 amp-optimizer-express is an [express](http://expressjs.com/) middleware that optimizes page load
 times for websites using AMP for their canonical pages. The middleware uses the same

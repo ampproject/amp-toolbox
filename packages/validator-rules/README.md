@@ -1,5 +1,7 @@
 # AMP-Toolbox Validator Rules
 
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-validator-rules.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-validator-rules)
+
 Queries published AMP Validator rules and extracts information about required
 markup and attributes for all AMP formats.
 

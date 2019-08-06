@@ -1,6 +1,6 @@
 # AMP-Toolbox CLI
 
-[![npm version](https://badge.fury.io/js/@ampproject/toolbox-cli.svg)](https://badge.fury.io/js/@ampproject/toolbox-cli)
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-cli.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-cli)
 
 The AMP Toolbox command line interface consists of a Node.js program called `amp` that can be run from a Windows, macOS, of UNIX-compatible command line environment. This way, AMP Toolbox can easily be integrated into a command line build process.
 

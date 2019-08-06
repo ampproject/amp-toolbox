@@ -1,6 +1,6 @@
 # AMP CORS Middleware
 
-[![npm version](https://badge.fury.io/js/@ampproject/toolbox-cors.svg)](https://badge.fury.io/js/@ampproject/toolbox-cors)
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-cors.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-cors)
 
 The AMP CORS middleware adds CORS and
 [AMP CORS](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/) headers to all CORS

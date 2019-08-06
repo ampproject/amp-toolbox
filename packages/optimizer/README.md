@@ -1,6 +1,6 @@
 # AMP Optimizer 
 
-[![npm version](https://badge.fury.io/js/@ampproject/toolbox-optimizer.svg)](https://badge.fury.io/js/@ampproject/toolbox-optimizer)
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer)
 
 AMP Optimizer is a tool to server-side enhance the rendering performance of AMP pages. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
