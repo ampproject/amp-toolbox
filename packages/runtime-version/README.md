@@ -22,7 +22,7 @@ https://cdn.ampproject.org/rtv/001515617716922/v0.css
 Install via:
 
 ```sh
-npm install @ampproject/toolbox-runtime-version@canary
+npm install @ampproject/toolbox-runtime-version
 ```
 
 ## Usage

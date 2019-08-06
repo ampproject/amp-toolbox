@@ -8,7 +8,7 @@ markup and attributes for all AMP formats.
 Install via:
 
 ```
-$ npm install @ampproject/toolbox-validator-rules@canary
+$ npm install @ampproject/toolbox-validator-rules
 ```
 
 ### Including the Module

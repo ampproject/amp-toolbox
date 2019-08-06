@@ -10,7 +10,7 @@ https://developers.google.com/amp/cache/update-ping#update-cache-request).
 Install via:
 
 ```sh
-npm install @ampproject/toolbox-update-cache@canary
+npm install @ampproject/toolbox-update-cache
 ```
 
 Generate a list of update URLs like this:

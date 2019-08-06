@@ -10,7 +10,7 @@ available in the [AMP documentation](https://developers.google.com/amp/cache/ove
 Install via:
 
 ```
-$ npm install @ampproject/toolbox-cache-url@canary
+$ npm install @ampproject/toolbox-cache-url
 ```
 
 ### Including the Module

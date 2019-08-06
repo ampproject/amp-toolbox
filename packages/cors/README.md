@@ -12,7 +12,7 @@ requests initiated by the AMP runtime. The middleware will only add these header
 Install via:
 
 ```sh
-npm install @ampproject/toolbox-cors@canary --save
+npm install @ampproject/toolbox-cors --save
 ```
 
 ## Usage
