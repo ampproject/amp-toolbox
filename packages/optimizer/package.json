@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -25,8 +25,8 @@
     }
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^1.0.0",
-    "@ampproject/toolbox-runtime-version": "^1.0.0",
+    "@ampproject/toolbox-core": "^1.0.1",
+    "@ampproject/toolbox-runtime-version": "^1.0.1",
     "css": "2.2.4",
     "parse5": "5.1.0",
     "parse5-htmlparser2-tree-adapter": "5.1.0"
