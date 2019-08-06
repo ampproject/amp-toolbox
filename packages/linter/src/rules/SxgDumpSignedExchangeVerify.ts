@@ -4,6 +4,9 @@ import { fetchToCurl } from "../helper";
 import { Context } from "../index";
 import { Rule } from "../rule";
 
+const CMD_DUMP_SXG = `dump-signedexchange`;
+const CMD_DUMP_SXG_ARGS = [`-verify`, `-json`];
+
 function compare(
   expected: { [k: string]: boolean | string | number },
   actual: typeof expected
@@ -20,7 +23,7 @@ function compare(
         return acc;
       }
     },
-    {} as typeof expected
+    {} as { [k: string]: string }
   );
 }
 
@@ -41,6 +44,7 @@ const REQUEST_HEADERS = {
   "amp-cache-transform": `google;v="1"`
 };
 const EXPECTED_VERSION = "1b3";
+const SECONDS_IN_A_DAY = 24 * 60 * 60;
 
 export class SxgDumpSignedExchangeVerify extends Rule {
   async run({ url, headers }: Context) {
@@ -61,26 +65,31 @@ export class SxgDumpSignedExchangeVerify extends Rule {
       );
     }
     const body = await res.buffer();
-    const CMD = `dump-signedexchange`;
-    const ARGS = [`-verify`, `-json`];
-    const DEBUG = `${fetchToCurl(url, opt, false)} | ${CMD} ${ARGS.join(" ")}`;
+    const debug = `[debug: ${fetchToCurl(
+      url,
+      opt,
+      false
+    )} | ${CMD_DUMP_SXG} ${CMD_DUMP_SXG_ARGS.join(" ")}]`;
     let sxg;
     try {
-      sxg = await execa(CMD, ARGS, { input: body }).then(spawn => {
-        const stdout = JSON.parse(spawn.stdout);
-        return {
-          isValid: stdout.Valid,
-          version: stdout.Version,
-          uri: stdout.RequestURI,
-          status: stdout.ResponseStatus,
-          signatures: stdout.Signatures
-        };
-      });
+      sxg = await execa(CMD_DUMP_SXG, CMD_DUMP_SXG_ARGS, { input: body }).then(
+        spawn => {
+          const stdout = JSON.parse(spawn.stdout);
+          return {
+            isValid: stdout.Valid,
+            version: stdout.Version,
+            uri: stdout.RequestURI,
+            status: stdout.ResponseStatus,
+            signatures: stdout.Signatures
+          };
+        }
+      );
     } catch (e) {
       return this.warn(
-        `not testing: couldn't execute [${CMD}] (not installed? not in PATH?)`
+        `couldn't execute [${CMD_DUMP_SXG}] (not installed? not in PATH?)`
       );
     }
+
     const expected = {
       isValid: true,
       version: EXPECTED_VERSION,
@@ -90,9 +99,10 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     const diff = compare(expected, sxg);
     if (Object.keys(diff).length !== 0) {
       return this.fail(
-        `[${url}] is not valid [${JSON.stringify(diff)}] [debug: ${DEBUG}]`
+        `[${url}] is not valid [${JSON.stringify(diff)}] [${debug}]`
       );
     }
+
     const certUrl = sxg.signatures[0]["Params"]["cert-url"] as string;
     if (!certUrl) {
       return this.fail(`Can't find valid [cert-url] [${JSON.stringify(sxg)}]`);
@@ -108,6 +118,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
         `cert-url [${certUrl}] is not found or has wrong content type`
       );
     }
+
     const validityUrl = sxg.signatures[0]["Params"]["validity-url"] as string;
     if (!validityUrl) {
       return this.fail(`Can't find valid [cert-url] [${JSON.stringify(sxg)}]`);
@@ -117,20 +128,22 @@ export class SxgDumpSignedExchangeVerify extends Rule {
         `validity-url [${validityUrl}] is not found or has wrong content type`
       );
     }
+
     const expires = sxg.signatures[0]["Params"]["expires"] as number;
-    if (7 * 24 * 60 * 60 + Date.now() / 1000 < expires) {
+    if (7 * SECONDS_IN_A_DAY + Date.now() / 1000 < expires) {
       return this.fail(
         `the signed content expires more than 7 days into the future [at ${new Date(
           expires * 1000
-        )}] [debug: ${DEBUG}]`
+        )}] [${debug}]`
       );
     }
+
     return this.pass();
   }
   meta() {
     return {
       url: "",
-      title: "no SXG errors found",
+      title: `verification by ${CMD_DUMP_SXG} tool`,
       info: ""
     };
   }

@@ -58,7 +58,7 @@ export class SxgContentNegotiationIsOk extends Rule {
   meta() {
     return {
       url: "",
-      title: "application/signed-exchange content negotiation is correct",
+      title: "content negotiation is correct",
       info: ""
     };
   }
