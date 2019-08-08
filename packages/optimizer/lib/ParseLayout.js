@@ -18,7 +18,14 @@
 const VALID_UNITS = ['px', 'em', 'rem', 'vh', 'vw', 'vmin', 'vmax'];
 const AMP_LAYOUTS = ['nodisplay', 'fixed', 'responsive', 'fixed-height',
   'fill', 'container', 'flex-item', 'fluid', 'intrinsic'];
-const SIZE_DEFINED_LAYOUTS = ['fixed', 'fixed-height', 'responsive', 'fill', 'flex-item'];
+const SIZE_DEFINED_LAYOUTS = [
+  'fixed',
+  'fixed-height',
+  'responsive',
+  'fill',
+  'flex-item',
+  'intrinsic',
+];
 const CSS_LENGTH_ONE_PX = cssLength('1', false, false);
 const CSS_LENGTH_AUTO = cssLength('auto', true, false);
 const CSS_LENGTH_FOURTY_FOUR_PX = cssLength('44px', false, false);
