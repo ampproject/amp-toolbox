@@ -28,7 +28,7 @@
     "@pika/plugin-simple-bin": "0.6.0",
     "@pika/plugin-ts-standard-pkg": "0.6.0",
     "@types/cheerio": "0.22.12",
-    "@types/debug": "4.1.4",
+    "@types/debug": "4.1.5",
     "@types/diff": "4.0.2",
     "@types/escape-html": "0.0.20",
     "@types/nock": "10.0.3",
