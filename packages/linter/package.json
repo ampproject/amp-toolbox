@@ -11,7 +11,7 @@
     "amphtml-validator": "1.0.23",
     "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.2",
-    "commander": "2.20.0",
+    "commander": "3.0.0",
     "debug": "4.1.1",
     "execa": "2.0.3",
     "node-fetch": "2.6.0",
