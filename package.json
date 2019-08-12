@@ -63,7 +63,7 @@
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-serve": "1.0.1",
     "semver": "6.3.0",
-    "tap-parser": "9.3.2",
+    "tap-parser": "9.3.3",
     "tar": "4.4.10",
     "typescript": "3.5.3"
   },
