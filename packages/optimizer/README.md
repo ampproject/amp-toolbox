@@ -64,14 +64,14 @@ $ npx @ampproject/toolbox-cli myFile.html
 
 ## Why doesn't my AMP page render faster?
 
-The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possioble to remove the boilerplate code:
+The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:
 
-* if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used. 
+* if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)). 
 * if an AMP component uses the `media`, `sizes` or `heights` attribut ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
 
 * if an AMP component uses the `intrinsic` layout. The good news is: support for `intrinsic` layout is currently [work in progress](https://github.com/ampproject/amp-toolbox/issues/264). 
 
-To find out, why the AMP boilerplate could not be removed, enable the `verbose`:
+To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
 ```
 // globally
@@ -91,10 +91,6 @@ ampOptimizer.transformHtml(originalHtml, {
 
 ## Best Practices
 
-### Regenerate pages at least once a week
-
-AMP Optimizer inlines CSS styles required by AMP. To make sure, that the inlined CSS stays in sync with the latest AMP release, we recommend to re-generate pages at least once a week. The good news is, out-of-sync CSS will not break your page, as AMP will check the version of the inlined CSS at runtime and will automatically update it to the latest version.
-
 ### Transform AMP pages at build time if possible
 
 Applying the transformations to an AMP file consumes additional server resources. Also, since the entire file is needed to apply the transformations, it also becomes impossible to stream the response while applying it. In order to avoid server overhead, if the set of AMP files to be transformed is known in advance, transformations should be run at build time.
@@ -102,6 +98,10 @@ Applying the transformations to an AMP file consumes additional server resources
 ### Cache transformed AMPs at runtime
 
 Most websites have a more dynamic nature though and are not able to apply the transformations statically. For such cases it is possible to run the transformations after AMP pages are rendered, e.g. in an Express middleware. In that case, to achieve best performance, it's best to cache transformed pages for subsequent requests. Caching can take place on the CDN level, on the site's internal infrastructure (eg: Memcached), or even on the server itself, if the set of pages is small enough to fit in memory.
+
+### Regenerate pages at least once a week
+
+AMP Optimizer inlines CSS styles required by AMP. To make sure, that the inlined CSS stays in sync with the latest AMP release, we recommend to re-generate pages at least once a weekOut-of-sync CSS will not break your page, but it could theoretically cause AMP components to briefly appear with the "wrong" styles, such as being visible when they should be hidden. The good news is that these glitches will only be temporary, because as soon as the AMP JS starts, it will check the inlined CSS and update it if required.
 
 ## Experimental Features
 
