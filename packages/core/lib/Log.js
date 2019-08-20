@@ -39,6 +39,10 @@ class Log {
     this.log_(this.output_.log, message, ...args);
   }
 
+  success(message, ...args) {
+    this.log_(this.output_.log, this.green_('SUCCESS ' + message), args);
+  }
+
   warn(message, ...args) {
     this.log_(this.output_.warn, this.yellow_('WARNING ' + message), args);
   }
@@ -77,6 +81,10 @@ class Log {
 
   dim_(string) {
     return `\x1b[36m${string}\x1b[0m`;
+  }
+
+  green_(string) {
+    return `\x1b[32m${string}\x1b[0m`;
   }
 
   yellow_(string) {
