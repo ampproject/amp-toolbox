@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox#readme",
   "dependencies": {
-    "apicache": "1.4.0",
+    "apicache": "1.5.1",
     "compression": "1.7.4",
     "express": "4.17.0",
     "express-minify-html": "^0.12.0",
