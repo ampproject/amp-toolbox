@@ -10,21 +10,12 @@ AMP Optimizer is a tool to server-side enhance the rendering performance of AMP 
 * Speed-up AMP framework and custom font loading.
 * Move CSS keyframe animations to the bottom of the page.
 
-The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/).
+The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/). To give it a try, check out [the online playground](https://toolbox-optimizer.glitch.me/).
 
-**Important: AMP Optimizer will produce valid AMP, if the input is valid AMP.**
+**Good to know:** 
 
-* [Usage](#usage)
-* [Best Practices](#best-practices)
-  + [Regenerate pages at least once a week](#regenerate-pages-at-least-once-a-week)
-  + [Debugging](#debugging)
-  + [Transform AMP pages at build time if possible](#transform-amp-pages-at-build-time-if-possible)
-  + [Cache transformed AMPs at runtime](#cache-transformed-amps-at-runtime)
-* [Experimental Features](#experimental-features)
-  + [Paired AMP](#paired-amp)
-  + [Versioned AMP Runtime](#versioned-amp-runtime)
-  + [Blurry image placeholders](#blurry-image-placeholders)
-  + [Self-hosted AMP components](#self-hosted-amp-components)
+* AMP Optimizer will produce valid AMP, if the input is valid AMP.
+* AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
 
 ## Usage
 
