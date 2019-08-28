@@ -22,40 +22,20 @@ const {calculateHash} = require('@ampproject/toolbox-script-csp');
  *
  * Currently only supports inline scripts.
  *
- * This transformer supports the following parameter:
- *
- * `ampScriptCspMode`: specifies whether to append or replace an existing meta
- *                     tag with the CSP (by default, if a CSP tag exists, this
- *                     module does nothing).
  */
 class AmpScriptCsp {
-  constructor(config) {
-    this._mode = config.ampScriptCspMode;
-  }
-
-  transform(tree, params) {
-    const mode = this._mode || params.ampScriptCspMode;
-
+  transform(tree) {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
     const body = html.firstChildByTag('body');
 
     if (!head || !body) return;
 
-    let cspMeta = this._findCspMeta(head);
-    if (cspMeta) {
-      if (mode !== 'append' && mode !== 'replace') {
-        return;
-      }
-    } else {
-      cspMeta = this._createCspMeta(tree, head);
-    }
-
-    let hashes = new Set();
-    if (mode === 'append') {
-      const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
-      hashes = new Set(existingCsp);
-    }
+    const cspMeta = this._findOrCreateCspMeta(tree, head);
+    const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
+    const hashes = new Set(existingCsp);
+    // ''.split(' ') results in [''] and not [], so we account for that case
+    hashes.delete('');
 
     const inlineScripts = this._findAllInlineScripts(body);
     for (const script of inlineScripts) {
@@ -83,16 +63,12 @@ class AmpScriptCsp {
     return result;
   }
 
-  _findCspMeta(head) {
+  _findOrCreateCspMeta(tree, head) {
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (node.tagName === 'meta' && node.attribs.name === 'amp-script-src') {
         return node;
       }
     }
-    return null;
-  }
-
-  _createCspMeta(tree, head) {
     const cspMeta = tree.createElement('meta', {
       name: 'amp-script-src',
     });

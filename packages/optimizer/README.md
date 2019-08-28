@@ -1,4 +1,4 @@
-# AMP Optimizer 
+# AMP Optimizer
 
 [![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer)
 
@@ -9,10 +9,11 @@ AMP Optimizer is a tool to server-side enhance the rendering performance of AMP 
 * Inline critical CSS.
 * Speed-up AMP framework and custom font loading.
 * Move CSS keyframe animations to the bottom of the page.
+* Generate CSP for inlined [`amp-script`](https://amp.dev/documentation/components/amp-script/) code.
 
 The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/). To give it a try, check out [the online playground](https://toolbox-optimizer.glitch.me/).
 
-**Good to know:** 
+**Good to know:**
 
 * AMP Optimizer will produce valid AMP, if the input is valid AMP.
 * AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
@@ -57,10 +58,10 @@ $ npx @ampproject/toolbox-cli myFile.html
 
 The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:
 
-* if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)). 
+* if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
 * if an AMP component uses the `media`, `sizes` or `heights` attribut ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
 
-* if an AMP component uses the `intrinsic` layout. The good news is: support for `intrinsic` layout is currently [work in progress](https://github.com/ampproject/amp-toolbox/issues/264). 
+* if an AMP component uses the `intrinsic` layout. The good news is: support for `intrinsic` layout is currently [work in progress](https://github.com/ampproject/amp-toolbox/issues/264).
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
@@ -98,7 +99,7 @@ AMP Optimizer inlines CSS styles required by AMP. To make sure, that the inlined
 
 **Warning: these features are experimental and might result in invalid AMP pages.**
 
-### Paired AMP 
+### Paired AMP
 
 When using experimental features resulting in invalid AMP it's best to setup paired AMP mode. Paired AMP mode will add `<link rel=amphtml href=${ampUrl}>` to the transformed page, were `ampUrl` needs to point to the valid version of this page.
 
@@ -118,7 +119,7 @@ const transformedHtml = await optimizer.transformHtml(html, {
 
 ### Versioned AMP Runtime
 
-The `ampRuntimeVersion` parameter will rewrite all AMP runtime and extension imports to the specified version. For example: 
+The `ampRuntimeVersion` parameter will rewrite all AMP runtime and extension imports to the specified version. For example:
 
 ```
 https://cdn.ampproject.org/v0.js
@@ -132,7 +133,7 @@ https://cdn.ampproject.org/rtv/001515617716922/v0.js
 
 Versioning the AMP runtime URLs has one main benefit: versioned AMP runtime URLs are served with a longer max-age than the unversioned ones. This means AMP pages served with versioned AMP runtime benefit from better browser caching.
 
-**Important:** when using versioned AMP runtime URLs make sure to invalidate all caches whenever a new AMP runtime is released. This is to ensure that your AMP pages always use the latest version of the AMP runtime.  
+**Important:** when using versioned AMP runtime URLs make sure to invalidate all caches whenever a new AMP runtime is released. This is to ensure that your AMP pages always use the latest version of the AMP runtime.
 
 You can use [@ampproject/toolbox-runtime-version](../@ampproject/toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
 
@@ -171,7 +172,7 @@ This transformer supports the following options:
   to avoid expensive recalculation. Set to 0 if caching should be disabled. Set to -1 if
   all placeholders should be cached (good for static sites). Defaults to 30.
 
-Usage: 
+Usage:
 
 ```
 const optimizer = AmpOptimizer.create({
