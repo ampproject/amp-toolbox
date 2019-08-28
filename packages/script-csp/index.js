@@ -16,6 +16,6 @@
 
 'use strict';
 
-const {calculateHash} = require('../lib/calculateHash');
+const {calculateHash} = require('./lib/calculateHash');
 
 module.exports = {calculateHash};
