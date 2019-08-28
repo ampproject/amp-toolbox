@@ -38,6 +38,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'PruneDuplicateResourceHints',
   'SeparateKeyframes',
   'AddTransformedFlag',
+  'AmpScriptCsp',
 ];
 
 /**
@@ -64,6 +65,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
+  'AmpScriptCsp',
 ];
 
 const DEFAULT_CONFIG = {
