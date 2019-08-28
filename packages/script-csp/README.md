@@ -33,6 +33,12 @@ such as a [`Buffer`](https://nodejs.org/api/buffer.html).
 
 ### Example
 
+Here is an example on how to use the `calculateHash` function to generate an
+`amp-script` CSP header.
+
+Note that both leading and trailing whitespace is included in calculating the
+hash and must exactly match the whitespace used in the inline script.
+
 ```javascript
 const {calculateHash} = require('@ampproject/toolbox-script-csp');
 
