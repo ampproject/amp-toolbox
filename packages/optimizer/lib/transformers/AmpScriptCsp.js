@@ -34,19 +34,18 @@ class AmpScriptCsp {
 
     if (!head || !body) return;
 
-    const inlineScripts = this._findAllInlineScripts(body);
-    const hashes = new Set();
-    for (const script of inlineScripts) {
-      const content = script.children[0].data;
-      hashes.add(calculateHash(content));
-    }
+    let hashes = new Set();
 
     const cspMeta = this._findOrCreateCspMeta(tree, head);
     if (params.append) {
       const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
-      for (const hash of existingCsp) {
-        hashes.add(hash);
-      }
+      hashes = new Set(existingCsp);
+    }
+
+    const inlineScripts = this._findAllInlineScripts(body);
+    for (const script of inlineScripts) {
+      const content = script.children[0].data;
+      hashes.add(calculateHash(content));
     }
 
     const csp = Array.from(hashes).join(' ');
