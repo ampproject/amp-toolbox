@@ -25,6 +25,15 @@ const SUPPORTED_ALGORITHMS = new Set([
 
 const DEFAULT_ALGORITHM = 'sha384';
 
+/**
+ * Calculates the hash of the given input and returns a valid CSP string for use
+ * with amp-script.
+ *
+ * @param {string|DataView} src - Input script
+ * @param {Object} [options] - The options object
+ * @param {string} [options.algorithm] - Algorithm to use
+ * @returns {string} The hash prefixed with the algorithm used
+ */
 function calculateHash(src, {algorithm = DEFAULT_ALGORITHM} = {}) {
   const algo = algorithm.toLowerCase();
   if (!SUPPORTED_ALGORITHMS.has(algo)) {
