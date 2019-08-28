@@ -28,6 +28,7 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 - **[amp-optimizer](./packages/optimizer):** a javascript library implementing server-side-rendering for AMP pages.
 - **[amp-optimizer-express](./packages/optimizer-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
 - **[amp-runtime-version](./packages/runtime-version):** a javascript library for querying the current AMP runtime version.
+- **[amp-script-csp](./packages/script-csp):** a javascript library for calculating [`amp-script`](https://amp.dev/documentation/components/amp-script/) compatible CSP hashes.
 - **[amp-update-cache](./packages/update-cache):** a javascript library for updating AMP documents in AMP Caches.
 - **[amp-validator-rules](./packages/validator-rules):** a javascript library for querying AMP validator rules.
 

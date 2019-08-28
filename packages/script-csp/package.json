@@ -1,0 +1,26 @@
+{
+  "name": "@ampproject/toolbox-script-csp",
+  "version": "1.0.1",
+  "description": "A library that calculates the CSP hash for amp-script",
+  "main": "index.js",
+  "keywords": [
+    "amp"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+  },
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/script-csp",
+  "directories": {
+    "lib": "lib"
+  }
+}
