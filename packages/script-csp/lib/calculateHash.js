@@ -31,7 +31,7 @@ const DEFAULT_ALGORITHM = 'sha384';
  *
  * @param {string|DataView} src - Input script
  * @param {Object} [options] - The options object
- * @param {string} [options.algorithm] - Algorithm to use
+ * @param {string} [options.algorithm] - Algorithm to use, defaults to sha384
  * @returns {string} The hash prefixed with the algorithm used
  */
 function calculateHash(src, {algorithm = DEFAULT_ALGORITHM} = {}) {
