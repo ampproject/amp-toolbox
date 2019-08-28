@@ -24,10 +24,18 @@ const {calculateHash} = require('@ampproject/toolbox-script-csp');
  *
  * This transformer supports the following parameter:
  *
- * `append`: specifies the calculated CSPs should be appended to existing ones.
+ * `ampScriptCspMode`: specifies whether to append or replace an existing meta
+ *                     tag with the CSP (by default, if a CSP tag exists, this
+ *                     module does nothing).
  */
 class AmpScriptCsp {
+  constructor(config) {
+    this._mode = config.ampScriptCspMode;
+  }
+
   transform(tree, params) {
+    const mode = this._mode || params.ampScriptCspMode;
+
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
     const body = html.firstChildByTag('body');
@@ -36,7 +44,7 @@ class AmpScriptCsp {
 
     let cspMeta = this._findCspMeta(head);
     if (cspMeta) {
-      if (params.mode !== 'append' && params.mode !== 'replace') {
+      if (mode !== 'append' && mode !== 'replace') {
         return;
       }
     } else {
@@ -44,7 +52,7 @@ class AmpScriptCsp {
     }
 
     let hashes = new Set();
-    if (params.mode === 'append') {
+    if (mode === 'append') {
       const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
       hashes = new Set(existingCsp);
     }
