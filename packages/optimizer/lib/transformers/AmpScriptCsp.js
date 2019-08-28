@@ -34,10 +34,17 @@ class AmpScriptCsp {
 
     if (!head || !body) return;
 
-    let hashes = new Set();
+    let cspMeta = this._findCspMeta(head);
+    if (cspMeta) {
+      if (params.mode !== 'append' && params.mode !== 'replace') {
+        return;
+      }
+    } else {
+      cspMeta = this._createCspMeta(tree, head);
+    }
 
-    const cspMeta = this._findOrCreateCspMeta(tree, head);
-    if (params.append) {
+    let hashes = new Set();
+    if (params.mode === 'append') {
       const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
       hashes = new Set(existingCsp);
     }
@@ -68,20 +75,20 @@ class AmpScriptCsp {
     return result;
   }
 
-  _findOrCreateCspMeta(tree, head) {
-    let cspMeta = null;
+  _findCspMeta(head) {
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (node.tagName === 'meta' && node.attribs.name === 'amp-script-src') {
-        cspMeta = node;
-        break;
+        return node;
       }
     }
-    if (!cspMeta) {
-      cspMeta = tree.createElement('meta', {
-        name: 'amp-script-src',
-      });
-      head.appendChild(cspMeta);
-    }
+    return null;
+  }
+
+  _createCspMeta(tree, head) {
+    const cspMeta = tree.createElement('meta', {
+      name: 'amp-script-src',
+    });
+    head.appendChild(cspMeta);
     return cspMeta;
   }
 }
