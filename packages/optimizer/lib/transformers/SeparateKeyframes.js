@@ -68,7 +68,15 @@ class SeparateKeyframes {
     if (!stylesText || !stylesText.data) return;
     stylesText = stylesText.data;
 
-    const cssTree = css.parse(stylesText);
+    let cssTree;
+    try {
+      cssTree = css.parse(stylesText);
+    } catch (e) {
+      // css parser sometimes struggles with malformed css
+      // print a warning, but don't fail the transformation
+      this.log_.warn('Failed parsing css', e);
+      return;
+    }
     const keyframesTree = {
       type: 'stylesheet',
       stylesheet: {
