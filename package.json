@@ -4,7 +4,7 @@
   "scripts": {
     "build": "lerna run build",
     "bootstrap": "lerna bootstrap",
-    "changelog": "lerna changelog",
+    "changelog": "lerna-changelog",
     "postinstall": "run-s bootstrap link",
     "link": "lerna link",
     "generate:changelog": "lerna-changelog",
