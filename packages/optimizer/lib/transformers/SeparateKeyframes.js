@@ -16,7 +16,14 @@
 'use strict';
 
 const css = require('css');
-const stringifyOptions = {indent: 0, compress: true};
+const OPTIONS_PRETTY_PRINT = {
+  indent: '  ',
+  compress: false,
+};
+const OPTIONS_COMPRESS = {
+  indent: '',
+  compress: true,
+};
 const allowedKeyframeProps = new Set([
   'animation-timing-function',
   'offset-distance',
@@ -36,6 +43,11 @@ const allowedKeyframeProps = new Set([
 class SeparateKeyframes {
   constructor(config) {
     this.log_ = config.log.tag('SeparateKeyframes');
+    if (config.compress === false) {
+      this.stringifyOptions_ = OPTIONS_PRETTY_PRINT;
+    } else {
+      this.stringifyOptions_ = OPTIONS_COMPRESS;
+    }
   }
 
   transform(tree) {
@@ -68,7 +80,15 @@ class SeparateKeyframes {
     if (!stylesText || !stylesText.data) return;
     stylesText = stylesText.data;
 
-    const cssTree = css.parse(stylesText);
+    let cssTree;
+    try {
+      cssTree = css.parse(stylesText);
+    } catch (e) {
+      // css parser sometimes struggles with malformed css
+      // print a warning, but don't fail the transformation
+      this.log_.warn('Failed parsing css', e);
+      return;
+    }
     const keyframesTree = {
       type: 'stylesheet',
       stylesheet: {
@@ -125,7 +145,11 @@ class SeparateKeyframes {
     });
 
     // if no rules moved nothing to do
-    if (!keyframesTree.stylesheet.rules.length) return;
+    if (keyframesTree.stylesheet.rules.length === 0) {
+      // re-serialize to compress the CSS
+      stylesCustomTag.children[0].data = css.stringify(cssTree, this.stringifyOptions_);
+      return;
+    }
 
     if (!stylesKeyframesTag) {
       // Check body for keyframes tag, removing it if found
@@ -151,7 +175,7 @@ class SeparateKeyframes {
           currentKeyframesTree.stylesheet.rules
       )
     );
-    const keyframesText = css.stringify(currentKeyframesTree, stringifyOptions);
+    const keyframesText = css.stringify(currentKeyframesTree, this.stringifyOptions_);
 
     if (!keyframesTextNode) {
       stylesKeyframesTag.insertText(keyframesText);
@@ -162,7 +186,7 @@ class SeparateKeyframes {
     // Add keyframes tag to end of body
     body.children.push(stylesKeyframesTag);
     // Update stylesCustomTag with filtered styles
-    stylesCustomTag.children[0].data = css.stringify(cssTree, stringifyOptions);
+    stylesCustomTag.children[0].data = css.stringify(cssTree, this.stringifyOptions_);
   }
   logInvalid(name, property) {
     this.log_.warn(`Found invalid keyframe property '${
