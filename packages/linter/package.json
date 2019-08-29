@@ -15,8 +15,7 @@
     "debug": "4.1.1",
     "execa": "2.0.4",
     "node-fetch": "2.6.0",
-    "probe-image-size": "4.1.1",
-    "throat": "5.0.0"
+    "probe-image-size": "4.1.1"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
@@ -61,6 +60,7 @@
   },
   "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986",
   "devDependencies": {
+    "throat": "^5.0.0",
     "typescript": "3.6.2"
   }
 }
