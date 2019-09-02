@@ -54,7 +54,7 @@ npm test
 
 ### Adding new dependencies
 
-amp-toolbox uses [Lerna](https://lernajs.io/) to manage it's packages. To keep build times low, `devDependencies` ([but not CLI dependencies](https://github.com/lerna/lerna/issues/1079#issuecomment-337660289)) must be added to the root [package.json](package.json) file. Runtime dependencies are managed for each package individually.
+amp-toolbox uses [Lerna](https://lerna.js.org/) to manage it's packages. To keep build times low, `devDependencies` ([but not CLI dependencies](https://github.com/lerna/lerna/issues/1079#issuecomment-337660289)) must be added to the root [package.json](package.json) file. Runtime dependencies are managed for each package individually.
 
 When adding a new package inside the `packages` directory, register the package via:
 
