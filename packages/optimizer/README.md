@@ -54,6 +54,8 @@ There's also a [command line version](../cli/README.md) available:
 $ npx @ampproject/toolbox-cli myFile.html
 ```
 
+Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
+
 ## Why doesn't my AMP page render faster?
 
 The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:

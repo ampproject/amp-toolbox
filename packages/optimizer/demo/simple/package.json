@@ -9,9 +9,10 @@
   "author": "The AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-runtime-version": "<1.0.0",
-    "@ampproject/toolbox-optimizer": "0.5.2-beta.5+2d35887",
     "glob": "7.1.4",
     "mkdirp": "0.5.1"
+  },
+  "devDependencies": {
+    "@ampproject/toolbox-optimizer": "^1.1.0-beta.0"
   }
 }

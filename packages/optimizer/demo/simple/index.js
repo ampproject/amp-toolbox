@@ -90,10 +90,50 @@ async function customAmpTransformation(filePath, html) {
   writeFile('custom', filePath, transformedHtml);
 }
 
+// Demo how to implement a custom transformer
+async function manuallySelectingTransformations(filePath, html) {
+  // select every transformer explicitly
+  const customTransformations = [
+    // Applies server-side-rendering optimizations
+    'ServerSideRendering',
+    // Removes ⚡ or 'amp' from the html tag
+    'RemoveAmpAttribute',
+    // Removes the boilerplate
+    // needs to run after ServerSideRendering
+    'AmpBoilerplateTransformer',
+    // Optimizes script import order
+    // needs to run after ServerSideRendering
+    'ReorderHeadTransformer',
+    // needs to run after ReorderHeadTransformer
+    'RewriteAmpUrls',
+    // optimmize google fonts (if used)
+    'GoogleFontsPreconnect',
+    // clean up preloads
+    'PruneDuplicateResourceHints',
+    // Optimize CSS
+    'SeparateKeyframes',
+    // Support inline amp-script
+    'AmpScriptCsp',
+    // Mark as transformed
+    'AddTransformedFlag',
+  ];
+
+  // pass custom transformers when creating the optimizer
+  const optimizer = AmpOptimizer.create({
+    transformations: customTransformations,
+  });
+  // run the transformation
+  const transformedHtml = await optimizer.transformHtml(html, {
+    filePath,
+  });
+  writeFile('manual', filePath, transformedHtml);
+}
+
 [
   validAmpTransformation,
   pairedAmpTransformation,
   customAmpTransformation,
+  manuallySelectingTransformations,
 ].forEach(async (transform) => {
   const files = await collectInputFiles('/**/*.html');
   files.forEach(async (filePath) => {
