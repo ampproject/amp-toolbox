@@ -66,6 +66,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
   'AmpScriptCsp',
+  'AddTransformedFlag',
 ];
 
 const DEFAULT_CONFIG = {
