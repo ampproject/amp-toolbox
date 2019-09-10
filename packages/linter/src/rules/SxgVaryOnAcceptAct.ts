@@ -5,10 +5,7 @@ import { Rule } from "../rule";
 
 export class SxgVaryOnAcceptAct extends Rule {
   async run({ url, headers }: Context) {
-    headers = {
-      ...headers,
-      accept: "text/html,application/signed-exchange;v=b3"
-    };
+    headers.accept = "text/html,application/signed-exchange;v=b3";
     const res = await fetch(url, { headers });
     const debug = `debug: ${fetchToCurl(url, { headers })}`;
     const vary = ("" + res.headers.get("vary"))
