@@ -27,7 +27,7 @@
     "@pika/plugin-build-node": "0.4.0",
     "@pika/plugin-build-types": "0.4.0",
     "@pika/plugin-simple-bin": "0.4.0",
-    "@pika/plugin-ts-standard-pkg": "0.4.0",
+    "@pika/plugin-ts-standard-pkg": "0.6.1",
     "@types/cheerio": "0.22.13",
     "@types/debug": "4.1.5",
     "@types/diff": "4.0.2",
