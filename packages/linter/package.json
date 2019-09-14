@@ -15,7 +15,7 @@
     "debug": "4.1.1",
     "execa": "2.0.4",
     "node-fetch": "2.6.0",
-    "probe-image-size": "4.1.1"
+    "probe-image-size": "5.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
