@@ -107,16 +107,24 @@ module.exports = (options, caches=new Caches()) => {
    * @private
    */
   function extractOriginHeaders_(headers) {
+    const normalizedHeaders = {};
+
+    for (const key in headers) {
+      if (headers.hasOwnProperty(key)) {
+        normalizedHeaders[key.toLowerCase()] = headers[key];
+      }
+    }
+
     // for same-origin requests AMP sets the amp-same-origin header
-    if ('amp-same-origin' in headers) {
+    if ('amp-same-origin' in normalizedHeaders) {
       return {
         isSameOrigin: true,
       };
-    } else if ('origin' in headers) {
+    } else if ('origin' in normalizedHeaders) {
       // use the origin header otherwise
       return {
         isSameOrigin: false,
-        origin: headers.origin,
+        origin: normalizedHeaders.origin,
       };
     }
 
