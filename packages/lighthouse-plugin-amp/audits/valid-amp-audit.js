@@ -7,7 +7,7 @@
 
 const Audit = require('lighthouse').Audit;
 const amphtmlValidator = require('amphtml-validator');
-const fetch = require('node-fetch'));
+const fetch = require('node-fetch');
 
 const TABLE_COLUMN_HEADINGS = [{
   key: 'line',
