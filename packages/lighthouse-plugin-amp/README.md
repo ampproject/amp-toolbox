@@ -22,4 +22,4 @@ Now you can test your site via:
 
 ```sh
 npm start && npm run lighthouse -- http://localhost:8080 
-```sh
+```
