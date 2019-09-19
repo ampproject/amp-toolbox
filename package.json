@@ -67,6 +67,7 @@
     "semver": "6.3.0",
     "tap-parser": "9.3.3",
     "tar": "4.4.11",
+    "throat": "^5.0.0",
     "typescript": "3.5.3"
   },
   "dependencies": {
