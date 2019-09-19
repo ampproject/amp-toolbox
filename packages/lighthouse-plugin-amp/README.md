@@ -4,11 +4,20 @@ AMP plugin for [Lighthouse](https://github.com/GoogleChrome/lighthouse).
 
 ## To run
 
-1. Install `lighthouse`.
-   `npm install lighthouse'
-   If already installed, verify the version supports plugins (version 5 or later).
-2. Install the plugin as a (peer) dependency, parallel to `lighthouse` by either cloning the the repo or installing it as a module.
-   `git clone https://github.com/ampproject/amp-toolbox.git && npm install amp-toolbox/packages/lighthouse-plugin-amp/`
-    or
-   `npm install lighthouse-plugin-amp'
-3. Run `npx -p lighthouse lighthouse https://amp.dev --plugins=lighthouse-plugin-amp --view`
+To run lighthouse in your project, first install lighthouse and lighthouse-plugin-amp as a development dependency:
+
+```sh
+$ npm install lighthouse lighthouse-plugin-amp -D
+```
+
+Then add a script to your package.json file that will run lighthouse together with the AMP plugin:
+
+```js
+  "scripts": {
+    "lighthouse": "lighthouse --plugins=lighthouse-plugin-amp --view"
+  },
+```
+
+Now you can test your site via:
+
+npm start && npm run lighthouse -- http://localhost:8080 
