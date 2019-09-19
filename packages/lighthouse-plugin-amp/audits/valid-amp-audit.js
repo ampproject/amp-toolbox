@@ -12,7 +12,7 @@ const fetch = require('node-fetch');
 const TABLE_COLUMN_HEADINGS = [{
   key: 'line',
   text: 'Location',
-  itemType: 'text'm
+  itemType: 'text',
 }, {
   key: 'msg',
   text: 'Error',
