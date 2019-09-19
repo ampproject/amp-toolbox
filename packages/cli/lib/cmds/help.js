@@ -19,9 +19,9 @@
 const menus = require('./helpMessages.js');
 
 function help(args, logger) {
-  const subCmd = args._[0] === 'help'
-    ? args._[1]
-    : args._[0];
+  const subCmd = args._[0] === 'help' ?
+    args._[1] :
+    args._[0];
 
   logger.info(menus[subCmd] || menus.main);
   return Promise.resolve();
