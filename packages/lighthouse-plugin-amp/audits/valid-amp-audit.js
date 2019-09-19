@@ -38,7 +38,7 @@ class ValidAmpAudit extends Audit {
       scoreDisplayMode: 'binary',
     };
   }
- 
+
   static async audit(artifacts) {
     let result;
     const tableItems = [];
@@ -55,7 +55,7 @@ class ValidAmpAudit extends Audit {
       result.errors.forEach((error) => {
         const lineDetails = 'line ' + error.line + ', col ' + error.col;
         tableItems.push({line: lineDetails, msg: error.message, url: error.specUrl});
-      });  
+      });
       // Generate table of validation errors.
       tableDetails = Audit.makeTableDetails(TABLE_COLUMN_HEADINGS, tableItems, '');
     } else {
