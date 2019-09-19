@@ -12,15 +12,15 @@ const fetch = require('node-fetch');
 const TABLE_COLUMN_HEADINGS = [{
   key: 'line',
   text: 'Location',
-  itemType: 'text'
+  itemType: 'text'm
 }, {
   key: 'msg',
   text: 'Error',
-  itemType: 'text'
+  itemType: 'text',
 }, {
   key: 'url',
   text: 'URL',
-  itemType: 'url'
+  itemType: 'url',
 }];
 
 /**
@@ -36,12 +36,12 @@ class ValidAmpAudit extends Audit {
       description: 'An invalid AMP page will not be cached.',
       requiredArtifacts: ['URL'],
       scoreDisplayMode: 'binary',
-    }
+    };
   }
-  
+ 
   static async audit(artifacts) {
     let result;
-    let tableItems = [];
+    const tableItems = [];
     let tableDetails;
     const pageUrl = artifacts.URL.requestedUrl;
     const fetchPageErrorMsg = 'Page' + pageUrl + ' not found';
@@ -52,12 +52,12 @@ class ValidAmpAudit extends Audit {
       // Validate page.
       const body = await response.text();
       result = validator.validateString(body);
-      result.errors.forEach(error => {
+      result.errors.forEach((error) => {
         const lineDetails = 'line ' + error.line + ', col ' + error.col;
         tableItems.push({line: lineDetails, msg: error.message, url: error.specUrl});
       });  
       // Generate table of validation errors.
-      tableDetails = Audit.makeTableDetails(TABLE_COLUMN_HEADINGS, tableItems, '')
+      tableDetails = Audit.makeTableDetails(TABLE_COLUMN_HEADINGS, tableItems, '');
     } else {
       throw new Error(fetchPageErrorMsg);
     }
@@ -67,7 +67,5 @@ class ValidAmpAudit extends Audit {
       details: tableDetails,
     };
   }
-
 }
-
 module.exports = ValidAmpAudit;

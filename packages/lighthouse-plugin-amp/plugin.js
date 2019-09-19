@@ -6,8 +6,8 @@
 'use strict';
 /** @type {LH.Config.Plugin} */
 module.exports = {
-   audits: [{
-     path: 'lighthouse-plugin-amp/audits/valid-amp-audit.js',
+  audits: [{
+    path: 'lighthouse-plugin-amp/audits/valid-amp-audit.js',
   }],
   category: {
     title: 'AMP HTML',
