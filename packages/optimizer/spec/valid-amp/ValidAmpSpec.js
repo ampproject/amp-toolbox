@@ -21,7 +21,7 @@ const {writeFileSync} = require('fs');
 
 const {DomTransformer} = require('../../lib/DomTransformer.js');
 
-const ampOptimizer = new DomTransformer({validAmp: true});
+const ampOptimizer = new DomTransformer();
 
 const files = getResources(join(__dirname, 'files')).filter((f) => f.endsWith('.html'));
 
