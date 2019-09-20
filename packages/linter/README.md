@@ -22,7 +22,7 @@ $ node src/cli.js https://amp.dev/
 
 Command-line (from npm):
 
-```sh
+```sh <!-- markdownlint-disable MD014 -->
 $ npx @ampproject/toolbox-linter https://amp.dev/
 ```
 
@@ -54,7 +54,7 @@ performed.
 ## Development
 
 **Important note!** Many of the scripts below rely on binaries that are
-installed in the `../../node_modules/.bin` directory, and *will fail* if invoked
+installed in the `../../node_modules/.bin` directory, and _will fail_ if invoked
 in the default configuration. To fix this, either:
 
 1. Add `../../node_modules/.bin` to your path. A tool like
