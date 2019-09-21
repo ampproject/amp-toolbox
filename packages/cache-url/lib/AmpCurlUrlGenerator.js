@@ -206,16 +206,16 @@ function encode32_(paddedHexString) {
 
   for (let i = 0; i < quanta; i++) {
     parts.push(base32.charAt(bytes[i*5] >> 3));
-    parts.push(base32.charAt(((bytes[i*5] & 0x07) << 2)
-        | (bytes[i*5 + 1] >> 6)));
+    parts.push(base32.charAt(((bytes[i*5] & 0x07) << 2) |
+        (bytes[i*5 + 1] >> 6)));
     parts.push(base32.charAt(((bytes[i*5 + 1] & 0x3F) >> 1)));
-    parts.push(base32.charAt(((bytes[i*5 + 1] & 0x01) << 4)
-        | (bytes[i*5 + 2] >> 4)));
-    parts.push(base32.charAt(((bytes[i*5 + 2] & 0x0F) << 1)
-        | (bytes[i*5 + 3] >> 7)));
+    parts.push(base32.charAt(((bytes[i*5 + 1] & 0x01) << 4) |
+        (bytes[i*5 + 2] >> 4)));
+    parts.push(base32.charAt(((bytes[i*5 + 2] & 0x0F) << 1) |
+        (bytes[i*5 + 3] >> 7)));
     parts.push(base32.charAt(((bytes[i*5 + 3] & 0x7F) >> 2)));
-    parts.push(base32.charAt(((bytes[i*5 + 3] & 0x03) << 3)
-        | (bytes[i*5 + 4] >> 5)));
+    parts.push(base32.charAt(((bytes[i*5 + 3] & 0x03) << 3) |
+        (bytes[i*5 + 4] >> 5)));
     parts.push(base32.charAt(((bytes[i*5 + 4] & 0x1F))));
   }
 
