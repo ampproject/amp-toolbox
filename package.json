@@ -42,7 +42,7 @@
     "eslint-config-google": "0.14.0",
     "fetch-mock": "7.3.9",
     "html-minifier": "4.0.0",
-    "jasmine": "3.4.0",
+    "jasmine": "3.5.0",
     "jasmine-spec-reporter": "4.2.1",
     "jimp": "0.8.3",
     "karma": "4.3.0",
