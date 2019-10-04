@@ -49,7 +49,7 @@ class RewriteAmpUrls {
     if (!head) return;
 
     let ampUrlPrefix = params.ampUrlPrefix || AMP_CACHE_HOST;
-    if (params.ampRuntimeVersion) {
+    if (params.ampRuntimeVersion && !params.ampUrlPrefix) {
       ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, params.ampRuntimeVersion);
     }
 
