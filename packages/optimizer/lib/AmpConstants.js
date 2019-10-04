@@ -18,5 +18,11 @@
 module.exports = {
   AMP_TAGS: ['amp', '⚡', '⚡4ads'],
   AMP_CACHE_HOST: 'https://cdn.ampproject.org',
+  // Should be kept up to date with dynamic components listed here:
+  // https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem
+  AMP_DYNAMIC_COMPONENTS: {
+    'custom-element': ['amp-geo'],
+    'custom-template': [],
+  },
   appendRuntimeVersion: (prefix, version) => prefix + '/rtv/' + version,
 };
