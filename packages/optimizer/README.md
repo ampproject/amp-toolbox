@@ -38,9 +38,9 @@ const originalHtml = `
 <html ⚡>
   ...
 </html>
-`
+`;
 
-ampOptimizer.transformHtml(originalHtml).then(optimizedHtml => {
+ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
   console.log(optimizedHtml);
 });
 
