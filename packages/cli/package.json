@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cli",
-  "version": "1.1.0-beta.1",
+  "version": "1.1.0",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
