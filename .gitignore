@@ -10,6 +10,3 @@ yarn-error.log*
 node_modules/
 .npm
 .eslintcache
-# linter is typescript
-packages/linter/**/*.js
-packages/linter/pkg

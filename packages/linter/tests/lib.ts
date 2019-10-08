@@ -24,26 +24,31 @@ export const withFixture = throat(
   1,
   async <T>(fixtureName: string, fn: () => Promise<T>): Promise<T> => {
     const fixturePath = `${fixtureName}.json`;
-    if (existsSync(`${nockBack.fixtures}/${fixturePath}`)) {
-      log(`nocking HTTP requests with fixture [${fixturePath}]`);
-      nockBack.setMode("lockdown");
-      const { nockDone } = await nockBack(fixturePath);
-      const res = await fn();
-      nockDone();
-      return res;
-    } else {
-      log(`recording HTTP requests to fixture [${fixturePath}] ...`);
-      nockBack.setMode("record");
-      const { nockDone } = await nockBack(fixturePath);
-      const res = await fn();
-      return new Promise<T>(resolve => {
-        setTimeout(() => {
-          // wait for probe-image-size's aborts to settle
-          nockDone();
-          log(`... created fixture [${fixturePath}]`);
-          resolve(res);
-        }, 2000);
-      });
+    try {
+      if (existsSync(`${nockBack.fixtures}/${fixturePath}`)) {
+        log(`nocking HTTP requests with fixture [${fixturePath}]`);
+        nockBack.setMode("lockdown");
+        const { nockDone } = await nockBack(fixturePath);
+        const res = await fn();
+        nockDone();
+        return res;
+      } else {
+        log(`recording HTTP requests to fixture [${fixturePath}] ...`);
+        nockBack.setMode("record");
+        const { nockDone } = await nockBack(fixturePath);
+        const res = await fn();
+        return new Promise<T>(resolve => {
+          setTimeout(() => {
+            // wait for probe-image-size's aborts to settle
+            nockDone();
+            log(`... created fixture [${fixturePath}]`);
+            resolve(res);
+          }, 2000);
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      return ({} as unknown) as T;
     }
   }
 ) as <T>(fixtureName: string, fn: () => Promise<T>) => Promise<T>;

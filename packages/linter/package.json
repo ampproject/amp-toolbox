@@ -15,7 +15,10 @@
     "debug": "4.1.1",
     "execa": "2.0.5",
     "node-fetch": "2.6.0",
-    "probe-image-size": "5.0.0"
+    "prettier": "1.18.2",
+    "probe-image-size": "5.0.0",
+    "tap-parser": "10.0.0",
+    "typescript": "3.6.3"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
@@ -23,44 +26,20 @@
   "engines": {
     "node": "8.x.x"
   },
-  "main": "./src/index.js",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
-    "//": "See README for more information about these scripts",
+    "prepack": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks --declaration --outDir dist src/*.ts",
     "build": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
+    "watch": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks -w --pretty src/*.ts tests/*.ts",
     "test": "cd tests && for t in helper.js local.js network.js ; do ( test -e $t || $npm_execpath run build ) && ( node $t | tap-parser -t ) || exit 1 ; done ; exit 0",
-    "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'",
-    "watch": "tsc --watch --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
-    "package": "$npm_execpath run lint && pack build",
-    "publish": "pack publish --any-branch",
-    "prepublish": "npm run package",
-    "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json",
-    "version": "npm run build"
-  },
-  "publishConfig": {
-    "directory": "pkg"
-  },
-  "@pika/pack": {
-    "pipeline": [
-      [
-        "@pika/plugin-ts-standard-pkg"
-      ],
-      [
-        "@pika/plugin-build-node"
-      ],
-      [
-        "@pika/plugin-simple-bin",
-        {
-          "bin": "amplint"
-        }
-      ]
-    ]
+    "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'"
   },
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986",
-  "devDependencies": {
-    "throat": "5.0.0",
-    "typescript": "3.6.3"
-  }
+  "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986"
 }
