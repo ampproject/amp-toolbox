@@ -8,5 +8,6 @@
   "main": "./plugin.js",
   "peerDependencies": {
     "lighthouse": ">=5.5.0"
-  }
+  },
+  "gitHead": "b06346a54741c358ee49a7849428bb663a8efda1"
 }

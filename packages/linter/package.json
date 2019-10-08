@@ -26,12 +26,12 @@
   "main": "./src/index.js",
   "scripts": {
     "//": "See README for more information about these scripts",
-    "build": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
+    "build": "npx tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
     "test": "cd tests && for t in helper.js local.js network.js ; do ( test -e $t || $npm_execpath run build ) && ( node $t | tap-parser -t ) || exit 1 ; done ; exit 0",
     "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'",
-    "watch": "tsc --watch --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
-    "package": "$npm_execpath run lint && pack build",
-    "publish": "pack publish --any-branch",
+    "watch": "npx tsc --watch --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
+    "package": "$npm_execpath run lint && npx @pika/pack build",
+    "publish": "npx @pika/pack publish --any-branch",
     "prepublish": "npm run package",
     "cache": "cd src && curl -sS --remote-name-all https://cdn.ampproject.org/v0/validator.js && curl -sS --remote-name-all https://cdn.ampproject.org/caches.json",
     "version": "npm run build"
@@ -58,7 +58,7 @@
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986",
+  "gitHead": "b06346a54741c358ee49a7849428bb663a8efda1",
   "devDependencies": {
     "throat": "5.0.0",
     "typescript": "3.6.3"

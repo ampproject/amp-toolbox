@@ -22,5 +22,6 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/script-csp",
   "directories": {
     "lib": "lib"
-  }
+  },
+  "gitHead": "b06346a54741c358ee49a7849428bb663a8efda1"
 }
