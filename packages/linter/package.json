@@ -11,9 +11,9 @@
     "amphtml-validator": "1.0.23",
     "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.2",
-    "commander": "3.0.1",
+    "commander": "3.0.2",
     "debug": "4.1.1",
-    "execa": "2.0.4",
+    "execa": "2.0.5",
     "node-fetch": "2.6.0",
     "probe-image-size": "5.0.0"
   },
@@ -61,6 +61,6 @@
   "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986",
   "devDependencies": {
     "throat": "5.0.0",
-    "typescript": "3.6.2"
+    "typescript": "3.6.3"
   }
 }
