@@ -60,25 +60,21 @@ is run in this directory. They can also be invoked from the `amp-toolbox` root
 directory without installing locally by `lerna run --scope '*/toolbox-linter'
 XXX`. (lerna sets the `PATH` so that the required binaries are available.)
 
-#### `prepack`
-
-Intended to be used when building a package. (It's automatically invoked by `npm
-pack`.) Populates the `dist` directory with the appropriate `*.js` files. (Tests
-are not included.)
-
 #### `build`
 
-Builds `*.js` from `*.ts`, placing them in the same directory as the source.
-(Intended to be used in development.)
+Populates the `dist` directory with the appropriate `*.js` and `*.d.ts` files.
+Note that tests are *not* included. This script is intended to be used when
+building the npm package.
 
-#### `watch`
+#### `transpile`
 
-Like `build`, but automatically rebuilds the `*.js` whenever the corresponding
-`*.ts` changes. (Intended to be used in development.)
+Transpiles `*.ts` into `*.js`. Unlike `build`, tests are included, and the
+`*.js` files are output into the same directory as the corresponding `*.ts`.
+This script is intended to be used during development.
 
 #### `test`
 
-Runs the tests.
+Runs the tests. Run `transpile` first.
 
 #### `lint`
 
