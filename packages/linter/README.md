@@ -53,54 +53,32 @@ performed.
 
 ## Development
 
-**Important note!** Many of the scripts below rely on binaries that are
-installed in the `../../node_modules/.bin` directory, and _will fail_ if invoked
-in the default configuration. To fix this, either:
+### Commands/Scripts
 
-1. Add `../../node_modules/.bin` to your path. A tool like
-   [direnv](https://direnv.net/) may make this easier.
-2. Invoke via "wrapper" scripts in `../../package.json`. "test:node:linter" is
-   an example of such a script.
+These scripts can be invoked in the usual way by `npm run XXX` if `npm install`
+is run in this directory. They can also be invoked from the `amp-toolbox` root
+directory without installing locally by `lerna run --scope '*/toolbox-linter'
+XXX`. (lerna sets the `PATH` so that the required binaries are available.)
 
-### Commands
+#### `build`
 
-#### `npm run build`
+Populates the `dist` directory with the appropriate `*.js` and `*.d.ts` files.
+Note that tests are *not* included. This script is intended to be used when
+building the npm package.
 
-Builds `*.js` from `*.ts`. Use this instead of `tsc` to ensure the correct
-config (via command-line arguments) is in use. (`@pika/plugin-ts-standard-pkg`
-needs slightly different config, but it's essentially hardcoded to read from
-`tsconfig.json`, so we need to use that for pika.)
+#### `transpile`
 
-#### `npm test`
+Transpiles `*.ts` into `*.js`. Unlike `build`, tests are included, and the
+`*.js` files are output into the same directory as the corresponding `*.ts`.
+This script is intended to be used during development.
 
-Runs the tests. (If this doesn't work, try running `npm run test:node:linter`
-from the root directory.
+#### `test`
 
-#### `npm run lint`
+Runs the tests. Automatically runs `transpile` first.
 
-Checks the code for lint errors.
+#### `lint`
 
-#### `npm run watch`
-
-Automatically rebuild `*.js` whenever `*.ts` changes.
-
-#### `npm run package`
-
-Generates npm-installable version of the package in `pkg/`. From another
-directory install via `npm install amp-toolbox/packages/linter/pkg`.
-
-Note: this command will emit multiple warnings of the form 'Valid relative
-imports must include the ".js" file extension' as well as complaints about
-`require` and `module` not being valid ESM globals; these can both be ignored.
-
-(The first issue is due to extension-less imports [not being valid
-ES2018](https://github.com/pikapkg/builders/issues/3); the second is that the
-globals `require` and `module` are not valid ESM globals. Not being valid ES2018
-is not a problem here, since this code is not designed to run in the browser.)
-
-#### `npm run publish`
-
-Uses @pika's `pack publish` to publish to npm.
+Checks the code for lint errors using prettier.
 
 ### Suggested Development Workflow
 
@@ -114,7 +92,3 @@ Uses @pika's `pack publish` to publish to npm.
    generated automatically (via real network requests). Hopefully your test will
    fail.
 1. Fix the implementation, and re-run the test.
-1. Use `npm run publish` to publish the new version to npm. (If you have
-   two-factor auto turned on, this might not work, even though no errors are
-   reported. To actually publish (or at least see the errors), run `npm publish`
-   from the `pkg` directory.)
