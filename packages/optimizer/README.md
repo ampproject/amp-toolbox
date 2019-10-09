@@ -191,7 +191,7 @@ It's possible to rewrite the AMP framework and component imports to a different 
 
 - `ampUrlPrefix`: Replace `https://cdn.ampproject.org/` with another origin or relative path.
 
-  **Notice:** The behavior of `ampUrlPrefix` when used in conjunction with `ampRuntimeVersion` changed beginning with version 2.0. Prior to 2.0, `rtv/{rtv}/` was automatically appended to `ampUrlPrefix` when `ampRuntimeVersion` was specified. Since version 2.0, `ampUrlPrefix` is not modified when `ampRuntimeVersion` is also specified.
+  **Notice:** The behavior of `ampUrlPrefix` when used in conjunction with `ampRuntimeVersion` changed beginning with version 1.1.2. Prior to 1.1.2, `rtv/{rtv}/` was automatically appended to `ampUrlPrefix` when `ampRuntimeVersion` was specified. Since version 1.1.2, `ampUrlPrefix` is not modified when `ampRuntimeVersion` is also specified.
 
 Examples:
 ```
