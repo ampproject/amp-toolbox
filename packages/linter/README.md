@@ -74,7 +74,7 @@ This script is intended to be used during development.
 
 #### `test`
 
-Runs the tests. Run `transpile` first.
+Runs the tests. Automatically runs `transpile` first.
 
 #### `lint`
 
