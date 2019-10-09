@@ -43,6 +43,6 @@
   "devDependencies": {
     "prettier": "1.18.2",
     "tap-parser": "10.0.0",
-    "typescript": "3.6.3"
+    "typescript": "3.6.4"
   }
 }
