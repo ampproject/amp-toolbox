@@ -1,13 +1,13 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A linter for AMP documents",
   "repository": "https://github.com/ampproject/amp-toolbox/tree/@ampproject/toolbox-linter",
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^1.1.0",
-    "@ampproject/toolbox-cache-url": "^1.1.0",
+    "@ampproject/toolbox-cache-list": "^1.1.1",
+    "@ampproject/toolbox-cache-url": "^1.1.1",
     "amphtml-validator": "1.0.23",
     "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.2",
@@ -15,8 +15,8 @@
     "debug": "4.1.1",
     "execa": "2.0.5",
     "node-fetch": "2.6.0",
-    "prettier": "1.18.2",
-    "probe-image-size": "5.0.0"
+    "probe-image-size": "5.0.0",
+    "throat": "5.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
@@ -39,7 +39,7 @@
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986",
+  "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f",
   "devDependencies": {
     "tap-parser": "^10.0.0",
     "typescript": "^3.6.3"
