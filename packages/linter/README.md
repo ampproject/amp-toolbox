@@ -55,19 +55,26 @@ performed.
 
 ### Commands/Scripts
 
+These scripts can be invoked in the usual way by `npm run XXX` if `npm install`
+is run in this directory. They can also be invoked from the `amp-toolbox` root
+directory without installing locally by `lerna run --scope '*/toolbox-linter'
+XXX`. (lerna sets the `PATH` so that the required binaries are available.)
+
 #### `prepack`
 
-Intended to be used when building a package. (It's automatically invoked by `npm pack`.) Populates the `dist` directory with the appropriate `*.js` files. (Tests
+Intended to be used when building a package. (It's automatically invoked by `npm
+pack`.) Populates the `dist` directory with the appropriate `*.js` files. (Tests
 are not included.)
 
 #### `build`
 
 Builds `*.js` from `*.ts`, placing them in the same directory as the source.
+(Intended to be used in development.)
 
 #### `watch`
 
 Like `build`, but automatically rebuilds the `*.js` whenever the corresponding
-`*.ts` changes.
+`*.ts` changes. (Intended to be used in development.)
 
 #### `test`
 
