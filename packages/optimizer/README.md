@@ -187,9 +187,13 @@ const optimizer = AmpOptimizer.create({
 
 ### Self-hosted AMP components
 
-It's possible to rewrite the AMP framework and component imports to a different domain than `cdn.ampproject.org`.
+It's possible to rewrite the AMP framework and component imports to a different domain than `cdn.ampproject.org`. These options tailor URL rewriting performed by `ampOptimizer.transformHtml`:
 
-Example:
+- `ampUrlPrefix`: Replace `https://cdn.ampproject.org/` with another origin or relative path.
+
+  **Notice:** The behavior of `ampUrlPrefix` when used in conjunction with `ampRuntimeVersion` changed beginning with version 1.1.2. Prior to 1.1.2, `rtv/{rtv}/` was automatically appended to `ampUrlPrefix` when `ampRuntimeVersion` was specified. Since version 1.1.2, `ampUrlPrefix` is not modified when `ampRuntimeVersion` is also specified.
+
+Examples:
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
@@ -200,12 +204,14 @@ const originalHtml = `
 ...
 `
 
-// Additional options can be passed as the second argument
-const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
-  ampUrl: 'canonical.amp.html',
-  // this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js
+// this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js
+const optimizedHtmlA = await ampOptimizer.transformHtml(originalHtml, {
   ampUrlPrefix: '/amp'
 });
 
-console.log(optimizedHtml);
+// this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js
+const optimizedHtmlB = await ampOptimizer.transformHtml(originalHtml, {
+  ampRuntimeVersion: '001515617716922',
+  ampUrlPrefix: '/amp'
+});
 ```
