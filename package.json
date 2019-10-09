@@ -9,12 +9,10 @@
     "link": "lerna link",
     "generate:changelog": "lerna-changelog",
     "test": "npm-run-all build test:node test:browser lint",
-    "test:linter": "cd packages/linter && npm test",
-    "test:node": "jasmine --config=jasmine.json && cd packages/linter && npm test",
-    "test:node:linter": "cd packages/linter && npm test",
+    "test:node": "jasmine --config=jasmine.json && lerna run test",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-    "lint": "eslint \"**/*.js\" --ignore-path .gitignore && cd packages/linter && npm run lint",
-    "lint:fix": "eslint \"**/*.js\" --fix --ignore-path .gitignore  && cd packages/linter && prettier --write \"**/*.ts\""
+    "lint": "eslint . && lerna run lint",
+    "lint:fix": "eslint --fix . && lerna run lint:fix"
   },
   "repository": {
     "type": "git",
