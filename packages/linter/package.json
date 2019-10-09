@@ -16,9 +16,7 @@
     "execa": "2.0.5",
     "node-fetch": "2.6.0",
     "prettier": "1.18.2",
-    "probe-image-size": "5.0.0",
-    "tap-parser": "10.0.0",
-    "typescript": "3.6.3"
+    "probe-image-size": "5.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
@@ -41,5 +39,9 @@
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986"
+  "gitHead": "cc04a8267a51e57290ca81610ac6854de1aea986",
+  "devDependencies": {
+    "tap-parser": "^10.0.0",
+    "typescript": "^3.6.3"
+  }
 }
