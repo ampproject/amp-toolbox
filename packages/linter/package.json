@@ -41,7 +41,8 @@
   },
   "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f",
   "devDependencies": {
-    "tap-parser": "^10.0.0",
-    "typescript": "^3.6.3"
+    "prettier": "1.18.2",
+    "tap-parser": "10.0.0",
+    "typescript": "3.6.3"
   }
 }
