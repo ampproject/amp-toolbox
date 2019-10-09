@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.10.0",
-    "@babel/core": "7.6.2",
+    "@babel/core": "7.6.3",
     "@types/cheerio": "0.22.13",
     "@types/debug": "4.1.5",
     "@types/diff": "4.0.2",
@@ -35,6 +35,7 @@
     "eslint-config-google": "0.14.0",
     "fetch-mock": "7.5.1",
     "html-minifier": "4.0.0",
+    "husky": "3.0.8",
     "jasmine": "3.5.0",
     "jasmine-spec-reporter": "4.2.1",
     "jimp": "0.8.4",
@@ -75,6 +76,12 @@
     "@ampproject/toolbox-runtime-version": "file:packages/runtime-version",
     "@ampproject/toolbox-script-csp": "file:packages/script-csp",
     "@ampproject/toolbox-update-cache": "file:packages/update-cache",
-    "@ampproject/toolbox-validator-rules": "file:packages/validator-rules"
+    "@ampproject/toolbox-validator-rules": "file:packages/validator-rules",
+    "lighthouse-plugin-amp": "file:packages/lighthouse-plugin-amp"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
   }
 }
