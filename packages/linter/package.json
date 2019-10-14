@@ -13,7 +13,7 @@
     "cheerio": "1.0.0-rc.2",
     "commander": "3.0.2",
     "debug": "4.1.1",
-    "execa": "2.0.5",
+    "execa": "3.0.0",
     "node-fetch": "2.6.0",
     "probe-image-size": "5.0.0",
     "throat": "5.0.0"
