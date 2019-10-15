@@ -1,3 +1,26 @@
+## v1.1.2 (2019-10-15)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#527](https://github.com/ampproject/amp-toolbox/pull/527) Fix: dont' fail optimizer if inline amp-script is empty ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v1.1.2-alpha.0 (2019-10-09)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#518](https://github.com/ampproject/amp-toolbox/pull/518) optimizer: Make dynamic component URL rewrites optional ([@mattwomple](https://github.com/mattwomple))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#517](https://github.com/ampproject/amp-toolbox/pull/517) optimizer: Do not append rtv/{rtv}/ to ampUrlPrefix ([@mattwomple](https://github.com/mattwomple))
+
+#### Committers: 2
+- Matt Mower ([@mattwomple](https://github.com/mattwomple))
+- Michael Stillwell ([@ithinkihaveacat](https://github.com/ithinkihaveacat))
+
 ## v1.1.0 (2019-10-08)
 
 #### :rocket: Enhancement
