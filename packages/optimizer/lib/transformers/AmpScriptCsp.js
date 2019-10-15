@@ -39,7 +39,7 @@ class AmpScriptCsp {
 
     const inlineScripts = this._findAllInlineScripts(body);
     for (const script of inlineScripts) {
-      const content = script.children[0].data;
+      const content = script.children[0] ? script.children[0].data : '';
       hashes.add(calculateHash(content));
     }
 
