@@ -42,7 +42,7 @@
   "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f",
   "devDependencies": {
     "prettier": "1.18.2",
-    "tap-parser": "10.0.0",
+    "tap-parser": "10.0.1",
     "typescript": "3.6.4"
   }
 }
