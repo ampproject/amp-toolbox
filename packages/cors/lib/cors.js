@@ -48,6 +48,8 @@ module.exports = (options, caches=new Caches()) => {
   if (options.email === true) {
     // email origins cannot be verified
     options.verifyOrigin = false;
+    // email doesn't support AMP-Redirect-To
+    options.enableAmpRedirectTo = false;
   }
   return async (request, response, next) => {
     // Get source origin from query
