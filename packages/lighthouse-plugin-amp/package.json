@@ -1,7 +1,7 @@
 {
   "name": "lighthouse-plugin-amp",
   "dependencies": {
-    "amphtml-validator": "1.0.23",
+    "amphtml-validator": "1.0.29",
     "node-fetch": "2.6.0"
   },
   "version": "1.1.1",
