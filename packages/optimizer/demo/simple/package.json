@@ -9,7 +9,7 @@
   "author": "The AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "glob": "7.1.4",
+    "glob": "7.1.6",
     "mkdirp": "0.5.1"
   },
   "devDependencies": {
