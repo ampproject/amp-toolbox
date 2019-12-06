@@ -10,9 +10,9 @@ import probe from "probe-image-size";
 import { Context } from "./";
 
 export function schemaMetadata($: CheerioStatic) {
-  const metadata = JSON.parse($(
-    'script[type="application/ld+json"]'
-  ).html() as string);
+  const metadata = JSON.parse(
+    $('script[type="application/ld+json"]').html() as string
+  );
   return metadata ? metadata : {};
 }
 
@@ -35,15 +35,19 @@ export function buildSourceOrigin(url: string) {
 }
 
 export function corsEndpoints($: CheerioStatic) {
-  return ([] as string[])
-    .concat(
-      $("amp-list[src]")
-        .map((_, e) => $(e).attr("src"))
-        .get(),
-      $("amp-story amp-story-bookend").attr("src"),
-      $("amp-story").attr("bookend-config-src")
-    )
-    .filter(s => !!s);
+  const result: string[] = [];
+  const storyBookendSrc = $("amp-story amp-story-bookend").attr("src");
+  if (storyBookendSrc) {
+    result.push(storyBookendSrc);
+  }
+  const bookendConfigSrc = $("amp-story").attr("bookend-config-src");
+  if (bookendConfigSrc) {
+    result.push(bookendConfigSrc);
+  }
+  const ampListSrc = $("amp-list[src]")
+    .map((_, e) => $(e).attr("src"))
+    .get() as String[];
+  return (result as String[]).concat(ampListSrc);
 }
 
 export const absoluteUrl = (

@@ -66,7 +66,7 @@ class ServerSideRendering {
       if (node.attribs.heights || node.attribs.media || node.attribs.sizes) {
         this.log_.debug(
             'cannot remove boilerplate as either heights, media or sizes attribute is set:\n',
-            node.attribs
+            node.attribs,
         );
         canRemoveBoilerplate = false;
       }

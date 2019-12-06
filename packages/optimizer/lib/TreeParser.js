@@ -103,7 +103,7 @@ Node.appendAll = function(nodes) {
 // First child by tag
 Node.firstChildByTag = function(tag) {
   return this.children.find(
-      (child) => child.tagName && child.tagName.toLowerCase() === tag
+      (child) => child.tagName && child.tagName.toLowerCase() === tag,
   );
 };
 

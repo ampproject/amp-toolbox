@@ -72,24 +72,28 @@ export class AmpImgHeightWidthIsOk extends Rule {
         return fail(e);
       }
     };
-    return (await Promise.all(($("amp-img")
-      .filter(
-        // filter out <amp-img> elements that are the first child of an
-        // <amp-story-grid-layer template="fill"> (for these, height/width is
-        // ignored).
-        (_, e) =>
-          !$(e)
-            .parent()
-            .is("amp-story-grid-layer[template=fill]")
+    return (
+      await Promise.all(
+        ($("amp-img")
+          .filter(
+            // filter out <amp-img> elements that are the first child of an
+            // <amp-story-grid-layer template="fill"> (for these, height/width is
+            // ignored).
+            (_, e) =>
+              !$(e)
+                .parent()
+                .is("amp-story-grid-layer[template=fill]")
+          )
+          .map((_, e) => {
+            const src = $(e).attr("src") || "";
+            const expectedHeight = parseInt($(e).attr("height") || "", 10);
+            const expectedWidth = parseInt($(e).attr("width") || "", 10);
+            const layout = $(e).attr("layout") || "";
+            return test(src, layout, expectedWidth, expectedHeight);
+          })
+          .get() as unknown) as Array<Promise<Result>>
       )
-      .map((_, e) => {
-        const src = $(e).attr("src");
-        const expectedHeight = parseInt($(e).attr("height"), 10);
-        const expectedWidth = parseInt($(e).attr("width"), 10);
-        const layout = $(e).attr("layout") || "";
-        return test(src, layout, expectedWidth, expectedHeight);
-      })
-      .get() as unknown) as Array<Promise<Result>>)).filter(notPass);
+    ).filter(notPass);
   }
   meta() {
     return {

@@ -164,7 +164,7 @@ function makeRules(rules) {
             ],
             tags: [],
           },
-          rules
-      )
+          rules,
+      ),
   );
 }

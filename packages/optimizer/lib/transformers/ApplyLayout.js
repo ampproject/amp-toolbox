@@ -114,7 +114,7 @@ module.exports = {
     const heightAttribute = getAttributeOrNull(customElement, 'height');
     const inputHeight = cssLength(heightAttribute,
         /* allow_auto=*/true,
-        /* allow_fluid=*/ampLayout === 'fluid'
+        /* allow_fluid=*/ampLayout === 'fluid',
     );
     if (!inputHeight.isValid) {
       log.debug('cannot perform SSR: invalid input height\n', heightAttribute);

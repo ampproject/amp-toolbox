@@ -51,8 +51,8 @@ class UpdateCacheUrlProvider {
                   cacheName: cache.name,
                   updateCacheUrl: updateCacheUrl,
                 };
-              })
-        )
+              }),
+        ),
     ));
   }
 

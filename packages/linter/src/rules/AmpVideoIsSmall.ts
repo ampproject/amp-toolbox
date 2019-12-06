@@ -5,25 +5,25 @@ import { Rule } from "../rule";
 export class AmpVideoIsSmall extends Rule {
   async run(context: Context) {
     const { $ } = context;
-    const args = await Promise.all(($(
-      `amp-video source[type="video/mp4"][src], amp-video[src]`
-    )
-      .map(async (i, e) => {
-        const url = absoluteUrl($(e).attr("src"), context.url);
-        try {
-          const length = await contentLength(context, url!);
-          return { url, length };
-        } catch (e) {
-          // URL is non-2xx (TODO: improve error handling)
-          return { url, length: -1 };
-        }
-      })
-      .get() as unknown) as Array<
-      Promise<{
-        url: string;
-        length: number;
-      }>
-    >);
+    const args = await Promise.all(
+      ($(`amp-video source[type="video/mp4"][src], amp-video[src]`)
+        .map(async (i, e) => {
+          const url = absoluteUrl($(e).attr("src"), context.url);
+          try {
+            const length = await contentLength(context, url!);
+            return { url, length };
+          } catch (e) {
+            // URL is non-2xx (TODO: improve error handling)
+            return { url, length: -1 };
+          }
+        })
+        .get() as unknown) as Array<
+        Promise<{
+          url: string;
+          length: number;
+        }>
+      >
+    );
     const videos = args.reduce(
       (a, v) => {
         a[v.url] = v.length;

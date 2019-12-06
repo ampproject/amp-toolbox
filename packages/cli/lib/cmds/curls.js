@@ -29,7 +29,7 @@ async function curls(args, logger) {
   if (!cacheId) {
     const allCaches = await caches.list();
     return Promise.all(
-        allCaches.map((cache) => printCurl(cache, url, logger))
+        allCaches.map((cache) => printCurl(cache, url, logger)),
     );
   } else {
     const cache = await caches.get(cacheId);

@@ -46,7 +46,7 @@ async function oneBehindFetch(input, init) {
   cachedResponse = {
     responsePromise: newResponsePromise,
     maxAge: newResponsePromise.then(
-        (response) => MaxAge.parse(response.headers.get('cache-control'))
+        (response) => MaxAge.parse(response.headers.get('cache-control')),
     ),
   };
   cache.set(input, cachedResponse);

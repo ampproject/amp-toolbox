@@ -105,13 +105,15 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
 
   program.headers = headers;
 
-  return easyLint((program as unknown) as {
-    userAgent: string;
-    format: string;
-    force: LintMode | "auto";
-    url: string;
-    headers: { [k: string]: string };
-  })
+  return easyLint(
+    (program as unknown) as {
+      userAgent: string;
+      format: string;
+      force: LintMode | "auto";
+      url: string;
+      headers: { [k: string]: string };
+    }
+  )
     .then(logger.info.bind(logger))
     .catch(e => {
       logger.error(e.stack || e.message || e);

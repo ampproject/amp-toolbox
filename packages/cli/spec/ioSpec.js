@@ -22,12 +22,12 @@ describe('io', () => {
   describe('loadUrlOrFile', () => {
     it('loads url', async () => {
       expect(
-          await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world')
+          await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world'),
       ).toBe('{"hello":"world"}');
     });
     it('loads file', async () => {
       expect(
-          await loadUrlOrFile(__dirname + '/test-data/hello.txt')
+          await loadUrlOrFile(__dirname + '/test-data/hello.txt'),
       ).toBe('hello\n');
     });
     it('fails if url is missing', async () => {

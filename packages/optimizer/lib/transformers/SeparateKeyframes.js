@@ -168,11 +168,11 @@ class SeparateKeyframes {
     // Insert keyframes styles to Node
     const keyframesTextNode = stylesKeyframesTag.children[0];
     const currentKeyframesTree = css.parse(
-        keyframesTextNode && keyframesTextNode.data || ''
+        keyframesTextNode && keyframesTextNode.data || '',
     );
     currentKeyframesTree.stylesheet.rules = (
       keyframesTree.stylesheet.rules.concat(
-          currentKeyframesTree.stylesheet.rules
+          currentKeyframesTree.stylesheet.rules,
       )
     );
     const keyframesText = css.stringify(currentKeyframesTree, this.stringifyOptions_);

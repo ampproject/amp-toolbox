@@ -59,14 +59,14 @@ class AmpValidatorRules {
             (tag) =>
               tag.htmlFormat.includes(format.toUpperCase()) &&
           this.checkEntityFormat_(tag, format) &&
-          this.checkEntityTransformed_(tag, transformed)
+          this.checkEntityTransformed_(tag, transformed),
         )
         .map((tag) => {
           tag = Object.assign({}, tag);
           tag.attrs = tag.attrs.filter(
               (attr) =>
                 this.checkEntityFormat_(attr, format) &&
-            this.checkEntityTransformed_(attr, transformed)
+            this.checkEntityTransformed_(attr, transformed),
           );
           return tag;
         });
@@ -148,7 +148,7 @@ class AmpValidatorRules {
       }
     }
     this.specialAttrLists_.$AMP_LAYOUT_ATTRS.forEach(
-        (attr) => (attr.layout = true)
+        (attr) => (attr.layout = true),
     );
     this.specialAttrLists_.$GLOBAL_ATTRS.forEach((attr) => (attr.global = true));
   }
@@ -184,7 +184,7 @@ class AmpValidatorRules {
     this.extensions = rules.tags
         .filter((tag) => tag.extensionSpec)
         .map((tag) =>
-          Object.assign({}, tag.extensionSpec, {htmlFormat: tag.htmlFormat})
+          Object.assign({}, tag.extensionSpec, {htmlFormat: tag.htmlFormat}),
         );
 
     for (const extension of this.extensions) {

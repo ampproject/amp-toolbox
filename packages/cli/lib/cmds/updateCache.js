@@ -52,12 +52,12 @@ function updateCache_(cacheUpdateUrlInfo, logger) {
               if (match) {
                 logger.error(
                     `Error Invalidating Cache URL. Received response code "${response.status}" ` +
-                    `with message: "${match[1]}"`
+                    `with message: "${match[1]}"`,
                 );
               } else {
                 logger.error(
                     `Error Invalidating Cache URL. Received response code "${response.status}"` +
-                    'with an unknown error'
+                    'with an unknown error',
                 );
               }
             });

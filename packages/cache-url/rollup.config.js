@@ -75,7 +75,7 @@ if (semver.gt(process.version, '7.99.99')) {
   const compiler = require('@ampproject/rollup-plugin-closure-compiler');
   const filesize = require('rollup-plugin-filesize');
   browserPlugins.push(
-      compiler()
+      compiler(),
   );
   nodePlugins.push(filesize());
   browserPlugins.push(filesize());

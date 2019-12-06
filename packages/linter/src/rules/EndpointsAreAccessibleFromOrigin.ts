@@ -36,9 +36,13 @@ export class EndpointsAreAccessibleFromOrigin extends Rule {
             this.fail(`can't XHR [${xhrUrl}]: ${e.message} [debug: ${debug}]`)
         );
     };
-    return (await Promise.all(
-      e.map(url => canXhrSameOrigin(absoluteUrl(url, context.url) || ""))
-    )).filter(notPass);
+    return (
+      await Promise.all(
+        e.map(url =>
+          canXhrSameOrigin(absoluteUrl(url.toString(), context.url) || "")
+        )
+      )
+    ).filter(notPass);
   }
   meta() {
     return {

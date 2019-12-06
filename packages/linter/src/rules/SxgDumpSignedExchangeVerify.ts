@@ -11,20 +11,17 @@ function compare(
   expected: { [k: string]: boolean | string | number },
   actual: typeof expected
 ) {
-  return Object.keys(expected).reduce(
-    (acc, k) => {
-      if (!actual[k]) {
-        acc[k] = `expected: [${expected[k]}], actual: property missing`;
-        return acc;
-      } else if (expected[k] !== actual[k]) {
-        acc[k] = `expected: [${expected[k]}], actual: [${actual[k]}]`;
-        return acc;
-      } else {
-        return acc;
-      }
-    },
-    {} as { [k: string]: string }
-  );
+  return Object.keys(expected).reduce((acc, k) => {
+    if (!actual[k]) {
+      acc[k] = `expected: [${expected[k]}], actual: property missing`;
+      return acc;
+    } else if (expected[k] !== actual[k]) {
+      acc[k] = `expected: [${expected[k]}], actual: [${actual[k]}]`;
+      return acc;
+    } else {
+      return acc;
+    }
+  }, {} as { [k: string]: string });
 }
 
 async function urlHasContentType(

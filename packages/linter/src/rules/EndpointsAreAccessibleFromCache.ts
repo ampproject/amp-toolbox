@@ -23,7 +23,10 @@ export class EndpointsAreAccessibleFromCache extends Rule {
         ...a.map((d: any) => b.map((e: any) => ([] as any[]).concat(d, e)))
       );
     const e = corsEndpoints(context.$);
-    const product = cartesian(e, (await caches()).map(c => c.cacheDomain));
+    const product = cartesian(
+      e,
+      (await caches()).map(c => c.cacheDomain)
+    );
     const canXhrCache = async (xhrUrl: string, cacheSuffix: string) => {
       const sourceOrigin = buildSourceOrigin(context.url);
       const url = await createCacheUrl(cacheSuffix, context.url);
@@ -45,11 +48,13 @@ export class EndpointsAreAccessibleFromCache extends Rule {
           e => this.fail(`can't XHR [${xhrUrl}]: ${e.message} [debug: ${curl}]`)
         );
     };
-    return (await Promise.all(
-      product.map(([xhrUrl, cacheSuffix]) =>
-        canXhrCache(absoluteUrl(xhrUrl, context.url) || "", cacheSuffix)
+    return (
+      await Promise.all(
+        product.map(([xhrUrl, cacheSuffix]) =>
+          canXhrCache(absoluteUrl(xhrUrl, context.url) || "", cacheSuffix)
+        )
       )
-    )).filter(notPass);
+    ).filter(notPass);
   }
   meta() {
     return {
