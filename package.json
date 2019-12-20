@@ -31,7 +31,7 @@
     "babel-plugin-filter-imports": "4.0.0",
     "colors": "1.4.0",
     "diff": "4.0.1",
-    "eslint": "6.7.2",
+    "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
     "fetch-mock": "8.0.1",
     "html-minifier": "4.0.0",
