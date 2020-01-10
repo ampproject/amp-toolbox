@@ -15,7 +15,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/validator-rules"
   },
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
