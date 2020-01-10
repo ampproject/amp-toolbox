@@ -8,7 +8,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ampproject/amp-toolbox.git"
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/cli"
   },
   "keywords": [
     "amp-toolbox",

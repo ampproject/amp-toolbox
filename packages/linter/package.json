@@ -2,7 +2,12 @@
   "name": "@ampproject/toolbox-linter",
   "version": "1.1.2",
   "description": "A linter for AMP documents",
-  "repository": "https://github.com/ampproject/amp-toolbox/tree/@ampproject/toolbox-linter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/linter"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/linter",
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {

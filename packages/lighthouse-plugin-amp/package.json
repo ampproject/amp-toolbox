@@ -1,5 +1,11 @@
 {
   "name": "lighthouse-plugin-amp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/lighthouse-plugin-amp"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/lighthouse-plugin-amp",
   "dependencies": {
     "amphtml-validator": "1.0.29",
     "node-fetch": "2.6.0"
