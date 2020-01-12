@@ -17,7 +17,8 @@
 
 const log = require('@ampproject/toolbox-core').log.tag('AMP Runtime Version');
 
-const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
+const AMP_CACHE_HOST = 'https://cdn.ampproject.org';
+const RUNTIME_METADATA_PATH = '/rtv/metadata';
 
 /**
  * Queries https://cdn.ampproject.org/rtv/metadata for the lastest AMP runtime version. Uses a
@@ -57,10 +58,22 @@ class RuntimeVersion {
    *
    * @param {Object} options - the options.
    * @param {bool} options.canary - true if canary should be returned.
-   * @returns {Promise<Number>} a promise containing the current version
+   * @param {string} options.ampUrlPrefix - the domain & path to an AMP runtime.
+   * @returns {Promise<string>} a promise containing the current version.
    */
   async currentVersion(options = {}) {
-    const response = await this.fetch_(RUNTIME_METADATA_ENDPOINT);
+    let runtimeMetaUrl = AMP_CACHE_HOST + RUNTIME_METADATA_PATH;
+    if (options.ampUrlPrefix) {
+      const customMetaUrl = options.ampUrlPrefix.replace(/\/$/, '') + RUNTIME_METADATA_PATH;
+      // Check whether ampUrlPrefix is absolute since relative paths are allowed
+      // by optimizer
+      if (this.isAbsoluteUrl_(customMetaUrl)) {
+        runtimeMetaUrl = customMetaUrl;
+      } else {
+        log.warn('ampUrlPrefix is not an absolute URL. Falling back to https://cdn.ampproject.org.');
+      }
+    }
+    const response = await this.fetch_(runtimeMetaUrl);
     const data = await response.json();
     let version;
     if (options.canary) {
@@ -82,6 +95,15 @@ class RuntimeVersion {
     z = z || '0';
     n = String(n);
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
+
+  isAbsoluteUrl_(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch (ex) { }
+
+    return false;
   }
 }
 
