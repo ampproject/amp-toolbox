@@ -20,16 +20,19 @@ const {
   appendRuntimeVersion,
 } = require('./AmpConstants.js');
 
-function calculateHost(params) {
-  let ampUrlPrefix = params.ampUrlPrefix || AMP_CACHE_HOST;
-  if (params.ampRuntimeVersion && !params.ampUrlPrefix) {
-    ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, params.ampRuntimeVersion);
+function calculateHost({
+  ampUrlPrefix = AMP_CACHE_HOST,
+  ampRuntimeVersion,
+  rewriteDynamicComponents,
+}) {
+  if (ampRuntimeVersion && ampUrlPrefix === AMP_CACHE_HOST) {
+    ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, ampRuntimeVersion);
   }
   let dynamicAmpUrlPrefix = ampUrlPrefix;
-  if (params.rewriteDynamicComponents === false) {
+  if (rewriteDynamicComponents === false) {
     dynamicAmpUrlPrefix = AMP_CACHE_HOST;
-    if (params.ampRuntimeVersion) {
-      dynamicAmpUrlPrefix = appendRuntimeVersion(dynamicAmpUrlPrefix, params.ampRuntimeVersion);
+    if (ampRuntimeVersion) {
+      dynamicAmpUrlPrefix = appendRuntimeVersion(dynamicAmpUrlPrefix, ampRuntimeVersion);
     }
   }
   return {
