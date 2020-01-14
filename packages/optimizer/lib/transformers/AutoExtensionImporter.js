@@ -144,7 +144,11 @@ class AutoExtensionImporter {
     const existingImports = new Set();
 
     // Some AMP components need to be detected in the head (e.g. amp-access)
-    this.findExtensionsToImportInHead_(head, extensionsToImport, existingImports);
+    this.findExistingExtensionsAndExtensionsToImportInHead_(
+        head,
+        extensionsToImport,
+        existingImports,
+    );
 
     // Most AMP components can be detected in the body
     await this.findExtensionsToImportInBody_(body, extensionsToImport);
@@ -180,7 +184,7 @@ class AutoExtensionImporter {
   /**
    * @private
    */
-  findExtensionsToImportInHead_(head, extensionsToImport, existingImports) {
+  findExistingExtensionsAndExtensionsToImportInHead_(head, extensionsToImport, existingImports) {
     let node = head.firstChild;
     while (node) {
       // Detect any existing extension imports
