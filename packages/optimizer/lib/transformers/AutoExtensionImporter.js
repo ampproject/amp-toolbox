@@ -17,9 +17,11 @@
 
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
+const {AMP_FORMATS} = require('../AmpConstants');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';
 const AMP_BIND_DATA_ATTRIBUTE_PREFIX = 'data-amp-bind-';
+const DEFAULT_FORMAT = 'AMP';
 
 // Some AMP component don't bring their own tag, but enable new attributes on other
 // elements. Most are included in the AMP validation rules, but some are not. These
@@ -46,11 +48,15 @@ const manualAttributeToExtensionMapping = new Map([
  * rewriting non-AMP attributes, the transformer uses the AMP validation rules to only rename bindable
  * attributes as specified in the validation rules.
  *
- * You can disable the auto extension import by passing `{ autoExtensionImport: false }` via the config.
+ * This transformer supports the following option:
+ *
+ * - `format: [AMP|AMP4EMAIL|AMP4ADS]` - specifies the AMP format. Defaults to `AMP`.
+ * - `autoExtensionImport: [true|false]` - set to `false` to disable the auto extension import> Default to `true`.
  */
 class AutoExtensionImporter {
   constructor(config) {
     this.enabled = config.autoExtensionImport !== false;
+    this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AutoExtensionImporter');
 
     // We use the validation rules to infer extension imports. The rules are downloaded once and for
@@ -63,12 +69,17 @@ class AutoExtensionImporter {
    */
   async initExtensionSpec_(validatorRules) {
     this.extensionSpec = validatorRules.fetch().then((rules) => {
-      // Map extension names to more info
-      const extensionsMap = new Map(rules.extensions.map((ext) => [ext.name, {
-        name: ext.name,
-        type: ext.extensionType === 'CUSTOM_TEMPLATE' ? 'custom-template' : 'custom-element',
-        version: ext.version.filter((v) => v !== 'latest'),
-      }]));
+      // Map extension names to info required for generating the extension imports
+      const extensionsMap = new Map();
+      for (const ext of rules.extensions) {
+        if (ext.htmlFormat.includes(DEFAULT_FORMAT)) {
+          extensionsMap.set(ext.name, {
+            name: ext.name,
+            type: ext.extensionType === 'CUSTOM_TEMPLATE' ? 'custom-template' : 'custom-element',
+            version: ext.version.filter((v) => v !== 'latest'),
+          });
+        }
+      }
       // Maps tags (e.g. amp-state) to their extension (e.g. amp-bind)
       const tagToExtensionsMapping = new Map();
       // Maps tags to their extension specific allowed attributes
@@ -77,7 +88,7 @@ class AutoExtensionImporter {
       // Maps tags to their bindable attributes (e.g. div => text)
       const tagToBindAttributeMapping = new Map();
       // Iterate over all available tags
-      for (const tag of rules.tags) {
+      for (const tag of rules.getTagsForFormat(DEFAULT_FORMAT)) {
         const tagName = tag.tagName.toLowerCase();
         // Map amp tags to their required extension(s)
         if (tagName.startsWith('amp-')) {
@@ -115,6 +126,10 @@ class AutoExtensionImporter {
 
   async transform(tree, params) {
     if (!this.enabled) {
+      return;
+    }
+    if (!AMP_FORMATS.includes(this.format)) {
+      this.log_.error('Unsupported AMPHTML format', this.format);
       return;
     }
     const html = tree.root.firstChildByTag('html');
