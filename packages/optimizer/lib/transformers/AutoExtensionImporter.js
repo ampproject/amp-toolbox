@@ -17,9 +17,9 @@
 
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
-const validatorRules = require('@ampproject/toolbox-validator-rules');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';
+const AMP_BIND_DATA_ATTRIBUTE_PREFIX = 'data-amp-bind-';
 
 // Some AMP component don't bring their own tag, but enable new attributes on other
 // elements. Most are included in the AMP validation rules, but some are not. These
@@ -45,14 +45,23 @@ const manualAttributeToExtensionMapping = new Map([
  * AMP bindings when the square bracket notation (`[text]`) is not available. To avoid accidently
  * rewriting non-AMP attributes, the transformer uses the AMP validation rules to only rename bindable
  * attributes as specified in the validation rules.
+ *
+ * You can disable the auto extension import by passing `{ autoExtensionImport: false }` via the config.
  */
 class AutoExtensionImporter {
   constructor(config) {
-    this.enabled = config.autoExtensionImport !== 'false' && config.autoExtensionImport !== false;
+    this.enabled = config.autoExtensionImport !== false;
     this.log_ = config.log.tag('AutoExtensionImporter');
 
     // We use the validation rules to infer extension imports. The rules are downloaded once and for
     // efficency, we initially extract all needed rules
+    this.initExtensionSpec_(config.validatorRules);
+  }
+
+  /**
+   * @private
+   */
+  async initExtensionSpec_(validatorRules) {
     this.extensionSpec = validatorRules.fetch().then((rules) => {
       // Map extension names to more info
       const extensionsMap = new Map(rules.extensions.map((ext) => [ext.name, {
@@ -67,39 +76,33 @@ class AutoExtensionImporter {
       const tagToAttributeMapping = new Map();
       // Maps tags to their bindable attributes (e.g. div => text)
       const tagToBindAttributeMapping = new Map();
-
       // Iterate over all available tags
       for (const tag of rules.tags) {
         const tagName = tag.tagName.toLowerCase();
-
         // Map amp tags to their required extension(s)
         if (tagName.startsWith('amp-')) {
-          tagToExtensionsMapping.set(
-              tagName,
-              tag.requiresExtension,
-          );
+          tagToExtensionsMapping.set(tagName, tag.requiresExtension);
         }
-        // Hack: fix missing attribute dependencies (e.g. amp-img => lightbox => amp-lightbox-gallery)
-        tag.attrs.filter((a) => manualAttributeToExtensionMapping.has(a.name))
-            .forEach((a) => {
-              a.requiresExtension = [manualAttributeToExtensionMapping.get(a.name)];
-            });
-
-        // Map attributes to tags and extensions (e.g. amp-img => amp-fx => amp-fx-collection)
-        tag.attrs.filter((a) => a.requiresExtension && a.requiresExtension.length > 0)
-            .forEach((a) => {
-              let attributeMapping = tagToAttributeMapping.get(tagName);
-              if (!attributeMapping) {
-                attributeMapping = [];
-                tagToAttributeMapping.set(tagName, attributeMapping);
-              }
-              attributeMapping.push(a);
-            });
-
-        // Map tags to bindable attributes which are named link `[text]`
-        const bindableAttributes = tag.attrs.filter((a) => a.name.startsWith('['))
-            .map((a) => a.name.substring(1, a.name.length - 1));
-        tagToBindAttributeMapping.set(tagName, new Set(bindableAttributes));
+        // Collects all bindable attributes
+        const bindableAttributes = new Set();
+        // Process the tag specific attributes
+        for (const attribute of tag.attrs) {
+          // Hack: fix missing attribute dependencies (e.g. amp-img => lightbox => amp-lightbox-gallery)
+          if (manualAttributeToExtensionMapping.has(attribute.name)) {
+            attribute.requiresExtension = [manualAttributeToExtensionMapping.get(attribute.name)];
+          }
+          // Map attributes to tags and extensions (e.g. amp-img => amp-fx => amp-fx-collection)
+          if (attribute.requiresExtension && attribute.requiresExtension.length > 0) {
+            const attributeMapping = tagToAttributeMapping.get(tagName) || [];
+            attributeMapping.push(attribute);
+            tagToAttributeMapping.set(tagName, attributeMapping);
+          }
+          // Maps tags to bindable attributes which are named `[text]`
+          if (attribute.name.startsWith('[')) {
+            bindableAttributes.add(attribute.name.substring(1, attribute.name.length - 1));
+          }
+        }
+        tagToBindAttributeMapping.set(tagName, bindableAttributes);
       }
       return {
         extensionsMap,
@@ -117,6 +120,8 @@ class AutoExtensionImporter {
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
     if (!head) return;
+    const body = html.firstChildByTag('body');
+    if (!body) return;
 
     // Extensions which need to be imported
     const extensionsToImport = new Set();
@@ -124,10 +129,9 @@ class AutoExtensionImporter {
     const existingImports = new Set();
 
     // Some AMP components need to be detected in the head (e.g. amp-access)
-    await this.findExtensionsToImportInHead_(head, extensionsToImport, existingImports);
+    this.findExtensionsToImportInHead_(head, extensionsToImport, existingImports);
 
     // Most AMP components can be detected in the body
-    const body = html.firstChildByTag('body');
     await this.findExtensionsToImportInBody_(body, extensionsToImport);
 
     if (extensionsToImport.length === 0) {
@@ -141,22 +145,26 @@ class AutoExtensionImporter {
     // Support custom runtime URLs
     const host = calculateHost(params);
     for (const extensionName of extensionsToImport) {
-      if (!existingImports.has(extensionName)) {
-        const extension = (await this.extensionSpec).extensionsMap.get(extensionName.trim());
-        this.log_.debug('auto importing', extensionName);
-        // Use the latest version by default
-        const version = extension.version[extension.version.length - 1];
-        const extensionImportAttribs = {
-          'async': '',
-          'src': `${host.ampUrlPrefix}/v0/${extensionName}-${version}.js`,
-        };
-        extensionImportAttribs[extension.type] = extensionName;
-        const extensionImport = tree.createElement('script', extensionImportAttribs);
-        head.insertAfter(extensionImport, referenceNode);
+      if (existingImports.has(extensionName)) {
+        continue;
       }
+      const extension = (await this.extensionSpec).extensionsMap.get(extensionName.trim());
+      this.log_.debug('auto importing', extensionName);
+      // Use the latest version by default
+      const version = extension.version[extension.version.length - 1];
+      const extensionImportAttribs = {
+        'async': '',
+        'src': `${host.ampUrlPrefix}/v0/${extensionName}-${version}.js`,
+      };
+      extensionImportAttribs[extension.type] = extensionName;
+      const extensionImport = tree.createElement('script', extensionImportAttribs);
+      head.insertAfter(extensionImport, referenceNode);
     }
   }
 
+  /**
+   * @private
+   */
   findExtensionsToImportInHead_(head, extensionsToImport, existingImports) {
     let node = head.firstChild;
     while (node) {
@@ -173,21 +181,25 @@ class AutoExtensionImporter {
     }
   }
 
+  /**
+   * @private
+   */
   async findExtensionsToImportInBody_(body, extensionsToImport) {
+    const extensionSpec = (await this.extensionSpec);
     let node = body;
-    const promises = [];
     while (node !== null) {
       if (node.tagName) {
-        promises.push(this.addRequiredExtensionByTag_(extensionsToImport, node));
-        promises.push(this.addRequiredExtensionByAttributes_(extensionsToImport, node));
+        this.addRequiredExtensionByTag_(node, extensionSpec, extensionsToImport);
+        this.addRequiredExtensionByAttributes_(node, extensionSpec, extensionsToImport);
       }
       node = node.nextNode();
     }
-    return Promise.all(promises);
   }
 
-  async addRequiredExtensionByTag_(allRequiredExtensions, node) {
-    const extensionSpec = (await this.extensionSpec);
+  /**
+   * @private
+   */
+  addRequiredExtensionByTag_(node, extensionSpec, allRequiredExtensions) {
     // Check for required extensions by tag name
     const requiredExtensions = extensionSpec.tagToExtensionsMapping.get(node.tagName);
     if (requiredExtensions) {
@@ -199,27 +211,30 @@ class AutoExtensionImporter {
     }
   }
 
-  async addRequiredExtensionByAttributes_(allRequiredExtensions, node) {
+  /**
+   * @private
+   */
+  addRequiredExtensionByAttributes_(node, extensionSpec, allRequiredExtensions) {
     if (!node.tagName || !node.attribs) {
       return;
     }
     // Look for element attributes indicating AMP components (e.g. amp-fx)
-    const extensionSpec = await this.extensionSpec;
     const tagToAttributeMapping = extensionSpec.tagToAttributeMapping;
-    const attributesForTag = tagToAttributeMapping.get(node.tagName);
-    if (attributesForTag) {
-      attributesForTag.forEach((attribute) => {
-        if (node.attribs[attribute.name] !== undefined) {
-          attribute.requiresExtension.forEach((ext) => {
-            allRequiredExtensions.add(ext);
-          });
-        }
-      });
-    }
+    const attributesForTag = tagToAttributeMapping.get(node.tagName) || [];
+    attributesForTag.forEach((attribute) => {
+      if (node.attribs[attribute.name] !== undefined) {
+        attribute.requiresExtension.forEach((ext) => {
+          allRequiredExtensions.add(ext);
+        });
+      }
+    });
     // Check for amp-bind attribute bindings
     const tagToBindAttributeMapping = extensionSpec.tagToBindAttributeMapping;
     const attributeNames = Object.keys(node.attribs);
-    if (attributeNames.some((a) => a.startsWith('[') || a.startsWith('data-amp-bind'))) {
+    if (
+      attributeNames.some((a) => a.startsWith('[') ||
+      a.startsWith(AMP_BIND_DATA_ATTRIBUTE_PREFIX))
+    ) {
       allRequiredExtensions.add('amp-bind');
     }
     // Rewrite short-form `bindtext` to `data-amp-bind-text`
@@ -237,7 +252,8 @@ class AutoExtensionImporter {
 
       // Rename attribute from bindx to data-amp-bind-x
       if (ampBindAttrs.has(attributeNameWithoutBindPrefix)) {
-        const newAttributeName = `data-amp-bind-${attributeNameWithoutBindPrefix}`;
+        const newAttributeName =
+            `${AMP_BIND_DATA_ATTRIBUTE_PREFIX}${attributeNameWithoutBindPrefix}`;
         node.attribs[newAttributeName] = node.attribs[attributeName];
         delete node.attribs[attributeName];
         usesAmpBind = true;
@@ -248,6 +264,9 @@ class AutoExtensionImporter {
     }
   }
 
+  /**
+   * @private
+   */
   getCustomElement_(scriptNode) {
     if (scriptNode.tagName !== 'script') {
       return '';

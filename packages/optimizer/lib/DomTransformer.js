@@ -18,12 +18,15 @@
 const treeParser = require('./TreeParser.js');
 const log = require('./log.js');
 const {oneBehindFetch} = require('@ampproject/toolbox-core');
+const validatorRules = require('@ampproject/toolbox-validator-rules');
 const runtimeVersion = require('@ampproject/toolbox-runtime-version');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
  */
 const TRANSFORMATIONS_AMP_FIRST = [
+  // Adds missing AMP extensions
+  'AutoExtensionImporter',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes the boilerplate
@@ -47,6 +50,8 @@ const TRANSFORMATIONS_AMP_FIRST = [
  * @deprecated
  */
 const TRANSFORMATIONS_PAIRED_AMP = [
+  // Adds missing AMP extensions
+  'AutoExtensionImporter',
   // Adds a link to the valid AMP version
   'AddAmpLink',
   // Applies server-side-rendering optimizations
@@ -71,10 +76,11 @@ const TRANSFORMATIONS_PAIRED_AMP = [
 
 const DEFAULT_CONFIG = {
   fetch: oneBehindFetch,
+  log,
   runtimeVersion,
-  log: log,
-  verbose: false,
   transformations: TRANSFORMATIONS_AMP_FIRST,
+  validatorRules,
+  verbose: false,
 };
 
 /**
