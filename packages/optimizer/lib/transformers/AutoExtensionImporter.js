@@ -72,7 +72,7 @@ class AutoExtensionImporter {
       // Map extension names to info required for generating the extension imports
       const extensionsMap = new Map();
       for (const ext of rules.extensions) {
-        if (ext.htmlFormat.includes(DEFAULT_FORMAT)) {
+        if (ext.htmlFormat.includes(this.format)) {
           extensionsMap.set(ext.name, {
             name: ext.name,
             type: ext.extensionType === 'CUSTOM_TEMPLATE' ? 'custom-template' : 'custom-element',
@@ -88,7 +88,7 @@ class AutoExtensionImporter {
       // Maps tags to their bindable attributes (e.g. div => text)
       const tagToBindAttributeMapping = new Map();
       // Iterate over all available tags
-      for (const tag of rules.getTagsForFormat(DEFAULT_FORMAT)) {
+      for (const tag of rules.getTagsForFormat(this.format)) {
         const tagName = tag.tagName.toLowerCase();
         // Map amp tags to their required extension(s)
         if (tagName.startsWith('amp-')) {
