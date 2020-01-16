@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const {AMP_FORMATS} = require('../AmpConstants');
+const {AMP_FORMATS, AMP_TAGS} = require('../AmpConstants');
 
 const DEFAULT_FORMAT = 'AMP';
 
@@ -100,6 +100,30 @@ const BOILERPLATES = {
         },
       },
     },
+    {
+      matcher: {
+        tagName: 'link',
+        attribs: {
+          rel: 'canonical',
+        },
+      },
+      node: {
+        tagName: 'link',
+        attribs: {
+          rel: 'canonical',
+          href: (params) => params.canonical,
+        },
+      },
+    },
+    {
+      matcher: {
+        tagName: 'title',
+      },
+      node: {
+        tagName: 'title',
+        text: (params) => params.title,
+      },
+    },
   ],
 };
 
@@ -120,12 +144,19 @@ class AutoAddBoilerplate {
     this.log_ = config.log.tag('AutoAddBoilerplate');
   }
 
-  async transform(tree) {
+  async transform(tree, params) {
     if (!this.enabled) {
       return;
     }
+    // Validate format string
     if (!AMP_FORMATS.includes(this.format)) {
-      this.log_.error('Unsupported AMPHTML format', this.format);
+      this.log_.error('Unknown AMPHTML format', this.format);
+      return;
+    }
+    // Only supports AMP for websites
+    const boilerplateSpec = BOILERPLATES[this.format];
+    if (!boilerplateSpec) {
+      this.log_.info('Unsupported AMP format', this.format);
       return;
     }
     // Add the doctype if none is present
@@ -135,29 +166,47 @@ class AutoAddBoilerplate {
       tree.root.insertBefore(doctype, tree.root.firstChild);
     }
     const html = tree.root.firstChildByTag('html');
+
+    // Mark as AMP
+    if (!Object.keys(html.attribs).some((a) => AMP_TAGS.includes(a))) {
+      html.attribs[this.format.toLowerCase()] = '';
+    }
+
     const head = html.firstChildByTag('head');
 
     // Match each head node against the boilerplate spec, mark
     // all matched nodes by removing them from the set of boilerplate
     // nodes
-    const boilerplateSpec = new Set(BOILERPLATES[this.format]);
+    const boilerplateRules = new Set(boilerplateSpec);
     let node = head.firstChild;
     while (node) {
       if (node.tagName) {
-        boilerplateSpec.forEach((spec) => {
+        boilerplateRules.forEach((spec) => {
           if (this.matchSpec(spec.matcher, node)) {
-            boilerplateSpec.delete(spec);
+            boilerplateRules.delete(spec);
           }
         });
       }
       node = node.nextSibling;
     }
 
-    for (const spec of boilerplateSpec) {
-      this.addNode(tree, head, spec.node);
+    if (boilerplateRules.size === 0) {
+      return;
+    }
+
+    // Setup params (in case they're needed)
+    params.canonical = params.canonical || '.';
+    params.title = params.title || '';
+
+    // Add all missing nodes
+    for (const spec of boilerplateRules) {
+      this.addNode(tree, head, spec.node, params);
     }
   }
 
+  /**
+   * @private
+   */
   matchSpec(matcher, node) {
     if (matcher.tagName !== node.tagName) {
       return false;
@@ -167,9 +216,6 @@ class AutoAddBoilerplate {
     }
     for (const [key, value] of Object.entries(matcher.attribs)) {
       const attributeValue = node.attribs[key];
-      if (value instanceof RegExp) {
-        console.log('regex', attributeValue, value.test(attributeValue));
-      }
       if (value instanceof RegExp) {
         if (!value.test(attributeValue)) {
           return false;
@@ -181,15 +227,59 @@ class AutoAddBoilerplate {
     return true;
   }
 
-  addNode(tree, node, matcher) {
-    const newElement = tree.createElement(matcher.tagName, matcher.attribs);
-    for (const child of matcher.children || []) {
-      this.addNode(tree, newElement, child);
-    }
-    if (matcher.text) {
-      newElement.insertText(matcher.text);
-    }
+  /**
+   * @private
+   */
+  addNode(tree, node, matcher, params) {
+    const newElement = tree.createElement(matcher.tagName);
+    this.addAttributes(matcher, newElement, params);
+    this.addChildren(matcher, tree, newElement, params);
+    this.addText(matcher, newElement, params);
     node.appendChild(newElement);
+  }
+
+  /**
+   * @private
+   */
+  addText(matcher, newElement, params) {
+    if (!matcher.text) {
+      return;
+    }
+    let text;
+    if (typeof matcher.text === 'function') {
+      text = matcher.text(params);
+    } else {
+      text = matcher.text;
+    }
+    newElement.insertText(text);
+  }
+
+  /**
+   * @private
+   */
+  addChildren(matcher, tree, newElement, params) {
+    if (!matcher.children) {
+      return;
+    }
+    for (const child of matcher.children) {
+      this.addNode(tree, newElement, child, params);
+    }
+  }
+
+  /**
+   * @private
+   */
+  addAttributes(matcher, newElement, params) {
+    if (!matcher.attribs) {
+      return;
+    }
+    for (const [key, value] of Object.entries(matcher.attribs)) {
+      if (typeof value === 'function') {
+        newElement.attribs[key] = value(params);
+      } else {
+        newElement.attribs[key] = value;
+      }
+    }
   }
 }
 
