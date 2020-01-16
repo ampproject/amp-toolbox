@@ -51,7 +51,7 @@ const manualAttributeToExtensionMapping = new Map([
  * This transformer supports the following option:
  *
  * - `format: [AMP|AMP4EMAIL|AMP4ADS]` - specifies the AMP format. Defaults to `AMP`.
- * - `autoExtensionImport: [true|false]` - set to `false` to disable the auto extension import> Default to `true`.
+ * - `autoExtensionImport: [true|false]` - set to `false` to disable the auto extension import. Default to `true`.
  */
 class AutoExtensionImporter {
   constructor(config) {
