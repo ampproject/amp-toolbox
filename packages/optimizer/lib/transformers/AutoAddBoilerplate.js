@@ -40,7 +40,6 @@ const BOILERPLATES = {
         tagName: 'meta',
         attribs: {
           name: 'viewport',
-          content: 'width=device-width,minimum-scale=1',
         },
       },
       node: {
@@ -115,15 +114,6 @@ const BOILERPLATES = {
         },
       },
     },
-    {
-      matcher: {
-        tagName: 'title',
-      },
-      node: {
-        tagName: 'title',
-        text: (params) => params.title,
-      },
-    },
   ],
 };
 
@@ -196,7 +186,6 @@ class AutoAddBoilerplate {
 
     // Setup params (in case they're needed)
     params.canonical = params.canonical || '.';
-    params.title = params.title || '';
 
     // Add all missing nodes
     for (const spec of boilerplateRules) {
