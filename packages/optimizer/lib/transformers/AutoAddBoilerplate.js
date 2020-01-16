@@ -46,7 +46,7 @@ const BOILERPLATES = {
         tagName: 'meta',
         attribs: {
           name: 'viewport',
-          content: 'width=device-width,minimum-scale=1',
+          content: 'width=device-width,minimum-scale=1,initial-scale=1',
         },
       },
     },
@@ -138,6 +138,13 @@ class AutoAddBoilerplate {
     if (!this.enabled) {
       return;
     }
+
+    // Set default canonical if non is given
+    if (!params.canonical) {
+      this.log_.warn('No canonical param is given. Setting canonical href to `.`');
+      params.canonical = '.';
+    }
+
     // Validate format string
     if (!AMP_FORMATS.includes(this.format)) {
       this.log_.error('Unknown AMPHTML format', this.format);
@@ -157,7 +164,7 @@ class AutoAddBoilerplate {
     }
     const html = tree.root.firstChildByTag('html');
 
-    // Mark as AMP
+    // Mark as AMP in html tag if none is present
     if (!Object.keys(html.attribs).some((a) => AMP_TAGS.includes(a))) {
       html.attribs[this.format.toLowerCase()] = '';
     }
@@ -179,13 +186,6 @@ class AutoAddBoilerplate {
       }
       node = node.nextSibling;
     }
-
-    if (boilerplateRules.size === 0) {
-      return;
-    }
-
-    // Setup params (in case they're needed)
-    params.canonical = params.canonical || '.';
 
     // Add all missing nodes
     for (const spec of boilerplateRules) {
@@ -219,26 +219,26 @@ class AutoAddBoilerplate {
   /**
    * @private
    */
-  addNode(tree, node, matcher, params) {
-    const newElement = tree.createElement(matcher.tagName);
-    this.addAttributes(matcher, newElement, params);
-    this.addChildren(matcher, tree, newElement, params);
-    this.addText(matcher, newElement, params);
-    node.appendChild(newElement);
+  addNode(tree, parent, nodeSpec, params) {
+    const newElement = tree.createElement(nodeSpec.tagName);
+    this.addAttributes(nodeSpec, newElement, params);
+    this.addChildren(nodeSpec, tree, newElement, params);
+    this.addText(nodeSpec, newElement, params);
+    parent.appendChild(newElement);
   }
 
   /**
    * @private
    */
-  addText(matcher, newElement, params) {
-    if (!matcher.text) {
+  addText(nodeSpec, newElement, params) {
+    if (!nodeSpec.text) {
       return;
     }
     let text;
-    if (typeof matcher.text === 'function') {
-      text = matcher.text(params);
+    if (typeof nodeSpec.text === 'function') {
+      text = nodeSpec.text(params);
     } else {
-      text = matcher.text;
+      text = nodeSpec.text;
     }
     newElement.insertText(text);
   }
@@ -246,11 +246,11 @@ class AutoAddBoilerplate {
   /**
    * @private
    */
-  addChildren(matcher, tree, newElement, params) {
-    if (!matcher.children) {
+  addChildren(nodeSpec, tree, newElement, params) {
+    if (!nodeSpec.children) {
       return;
     }
-    for (const child of matcher.children) {
+    for (const child of nodeSpec.children) {
       this.addNode(tree, newElement, child, params);
     }
   }
@@ -258,11 +258,11 @@ class AutoAddBoilerplate {
   /**
    * @private
    */
-  addAttributes(matcher, newElement, params) {
-    if (!matcher.attribs) {
+  addAttributes(nodeSpec, newElement, params) {
+    if (!nodeSpec.attribs) {
       return;
     }
-    for (const [key, value] of Object.entries(matcher.attribs)) {
+    for (const [key, value] of Object.entries(nodeSpec.attribs)) {
       if (typeof value === 'function') {
         newElement.attribs[key] = value(params);
       } else {
