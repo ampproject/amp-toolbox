@@ -23,7 +23,7 @@ const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
 
 
-describe('Transfomers', () => {
+fdescribe('Transfomers', () => {
   ['experimental', 'valid'].forEach((subDir) => {
     loadTestConfigs(subDir).forEach(createSpec);
   });
