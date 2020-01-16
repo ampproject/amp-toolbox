@@ -120,7 +120,7 @@ class AutoAddBoilerplate {
     this.log_ = config.log.tag('AutoAddBoilerplate');
   }
 
-  async transform(tree, params) {
+  async transform(tree) {
     if (!this.enabled) {
       return;
     }
@@ -128,12 +128,19 @@ class AutoAddBoilerplate {
       this.log_.error('Unsupported AMPHTML format', this.format);
       return;
     }
-    const boilerplateSpec = new Set(BOILERPLATES[this.format]);
-    console.log(tree.root);
+    // Add the doctype if none is present
+    let doctype = tree.root.firstChildByTag('!doctype');
+    if (!doctype) {
+      doctype = tree.createDocType('html');
+      tree.root.insertBefore(doctype, tree.root.firstChild);
+    }
     const html = tree.root.firstChildByTag('html');
     const head = html.firstChildByTag('head');
-    if (!head) return;
 
+    // Match each head node against the boilerplate spec, mark
+    // all matched nodes by removing them from the set of boilerplate
+    // nodes
+    const boilerplateSpec = new Set(BOILERPLATES[this.format]);
     let node = head.firstChild;
     while (node) {
       if (node.tagName) {
