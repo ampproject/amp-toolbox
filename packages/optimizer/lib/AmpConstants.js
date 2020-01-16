@@ -24,5 +24,6 @@ module.exports = {
     'custom-element': ['amp-geo'],
     'custom-template': [],
   },
+  AMP_FORMATS: ['AMP', 'AMP4EMAIL', 'AMP4ADS'],
   appendRuntimeVersion: (prefix, version) => prefix + '/rtv/' + version,
 };

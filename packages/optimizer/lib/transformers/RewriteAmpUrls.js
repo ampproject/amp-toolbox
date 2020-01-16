@@ -18,9 +18,9 @@
 const {
   AMP_CACHE_HOST,
   AMP_DYNAMIC_COMPONENTS,
-  appendRuntimeVersion,
 } = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
+const {calculateHost} = require('../RuntimeHostHelper');
 
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
@@ -57,17 +57,7 @@ class RewriteAmpUrls {
     const head = html.firstChildByTag('head');
     if (!head) return;
 
-    let ampUrlPrefix = params.ampUrlPrefix || AMP_CACHE_HOST;
-    if (params.ampRuntimeVersion && !params.ampUrlPrefix) {
-      ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, params.ampRuntimeVersion);
-    }
-    let dynamicAmpUrlPrefix = ampUrlPrefix;
-    if (params.rewriteDynamicComponents === false) {
-      dynamicAmpUrlPrefix = AMP_CACHE_HOST;
-      if (params.ampRuntimeVersion) {
-        dynamicAmpUrlPrefix = appendRuntimeVersion(dynamicAmpUrlPrefix, params.ampRuntimeVersion);
-      }
-    }
+    const host = calculateHost(params);
 
     let node = head.firstChild;
     let referenceNode = findMetaViewport(head);
@@ -76,12 +66,12 @@ class RewriteAmpUrls {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         const isDynamicComponent = this._isDynamicComponent(node);
         node.attribs.src = this._replaceUrl(node.attribs.src,
-          isDynamicComponent ? dynamicAmpUrlPrefix : ampUrlPrefix);
+          isDynamicComponent ? host.dynamicAmpUrlPrefix : host.ampUrlPrefix);
         referenceNode = this._addPreload(tree, head, referenceNode, node.attribs.src, 'script');
       } else if (node.tagName === 'link' &&
                   node.attribs.rel === 'stylesheet' &&
                   this._usesAmpCacheUrl(node.attribs.href)) {
-        node.attribs.href = this._replaceUrl(node.attribs.href, ampUrlPrefix);
+        node.attribs.href = this._replaceUrl(node.attribs.href, host.ampUrlPrefix);
         referenceNode = this._addPreload(tree, head, referenceNode, node.attribs.href, 'style');
       }
       node = node.nextSibling;

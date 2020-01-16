@@ -16,10 +16,12 @@
 
 const fetchMock = require('fetch-mock');
 const {basename, join} = require('path');
+const validatorRules = require('@ampproject/toolbox-validator-rules');
 const log = require('../../lib/log.js').tag('TransformerSpec');
 log.verbose();
 const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
+
 
 describe('Transfomers', () => {
   ['experimental', 'valid'].forEach((subDir) => {
@@ -38,6 +40,7 @@ function loadTestConfigs(subDir) {
         .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
     const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
     const config = {
+      validatorRules,
       fetch,
       log,
       runtimeVersion: {
