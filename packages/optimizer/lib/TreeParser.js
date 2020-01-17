@@ -149,12 +149,12 @@ class Tree {
    * Creates a new directive
    *
    */
-  createDocType(type) {
+  createDocType() {
     const result = this._htmlparser2.createDocumentFragment();
     result.type = 'directive';
     result.name= '!doctype';
-    result.data = `!DOCTYPE ${type}`;
-    result['x-name'] = type;
+    result.data = '!DOCTYPE html';
+    result['x-name'] = 'html';
     result['x-publicId'] = null;
     result['x-systemId'] =null;
     return result;
