@@ -15,9 +15,18 @@
  */
 const colors = require('colors/safe');
 const jsdiff = require('diff');
-const minify = require('html-minifier').minify;
 const {basename, join} = require('path');
 const {getFileContents, getDirectories} = require('../helpers/Utils.js');
+
+const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
+
+const BEAUTIFY_OPTIONS = {
+  'indent_size': 2,
+  'unformatted': ['noscript', 'style'],
+  'indent-char': ' ',
+  'no-preserve-newlines': '',
+  'extra_liners': [],
+};
 
 const treeParser = require('../../lib/TreeParser.js');
 
@@ -52,9 +61,8 @@ module.exports = function(testConfig) {
           testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html';
         const expectedOutput = getFileContents(join(testDir, expectedOutputPath));
         try {
-          const expectedOutputTree = treeParser.parse(expectedOutput);
           await testConfig.transformer.transform(inputTree, testConfig.validAmp ? {} : params);
-          compare(inputTree, expectedOutputTree, done);
+          compare(inputTree, expectedOutput, done);
         } catch (error) {
           done.fail(error);
         }
@@ -63,33 +71,12 @@ module.exports = function(testConfig) {
   });
 };
 
-function compare(actualTree, expectedTree, done) {
-  const actualHtml = serialize(actualTree);
-  const expectedHtml = serialize(expectedTree);
-  const diff = jsdiff.diffChars(expectedHtml, actualHtml);
-  let failed = false;
-  const reason = diff.map((part) => {
-    let string;
-    if (part.added) {
-      string = colors.green(part.value);
-      failed = true;
-    } else if (part.removed) {
-      string = colors.red(part.value);
-      failed = true;
-    } else {
-      string = colors.reset(part.value);
-    }
-    return string;
-  }).join('');
-
-  if (failed) {
-    done.fail('Trees do not match\n\n' + reason + '\n\nActual output:\n\n' + actualHtml + '\n\n');
-  } else {
-    done();
-  }
+function compare(actualTree, expectedOutput) {
+  expect(serialize(actualTree)).toEqual(expectedOutput);
+  done();
 }
 
 function serialize(tree) {
   const html = treeParser.serialize(tree);
-  return minify(html, {collapseWhitespace: true});
+  return jsBeautify.html_beautify(html, BEAUTIFY_OPTIONS)
 }
