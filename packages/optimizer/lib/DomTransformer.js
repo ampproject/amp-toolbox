@@ -26,7 +26,7 @@ const runtimeVersion = require('@ampproject/toolbox-runtime-version');
  */
 const TRANSFORMATIONS_AMP_FIRST = [
   // Adds missing AMP boilerplate
-  'AutoAddBoilerplate',
+  'AddMandatoryTags',
   // Adds missing AMP extensions
   'AutoExtensionImporter',
   // Applies server-side-rendering optimizations

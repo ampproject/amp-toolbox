@@ -118,20 +118,19 @@ const BOILERPLATES = {
 };
 
 /**
- * Auto Add Boilerplate - this transformer will automatically add all missing parts of the AMP Boilerplate code.
+ * AddMandatoryTags - this transformer will automatically add all missing tags required by a valid AMP document.
  *
- * This transformer will only add missing or fix invalid boilerplate code. However, it won't remove invalid elements.
- *
- * This transformer supports the following option:
+ * This transformer will only add missing tags required by a valid AMP documents. However, it won't
+ * remove or convert invalid elements. This transformer supports the following option:
  *
  * - `format: [AMP|AMP4EMAIL|AMP4ADS]` - specifies the AMP format. Defaults to `AMP`.
  * - `autoAddBoilerplate: [true|false]` - set to `false` to disable auto adding the boilerplate.
  */
-class AutoAddBoilerplate {
+class AddMandatoryTags {
   constructor(config) {
     this.enabled = config.autoAddBoilerplate !== false;
     this.format = config.format || DEFAULT_FORMAT;
-    this.log_ = config.log.tag('AutoAddBoilerplate');
+    this.log_ = config.log.tag('AddMandatoryTags');
   }
 
   async transform(tree, params) {
@@ -272,4 +271,4 @@ class AutoAddBoilerplate {
   }
 }
 
-module.exports = AutoAddBoilerplate;
+module.exports = AddMandatoryTags;
