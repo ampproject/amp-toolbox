@@ -144,6 +144,21 @@ class Tree {
     }
     return result;
   }
+
+  /**
+   * Creates a new directive
+   *
+   */
+  createDocType(type) {
+    const result = this._htmlparser2.createDocumentFragment();
+    result.type = 'directive';
+    result.name= '!doctype';
+    result.data = `!DOCTYPE ${type}`;
+    result['x-name'] = type;
+    result['x-publicId'] = null;
+    result['x-systemId'] =null;
+    return result;
+  }
 }
 
 /**

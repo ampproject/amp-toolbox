@@ -33,12 +33,14 @@ describe('optimize', () => {
       return input;
     };
     const optimizeCmd = new OptimizeCmd(AmpOptimizer.create(), mockLoader);
-    input = '<html></html>';
+    input = '<html amp></html>';
     await optimizeCmd.run({_: ['', 'https://example.com']}, mockLogger);
   });
 
   it('runs optimizer', () => {
-    expect(mockLogger.getLogs().startsWith('<html i-amphtml-layout')).toBe(true);
+    expect(
+        mockLogger.getLogs().startsWith('<!DOCTYPE html><html amp="" i-amphtml-layout'),
+    ).toBe(true);
   });
   it('loads url / path', () => {
     expect(inputUrl).toBe('https://example.com');
