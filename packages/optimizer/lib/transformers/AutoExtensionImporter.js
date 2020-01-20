@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {nextNode, insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
 const {AMP_FORMATS} = require('../AmpConstants');
@@ -124,7 +125,7 @@ class AutoExtensionImporter {
     });
   }
 
-  async transform(tree, params) {
+  async transform(root, params) {
     if (!this.enabled) {
       return;
     }
@@ -132,10 +133,10 @@ class AutoExtensionImporter {
       this.log_.error('Unsupported AMPHTML format', this.format);
       return;
     }
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
+    const html = firstChildByTag(root, 'html');
+    const head = firstChildByTag(html, 'head');
     if (!head) return;
-    const body = html.firstChildByTag('body');
+    const body = firstChildByTag(html, 'body');
     if (!body) return;
 
     // Extensions which need to be imported
@@ -176,8 +177,8 @@ class AutoExtensionImporter {
         'src': `${host.ampUrlPrefix}/v0/${extensionName}-${version}.js`,
       };
       extensionImportAttribs[extension.type] = extensionName;
-      const extensionImport = tree.createElement('script', extensionImportAttribs);
-      head.insertAfter(extensionImport, referenceNode);
+      const extensionImport = createElement('script', extensionImportAttribs);
+      insertAfter(head, extensionImport, referenceNode);
     }
   }
 
@@ -211,7 +212,7 @@ class AutoExtensionImporter {
         this.addRequiredExtensionByTag_(node, extensionSpec, extensionsToImport);
         this.addRequiredExtensionByAttributes_(node, extensionSpec, extensionsToImport);
       }
-      node = node.nextNode();
+      node = nextNode(node);
     }
   }
 

@@ -64,7 +64,7 @@ async function customAmpTransformation(filePath, html) {
     }
     transform(tree, params) {
       this.log_.info('Running custom transformation for ', params.filePath);
-      const html = tree.root.firstChildByTag('html');
+      const html = firstChildByTag(tree, 'html');
       if (!html) return;
       const head = html.firstChildByTag('head');
       if (!head) return;

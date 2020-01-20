@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {appendChild, appendAll, hasAttribute, firstChildByTag} = require('../NodeUtils');
 const {isRenderDelayingExtension} = require('../Extensions.js');
 
 class HeadNodes {
@@ -56,20 +57,20 @@ class HeadNodes {
   }
 
   appendToHead(head) {
-    head.appendChild(this._metaCharset);
-    head.appendChild(this._styleAmpRuntime);
-    head.appendChild(this._linkStyleAmpRuntime);
-    head.appendAll(this._resourceHintLinks);
-    head.appendAll(this._metaOther);
-    head.appendChild(this._scriptAmpEngine);
-    head.appendAll(this._scriptRenderDelayingExtensions);
-    head.appendAll(this._scriptNonRenderDelayingExtensions);
-    head.appendAll(this._linkIcons);
-    head.appendAll(this._linkStylesheetsBeforeAmpCustom);
-    head.appendChild(this._styleAmpCustom);
-    head.appendAll(this._others);
-    head.appendChild(this._styleAmpBoilerplate);
-    head.appendChild(this._noscript);
+    appendChild(head, this._metaCharset);
+    appendChild(head, this._styleAmpRuntime);
+    appendChild(head, this._linkStyleAmpRuntime);
+    appendAll(head, this._resourceHintLinks);
+    appendAll(head, this._metaOther);
+    appendChild(head, this._scriptAmpEngine);
+    appendAll(head, this._scriptRenderDelayingExtensions);
+    appendAll(head, this._scriptNonRenderDelayingExtensions);
+    appendAll(head, this._linkIcons);
+    appendAll(head, this._linkStylesheetsBeforeAmpCustom);
+    appendChild(head, this._styleAmpCustom);
+    appendAll(head, this._others);
+    appendChild(head, this._styleAmpBoilerplate);
+    appendChild(head, this._noscript);
   }
 
   _registerNode(node) {
@@ -103,11 +104,11 @@ class HeadNodes {
     // attributes custom-element or custom-template. Record the
     // amp engine tag so it can be emitted first among script
     // tags.
-    if (node.hasAttribute('src') && !this._getName(node)) {
+    if (hasAttribute(node, 'src') && !this._getName(node)) {
       this._scriptAmpEngine = node;
       return;
     }
-    if (node.hasAttribute('custom-element')) {
+    if (hasAttribute(node, 'custom-element')) {
       if (isRenderDelayingExtension(node)) {
         this._scriptRenderDelayingExtensions.push(node);
         return;
@@ -115,7 +116,7 @@ class HeadNodes {
       this._scriptNonRenderDelayingExtensions.push(node);
       return;
     }
-    if (node.hasAttribute('custom-template')) {
+    if (hasAttribute(node, 'custom-template')) {
       this._scriptNonRenderDelayingExtensions.push(node);
       return;
     }
@@ -123,16 +124,16 @@ class HeadNodes {
   }
 
   _registerStyle(node) {
-    if (node.hasAttribute('amp-runtime')) {
+    if (hasAttribute(node, 'amp-runtime')) {
       this._styleAmpRuntime = node;
       return;
     }
-    if (node.hasAttribute('amp-custom')) {
+    if (hasAttribute('node, amp-custom')) {
       this._styleAmpCustom = node;
       return;
     }
-    if (node.hasAttribute('amp-boilerplate') ||
-      node.hasAttribute('amp4ads-boilerplate')) {
+    if (hasAttribute(node, 'amp-boilerplate') ||
+      hasAttribute(node, 'amp4ads-boilerplate')) {
       this._styleAmpBoilerplate = node;
       return;
     }
@@ -191,11 +192,11 @@ class HeadNodes {
  */
 class ReorderHeadTransformer {
   transform(tree) {
-    const html = tree.root.firstChildByTag('html');
+    const html = firstChildByTag(tree, 'html');
     if (!html) {
       return;
     }
-    const head = html.firstChildByTag('head');
+    const head = firstChildByTag(html, 'head');
     if (!head) {
       return;
     }

@@ -16,6 +16,7 @@
 
 'use strict';
 
+const {firstChildByTag} = require('../NodeUtils');
 const HINT_TAGS = new Set(['dns-prefetch', 'preconnect', 'prefetch', 'preload', 'prerender']);
 
 /**
@@ -27,11 +28,11 @@ const HINT_TAGS = new Set(['dns-prefetch', 'preconnect', 'prefetch', 'preload', 
 class PruneDuplicateResourceHints {
   transform(tree) {
     const preloaded = new Map();
-    const html = tree.root.firstChildByTag('html');
+    const html = firstChildByTag(tree, 'html');
     if (!html) {
       return;
     }
-    const head = html.firstChildByTag('head');
+    const head = firstChildByTag(html, 'head');
     if (!head) {
       return;
     }

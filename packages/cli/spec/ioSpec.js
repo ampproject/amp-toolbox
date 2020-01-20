@@ -18,26 +18,22 @@
 
 const {loadUrlOrFile} = require('../lib/io');
 
-describe('io', () => {
-  describe('loadUrlOrFile', async () => {
-    it('loads url', async () => {
-      expect(
-          await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world'),
-      ).toBe('{"hello":"world"}');
-    });
-    it('loads file', async () => {
-      expect(
-          await loadUrlOrFile(__dirname + '/test-data/hello.txt'),
-      ).toBe('hello\n');
-    });
-    it('fails if url is missing', async () => {
-      let error;
-      try {
-        await loadUrlOrFile('');
-      } catch (e) {
-        error = e;
-      }
-      expect(error).toEqual(new Error('Missing URL or file path'));
-    });
-  });
+test('loads url', async () => {
+  expect(
+      await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world'),
+  ).toBe('{"hello":"world"}');
+});
+test('loads file', async () => {
+  expect(
+      await loadUrlOrFile(__dirname + '/test-data/hello.txt'),
+  ).toBe('hello\n');
+});
+test('fails if url is missing', async () => {
+  let error;
+  try {
+    await loadUrlOrFile('');
+  } catch (e) {
+    error = e;
+  }
+  expect(error).toEqual(new Error('Missing URL or file path'));
 });

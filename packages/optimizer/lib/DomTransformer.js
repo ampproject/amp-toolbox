@@ -15,8 +15,8 @@
  */
 'use strict';
 
-const treeParser = require('./TreeParser.js');
-const log = require('./log.js');
+const treeParser = require('./TreeParser');
+const log = require('./log');
 const {oneBehindFetch} = require('@ampproject/toolbox-core');
 const validatorRules = require('@ampproject/toolbox-validator-rules');
 const runtimeVersion = require('@ampproject/toolbox-runtime-version');
@@ -105,7 +105,7 @@ class DomTransformer {
    * @return {string} - the transformed html string
    */
   async transformHtml(html, params) {
-    const tree = treeParser.parse(html);
+    const tree = await treeParser.parse(html);
     await this.transformTree(tree, params);
     return treeParser.serialize(tree);
   }

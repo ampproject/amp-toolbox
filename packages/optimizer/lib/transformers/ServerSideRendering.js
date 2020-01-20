@@ -15,6 +15,14 @@
  */
 'use strict';
 
+const {
+  hasAttribute,
+  remove,
+  createElement,
+  insertBefore,
+  nextNode,
+  firstChildByTag,
+} = require('../NodeUtils');
 const {isRenderDelayingExtension, isCustomElement} = require('../Extensions.js');
 const {applyLayout} = require('./ApplyLayout.js');
 
@@ -33,10 +41,10 @@ class ServerSideRendering {
     return false;
   }
 
-  transform(tree) {
-    const html = tree.root.firstChildByTag('html');
-    const body = html.firstChildByTag('body');
-    const head = html.firstChildByTag('head');
+  transform(root) {
+    const html = firstChildByTag(root, 'html');
+    const body = firstChildByTag(html, 'body');
+    const head = firstChildByTag(html, 'head');
 
     // A simple check ensuring that the Server-side rendering is only applied once.
     if (typeof (html.attribs['i-amphtml-layout']) !== 'undefined' &&
@@ -49,7 +57,7 @@ class ServerSideRendering {
     // where possible, but while we're at this we also look for reasons
     // not to remove the boilerplate.
     let canRemoveBoilerplate = true;
-    for (let node = body; node !== null; node = node.nextNode()) {
+    for (let node = body; node; node = nextNode(node)) {
       // Skip tags that are not AMP custom elements.
       if (!isCustomElement(node)) {
         continue;
@@ -91,7 +99,7 @@ class ServerSideRendering {
       // Now apply the layout to the custom elements. If we encounter
       // any unsupported layout, the applyLayout function returns
       // false and we can't remove the boilerplate.
-      if (!applyLayout(node, tree, this.log_)) {
+      if (!applyLayout(node, this.log_)) {
         this.log_.debug('cannot remove boilerplate: unsupported layout');
         canRemoveBoilerplate = false;
         continue;
@@ -100,16 +108,17 @@ class ServerSideRendering {
 
     // Emit the amp-runtime marker to indicate that we're applying
     // server side rendering in the document.
-    const ampRuntimeMarker = tree.createElement('style');
-    ampRuntimeMarker.attribs['amp-runtime'] = '';
+    const ampRuntimeMarker = createElement('style', {
+      'amp-runtime': '',
+    });
 
     const referenceNode = head.children && head.children.length ? head.children[0] : null;
-    head.insertBefore(ampRuntimeMarker, referenceNode);
+    insertBefore(head, ampRuntimeMarker, referenceNode);
 
     for (let node = head.firstChild; node; node = node.nextSibling) {
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc, which we checked for above.
-      if (node.tagName === 'script' && node.hasAttribute('custom-element') &&
+      if (node.tagName === 'script' && hasAttribute(node, 'custom-element') &&
           node.attribs['custom-element'] === 'amp-experiment') {
         continue;
       }
@@ -134,13 +143,13 @@ class ServerSideRendering {
     const toRemove = [];
     for (let node = head.firstChild; node; node = node.nextSibling) {
       if (node.tagName === 'noscript' ||
-          (node.tagName === 'style' && node.hasAttribute('amp-boilerplate'))) {
+          (node.tagName === 'style' && hasAttribute(node, 'amp-boilerplate'))) {
         toRemove.push(node);
       }
     }
 
     for (const n of toRemove) {
-      n.remove();
+      remove(n);
     }
   }
 }

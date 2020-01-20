@@ -15,6 +15,13 @@
  */
 'use strict';
 
+const {
+  insertText,
+  createElement,
+  insertBefore,
+  hasAttribute,
+  firstChildByTag,
+} = require('../NodeUtils');
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
 
 const V0_CSS = 'v0.css';
@@ -34,9 +41,9 @@ class AmpBoilerplateTransformer {
     this.log_ = config.log.tag('AmpBoilerplateTransformer');
   }
 
-  transform(tree, params) {
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
+  transform(root, params) {
+    const html = firstChildByTag(root, 'html');
+    const head = firstChildByTag(html, 'head');
     if (!head) {
       return; // invalid doc
     }
@@ -45,13 +52,13 @@ class AmpBoilerplateTransformer {
     if (!ampRuntimeStyle) {
       return; // keep existing boilerplate
     }
-    return this._addStaticCss(tree, ampRuntimeStyle, params);
+    return this._addStaticCss(ampRuntimeStyle, params);
   }
 
   _findAmpRuntimeStyle(head) {
     let node = head.firstChild;
     while (node) {
-      if (node.hasAttribute('amp-runtime')) {
+      if (hasAttribute(node, 'amp-runtime')) {
         return node;
       }
       node = node.nextSibling;
@@ -59,23 +66,22 @@ class AmpBoilerplateTransformer {
     return null;
   }
 
-  async _addStaticCss(tree, node, params) {
+  async _addStaticCss(node, params) {
     // we can always inline v0.css as the AMP runtime will take care of keeping v0.css in sync
     try {
       return this._inlineCss(node, params.ampRuntimeVersion);
     } catch (error) {
       this.log_.error(error);
-      this._linkCss(tree, node);
+      this._linkCss(node);
     }
   }
 
-  _linkCss(tree, node) {
-    const cssStyleNode = tree.createElement('link');
-    cssStyleNode.attribs = {
+  _linkCss(node) {
+    const cssStyleNode = createElement('link', {
       rel: 'stylesheet',
       href: V0_CSS_URL,
-    };
-    node.parent.insertBefore(cssStyleNode, node);
+    });
+    insertBefore(node.parent, cssStyleNode, node);
   }
 
   async _inlineCss(node, version) {
@@ -97,7 +103,7 @@ class AmpBoilerplateTransformer {
           `${response.status}.`);
     }
     const body = await response.text();
-    node.insertText(body);
+    insertText(node, body);
   }
 }
 

@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {insertText, createElement, hasAttribute, firstChildByTag} = require('../NodeUtils');
 const css = require('css');
 const OPTIONS_PRETTY_PRINT = {
   indent: '  ',
@@ -51,11 +52,11 @@ class SeparateKeyframes {
   }
 
   transform(tree) {
-    const html = tree.root.firstChildByTag('html');
+    const html = firstChildByTag(tree, 'html');
     if (!html) return;
-    const head = html.firstChildByTag('head');
+    const head = firstChildByTag(html, 'head');
     if (!head) return;
-    const body = html.firstChildByTag('body') || head;
+    const body = firstChildByTag(html, 'body') || head;
     let stylesCustomTag;
     let stylesKeyframesTag;
 
@@ -63,11 +64,11 @@ class SeparateKeyframes {
     head.children = head.children.filter((tag) => {
       if (tag.tagName !== 'style') return true;
 
-      if (!stylesKeyframesTag && tag.hasAttribute('amp-keyframes')) {
+      if (!stylesKeyframesTag && hasAttribute(tag, 'amp-keyframes')) {
         stylesKeyframesTag = tag;
         return false;
       }
-      if (!stylesCustomTag && tag.hasAttribute('amp-custom')) {
+      if (!stylesCustomTag && hasAttribute(tag, 'amp-custom')) {
         stylesCustomTag = tag;
       }
       return true;
@@ -154,7 +155,7 @@ class SeparateKeyframes {
     if (!stylesKeyframesTag) {
       // Check body for keyframes tag, removing it if found
       body.children = body.children.filter((tag) => {
-        if (tag.tagName === 'style' && tag.hasAttribute('amp-keyframes')) {
+        if (tag.tagName === 'style' && hasAttribute(tag, 'amp-keyframes')) {
           stylesKeyframesTag = tag;
           return false;
         }
@@ -162,7 +163,7 @@ class SeparateKeyframes {
       });
 
       if (!stylesKeyframesTag) {
-        stylesKeyframesTag = tree.createElement('style', {'amp-keyframes': ''});
+        stylesKeyframesTag = createElement('style', {'amp-keyframes': ''});
       }
     }
     // Insert keyframes styles to Node
@@ -178,7 +179,7 @@ class SeparateKeyframes {
     const keyframesText = css.stringify(currentKeyframesTree, this.stringifyOptions_);
 
     if (!keyframesTextNode) {
-      stylesKeyframesTag.insertText(keyframesText);
+      insertText(stylesKeyframesTag, keyframesText);
     } else {
       keyframesTextNode.data = keyframesText;
     }
