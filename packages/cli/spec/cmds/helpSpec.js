@@ -35,7 +35,7 @@ describe('Version', () => {
         .then(() => {
           const output = mockLogger.getLogs();
           expect(output).toBe(messages['main']);
-        })
+        });
   });
 
   it('prints the generic help, if unknown command', () => {
@@ -46,7 +46,7 @@ describe('Version', () => {
         .then(() => {
           const output = mockLogger.getLogs();
           expect(output).toBe(messages['main']);
-        })
+        });
   });
 
   it('prints help for "update-cache"', () => {
@@ -57,6 +57,6 @@ describe('Version', () => {
         .then(() => {
           const output = mockLogger.getLogs();
           expect(output).toBe(messages['update-cache']);
-        })
+        });
   });
 });

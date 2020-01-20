@@ -8,8 +8,9 @@
     "postinstall": "run-s bootstrap link",
     "link": "lerna link",
     "generate:changelog": "lerna-changelog",
-    "test": "jest --config jest.config.js",
+    "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jest && lerna run test",
+    "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "eslint . && lerna run lint",
     "lint:fix": "eslint --fix . && lerna run lint:fix"

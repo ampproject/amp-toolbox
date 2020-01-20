@@ -35,6 +35,6 @@ describe('curls', () => {
             'https://amp-dev.amp.cloudflare.com/c/s/amp.dev',
             'https://amp-dev.bing-amp.com/c/s/amp.dev',
           ]);
-        })
+        });
   });
 });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 const {basename, join} = require('path');
-const {getFileContents, getDirectories} = require('../helpers/Utils.js');
+const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
 
 const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
 
@@ -36,6 +36,11 @@ const TRANSFORMER_PARAMS = {
 const CONFIG_START_TOKEN = '<!--';
 const CONFIG_END_TOKEN = '-->';
 
+const WRITE_SNAPSHOT = process.env.OPTIMIZER_SNAPSHOT;
+if (WRITE_SNAPSHOT) {
+  console.log('[AMP Optimizer Test] Creating new snapshot');
+}
+
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach((testDir) => {
@@ -52,24 +57,29 @@ module.exports = function(testConfig) {
           // trim params from input string
           input = input.substring(indexEndConfig + CONFIG_END_TOKEN.length);
         }
-        const inputTree = treeParser.parse(input);
+
+        const tree = treeParser.parse(input);
 
         // parse expected output
         const expectedOutputPath =
-          testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html';
-        const expectedOutput = getFileContents(join(testDir, expectedOutputPath));
-          await testConfig.transformer.transform(inputTree, testConfig.validAmp ? {} : params);
-          compare(inputTree, expectedOutput);
+          join(
+              testDir,
+            testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html',
+          );
+        const expectedOutput = getFileContents(expectedOutputPath);
+        await testConfig.transformer.transform(tree, testConfig.validAmp ? {} : params);
+        const actualOutput = serialize(tree);
+        if (WRITE_SNAPSHOT) {
+          writeFileContents(expectedOutputPath, actualOutput);
+        } else {
+          expect(actualOutput).toBe(expectedOutput);
+        }
       });
     });
   });
 };
 
-function compare(actualTree, expectedOutput) {
-  //expect(serialize(actualTree)).toEqual(expectedOutput);
-}
-
 function serialize(tree) {
   const html = treeParser.serialize(tree);
-  return jsBeautify.html_beautify(html, BEAUTIFY_OPTIONS)
+  return jsBeautify.html_beautify(html, BEAUTIFY_OPTIONS);
 }

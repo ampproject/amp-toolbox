@@ -17,7 +17,7 @@
 'mode strict';
 
 const {join} = require('path');
-const {lstatSync, readdirSync, readFileSync} = require('fs');
+const {lstatSync, readdirSync, readFileSync, writeFileSync} = require('fs');
 
 module.exports = {};
 
@@ -31,4 +31,5 @@ module.exports.getDirectories =
   (source) => getResources(source).filter(isDirectory);
 
 module.exports.getFileContents = (filePath) => readFileSync(filePath, 'utf8');
+module.exports.writeFileContents = (filePath, content) => writeFileSync(filePath, content, 'utf8');
 module.exports.getResources = getResources;

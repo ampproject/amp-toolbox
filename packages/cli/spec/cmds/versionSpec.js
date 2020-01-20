@@ -29,6 +29,6 @@ describe('Version', () => {
         .then(() => {
           const output = mockLogger.getLogs();
           expect(output).toBe(`v${packageInfo.version}`);
-        })
+        });
   });
 });
