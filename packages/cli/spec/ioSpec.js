@@ -19,7 +19,7 @@
 const {loadUrlOrFile} = require('../lib/io');
 
 describe('io', () => {
-  describe('loadUrlOrFile', () => {
+  describe('loadUrlOrFile', async () => {
     it('loads url', async () => {
       expect(
           await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world'),

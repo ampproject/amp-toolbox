@@ -28,7 +28,7 @@ const files = getResources(join(__dirname, 'files')).filter((f) => f.endsWith('.
 describe('Optimizer produces valid AMP', () => {
   files.forEach((filePath) => {
     const fileName = basename(filePath);
-    it(fileName, async (done) => {
+    it(fileName, async () => {
       const contents = getFileContents(filePath);
       const optimizedContents = await ampOptimizer.transformHtml(contents);
       const validatorInstance = await validator.getInstance();
@@ -37,7 +37,6 @@ describe('Optimizer produces valid AMP', () => {
         writeFileSync(join(__dirname, 'tmp', fileName), optimizedContents, 'utf-8');
         fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
       }
-      done();
     });
   });
 });

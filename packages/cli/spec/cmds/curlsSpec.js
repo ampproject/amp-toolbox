@@ -26,8 +26,8 @@ describe('curls', () => {
     mockLogger.clear();
   });
 
-  it('prints all cache URLs', (done) => {
-    curlsCmd({_: ['', 'https://amp.dev']}, mockLogger)
+  it('prints all cache URLs', () => {
+    return curlsCmd({_: ['', 'https://amp.dev']}, mockLogger)
         .then(() => {
           const output = mockLogger.logs;
           expect(output).toEqual([
@@ -35,8 +35,6 @@ describe('curls', () => {
             'https://amp-dev.amp.cloudflare.com/c/s/amp.dev',
             'https://amp-dev.bing-amp.com/c/s/amp.dev',
           ]);
-          done();
         })
-        .catch((e) => done.fail(e));
   });
 });

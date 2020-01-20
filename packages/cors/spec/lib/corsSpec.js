@@ -152,7 +152,7 @@ describe('AMP Cors', () => {
       options = {};
       options.sourceOriginPattern = /https:\/\/ampbyexample\.com$/;
       cors = ampCors(options, caches);
-      next = jasmine.createSpy('next');
+      next = jest.fn();
       request.headers['AMP-Same-Origin'] = 'true';
     });
     describe('matches sourceOrigin', () => {

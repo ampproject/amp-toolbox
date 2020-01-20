@@ -24,7 +24,7 @@ describe('Cli', () => {
   const cli = new Cli(mockLogger);
 
   it('Triggers the correct command', (done) => {
-    cli.run([])
+    return cli.run([])
         .then(() => done())
         .catch((e) => done.fail(e));
   });

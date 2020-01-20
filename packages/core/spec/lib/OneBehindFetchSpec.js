@@ -30,13 +30,12 @@ describe('oneBehindFetch', () => {
   afterEach(() => {
     oneBehindFetch.setDelegate(nodeFetch);
   });
-  it('fetches new value', async (done) => {
+  it('fetches new value', async () => {
     fetch.get('https://example.com', 'hello');
     const data = await oneBehindFetch('https://example.com');
     expect(await data.text()).toBe('hello');
-    done();
   });
-  it('uses a one behind caching model', async (done) => {
+  it('uses a one behind caching model', async () => {
     fetch.once('https://example.com', 'hello');
     await oneBehindFetch('https://example.com');
     fetch.restore();
@@ -47,7 +46,6 @@ describe('oneBehindFetch', () => {
     expect(await data.text()).toBe('hello');
     data = await oneBehindFetch('https://example.com');
     expect(await data.text()).toBe('world');
-    done();
   });
 });
 
