@@ -25,7 +25,7 @@ const runtimeVersion = require('@ampproject/toolbox-runtime-version');
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
  */
 const TRANSFORMATIONS_AMP_FIRST = [
-  // Adds missing AMP boilerplate
+  // Adds missing AMP tags
   'AddMandatoryTags',
   // Adds missing AMP extensions
   'AutoExtensionImporter',

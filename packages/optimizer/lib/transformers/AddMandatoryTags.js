@@ -18,6 +18,7 @@
 const {AMP_FORMATS, AMP_TAGS} = require('../AmpConstants');
 
 const DEFAULT_FORMAT = 'AMP';
+const AUTO_GENERATED_MARKER = 'data-auto';
 
 const BOILERPLATES = {
   AMP: [
@@ -219,7 +220,9 @@ class AddMandatoryTags {
    * @private
    */
   addNode(tree, parent, nodeSpec, params) {
-    const newElement = tree.createElement(nodeSpec.tagName);
+    const defaultAttribs = {};
+    defaultAttribs[AUTO_GENERATED_MARKER] = '';
+    const newElement = tree.createElement(nodeSpec.tagName, defaultAttribs);
     this.addAttributes(nodeSpec, newElement, params);
     this.addChildren(nodeSpec, tree, newElement, params);
     this.addText(nodeSpec, newElement, params);

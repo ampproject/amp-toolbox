@@ -28,21 +28,19 @@ describe('UpdateCacheUrlProvider', () => {
   const updateCacheUrl = new UpdateCacheUrlProvider(signature, caches);
 
   describe('calculateFromCacheUrl', () => {
-    it('Generates the correct signature', (done) => {
+    it('Generates the correct signature', () => {
       const timestamp = 1;
       updateCacheUrl.calculateFromCacheUrl('https://test.com', timestamp).then((result) => {
         const expected =
           'https://test.com/update-cache/?amp_action=flush&amp_ts=1&amp_url_signature=RESULT_SIGNATURE';
         expect(result).toBe(expected);
-        done();
       });
     });
 
-    it('Generates signature with default timestamp', (done) => {
+    it('Generates signature with default timestamp', () => {
       updateCacheUrl.calculateFromCacheUrl('https://test.com').then((result) => {
         const regex = /amp_ts=\d+/;
         expect(result).toMatch(regex);
-        done();
       });
     });
   });

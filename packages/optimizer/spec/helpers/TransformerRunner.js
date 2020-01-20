@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const colors = require('colors/safe');
-const jsdiff = require('diff');
-const minify = require('html-minifier').minify;
 const {basename, join} = require('path');
-const {getFileContents, getDirectories} = require('../helpers/Utils.js');
+const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
+
+const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
+
+const BEAUTIFY_OPTIONS = {
+  'indent_size': 2,
+  'unformatted': ['noscript', 'style'],
+  'indent-char': ' ',
+  'no-preserve-newlines': '',
+  'extra_liners': [],
+};
 
 const treeParser = require('../../lib/TreeParser.js');
 
@@ -29,10 +36,15 @@ const TRANSFORMER_PARAMS = {
 const CONFIG_START_TOKEN = '<!--';
 const CONFIG_END_TOKEN = '-->';
 
+const WRITE_SNAPSHOT = process.env.OPTIMIZER_SNAPSHOT;
+if (WRITE_SNAPSHOT) {
+  console.log('[AMP Optimizer Test] Creating new snapshot');
+}
+
 module.exports = function(testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach((testDir) => {
-      it(basename(testDir), async (done) => {
+      it(basename(testDir), async () => {
         let params = TRANSFORMER_PARAMS;
 
         // parse input and extract params
@@ -45,51 +57,29 @@ module.exports = function(testConfig) {
           // trim params from input string
           input = input.substring(indexEndConfig + CONFIG_END_TOKEN.length);
         }
-        const inputTree = treeParser.parse(input);
+
+        const tree = treeParser.parse(input);
 
         // parse expected output
         const expectedOutputPath =
-          testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html';
-        const expectedOutput = getFileContents(join(testDir, expectedOutputPath));
-        try {
-          const expectedOutputTree = treeParser.parse(expectedOutput);
-          await testConfig.transformer.transform(inputTree, testConfig.validAmp ? {} : params);
-          compare(inputTree, expectedOutputTree, done);
-        } catch (error) {
-          done.fail(error);
+          join(
+              testDir,
+            testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html',
+          );
+        const expectedOutput = getFileContents(expectedOutputPath);
+        await testConfig.transformer.transform(tree, testConfig.validAmp ? {} : params);
+        const actualOutput = serialize(tree);
+        if (WRITE_SNAPSHOT) {
+          writeFileContents(expectedOutputPath, actualOutput);
+        } else {
+          expect(actualOutput).toBe(expectedOutput);
         }
       });
     });
   });
 };
 
-function compare(actualTree, expectedTree, done) {
-  const actualHtml = serialize(actualTree);
-  const expectedHtml = serialize(expectedTree);
-  const diff = jsdiff.diffChars(expectedHtml, actualHtml);
-  let failed = false;
-  const reason = diff.map((part) => {
-    let string;
-    if (part.added) {
-      string = colors.green(part.value);
-      failed = true;
-    } else if (part.removed) {
-      string = colors.red(part.value);
-      failed = true;
-    } else {
-      string = colors.reset(part.value);
-    }
-    return string;
-  }).join('');
-
-  if (failed) {
-    done.fail('Trees do not match\n\n' + reason + '\n\nActual output:\n\n' + actualHtml + '\n\n');
-  } else {
-    done();
-  }
-}
-
 function serialize(tree) {
   const html = treeParser.serialize(tree);
-  return minify(html, {collapseWhitespace: true});
+  return jsBeautify.html_beautify(html, BEAUTIFY_OPTIONS);
 }

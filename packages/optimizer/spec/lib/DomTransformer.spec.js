@@ -35,20 +35,18 @@ class SimpleTransformerWithPromise {
 
 describe('Dom Transformer', () => {
   describe('transformHtml', () => {
-    it('supports sync transformers', (done) => {
+    it('supports sync transformers', () => {
       domTransformerWith(SimpleTransformer)
           .transformHtml('<html><head></head><body></body></html>')
           .then((result) => {
             expect(result).toEqual('<html test="simple"><head></head><body></body></html>');
-            done();
           });
     });
-    it('supports async transformers', (done) => {
+    it('supports async transformers', () => {
       domTransformerWith(SimpleTransformerWithPromise)
           .transformHtml('<html><head></head><body></body></html>')
           .then((result) => {
             expect(result).toEqual('<html test="promise"><head></head><body></body></html>');
-            done();
           });
     });
   });

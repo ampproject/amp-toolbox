@@ -26,13 +26,9 @@ describe('lint', () => {
     mockLogger.clear();
   });
 
-  it('runs at least one successful test', (done) => {
-    lintCmd(['lint', 'https://amp.dev'], mockLogger)
-        .then(() => {
-          const output = mockLogger.logs;
-          expect(output).toMatch(/PASS/m);
-          done();
-        })
-        .catch((e) => done.fail(e));
+  it('runs at least one successful test', async () => {
+    await lintCmd(['lint', 'https://amp.dev'], mockLogger);
+    const output = mockLogger.logs.join('\n');
+    expect(output).toMatch(/PASS/m);
   });
 });

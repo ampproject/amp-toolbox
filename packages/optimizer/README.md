@@ -230,3 +230,31 @@ const optimizedHtmlC = await ampOptimizer.transformHtml(originalHtml, {
   rewriteDynamicComponents: false
 });
 ```
+
+## Development & Testing
+
+AMP Optimizer uses a snapshot based testing approach. To execute the tests, run in the project root:
+
+```
+$ npm run test:node
+```
+
+Transformer tests are located in:
+
+```
+- spec/transformers/valid/TransformerName/test-name/
+    expected_output.html
+    input.html
+```
+
+The transformation input is defined in `input.html`, whereas `expected_output.html` contains the expected
+outcome of the transformation. Don't edit `expected_output.html` manually, instead, after changing 
+a transformer implementation, run: 
+
+```
+$ npm run test:optimizer:snapshot
+```
+
+to store a new snapshot version in `expected_output.html`. 
+
+
