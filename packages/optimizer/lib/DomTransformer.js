@@ -41,9 +41,13 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
+  // Move keyframes into a separate style tag
   'SeparateKeyframes',
   'AddTransformedFlag',
+  // Inject CSP script has required for inline amp-script
   'AmpScriptCsp',
+  // Removes unsupported nonce attribute from scripts
+  'RemoveCspNonce',
 ];
 
 /**
