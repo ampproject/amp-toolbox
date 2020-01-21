@@ -48,11 +48,11 @@ class CheerioTransformer {
    * DomTransformer.transformHtml(), and is (probably) an object of key-value
    * pairs.
    *
-   * @param {parse5.AST.HtmlParser2.Document} tree a DOM tree
+   * @param {NodeWithChildren} tree a DOM tree
    * @param {Object} params transformer options
    */
   transform(tree, params) {
-    const $ = cheerio.load(tree.root.children);
+    const $ = cheerio.load(tree.children);
     // Prepends "Optimized" to the <title>
     $('title').text('Optimized: ' + $('title').text());
     // Injects amp-fx-parallax component

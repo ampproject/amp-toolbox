@@ -21,6 +21,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 
 const AmpOptimizer = require('../../index.js');
+const {createElement, firstChildByTag, appendChild} = require('../../lib/NodeUtils.js');
 
 const runtimeVersion = require('@ampproject/toolbox-runtime-version');
 
@@ -66,13 +67,13 @@ async function customAmpTransformation(filePath, html) {
       this.log_.info('Running custom transformation for ', params.filePath);
       const html = firstChildByTag(tree, 'html');
       if (!html) return;
-      const head = html.firstChildByTag('head');
+      const head = firstChildByTag(html, 'head');
       if (!head) return;
-      const desc = tree.createElement('meta', {
+      const desc = createElement('meta', {
         name: 'description',
         content: 'this is just a demo',
       });
-      head.appendChild(desc);
+      appendChild(head, desc);
     }
   }
 

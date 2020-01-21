@@ -70,7 +70,8 @@ module.exports = function(testConfig) {
         try {
           expectedOutput = getFileContents(expectedOutputPath);
         } catch (e) {
-          // no snapshot written yet
+          // file doesn't exist if no snapshot has been written yet
+          // that's ok as the test will fail by comparing to an empty string
         }
         await testConfig.transformer.transform(tree, testConfig.validAmp ? {} : params);
         const actualOutput = serialize(tree);
