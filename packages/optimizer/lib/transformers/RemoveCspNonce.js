@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const {hasAttribute, firstChildByTag} = require('../NodeUtils');
+const {hasAttribute, firstChildByTag, nextNode} = require('../NodeUtils');
 
 class RemoveCspNonce {
   transform(tree) {
@@ -23,16 +23,14 @@ class RemoveCspNonce {
     if (!html) {
       return;
     }
-    const head = firstChildByTag(html, 'head');
-    if (!html) {
-      return;
-    }
-    for (const node of head.children) {
+    let node = html;
+    while (node) {
       if (node.tagName === 'script') {
         if (hasAttribute(node, 'nonce')) {
           delete node.attribs['nonce'];
         }
       }
+      node = nextNode(node);
     }
   }
 }
