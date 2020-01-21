@@ -323,7 +323,6 @@ class AddMandatoryTags {
    * @private
    */
   copyTagsToHeadAndBody(root, head, body) {
-    console.log('copy tags to body', root.children);
     let node = root.firstChild;
     while (node) {
       const nodeToMove = node;
