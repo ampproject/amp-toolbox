@@ -187,7 +187,7 @@ class AutoExtensionImporter {
    * @private
    */
   findExistingExtensionsAndExtensionsToImportInHead_(head, extensionsToImport, existingImports) {
-    let node = head.firstChild;
+    let node = head;
     while (node) {
       // Detect any existing extension imports
       const customElement = this.getCustomElement_(node);
@@ -198,7 +198,7 @@ class AutoExtensionImporter {
       if (node.tagName === 'script' && node.attribs['id'] === 'amp-access') {
         extensionsToImport.add('amp-access');
       }
-      node = node.nextSibling;
+      node = nextNode(node);
     }
   }
 
@@ -292,13 +292,12 @@ class AutoExtensionImporter {
     if (scriptNode.tagName !== 'script') {
       return '';
     }
-    let customElement = scriptNode.attribs['custom-element'] ||
+    const customElement = scriptNode.attribs['custom-element'] ||
       scriptNode.attribs['custom-template'] ||
       '';
     if (!customElement) {
       return '';
     }
-    customElement = customElement.toLowerCase();
     if (!customElement.startsWith('amp-')) {
       return '';
     }
