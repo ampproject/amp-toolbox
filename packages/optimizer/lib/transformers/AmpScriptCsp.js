@@ -27,10 +27,11 @@ const {calculateHash} = require('@ampproject/toolbox-script-csp');
 class AmpScriptCsp {
   transform(root) {
     const html = firstChildByTag(root, 'html');
+    if (!html) return;
     const head = firstChildByTag(html, 'head');
+    if (!head) return;
     const body = firstChildByTag(html, 'body');
-
-    if (!head || !body) return;
+    if (!body) return;
 
     const cspMeta = this._findOrCreateCspMeta(head);
     const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
