@@ -21,6 +21,9 @@ const {AMP_TAGS} = require('../AmpConstants.js');
 class RemoveAmpAttribute {
   transform(tree) {
     const html = firstChildByTag(tree, 'html');
+    if (!html) {
+      return;
+    }
     for (let i = 0, len = AMP_TAGS.length; i < len; i++) {
       delete html.attribs[AMP_TAGS[i]];
     }

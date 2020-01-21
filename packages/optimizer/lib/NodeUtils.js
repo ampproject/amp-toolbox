@@ -122,7 +122,7 @@ const appendAll = function(node, nodes) {
  * @param {String} tagName
  */
 const firstChildByTag = function(node, tagName) {
-  if (!node.children) {
+  if (!node || !node.children) {
     return null;
   }
   return node.children.find(

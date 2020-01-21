@@ -134,6 +134,7 @@ class AutoExtensionImporter {
       return;
     }
     const html = firstChildByTag(root, 'html');
+    if (!html) return;
     const head = firstChildByTag(html, 'head');
     if (!head) return;
     const body = firstChildByTag(html, 'body');

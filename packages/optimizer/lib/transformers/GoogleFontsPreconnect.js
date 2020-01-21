@@ -40,7 +40,13 @@ class GoogleFontsPreconnect {
 
   transform(root) {
     const html = firstChildByTag(root, 'html');
+    if (!html) {
+      return;
+    }
     const head = firstChildByTag(html, 'head');
+    if (!head) {
+      return;
+    }
 
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (this.isGoogleFontsLinkNode_(node)) {

@@ -43,6 +43,9 @@ class ServerSideRendering {
 
   transform(root) {
     const html = firstChildByTag(root, 'html');
+    if (!html) {
+      return;
+    }
     const body = firstChildByTag(html, 'body');
     const head = firstChildByTag(html, 'head');
 

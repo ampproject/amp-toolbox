@@ -323,8 +323,11 @@ class AddMandatoryTags {
    * @private
    */
   copyTagsToHeadAndBody(root, head, body) {
-    let nodeToMove = root.firstChild;
-    while (nodeToMove) {
+    console.log('copy tags to body', root.children);
+    let node = root.firstChild;
+    while (node) {
+      const nodeToMove = node;
+      node = nodeToMove.next;
       if (nodeToMove.type === 'directive') {
         // ignore and keep in root
       } else if (nodeToMove.tagName === 'title') {
@@ -334,7 +337,6 @@ class AddMandatoryTags {
         // by default move nodes to body
         move(nodeToMove, body);
       }
-      nodeToMove = nodeToMove.next;
     }
   }
 }
