@@ -16,6 +16,7 @@
 
 'use strict';
 
+const {createElement, nextNode, insertAfter, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
 
 /**
@@ -37,11 +38,11 @@ const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
 const MAX_PRELOADED_IMAGES = 5;
 
 class PreloadImages {
-  transform(tree, params) {
+  transform(root, params) {
     const imagePreloadCount = params.imagePreloadCount || MAX_PRELOADED_IMAGES;
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
-    const body = html.firstChildByTag('body');
+    const html = firstChildByTag(root, 'html');
+    const head = firstChildByTag(html, 'head');
+    const body = firstChildByTag(html, 'body');
     const preloadImageMap = new Map();
 
     let node = body;
@@ -53,20 +54,20 @@ class PreloadImages {
       if (node.tagName === 'template') {
         node = skipNodeAndChildren(node);
       } else {
-        this.addImage(preloadImageMap, tree, node);
-        node = node.nextNode();
+        this.addImage(preloadImageMap, node);
+        node = nextNode(node);
       }
     }
 
     let referenceNode = findMetaViewport(head);
 
     for (const preload of preloadImageMap.values()) {
-      head.insertAfter(preload, referenceNode);
+      insertAfter(head, preload, referenceNode);
       referenceNode = preload;
     }
   }
 
-  addImage(preloadImageMap, tree, node) {
+  addImage(preloadImageMap, node) {
     const imageUrl = this.extractImageUrl(node);
     if (!imageUrl) {
       return;
@@ -75,7 +76,7 @@ class PreloadImages {
     if (node.attribs.srcset) {
       return;
     }
-    preloadImageMap.set(imageUrl, this.createPreload(tree, imageUrl, node.attribs.media));
+    preloadImageMap.set(imageUrl, this.createPreload(imageUrl, node.attribs.media));
   }
 
   extractImageUrl(node) {
@@ -88,11 +89,12 @@ class PreloadImages {
     return null;
   }
 
-  createPreload(tree, href, media) {
-    const preload = tree.createElement('link');
-    preload.attribs.rel = 'preload';
-    preload.attribs.href = href;
-    preload.attribs.as = 'image';
+  createPreload(href, media) {
+    const preload = createElement('link', {
+      rel: 'preload',
+      href: href,
+      as: 'image',
+    });
     if (media) {
       preload.attribs.media = media;
     }

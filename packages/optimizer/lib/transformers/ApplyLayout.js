@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {hasAttribute, insertBefore, createElement} = require('../NodeUtils');
 const {
   parseLayout,
   cssLength,
@@ -34,11 +35,11 @@ function isSupportedLayout(layout) {
 }
 
 function getAttributeOrNull(element, name) {
-  return element.hasAttribute(name) ? element.attribs[name] : null;
+  return hasAttribute(element, name) ? element.attribs[name] : null;
 }
 
 function addClass(node, value) {
-  node.attribs.class = node.hasAttribute('class') ? node.attribs.class + ' ' + value : value;
+  node.attribs.class = hasAttribute(node, 'class') ? node.attribs.class + ' ' + value : value;
 }
 
 function apply(layout, width, height, node) {
@@ -86,21 +87,22 @@ function apply(layout, width, height, node) {
   node.attribs['i-amphtml-layout'] = layout;
 }
 
-function maybeAddSizerInto(node, tree, layout, width, height) {
+function maybeAddSizerInto(node, layout, width, height) {
   if (layout !== 'responsive' || !width.isSet || width.numeral === 0 ||
      !height.isSet || width.unit !== height.unit) {
     return;
   }
 
   const padding = height.numeral / width.numeral * 100;
-  const sizer = tree.createElement('i-amphtml-sizer');
-  sizer.attribs.style = `display:block;padding-top:${padding.toFixed(4)}%;`;
+  const sizer = createElement('i-amphtml-sizer', {
+    style: `display:block;padding-top:${padding.toFixed(4)}%;`,
+  });
   const referenceNode = node.children && node.children.length ? node.children[0] : null;
-  node.insertBefore(sizer, referenceNode);
+  insertBefore(node, sizer, referenceNode);
 }
 
 module.exports = {
-  applyLayout: function(customElement, tree, log) {
+  applyLayout: function(customElement, log) {
     const ampLayout = parseLayout(customElement.attribs.layout);
     const widthAttribute = getAttributeOrNull(customElement, 'width');
     const inputWidth = cssLength(
@@ -134,7 +136,7 @@ module.exports = {
     }
 
     apply(layout, width, height, customElement);
-    maybeAddSizerInto(customElement, tree, layout, width, height);
+    maybeAddSizerInto(customElement, layout, width, height);
     return true;
   },
 };

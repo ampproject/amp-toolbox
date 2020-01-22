@@ -15,6 +15,15 @@
  */
 'use strict';
 
+const {
+  move,
+  insertText,
+  appendChild,
+  insertBefore,
+  createDocType,
+  createElement,
+  firstChildByTag,
+} = require('../NodeUtils');
 const {AMP_FORMATS, AMP_TAGS} = require('../AmpConstants');
 
 const DEFAULT_FORMAT = 'AMP';
@@ -111,7 +120,13 @@ const BOILERPLATES = {
         tagName: 'link',
         attribs: {
           rel: 'canonical',
-          href: (params) => params.canonical,
+          href: (params, log) => {
+            if (!params.canonical) {
+              log.warn('No canonical param is given. Setting canonical href to `.`');
+              params.canonical = '.';
+            }
+            return params.canonical;
+          },
         },
       },
     },
@@ -134,42 +149,50 @@ class AddMandatoryTags {
     this.log_ = config.log.tag('AddMandatoryTags');
   }
 
-  async transform(tree, params) {
+  async transform(root, params) {
     if (!this.enabled) {
       return;
     }
 
     // Set default canonical if non is given
-    if (!params.canonical) {
-      this.log_.warn('No canonical param is given. Setting canonical href to `.`');
-      params.canonical = '.';
-    }
-
     // Validate format string
     if (!AMP_FORMATS.includes(this.format)) {
       this.log_.error('Unknown AMPHTML format', this.format);
       return;
     }
+
     // Only supports AMP for websites
     const boilerplateSpec = BOILERPLATES[this.format];
     if (!boilerplateSpec) {
       this.log_.info('Unsupported AMP format', this.format);
       return;
     }
-    // Add the doctype if none is present
-    let doctype = tree.root.firstChildByTag('!doctype');
-    if (!doctype) {
-      doctype = tree.createDocType('html');
-      tree.root.insertBefore(doctype, tree.root.firstChild);
-    }
-    const html = tree.root.firstChildByTag('html');
 
-    // Mark as AMP in html tag if none is present
+    // Get or create the html tag
+    let html = firstChildByTag(root, 'html');
+    if (!html) {
+      html = this.createHtml5Document(root);
+    }
+
+    // Add the doctype if none is present
+    let doctype =
+      root.children.find((child) => child.type === 'directive' && child.name === '!doctype');
+    if (!doctype) {
+      doctype = createDocType();
+      insertBefore(root, doctype, root.firstChild);
+    }
+
+    // Mark as AMP in html tag if not present
     if (!Object.keys(html.attribs).some((a) => AMP_TAGS.includes(a))) {
       html.attribs[this.format.toLowerCase()] = '';
     }
 
-    const head = html.firstChildByTag('head');
+    // Get the head element
+    let head = firstChildByTag(html, 'head');
+    if (!head) {
+      head = createElement('head');
+      appendChild(html, head);
+    }
 
     // Match each head node against the boilerplate spec, mark
     // all matched nodes by removing them from the set of boilerplate
@@ -189,7 +212,7 @@ class AddMandatoryTags {
 
     // Add all missing nodes
     for (const spec of boilerplateRules) {
-      this.addNode(tree, head, spec.node, params);
+      this.addNode(head, spec.node, params);
     }
   }
 
@@ -219,14 +242,14 @@ class AddMandatoryTags {
   /**
    * @private
    */
-  addNode(tree, parent, nodeSpec, params) {
+  addNode(parent, nodeSpec, params) {
     const defaultAttribs = {};
     defaultAttribs[AUTO_GENERATED_MARKER] = '';
-    const newElement = tree.createElement(nodeSpec.tagName, defaultAttribs);
+    const newElement = createElement(nodeSpec.tagName, defaultAttribs);
     this.addAttributes(nodeSpec, newElement, params);
-    this.addChildren(nodeSpec, tree, newElement, params);
+    this.addChildren(nodeSpec, newElement, params);
     this.addText(nodeSpec, newElement, params);
-    parent.appendChild(newElement);
+    appendChild(parent, newElement);
   }
 
   /**
@@ -238,22 +261,22 @@ class AddMandatoryTags {
     }
     let text;
     if (typeof nodeSpec.text === 'function') {
-      text = nodeSpec.text(params);
+      text = nodeSpec.text(params, this.log_);
     } else {
       text = nodeSpec.text;
     }
-    newElement.insertText(text);
+    insertText(newElement, text);
   }
 
   /**
    * @private
    */
-  addChildren(nodeSpec, tree, newElement, params) {
+  addChildren(nodeSpec, newElement, params) {
     if (!nodeSpec.children) {
       return;
     }
     for (const child of nodeSpec.children) {
-      this.addNode(tree, newElement, child, params);
+      this.addNode(newElement, child, params);
     }
   }
 
@@ -266,9 +289,52 @@ class AddMandatoryTags {
     }
     for (const [key, value] of Object.entries(nodeSpec.attribs)) {
       if (typeof value === 'function') {
-        newElement.attribs[key] = value(params);
+        newElement.attribs[key] = value(params, this.log_);
       } else {
         newElement.attribs[key] = value;
+      }
+    }
+  }
+
+  /**
+   * Tries to re-construct a valid HTML5 doc from a document missing the HTML tag.
+   *
+   * @private
+   */
+  createHtml5Document(root) {
+    const html = createElement('html', {});
+    const head = this.createOrMoveElement(root, html, 'head');
+    const body = this.createOrMoveElement(root, html, 'body');
+    this.copyTagsToHeadAndBody(root, head, body);
+    appendChild(root, html);
+    return html;
+  }
+
+  /**
+   * @private
+   */
+  createOrMoveElement(root, html, name) {
+    const element = firstChildByTag(root, name) || createElement(name);
+    move(element, html);
+    return element;
+  }
+
+  /**
+   * @private
+   */
+  copyTagsToHeadAndBody(root, head, body) {
+    let node = root.firstChild;
+    while (node) {
+      const nodeToMove = node;
+      node = nodeToMove.next;
+      if (nodeToMove.type === 'directive') {
+        // ignore and keep in root
+      } else if (nodeToMove.tagName === 'title') {
+        // there might be more head only tags
+        move(nodeToMove, head);
+      } else {
+        // by default move nodes to body
+        move(nodeToMove, body);
       }
     }
   }

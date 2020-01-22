@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {firstChildByTag} = require('../NodeUtils');
 /**
  * AddTransformedFlag - adds a transformed attribute to the html element.
  *
@@ -22,8 +23,8 @@
  * validator.
  */
 class AddTransformedFlag {
-  transform(tree) {
-    const html = tree.root.firstChildByTag('html');
+  transform(root) {
+    const html = firstChildByTag(root, 'html');
     if (!html) return;
     html.attribs.transformed = 'self;v=1';
   }

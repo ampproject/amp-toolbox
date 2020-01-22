@@ -16,6 +16,7 @@
 
 'use strict';
 
+const {insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 
 /**
@@ -37,19 +38,26 @@ class GoogleFontsPreconnect {
     this.log_ = config.log.tag('GoogleFontsPreconnect');
   }
 
-  transform(tree) {
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
+  transform(root) {
+    const html = firstChildByTag(root, 'html');
+    if (!html) {
+      return;
+    }
+    const head = firstChildByTag(html, 'head');
+    if (!head) {
+      return;
+    }
 
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (this.isGoogleFontsLinkNode_(node)) {
         // Preconnect to fonts.gstatic.com, where the final fonts are downloaded.
-        const linkPreconnect = tree.createElement('link');
-        linkPreconnect.attribs.rel = 'dns-prefetch preconnect';
-        linkPreconnect.attribs.href = 'https://fonts.gstatic.com';
-        linkPreconnect.attribs.crossorigin = '';
+        const linkPreconnect = createElement('link', {
+          rel: 'dns-prefetch preconnect',
+          href: 'https://fonts.gstatic.com',
+          crossorigin: '',
+        });
         const referenceNode = findMetaViewport(head);
-        head.insertAfter(linkPreconnect, referenceNode);
+        insertAfter(head, linkPreconnect, referenceNode);
         this.log_.debug(
             'adding <link rel="dns=prefetch preconnect" href="' +
             linkPreconnect.attribs.href +

@@ -16,29 +16,26 @@
 
 const {findMetaViewport} = require('../../lib/HtmlDomHelper');
 const treeParser = require('../../lib/TreeParser');
+const {firstChildByTag} = require('../../lib/NodeUtils');
 
-describe('HtmlDomHelper', () => {
-  describe('findMetaViewport', () => {
-    it('returns null if tag is not present', () => {
-      const tree = treeParser.parse(`<html><head>
+test('findMetaViewport returns null if tag is not present', async () => {
+  const root = await treeParser.parse(`<html><head>
             <meta charset="utf-8">
           </head></html>`);
-      const html = tree.root.firstChild;
-      const head = html.firstChild;
-      const result = findMetaViewport(head);
-      expect(result).toBeNull();
-    });
+  const html = firstChildByTag(root, 'html');
+  const head = firstChildByTag(html, 'head');
+  const result = findMetaViewport(head);
+  expect(result).toBeNull();
+});
 
-    it('returns the correct tag', () => {
-      const tree = treeParser.parse(`<html><head>
+test('findMetaViewport returns the correct tag', async () => {
+  const root = await treeParser.parse(`<html><head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="description" content="hello world">
           </head></html>`);
-      const html = tree.root.firstChild;
-      const head = html.firstChild;
-      const result = findMetaViewport(head);
-      expect(result).toEqual(head.children[3]);
-    });
-  });
+  const html = firstChildByTag(root, 'html');
+  const head = firstChildByTag(html, 'head');
+  const result = findMetaViewport(head);
+  expect(result).toEqual(head.children[3]);
 });

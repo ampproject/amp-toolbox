@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {createElement, firstChildByTag, insertAfter} = require('../NodeUtils');
 const {
   AMP_CACHE_HOST,
   AMP_DYNAMIC_COMPONENTS,
@@ -52,9 +53,9 @@ const {calculateHost} = require('../RuntimeHostHelper');
  * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
  */
 class RewriteAmpUrls {
-  transform(tree, params) {
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
+  transform(root, params) {
+    const html = firstChildByTag(root, 'html');
+    const head = firstChildByTag(html, 'head');
     if (!head) return;
 
     const host = calculateHost(params);
@@ -67,12 +68,12 @@ class RewriteAmpUrls {
         const isDynamicComponent = this._isDynamicComponent(node);
         node.attribs.src = this._replaceUrl(node.attribs.src,
           isDynamicComponent ? host.dynamicAmpUrlPrefix : host.ampUrlPrefix);
-        referenceNode = this._addPreload(tree, head, referenceNode, node.attribs.src, 'script');
+        referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
       } else if (node.tagName === 'link' &&
                   node.attribs.rel === 'stylesheet' &&
                   this._usesAmpCacheUrl(node.attribs.href)) {
         node.attribs.href = this._replaceUrl(node.attribs.href, host.ampUrlPrefix);
-        referenceNode = this._addPreload(tree, head, referenceNode, node.attribs.href, 'style');
+        referenceNode = this._addPreload(head, referenceNode, node.attribs.href, 'style');
       }
       node = node.nextSibling;
     }
@@ -89,17 +90,17 @@ class RewriteAmpUrls {
     return ampUrlPrefix + url.substring(AMP_CACHE_HOST.length);
   }
 
-  _addPreload(tree, parent, node, href, type) {
+  _addPreload(parent, node, href, type) {
     if (!href.endsWith('v0.js') &&
       !href.endsWith('v0.css')) {
       return node;
     }
-    const preload = tree.createElement('link', {
+    const preload = createElement('link', {
       rel: 'preload',
       href: href,
       as: type,
     });
-    parent.insertAfter(preload, node);
+    insertAfter(parent, preload, node);
     return preload;
   }
 

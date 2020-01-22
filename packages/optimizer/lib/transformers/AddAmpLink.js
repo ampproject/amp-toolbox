@@ -15,6 +15,8 @@
  */
 'use strict';
 
+const {firstChildByTag, createElement, appendChild} = require('../NodeUtils');
+
 /**
  * AddAmpLink - adds a reference to the valid AMP
  * version of this document.
@@ -24,20 +26,20 @@
  * * `ampUrl`: specifying an URL pointing to the valid AMP version of this document.
  */
 class AddAmpLink {
-  transform(tree, params) {
+  transform(root, params) {
     if (!params.ampUrl) return; // no AMP URL configured
 
-    const html = tree.root.firstChildByTag('html');
+    const html = firstChildByTag(root, 'html');
     if (!html) return;
-    const head = html.firstChildByTag('head');
+    const head = firstChildByTag(html, 'head');
     if (!head) return;
 
-    const ampLink = tree.createElement('link', {
+    const ampLink = createElement('link', {
       rel: 'amphtml',
       href: params.ampUrl,
     });
 
-    head.appendChild(ampLink);
+    appendChild(head, ampLink);
   }
 }
 

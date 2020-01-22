@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const {createElement, appendChild, nextNode, firstChildByTag} = require('../NodeUtils');
 const {URL} = require('url');
 
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
@@ -113,21 +114,20 @@ class AddBlurryImagePlaceholders {
   /**
    * Parses the document to add blurred placedholders in all appropriate
    * locations.
-   * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {Object} runtime parameters
    * @return {Array} An array of promises that all represents the resolution of
    * a blurred placeholder being added in an appropriate place.
    */
-  transform(tree) {
+  transform(root) {
     // Check if placeholders should be generated
     if (!this.blurredPlaceholders_) {
       return;
     }
-    const html = tree.root.firstChildByTag('html');
-    const body = html.firstChildByTag('body');
+    const html = firstChildByTag(root, 'html');
+    const body = firstChildByTag(html, 'body');
     const promises = [];
     let placeholders = 0;
-    for (let node = body; node !== null; node = node.nextNode()) {
+    for (let node = body; node !== null; node = nextNode(node)) {
       const {tagName} = node;
       let src;
       if (tagName === 'template') {
@@ -143,9 +143,9 @@ class AddBlurryImagePlaceholders {
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
-        const promise = this.addBlurryPlaceholder_(tree, src).then((img) => {
+        const promise = this.addBlurryPlaceholder_(src).then((img) => {
           node.attribs.noloading = '';
-          node.appendChild(img);
+          appendChild(node, img);
         });
         promises.push(promise);
 
@@ -161,20 +161,19 @@ class AddBlurryImagePlaceholders {
 
   /**
    * Adds a child image that is a blurry placeholder.
-   * @param {TreeAdapter} tree A parse5 treeAdapter.
    * @param {String} src The image that the bitmap is based on.
-   * @param {Object} runtime parameters
    * @return {!Promise} A promise that signifies that the img has been updated
    * to have correct attributes to be a blurred placeholder along with the
    * placeholder itself.
    * @private
    */
-  async addBlurryPlaceholder_(tree, src) {
-    const img = tree.createElement('img');
-    img.attribs.class = 'i-amphtml-blurry-placeholder';
-    img.attribs.placeholder = '';
-    img.attribs.src = src;
-    img.attribs.alt = '';
+  async addBlurryPlaceholder_(src) {
+    const img = createElement('img', {
+      class: 'i-amphtml-blurry-placeholder',
+      placeholder: '',
+      src,
+      alt: '',
+    });
     try {
       const dataURI = await this.getCachedDataURI(src);
       let svg = `<svg xmlns="http://www.w3.org/2000/svg"

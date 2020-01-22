@@ -31,8 +31,9 @@
     "@ampproject/toolbox-script-csp": "^1.1.1",
     "@ampproject/toolbox-validator-rules": "^1.1.1",
     "css": "2.2.4",
-    "parse5": "5.1.1",
-    "parse5-htmlparser2-tree-adapter": "5.1.1"
+    "domhandler": "3.0.0",
+    "domutils": "2.0.0",
+    "htmlparser2": "4.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

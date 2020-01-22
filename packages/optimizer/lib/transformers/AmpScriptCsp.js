@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {remove, appendChild, createElement, nextNode, firstChildByTag} = require('../NodeUtils');
 const {calculateHash} = require('@ampproject/toolbox-script-csp');
 
 /**
@@ -24,14 +25,15 @@ const {calculateHash} = require('@ampproject/toolbox-script-csp');
  *
  */
 class AmpScriptCsp {
-  transform(tree) {
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
-    const body = html.firstChildByTag('body');
+  transform(root) {
+    const html = firstChildByTag(root, 'html');
+    if (!html) return;
+    const head = firstChildByTag(html, 'head');
+    if (!head) return;
+    const body = firstChildByTag(html, 'body');
+    if (!body) return;
 
-    if (!head || !body) return;
-
-    const cspMeta = this._findOrCreateCspMeta(tree, head);
+    const cspMeta = this._findOrCreateCspMeta(head);
     const existingCsp = (cspMeta.attribs.content || '').trim().split(/\s+/);
     const hashes = new Set(existingCsp);
     // ''.split(' ') results in [''] and not [], so we account for that case
@@ -45,7 +47,7 @@ class AmpScriptCsp {
 
     const csp = Array.from(hashes).join(' ');
     if (csp === '') {
-      cspMeta.remove();
+      remove(cspMeta);
       return;
     }
     cspMeta.attribs.content = csp;
@@ -58,21 +60,21 @@ class AmpScriptCsp {
       if (node.tagName === 'script' && node.attribs.target === 'amp-script') {
         result.push(node);
       }
-      node = node.nextNode();
+      node = nextNode(node);
     }
     return result;
   }
 
-  _findOrCreateCspMeta(tree, head) {
+  _findOrCreateCspMeta(head) {
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (node.tagName === 'meta' && node.attribs.name === 'amp-script-src') {
         return node;
       }
     }
-    const cspMeta = tree.createElement('meta', {
+    const cspMeta = createElement('meta', {
       name: 'amp-script-src',
     });
-    head.appendChild(cspMeta);
+    appendChild(head, cspMeta);
     return cspMeta;
   }
 }

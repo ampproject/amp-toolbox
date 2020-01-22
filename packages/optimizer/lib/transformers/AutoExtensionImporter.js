@@ -15,6 +15,7 @@
  */
 'use strict';
 
+const {nextNode, insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
 const {AMP_FORMATS} = require('../AmpConstants');
@@ -124,7 +125,7 @@ class AutoExtensionImporter {
     });
   }
 
-  async transform(tree, params) {
+  async transform(root, params) {
     if (!this.enabled) {
       return;
     }
@@ -132,10 +133,11 @@ class AutoExtensionImporter {
       this.log_.error('Unsupported AMPHTML format', this.format);
       return;
     }
-    const html = tree.root.firstChildByTag('html');
-    const head = html.firstChildByTag('head');
+    const html = firstChildByTag(root, 'html');
+    if (!html) return;
+    const head = firstChildByTag(html, 'head');
     if (!head) return;
-    const body = html.firstChildByTag('body');
+    const body = firstChildByTag(html, 'body');
     if (!body) return;
 
     // Extensions which need to be imported
@@ -176,8 +178,8 @@ class AutoExtensionImporter {
         'src': `${host.ampUrlPrefix}/v0/${extensionName}-${version}.js`,
       };
       extensionImportAttribs[extension.type] = extensionName;
-      const extensionImport = tree.createElement('script', extensionImportAttribs);
-      head.insertAfter(extensionImport, referenceNode);
+      const extensionImport = createElement('script', extensionImportAttribs);
+      insertAfter(head, extensionImport, referenceNode);
     }
   }
 
@@ -185,7 +187,7 @@ class AutoExtensionImporter {
    * @private
    */
   findExistingExtensionsAndExtensionsToImportInHead_(head, extensionsToImport, existingImports) {
-    let node = head.firstChild;
+    let node = head;
     while (node) {
       // Detect any existing extension imports
       const customElement = this.getCustomElement_(node);
@@ -196,7 +198,7 @@ class AutoExtensionImporter {
       if (node.tagName === 'script' && node.attribs['id'] === 'amp-access') {
         extensionsToImport.add('amp-access');
       }
-      node = node.nextSibling;
+      node = nextNode(node);
     }
   }
 
@@ -211,7 +213,7 @@ class AutoExtensionImporter {
         this.addRequiredExtensionByTag_(node, extensionSpec, extensionsToImport);
         this.addRequiredExtensionByAttributes_(node, extensionSpec, extensionsToImport);
       }
-      node = node.nextNode();
+      node = nextNode(node);
     }
   }
 
@@ -290,13 +292,12 @@ class AutoExtensionImporter {
     if (scriptNode.tagName !== 'script') {
       return '';
     }
-    let customElement = scriptNode.attribs['custom-element'] ||
+    const customElement = scriptNode.attribs['custom-element'] ||
       scriptNode.attribs['custom-template'] ||
       '';
     if (!customElement) {
       return '';
     }
-    customElement = customElement.toLowerCase();
     if (!customElement.startsWith('amp-')) {
       return '';
     }

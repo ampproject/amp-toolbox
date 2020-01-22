@@ -19,13 +19,10 @@
 const Cli = require('../lib/cli');
 const MockLogger = require('./helpers/MockLogger');
 
-describe('Cli', () => {
-  const mockLogger = new MockLogger();
-  const cli = new Cli(mockLogger);
+const mockLogger = new MockLogger();
+const cli = new Cli(mockLogger);
 
-  it('Triggers the correct command', (done) => {
-    return cli.run([])
-        .then(() => done())
-        .catch((e) => done.fail(e));
-  });
+test('Triggers the correct command', async () => {
+  await cli.run([]);
+  // no exception thrown
 });
