@@ -5,6 +5,8 @@
 AMP Optimizer is a tool to server-side enhance the rendering performance of AMP pages. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
 * Server-side render AMP layouts.
+* Automatically import all missing AMP Extensions.
+* Automaticallly add any missing mandatary AMP tags.
 * Remove the AMP boilerplate (when possible).
 * Inline critical CSS.
 * Speed-up AMP framework and custom font loading.
@@ -15,7 +17,7 @@ The performance optimizations can improve page rendering times by up to 50%. You
 
 **Good to know:**
 
-* AMP Optimizer will produce valid AMP, if the input is valid AMP.
+* AMP Optimizer will produce valid AMP.
 * AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
 
 ## Usage
@@ -33,11 +35,11 @@ const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
 const ampOptimizer = AmpOptimizer.create();
 
+// It's possible to pass incomplete documents and AMP Optimizer will add any 
+// missing tags required by a valid AMP document.
 const originalHtml = `
-<!doctype html>
-<html ⚡>
-  ...
-</html>
+  <h1>Hello World!</h1>
+  <amp-twitter width="375" height="472" layout="responsive" data-tweetid="1182321926473162752"></amp-twitter>
 `;
 
 ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
