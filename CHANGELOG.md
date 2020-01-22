@@ -1,3 +1,26 @@
+## 2.0.0-alpha.0 (2020-01-22)
+
+#### :rocket: Enhancement
+* `cli`, `optimizer`
+  * [#576](https://github.com/ampproject/amp-toolbox/pull/576) migrate to htmlparser2 ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#573](https://github.com/ampproject/amp-toolbox/pull/573) Auto inject missing AMP boilerplate ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer`
+  * [#569](https://github.com/ampproject/amp-toolbox/pull/569) Add AutoExtensionImporter ([@sebastianbenz](https://github.com/sebastianbenz))
+* `cors`
+  * [#542](https://github.com/ampproject/amp-toolbox/pull/542) Remove AMP-Redirect-To from access-control-expose-headers for email ([@fstanis](https://github.com/fstanis))
+
+#### :house: Internal
+* `cli`, `core`, `cors`, `optimizer`, `update-cache`
+  * [#575](https://github.com/ampproject/amp-toolbox/pull/575) Auto snapshot ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`, `optimizer-express`
+  * [#570](https://github.com/ampproject/amp-toolbox/pull/570) update dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+* `cache-list`, `cache-url`, `cli`, `core`, `cors`, `lighthouse-plugin-amp`, `linter`, `optimizer-express`, `optimizer`, `runtime-version`, `script-csp`, `update-cache`, `validator-rules`
+  * [#568](https://github.com/ampproject/amp-toolbox/pull/568) Adds "repository" and "homepage" to every package.json ([@fstanis](https://github.com/fstanis))
+
+#### Committers: 2
+- Filip Stanis ([@fstanis](https://github.com/fstanis))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v1.1.2 (2019-10-15)
 
 #### :bug: Bug Fix
