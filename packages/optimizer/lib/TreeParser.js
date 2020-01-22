@@ -45,7 +45,7 @@ class TreeParser {
           appendAll(root, dom);
           resolve(root);
         }
-      });
+      }, this.options);
       const parser = new Parser(handler);
       parser.write(html);
       parser.end();
@@ -58,7 +58,7 @@ class TreeParser {
    * @param {Tree} tree
    */
   serialize(node) {
-    return serialize(node, this.options);
+    return serialize(node, {});
   }
 }
 
