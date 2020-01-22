@@ -20,7 +20,7 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git"
   },
   "devDependencies": {
-    "@ampproject/rollup-plugin-closure-compiler": "0.13.0",
+    "@ampproject/rollup-plugin-closure-compiler": "0.20.0",
     "@babel/core": "7.8.3",
     "@types/cheerio": "0.22.15",
     "@types/debug": "4.1.5",
@@ -34,8 +34,8 @@
     "eslint-config-google": "0.14.0",
     "fetch-mock": "8.3.1",
     "html-minifier": "4.0.0",
-    "husky": "4.0.6",
-    "jest": "^24.9.0",
+    "husky": "4.2.0",
+    "jest": "^25.1.0",
     "jimp": "0.9.3",
     "js-beautify": "^1.10.3",
     "karma": "4.4.1",
@@ -50,7 +50,7 @@
     "nock": "11.7.2",
     "npm-run-all": "4.1.5",
     "prettier": "1.19.1",
-    "rollup": "1.29.0",
+    "rollup": "1.29.1",
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-filesize": "6.2.1",
@@ -61,7 +61,7 @@
     "tap-parser": "10.0.1",
     "tar": "5.0.5",
     "throat": "^5.0.0",
-    "typescript": "3.7.4"
+    "typescript": "3.7.5"
   },
   "dependencies": {
     "@ampproject/toolbox-cache-list": "file:packages/cache-list",
