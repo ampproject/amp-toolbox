@@ -85,7 +85,7 @@ class ServerSideRendering {
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc. We check for that here rather than checking for the existence
       // of the amp-experiment script in IsRenderDelayingExtension below.
-      if (node.tagName === 'amp-experiment') {
+      if (node.tagName === 'amp-experiment' && !this.isAmpExperimentUsed(node)) {
         canRemoveBoilerplate = false;
         this.log_.debug('cannot remove boilerplate: amp-experiment');
       }
@@ -153,6 +153,40 @@ class ServerSideRendering {
 
     for (const n of toRemove) {
       remove(n);
+    }
+  }
+
+  isAmpExperimentUsed(ampExperimentNode) {
+    let script;
+    for (const child of ampExperimentNode.children || []) {
+      if (child.tagName === 'script' &&
+         child.attribs &&
+         child.attribs['type'] === 'application/json') {
+        script = child;
+        break;
+      }
+    }
+    // If not script/json tag, then not used.
+    if (!script) {
+      return false;
+    }
+    // If not exactly one child is present, then not used.
+    if (script.children.length !== 1) {
+      return false;
+    }
+    // If child is not a textnode, then not used.
+    const scriptChild = script.firstChild;
+    if (scriptChild.type !== 'text') {
+      return false;
+    }
+    // If textnode is not JSON parsable, then not used.
+    try {
+      const json = JSON.parse(scriptChild.data);
+      // If JSON is empty, then not used.
+      return !!json;
+    } catch (e) {
+      // invalid JSON
+      return false;
     }
   }
 }
