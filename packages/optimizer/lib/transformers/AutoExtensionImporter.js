@@ -249,6 +249,10 @@ class AutoExtensionImporter {
         });
       }
     });
+    // Look for forms
+    if (node.tagName === 'form') {
+      allRequiredExtensions.add('amp-form');
+    }
     // Check for amp-bind attribute bindings
     const tagToBindAttributeMapping = extensionSpec.tagToBindAttributeMapping;
     const attributeNames = Object.keys(node.attribs);
