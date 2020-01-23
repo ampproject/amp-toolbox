@@ -60,12 +60,12 @@ class HeadNodes {
     appendChild(head, this._metaCharset);
     appendChild(head, this._styleAmpRuntime);
     appendChild(head, this._linkStyleAmpRuntime);
-    appendAll(head, this._resourceHintLinks);
     appendAll(head, this._metaOther);
     appendChild(head, this._scriptAmpEngine);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
     appendAll(head, this._linkIcons);
+    appendAll(head, this._resourceHintLinks);
     appendAll(head, this._linkStylesheetsBeforeAmpCustom);
     appendChild(head, this._styleAmpCustom);
     appendAll(head, this._others);
@@ -177,18 +177,20 @@ class HeadNodes {
 }
 
 /**
- * ReorderHeadTransformer - This DOM transformer reorders tags
- * within the head. Specifically, it orders the head like so:
- * (0) meta charset, then remaining meta tags.
- * (1) <style amp-runtime> (inserted by ServerSideRenderingTransformer)
- * (2) AMP runtime .js <script> tag
- * (3) <script> tags for render delaying extensions
- * (4) <script> tags for remaining extensions
- * (5) <link> tag for favicon
- * (6) <link rel=stylesheet> tags before <style amp-custom>
- * (7) <style amp-custom>
- * (8) any other tags allowed in <head>
- * (9) amp boilerplate (first style amp-boilerplate, then noscript).
+ * ReorderHead reorders the children of <head>. Specifically, it
+ * orders the <head> like so:
+ * (0) <meta charset> tag
+ * (1) <style amp-runtime> (inserted by ampruntimecss.go)
+ * (2) remaining <meta> tags (those other than <meta charset>)
+ * (3) AMP runtime .js <script> tag
+ * (4) <script> tags that are render delaying
+ * (5) <script> tags for remaining extensions
+ * (6) <link> tag for favicons
+ * (7) <link> tag for resource hints
+ * (8) <link rel=stylesheet> tags before <style amp-custom>
+ * (9) <style amp-custom>
+ * (10) any other tags allowed in <head>
+ * (11) AMP boilerplate (first style amp-boilerplate, then noscript)
  */
 class ReorderHeadTransformer {
   transform(tree) {
