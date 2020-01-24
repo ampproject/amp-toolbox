@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/core",
   "dependencies": {
+    "cross-fetch": "^3.0.4",
     "node-fetch": "2.6.0"
   },
   "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f"

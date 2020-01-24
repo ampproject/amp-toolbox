@@ -15,7 +15,7 @@
  */
 'use strict';
 
-let fetch = require('node-fetch');
+let fetch = require('cross-fetch');
 const MaxAge = require('./MaxAge.js');
 
 const cache = new Map();
