@@ -29,6 +29,6 @@
     "express": "4.17.1",
     "express-minify-html": "^0.12.0",
     "html-minifier": "^4.0.0",
-    "http-proxy": "1.17.0"
+    "http-proxy": "1.18.0"
   }
 }
