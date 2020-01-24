@@ -183,9 +183,8 @@ class ServerSideRendering {
     try {
       const parsedJson = JSON.parse(scriptChild.data);
       // If JSON is empty, then not used.
-      const isUsed = typeof(parsedJson) === 'object' && Object.keys(parsedJson).length > 0;
-      console.log('amp-experiment used', isUsed, typeof(parsedJson), Object.keys(parsedJson).length, parsedJson);
-      return isUsed;
+      return typeof(parsedJson) === 'object' &&
+          Object.keys(parsedJson).length > 0;
     } catch (e) {
       // invalid JSON
       return false;
