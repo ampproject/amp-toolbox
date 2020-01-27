@@ -19,8 +19,11 @@
 const {createElement, nextNode, insertAfter, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
 
+// Maximum number of images that will be preloaded.
+const MAX_PRELOADED_IMAGES = 5;
+
 /**
- * Adds preload instructions to the first 5 amp-img tags on the page, that don't use srcset.
+ * PreloadImages - Adds preload instructions to the first 5 amp-img tags on the page, that don't use srcset.
  *
  * AMP requires the usage of `amp-img` for images instead of the regular `img` tag. Since
  * `amp-img` tags are custom elements, the AMP Runtime needs to be loaded before the images
@@ -33,10 +36,6 @@ const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
  *
  * * `imagePreloadCount`: specifies the maxinum number of images to preload. The default is 5.
  */
-
-// Maximum number of images that will be preloaded.
-const MAX_PRELOADED_IMAGES = 5;
-
 class PreloadImages {
   transform(root, params) {
     const imagePreloadCount = params.imagePreloadCount || MAX_PRELOADED_IMAGES;

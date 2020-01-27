@@ -44,10 +44,13 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
   'AddTransformedFlag',
-  // Inject CSP script has required for inline amp-script
-  'AmpScriptCsp',
   // Removes unsupported nonce attribute from scripts
   'RemoveCspNonce',
+  // Minifies HTML, JSON, inline amp-script
+  'MinifyHtml',
+  // Inject CSP script has required for inline amp-script
+  // needs to run after MinifyHtml which changes the inline script
+  'AmpScriptCsp',
 ];
 
 /**
@@ -76,8 +79,12 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
-  'AmpScriptCsp',
   'AddTransformedFlag',
+  // Minifies HTML, JSON, inline amp-script
+  'MinifyHtml',
+  // Inject CSP script has required for inline amp-script
+  // needs to run after MinifyHtml which changes the inline script
+  'AmpScriptCsp',
 ];
 
 const DEFAULT_CONFIG = {
