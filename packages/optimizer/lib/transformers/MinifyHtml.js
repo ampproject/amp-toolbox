@@ -19,28 +19,37 @@ const Terser = require('terser');
 const {remove} = require('../NodeUtils');
 
 // Ignore comments of the form <!-- __AAAA_BBBB___ --> by default (used by Next.js)
-const COMMENT_DEFAULT_IGNORE = [/^\s*__[a-bA-Z0-9_-]+__\s*$/];
+const COMMENT_DEFAULT_IGNORE = /^\s*__[a-bA-Z0-9_-]+__\s*$/;
 
 // Matches all consecutive whitesapce
 const WHITESPACE_REGEX = /\s+/g;
 
 /**
- * NodeCleanUp - Minifies HTML by removing comments and unneeded whitespace
+ * MinifyHtml - minifies files size by:
  *
- * This transformer will remove all
- *
+ * - minifying inline JSON
+ * - minifying inline amp-script using https://www.npmjs.com/package/terser
+ * - collapsing whitespace
+ * - removing comments
  *
  * This transformer supports the following option:
  *
- * * `minifyHtml [Boolean]`: Disables HTML minification. The default is `true`.
- * * `removeWhitespace [Boolean]`: Removes unneeded whitespace. Ignores all whitespace inside <pre> and <textarea>. The default is `true`.
- * * `removeWhitespace [Boolean]`: Removes unneeded whitespace. The default is `true`.
+ * - `minifyHtml [Boolean]`: Enables HTML minification. The default is `true`.
+ * - `collapseWhitespace [Boolean]`: collapses unneeded whitespace. Ignores all
+ *    whitespace inside <pre> and <textarea>. The default is `true`.
+ * - `removeComments [Boolean]`: Removes unneeded comments. The default is `true`.
+ * - `commentIgnorePattern [String]`: JS regex pattern which will ignore all
+ *   matching comments. The default is `/^\s*__[a-bA-Z0-9_-]+__\s*$/`.
+ * - `minifyAmpScript [Boolean]`: Enables inline amp-acript minification. The default is `true`.
+ * - `minifyJSON [Boolean]`: Enables inline JSON minification. The default is `true`.
  */
 class MinifyHtml {
   constructor(config) {
-    this.defaultOpts = {
+    this.opts = {
       minifyHtml: !!config.minifyHtml || true,
-      removeWhitespace: !!config.removeWhitespace || true,
+      minifyAmpScript: !!config.minifyAmpScript || true,
+      minifyJSON: !!config.minifyJSON || true,
+      collapseWhitespace: !!config.collapseWhitespace || true,
       removeComments: !!config.removeComments || true,
       canCollapseWhitespace: true,
       canTrimWhitespace: true,
@@ -49,11 +58,11 @@ class MinifyHtml {
     this.log = config.log.tag('MinifyHtml');
   }
   transform(tree) {
-    if (!this.defaultOpts.minifyHtml) {
+    if (!this.opts.minifyHtml) {
       return;
     }
     const nodesToRemove = [];
-    this.visitNode(tree, this.defaultOpts, nodesToRemove);
+    this.visitNode(tree, this.opts, nodesToRemove);
     for (const node of nodesToRemove) {
       remove(node);
     }
@@ -80,26 +89,27 @@ class MinifyHtml {
   }
 
   cleanTextNode(node, opts, nodesToRemove) {
-    if (opts.canCollapseWhitespace && node.data) {
+    if (!node.data || !opts.collapseWhitespace) {
+      return;
+    }
+    if (opts.canCollapseWhitespace) {
       node.data = node.data.replace(WHITESPACE_REGEX, ' ');
     }
-    if (opts.canTrimWhitespace && node.data) {
+    if (opts.canTrimWhitespace) {
       node.data = node.data.trim();
     }
     // remove empty nodes
-    if (!node.data || node.data.length === 0) {
+    if (node.data.length === 0) {
       nodesToRemove.push(node);
     }
   }
 
   cleanCommentNode(node, opts, nodesToRemove) {
-    if (!node.data) {
+    if (!node.data || !opts.removeComments) {
       return;
     }
-    for (const pattern of opts.commentIgnorePattern) {
-      if (pattern.test(node.data)) {
-        return;
-      }
+    if (opts.commentIgnorePattern.test(node.data)) {
+      return;
     }
     nodesToRemove.push(node);
   }
@@ -111,14 +121,14 @@ class MinifyHtml {
       if (!child.data) {
         continue;
       }
-      if (isJson) {
+      if (isJson && this.opts.minifyJSON) {
         try {
           child.data = JSON.stringify(JSON.parse(child.data), null, '');
         } catch (e) {
           // invalid JSON
           this.log.warn('Invalid JSON', child.data);
         }
-      } else if (isAmpScript) {
+      } else if (isAmpScript && this.opts.minifyAmpScript) {
         const result = Terser.minify(child.data);
         if (result.error) {
           this.log.warn(
