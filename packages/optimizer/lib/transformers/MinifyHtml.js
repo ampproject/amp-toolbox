@@ -29,53 +29,50 @@ const WHITESPACE_REGEX = /\s+/g;
  *
  * - minifying inline JSON
  * - minifying inline amp-script using https://www.npmjs.com/package/terser
- * - collapsing whitespace
+ * - collapsing whitespace outside of pre, script, style and area.
  * - removing comments
  *
- * This transformer supports the following option:
+ * This transformer supports the following options:
  *
- * - `minifyHtml [Boolean]`: Enables HTML minification. The default is `true`.
- * - `collapseWhitespace [Boolean]`: collapses unneeded whitespace. Ignores all
- *    whitespace inside <pre> and <textarea>. The default is `true`.
- * - `removeComments [Boolean]`: Removes unneeded comments. The default is `true`.
- * - `commentIgnorePattern [String]`: JS regex pattern which will ignore all
- *   matching comments. The default is `/^\s*__[a-bA-Z0-9_-]+__\s*$/`.
- * - `minifyAmpScript [Boolean]`: Enables inline amp-acript minification. The default is `true`.
- * - `minifyJSON [Boolean]`: Enables inline JSON minification. The default is `true`.
+ * - `minify [Boolean]`: Enables HTML minification. The default is `true`.
  */
 class MinifyHtml {
   constructor(config) {
     this.opts = {
-      minifyHtml: !!config.minifyHtml || true,
-      minifyAmpScript: !!config.minifyAmpScript || true,
-      minifyJSON: !!config.minifyJSON || true,
-      collapseWhitespace: !!config.collapseWhitespace || true,
-      removeComments: !!config.removeComments || true,
+      minify: !!config.minify || true,
+      minifyAmpScript: true,
+      minifyJSON: true,
+      collapseWhitespace: true,
+      removeComments: true,
       canCollapseWhitespace: true,
       canTrimWhitespace: true,
-      commentIgnorePattern: config.commentIgnorePattern || COMMENT_DEFAULT_IGNORE,
+      commentIgnorePattern: COMMENT_DEFAULT_IGNORE,
     };
     this.log = config.log.tag('MinifyHtml');
   }
   transform(tree) {
-    if (!this.opts.minifyHtml) {
+    if (!this.opts.minify) {
       return;
     }
+    // store nodes for later deletion to avoid changing the tree structure
+    // while iterating the DOM
     const nodesToRemove = [];
-    this.visitNode(tree, this.opts, nodesToRemove);
+    // recursively walk through all nodes and minify if possible
+    this.minifyNode(tree, this.opts, nodesToRemove);
     for (const node of nodesToRemove) {
       remove(node);
     }
   }
 
-  visitNode(node, opts, nodesToRemove) {
+  minifyNode(node, opts, nodesToRemove) {
     if (node.type === 'text') {
-      this.cleanTextNode(node, opts, nodesToRemove);
+      this.minifyTextNode(node, opts, nodesToRemove);
     } else if (node.type === 'comment') {
-      this.cleanCommentNode(node, opts, nodesToRemove);
+      this.minifyCommentNode(node, opts, nodesToRemove);
     } else if (node.tagName === 'script') {
-      this.cleanScriptNode(node, opts);
+      this.minifyScriptNode(node, opts);
     }
+    // update options based on the current node
     const childOpts = Object.assign({}, opts);
     if (opts.canCollapseWhitespace && !this.canCollapseWhitespace(node.tagName)) {
       childOpts.canCollapseWhitespace = false;
@@ -83,12 +80,13 @@ class MinifyHtml {
     if (opts.canTrimWhitespace && !this.canTrimWhitespace(node.tagName)) {
       childOpts.canTrimWhitespace = false;
     }
+    // minify all child nodes
     for (const child of node.children || []) {
-      this.visitNode(child, childOpts, nodesToRemove);
+      this.minifyNode(child, childOpts, nodesToRemove);
     }
   }
 
-  cleanTextNode(node, opts, nodesToRemove) {
+  minifyTextNode(node, opts, nodesToRemove) {
     if (!node.data || !opts.collapseWhitespace) {
       return;
     }
@@ -104,7 +102,7 @@ class MinifyHtml {
     }
   }
 
-  cleanCommentNode(node, opts, nodesToRemove) {
+  minifyCommentNode(node, opts, nodesToRemove) {
     if (!node.data || !opts.removeComments) {
       return;
     }
@@ -114,7 +112,7 @@ class MinifyHtml {
     nodesToRemove.push(node);
   }
 
-  cleanScriptNode(node, opts) {
+  minifyScriptNode(node, opts) {
     const isJson = this.isJson(node);
     const isAmpScript = this.isInlineAmpScript(node);
     for (const child of node.children || []) {
@@ -133,20 +131,20 @@ class MinifyHtml {
     const result = Terser.minify(child.data);
     if (result.error) {
       this.log.warn(
-          'Could not minify amp-script',
+          'Could not minify inline amp-script',
           child.data,
           `${result.error.name}: ${result.error.message}`,
       );
-    } else {
-      child.data = result.code;
+      return;
     }
+    child.data = result.code;
   }
 
   minifyJson(child) {
     try {
       child.data = JSON.stringify(JSON.parse(child.data), null, '');
     } catch (e) {
-      // invalid JSON
+      // log invalid JSON, but don't fail
       this.log.warn('Invalid JSON', child.data);
     }
   }

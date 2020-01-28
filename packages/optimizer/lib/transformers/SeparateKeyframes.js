@@ -40,11 +40,15 @@ const allowedKeyframeProps = new Set([
 /**
  * SeparateKeyframes - moves keyframes, media, and support from amp-custom
  * to amp-keyframes.
+ *
+ * This transformer supports the following options:
+ *
+ * - `minify [Boolean]`: compresses the CSS. The default is `true`.
  */
 class SeparateKeyframes {
   constructor(config) {
     this.log_ = config.log.tag('SeparateKeyframes');
-    if (config.compress === false) {
+    if (config.minify === false) {
       this.stringifyOptions_ = OPTIONS_PRETTY_PRINT;
     } else {
       this.stringifyOptions_ = OPTIONS_COMPRESS;
