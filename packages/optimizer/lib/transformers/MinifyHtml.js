@@ -74,7 +74,7 @@ class MinifyHtml {
     } else if (node.type === 'comment') {
       this.cleanCommentNode(node, opts, nodesToRemove);
     } else if (node.tagName === 'script') {
-      this.cleanScriptNode(node);
+      this.cleanScriptNode(node, opts);
     }
     const childOpts = Object.assign({}, opts);
     if (opts.canCollapseWhitespace && !this.canCollapseWhitespace(node.tagName)) {
@@ -114,32 +114,40 @@ class MinifyHtml {
     nodesToRemove.push(node);
   }
 
-  cleanScriptNode(node) {
+  cleanScriptNode(node, opts) {
     const isJson = this.isJson(node);
     const isAmpScript = this.isInlineAmpScript(node);
     for (const child of node.children || []) {
       if (!child.data) {
         continue;
       }
-      if (isJson && this.opts.minifyJSON) {
-        try {
-          child.data = JSON.stringify(JSON.parse(child.data), null, '');
-        } catch (e) {
-          // invalid JSON
-          this.log.warn('Invalid JSON', child.data);
-        }
-      } else if (isAmpScript && this.opts.minifyAmpScript) {
-        const result = Terser.minify(child.data);
-        if (result.error) {
-          this.log.warn(
-              'Could not minify amp-script',
-              child.data,
-              `${result.error.name}: ${result.error.message}`,
-          );
-        } else {
-          child.data = result.code;
-        }
+      if (isJson && opts.minifyJSON) {
+        this.minifyJson(child);
+      } else if (isAmpScript && opts.minifyAmpScript) {
+        this.minifyAmpScript(child);
       }
+    }
+  }
+
+  minifyAmpScript(child) {
+    const result = Terser.minify(child.data);
+    if (result.error) {
+      this.log.warn(
+          'Could not minify amp-script',
+          child.data,
+          `${result.error.name}: ${result.error.message}`,
+      );
+    } else {
+      child.data = result.code;
+    }
+  }
+
+  minifyJson(child) {
+    try {
+      child.data = JSON.stringify(JSON.parse(child.data), null, '');
+    } catch (e) {
+      // invalid JSON
+      this.log.warn('Invalid JSON', child.data);
     }
   }
 
