@@ -158,7 +158,8 @@ class MinifyHtml {
   }
 
   isJson(node) {
-    return node.attribs && node.attribs.type === 'application/json';
+    return node.attribs &&
+      (node.attribs.type === 'application/json' || node.attribs.type === 'application/ld+json');
   }
 
   canCollapseWhitespace(tagName) {
