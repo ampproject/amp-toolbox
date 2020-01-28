@@ -17,12 +17,10 @@
 
 const Terser = require('terser');
 const {remove} = require('../NodeUtils');
+const normalizeWhitespace = require('normalize-html-whitespace');
 
 // Ignore comments of the form <!-- __AAAA_BBBB___ --> by default (used by Next.js)
 const COMMENT_DEFAULT_IGNORE = /^\s*__[a-bA-Z0-9_-]+__\s*$/;
-
-// Matches all consecutive whitesapce
-const WHITESPACE_REGEX = /\s+/g;
 
 /**
  * MinifyHtml - minifies files size by:
@@ -45,7 +43,7 @@ class MinifyHtml {
       collapseWhitespace: true,
       removeComments: true,
       canCollapseWhitespace: true,
-      canTrimWhitespace: true,
+      inBody: true,
       commentIgnorePattern: COMMENT_DEFAULT_IGNORE,
     };
     this.log = config.log.tag('MinifyHtml');
@@ -77,8 +75,11 @@ class MinifyHtml {
     if (opts.canCollapseWhitespace && !this.canCollapseWhitespace(node.tagName)) {
       childOpts.canCollapseWhitespace = false;
     }
-    if (opts.canTrimWhitespace && !this.canTrimWhitespace(node.tagName)) {
-      childOpts.canTrimWhitespace = false;
+    if (node.tagName === 'head' || node.tagName === 'html') {
+      childOpts.inBody = false;
+    }
+    if (node.tagName === 'body') {
+      childOpts.inBody = true;
     }
     // minify all child nodes
     for (const child of node.children || []) {
@@ -91,7 +92,10 @@ class MinifyHtml {
       return;
     }
     if (opts.canCollapseWhitespace) {
-      node.data = node.data.replace(WHITESPACE_REGEX, ' ');
+      node.data = normalizeWhitespace(node.data);
+    }
+    if (!opts.inBody) {
+      node.data = node.data.trim();
     }
     // remove empty nodes
     if (node.data.length === 0) {
