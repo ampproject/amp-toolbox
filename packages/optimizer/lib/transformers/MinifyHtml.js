@@ -93,9 +93,6 @@ class MinifyHtml {
     if (opts.canCollapseWhitespace) {
       node.data = node.data.replace(WHITESPACE_REGEX, ' ');
     }
-    if (opts.canTrimWhitespace) {
-      node.data = node.data.trim();
-    }
     // remove empty nodes
     if (node.data.length === 0) {
       nodesToRemove.push(node);
