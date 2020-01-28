@@ -31,6 +31,7 @@ const manualAttributeToExtensionMapping = new Map([
   ['mask', 'amp-inputmask'],
   ['lightbox', 'amp-lightbox-gallery'],
 ]);
+const manualExtensions = Array.from(manualAttributeToExtensionMapping.values());
 
 /**
  * Extension Auto Importer - this transformer auto imports all missing AMP extensions.
@@ -93,7 +94,12 @@ class AutoExtensionImporter {
         const tagName = tag.tagName.toLowerCase();
         // Map amp tags to their required extension(s)
         if (tagName.startsWith('amp-')) {
-          tagToExtensionsMapping.set(tagName, tag.requiresExtension);
+          // HACK: some tags define multiple validation rules for attribute based imports
+          // e.g. amp-carousel, amp-carousel[lightbox]
+          // these are handled differently, so we filter them out here
+          let requiresExtension = tag.requiresExtension || [];
+          requiresExtension = requiresExtension.filter((ext) => !manualExtensions.includes(ext));
+          tagToExtensionsMapping.set(tagName, requiresExtension);
         }
         // Collects all bindable attributes
         const bindableAttributes = new Set();
