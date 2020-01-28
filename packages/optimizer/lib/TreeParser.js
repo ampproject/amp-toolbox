@@ -20,6 +20,9 @@ const {DomHandler, NodeWithChildren} = require('domhandler');
 const {appendAll} = require('./NodeUtils');
 const serialize = require('dom-serializer');
 
+// https://github.com/fb55/domhandler#option-normalizewhitespace
+const PARSER_OPTIONS = {};
+
 /**
  * HTML parser and serializer. DOM nodes use htmlparser2 API with custom extensions
  * required by transformers.
@@ -62,6 +65,4 @@ class TreeParser {
   }
 }
 
-module.exports = new TreeParser({
-  normalizeWhitespace: true,
-});
+module.exports = new TreeParser(PARSER_OPTIONS);
