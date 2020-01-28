@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cache-list",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.4",
   "description": "Lists AMP Caches",
   "main": "index.js",
   "repository": {
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cache-list",
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.0.0-alpha.0"
+    "@ampproject/toolbox-core": "^2.0.0-alpha.4"
   },
   "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f"
 }
