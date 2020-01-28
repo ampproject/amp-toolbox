@@ -1,5 +1,35 @@
 ## 2.0.0-alpha.0 (2020-01-22)
 
+Migration notes:
+
+* The `SeparateKeyframe` transformer's `compress` option has been renamed to `minify`. The same option will also be used by the `MinifyHtml` transformer. The default value continues to be `true`.
+* The API for implementing a custom transformer has changed. We no longer monkey patch the node class, but instead rely on helper methods defined in [`NodeUtils`](https://github.com/ampproject/amp-toolbox/blob/master/packages/optimizer/lib/NodeUtils.js):
+
+  ```html
+  const {firstChildByTag, appendChild, createElement} = require('@ampproject/toolbox-optimizer').NodeUtils;
+
+  class CustomTransformer {
+
+    constructor(config) {
+      this.log_ = config.log.tag('CUSTOM');
+    }
+
+    transform(tree, params) {
+      this.log_.info('Running custom transformation for ', params.filePath);
+      const html = firstChildByTag(tree, 'html');
+      if (!html) return;
+      const head = firstChildByTag(html, 'head');
+      if (!head) return;
+      const desc = createElement('meta', {
+        name: 'description',
+        content: 'this is just a demo',
+      });
+      appendChild(head, desc);
+    }
+
+  }
+  ```
+
 #### :rocket: Enhancement
 * `cli`, `optimizer`
   * [#576](https://github.com/ampproject/amp-toolbox/pull/576) migrate to htmlparser2 ([@sebastianbenz](https://github.com/sebastianbenz))
