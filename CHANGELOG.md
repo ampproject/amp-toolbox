@@ -1,4 +1,4 @@
-## 2.0.0-alpha.0 (2020-01-22)
+## 2.0.0-alpha.4 (2020-01-28)
 
 Migration notes:
 
@@ -31,6 +31,8 @@ Migration notes:
   ```
 
 #### :rocket: Enhancement
+* `core`, `optimizer`
+  * [#588](https://github.com/ampproject/amp-toolbox/pull/588) Add MinifyHtml transformer ([@sebastianbenz](https://github.com/sebastianbenz))
 * `cli`, `optimizer`
   * [#576](https://github.com/ampproject/amp-toolbox/pull/576) migrate to htmlparser2 ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#573](https://github.com/ampproject/amp-toolbox/pull/573) Auto inject missing AMP boilerplate ([@sebastianbenz](https://github.com/sebastianbenz))
@@ -38,6 +40,11 @@ Migration notes:
   * [#569](https://github.com/ampproject/amp-toolbox/pull/569) Add AutoExtensionImporter ([@sebastianbenz](https://github.com/sebastianbenz))
 * `cors`
   * [#542](https://github.com/ampproject/amp-toolbox/pull/542) Remove AMP-Redirect-To from access-control-expose-headers for email ([@fstanis](https://github.com/fstanis))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#581](https://github.com/ampproject/amp-toolbox/pull/581) Fix: Empty <amp-experiment> blocks boilerplate removal ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#580](https://github.com/ampproject/amp-toolbox/pull/580) Fix: ReorderHead priorities ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### :house: Internal
 * `cli`, `core`, `cors`, `optimizer`, `update-cache`
