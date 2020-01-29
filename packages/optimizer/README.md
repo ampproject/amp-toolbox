@@ -195,8 +195,6 @@ It's possible to rewrite the AMP framework and component imports to a different 
 
   **Notice:** The behavior of `ampUrlPrefix` when used in conjunction with `ampRuntimeVersion` changed beginning with version 1.1.2. Prior to 1.1.2, `rtv/{rtv}/` was automatically appended to `ampUrlPrefix` when `ampRuntimeVersion` was specified. Since version 1.1.2, `ampUrlPrefix` is not modified when `ampRuntimeVersion` is also specified.
 
-- `rewriteDynamicComponents`: When used in conjunction with `ampUrlPrefix`, this option can be set to `false` to prevent [dynamic AMP components](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem) from having their URLs rewritten.
-
 Examples:
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
@@ -208,28 +206,15 @@ const originalHtml = `
 ...
 `
 
-// this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js and will
-// rewrite dynamic component https://cdn.ampproject.org/v0/amp-geo-0.1.js to
-// /amp/v0/amp-geo-0.1.js
+// this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js
 const optimizedHtmlA = await ampOptimizer.transformHtml(originalHtml, {
   ampUrlPrefix: '/amp'
 });
 
-// this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js and will
-// not rewrite dynamic component https://cdn.ampproject.org/v0/amp-geo-0.1.js
+// this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js
 const optimizedHtmlB = await ampOptimizer.transformHtml(originalHtml, {
-  ampUrlPrefix: '/amp',
-  rewriteDynamicComponents: false
-});
-
-// this will rewrite https://cdn.ampproject.org/v0.js to
-// /amp/001515617716922/v0.js and will rewrite dynamic component
-// https://cdn.ampproject.org/v0/amp-geo-0.1.js to
-// https://cdn.ampproject.org/v0/rtv/001515617716922/amp-geo-0.1.js
-const optimizedHtmlC = await ampOptimizer.transformHtml(originalHtml, {
   ampRuntimeVersion: '001515617716922',
-  ampUrlPrefix: '/amp/001515617716922',
-  rewriteDynamicComponents: false
+  ampUrlPrefix: '/amp'
 });
 ```
 

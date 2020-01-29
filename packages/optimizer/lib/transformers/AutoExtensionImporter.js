@@ -181,7 +181,7 @@ class AutoExtensionImporter {
       const version = extension.version[extension.version.length - 1];
       const extensionImportAttribs = {
         'async': '',
-        'src': `${host.ampUrlPrefix}/v0/${extensionName}-${version}.js`,
+        'src': `${host}/v0/${extensionName}-${version}.js`,
       };
       extensionImportAttribs[extension.type] = extensionName;
       const extensionImport = createElement('script', extensionImportAttribs);

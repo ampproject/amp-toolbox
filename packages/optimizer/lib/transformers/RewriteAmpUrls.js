@@ -16,17 +16,14 @@
 'use strict';
 
 const {createElement, firstChildByTag, insertAfter} = require('../NodeUtils');
-const {
-  AMP_CACHE_HOST,
-  AMP_DYNAMIC_COMPONENTS,
-} = require('../AmpConstants.js');
+const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
 
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
  *
- * This transformer supports several parameters:
+ * This transformer supports two parameters:
  *
  * * `ampRuntimeVersion`: specifies a
  *   [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version")
@@ -40,14 +37,9 @@ const {calculateHost} = require('../RuntimeHostHelper');
  *   URLs being re-written from `https://cdn.ampproject.org/v0.js` to
  *   `/amp/v0.js`. This option is experimental and not recommended.
  *
- * * `rewriteDynamicComponents`: optionally disable rewriting of
- *   [dynamically generated components](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem).
- *   For example: `https://cdn.ampproject.org/v0/amp-geo-0.1.js` returns
- *   different content depending on the country from which the request was made.
- *
- * All parameters are optional. If no option is provided, runtime URLs won't be
- * re-written. You can combine `ampRuntimeVersion` and `ampUrlPrefix` to rewrite
- * AMP runtime URLs to versioned URLs on a different origin.
+ * Both parameters are optional. If no option is provided, runtime URLs won't be
+ * re-written. You can combine both parameters to rewrite AMP runtime URLs
+ * to versioned URLs on a different origin.
  *
  * This transformer also adds a preload header for the AMP runtime (v0.js) to trigger HTTP/2
  * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
@@ -65,14 +57,12 @@ class RewriteAmpUrls {
 
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
-        const isDynamicComponent = this._isDynamicComponent(node);
-        node.attribs.src = this._replaceUrl(node.attribs.src,
-          isDynamicComponent ? host.dynamicAmpUrlPrefix : host.ampUrlPrefix);
+        node.attribs.src = this._replaceUrl(node.attribs.src, host);
         referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
       } else if (node.tagName === 'link' &&
                   node.attribs.rel === 'stylesheet' &&
                   this._usesAmpCacheUrl(node.attribs.href)) {
-        node.attribs.href = this._replaceUrl(node.attribs.href, host.ampUrlPrefix);
+        node.attribs.href = this._replaceUrl(node.attribs.href, host);
         referenceNode = this._addPreload(head, referenceNode, node.attribs.href, 'style');
       }
       node = node.nextSibling;
@@ -102,16 +92,6 @@ class RewriteAmpUrls {
     });
     insertAfter(parent, preload, node);
     return preload;
-  }
-
-  _isDynamicComponent(script) {
-    if (!script || !script.attribs || script.tagName !== 'script') {
-      return false;
-    }
-
-    return Object.keys(AMP_DYNAMIC_COMPONENTS).some((type) => {
-      return script.attribs[type] && AMP_DYNAMIC_COMPONENTS[type].includes(script.attribs[type]);
-    });
   }
 }
 
