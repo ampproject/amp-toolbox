@@ -24,7 +24,7 @@ function calculateHost({
   ampUrlPrefix = AMP_CACHE_HOST,
   ampRuntimeVersion,
 }) {
-  if (ampRuntimeVersion && ampUrlPrefix === AMP_CACHE_HOST) {
+  if (ampRuntimeVersion) {
     ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, ampRuntimeVersion);
   }
   return ampUrlPrefix;
