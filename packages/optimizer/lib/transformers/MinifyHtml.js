@@ -115,7 +115,7 @@ class MinifyHtml {
 
   minifyScriptNode(node, opts) {
     const isJson = this.isJson(node);
-    const isAmpScript = this.isInlineAmpScript(node);
+    const isAmpScript = !isJson && this.isInlineAmpScript(node);
     for (const child of node.children || []) {
       if (!child.data) {
         continue;
@@ -162,11 +162,14 @@ class MinifyHtml {
   }
 
   canCollapseWhitespace(tagName) {
-    return !/^(?:script|style|pre|textarea)$/.test(tagName);
+    return 'script' !== tagName &&
+      'style' !== tagName &&
+      'pre' !== tagName &&
+      'textarea' !== tagName;
   }
 
   canTrimWhitespace(tagName) {
-    return !/^(?:pre|textarea)$/.test(tagName);
+    return tagName !== 'pre' && tagName !== 'textarea';
   }
 }
 
