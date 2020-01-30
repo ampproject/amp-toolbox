@@ -50,7 +50,7 @@ class TreeParser {
         }
       }, this.options);
       const parser = new Parser(handler);
-      parser.write(html);
+      parser.write(html.trim());
       parser.end();
     });
   }

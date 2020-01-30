@@ -43,7 +43,7 @@ class MinifyHtml {
       collapseWhitespace: true,
       removeComments: true,
       canCollapseWhitespace: true,
-      inBody: true,
+      inBody: false,
       commentIgnorePattern: COMMENT_DEFAULT_IGNORE,
     };
     this.log = config.log.tag('MinifyHtml');
@@ -75,10 +75,10 @@ class MinifyHtml {
     if (opts.canCollapseWhitespace && !this.canCollapseWhitespace(node.tagName)) {
       childOpts.canCollapseWhitespace = false;
     }
-    if (node.tagName === 'head' || node.tagName === 'html') {
+    if (node.tagName === 'head' ||
+          node.tagName === 'html') {
       childOpts.inBody = false;
-    }
-    if (node.tagName === 'body') {
+    } else if (node.tagName === 'body') {
       childOpts.inBody = true;
     }
     // minify all child nodes
