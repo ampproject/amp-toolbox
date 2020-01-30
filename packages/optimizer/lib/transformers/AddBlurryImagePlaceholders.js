@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+const isDependencyInstalled = require('../isDependencyInstalled');
+
 const {createElement, appendChild, nextNode, firstChildByTag} = require('../NodeUtils');
 const {URL} = require('url');
 
@@ -36,15 +38,6 @@ const ESCAPE_TABLE = {
 const ESCAPE_REGEX = new RegExp(Object.keys(ESCAPE_TABLE).join('|'), 'g');
 function escaper(match) {
   return ESCAPE_TABLE[match];
-}
-
-function isDependencyInstalled(dependency) {
-  try {
-    require.resolve(dependency);
-    return true;
-  } catch (err) {
-    return false;
-  }
 }
 
 /**

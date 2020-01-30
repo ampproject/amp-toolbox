@@ -23,6 +23,9 @@
     },
     "lru-cache": {
       "optional": true
+    },
+    "probe-image-size": {
+      "optional": true
     }
   },
   "dependencies": {

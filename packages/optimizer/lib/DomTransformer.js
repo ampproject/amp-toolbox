@@ -27,6 +27,9 @@ const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeV
 const TRANSFORMATIONS_AMP_FIRST = [
   // Adds missing AMP tags
   'AddMandatoryTags',
+  // Optional Markdown compatibility
+  // needs to run before ServerSideRendering
+  'Markdown',
   // Adds missing AMP extensions
   'AutoExtensionImporter',
   // Applies server-side-rendering optimizations
