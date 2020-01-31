@@ -66,10 +66,11 @@ class Markdown {
     let node = body;
     const promises = [];
     while (node) {
+      const tmpNode = nextNode(node);
       if (node.tagName === 'img') {
         promises.push(this.transformImg(node));
       }
-      node = nextNode(node);
+      node = tmpNode;
     }
     return Promise.all(promises);
   }
