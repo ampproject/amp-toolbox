@@ -1,4 +1,4 @@
-## 2.0.0-alpha.4 (2020-01-28)
+## 2.0.0-alpha.6 (2020-01-30)
 
 Migration notes:
 
@@ -38,11 +38,14 @@ Migration notes:
   * [#573](https://github.com/ampproject/amp-toolbox/pull/573) Auto inject missing AMP boilerplate ([@sebastianbenz](https://github.com/sebastianbenz))
 * `optimizer`
   * [#569](https://github.com/ampproject/amp-toolbox/pull/569) Add AutoExtensionImporter ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#596](https://github.com/ampproject/amp-toolbox/pull/596)  Add Markdown transformer ([@sebastianbenz](https://github.com/sebastianbenz))
 * `cors`
   * [#542](https://github.com/ampproject/amp-toolbox/pull/542) Remove AMP-Redirect-To from access-control-expose-headers for email ([@fstanis](https://github.com/fstanis))
 
 #### :bug: Bug Fix
 * `optimizer`
+  * [#591](https://github.com/ampproject/amp-toolbox/pull/591) Only trim whitespace in head ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#590](https://github.com/ampproject/amp-toolbox/pull/590) AutoExtensionImporter: fix amp-carousel adding amp-lightbox-gallery ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#581](https://github.com/ampproject/amp-toolbox/pull/581) Fix: Empty <amp-experiment> blocks boilerplate removal ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#580](https://github.com/ampproject/amp-toolbox/pull/580) Fix: ReorderHead priorities ([@sebastianbenz](https://github.com/sebastianbenz))
 
