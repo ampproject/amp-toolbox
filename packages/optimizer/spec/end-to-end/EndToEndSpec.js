@@ -20,7 +20,15 @@ const log = require('../../lib/log.js');
 const {DomTransformer, TRANSFORMATIONS_PAIRED_AMP} = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock.sandbox()
+    .mock('https://cdn.ampproject.org/rtv/metadata', {
+      'ampRuntimeVersion': '012003101714470',
+      'ampCssUrl': 'https://cdn.ampproject.org/rtv/012003101714470/v0.css',
+      'ltsRuntimeVersion': '012002251816300',
+      'ltsCssUrl': 'https://cdn.ampproject.org/rtv/012002251816300/v0.css',
+    })
+    .mock('https://cdn.ampproject.org/rtv/012002251816300/v0.css', '/* v0.css */')
     .mock('https://cdn.ampproject.org/rtv/123456789000000/v0.css', '/* v0.css */')
+    .mock('https://cdn.ampproject.org/rtv/012003101714470/v0.css', '/* v0.css */')
     .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
 
 

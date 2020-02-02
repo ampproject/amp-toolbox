@@ -18,8 +18,6 @@
 const treeParser = require('./TreeParser');
 const log = require('./log');
 const {oneBehindFetch} = require('@ampproject/toolbox-core');
-const validatorRules = require('@ampproject/toolbox-validator-rules');
-const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
@@ -94,7 +92,6 @@ const DEFAULT_CONFIG = {
   fetch: oneBehindFetch,
   log,
   transformations: TRANSFORMATIONS_AMP_FIRST,
-  validatorRules,
   verbose: false,
 };
 
@@ -128,8 +125,11 @@ class DomTransformer {
    * @param {Tree} tree - a DOM tree.
    * @param {Object} params - a dictionary containing transformer specific parameters.
    */
-  transformTree(tree, params) {
+  async transformTree(tree, params) {
     params = params || {};
+    await this.initRuntimeData(params);
+    console.log('params', params);
+
     log.verbose(params.verbose || false);
     const sequence = async (promise, transformer) => {
       await promise;
@@ -145,13 +145,9 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
-    config = Object.assign({}, DEFAULT_CONFIG, config);
-    if (!config.runtimeVersion) {
-    // Re-use custom fetch implementation for runtime version provider
-      config.runtimeVersion = new RuntimeVersion(config.fetch);
-    }
-    log.verbose(config.verbose);
-    this.initTransformers_(config);
+    this.config = Object.assign({}, DEFAULT_CONFIG, config);
+    log.verbose(this.config.verbose);
+    this.initTransformers_(this.config);
   }
 
   /**
