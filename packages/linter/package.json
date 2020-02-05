@@ -26,9 +26,6 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "engines": {
-    "node": "8.x.x"
-  },
   "files": [
     "dist"
   ],
