@@ -23,22 +23,11 @@ const {
 function calculateHost({
   ampUrlPrefix = AMP_CACHE_HOST,
   ampRuntimeVersion,
-  rewriteDynamicComponents,
 }) {
-  if (ampRuntimeVersion && ampUrlPrefix === AMP_CACHE_HOST) {
+  if (ampRuntimeVersion) {
     ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, ampRuntimeVersion);
   }
-  let dynamicAmpUrlPrefix = ampUrlPrefix;
-  if (rewriteDynamicComponents === false) {
-    dynamicAmpUrlPrefix = AMP_CACHE_HOST;
-    if (ampRuntimeVersion) {
-      dynamicAmpUrlPrefix = appendRuntimeVersion(dynamicAmpUrlPrefix, ampRuntimeVersion);
-    }
-  }
-  return {
-    dynamicAmpUrlPrefix,
-    ampUrlPrefix,
-  };
+  return ampUrlPrefix;
 }
 
 module.exports = {
