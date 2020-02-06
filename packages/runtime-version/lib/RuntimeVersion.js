@@ -20,7 +20,7 @@ const log = require('@ampproject/toolbox-core').log.tag('AMP Runtime Version');
 const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
 
 /**
- * Queries https://cdn.ampproject.org/rtv/metadata for the lastest AMP runtime version. Uses a
+ * Queries https://cdn.ampproject.org/rtv/metadata for the latest AMP runtime version. Uses a
  * stale-while-revalidate caching strategy to avoid refreshing the version.
  *
  * More details: https://cdn.ampproject.org/rtv/metadata returns the following metadata:
@@ -41,7 +41,7 @@ const RUNTIME_METADATA_ENDPOINT = 'https://cdn.ampproject.org/rtv/metadata';
  *  where:
  *
  *  <ul>
- *    <li> CURRENT_OPTION: is when you go to https://cdn.ampproject.org/experiments.html and toggle "dev-channel". It's the earliest possible time to get new code.</li>
+ *    <li> CURRENT_OPTIN: is when you go to https://cdn.ampproject.org/experiments.html and toggle "dev-channel". It's the earliest possible time to get new code.</li>
  *    <li> CURRENT_1%: 1% is the same code as opt-in that we're now comfortable releasing to 1% of the population.</li>
  *    <li> CURRENT_CONTROL is the same thing as production, but with a different URL. This is to compare experiments against, since prod's immutable caching would affect metrics.</li>
  *  </ul>
