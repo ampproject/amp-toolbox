@@ -60,6 +60,7 @@ class AutoExtensionImporter {
     this.enabled = config.autoExtensionImport !== false;
     this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AutoExtensionImporter');
+    this.experimentBindAttributeEnabled = config.experimentBindAttribute === true;
 
     // We use the validation rules to infer extension imports. The rules are downloaded once and for
     // efficency, we initially extract all needed rules
@@ -268,30 +269,33 @@ class AutoExtensionImporter {
     ) {
       allRequiredExtensions.add('amp-bind');
     }
-    // Rewrite short-form `bindtext` to `data-amp-bind-text`
+
+    // EXPERIMENTAL FEATURE: Rewrite short-form `bindtext` to `data-amp-bind-text`
     // to avoid false-positives we check for each tag only the
     // supported bindable attributes (e.g. for a div only bindtext, but not bindvalue).
-    const ampBindAttrs = tagToBindAttributeMapping.get(node.tagName);
-    // true if we need to import amp-bind
-    let usesAmpBind = false;
-    for (const attributeName of attributeNames) {
-      if (!attributeName.startsWith(BIND_SHORT_FORM_PREFIX)) {
-        continue;
-      }
-      const attributeNameWithoutBindPrefix =
-        attributeName.substring(BIND_SHORT_FORM_PREFIX.length);
+    if (this.experimentBindAttributeEnabled) {
+      const ampBindAttrs = tagToBindAttributeMapping.get(node.tagName);
+      // true if we need to import amp-bind
+      let usesAmpBind = false;
+      for (const attributeName of attributeNames) {
+        if (!attributeName.startsWith(BIND_SHORT_FORM_PREFIX)) {
+          continue;
+        }
+        const attributeNameWithoutBindPrefix =
+          attributeName.substring(BIND_SHORT_FORM_PREFIX.length);
 
-      // Rename attribute from bindx to data-amp-bind-x
-      if (ampBindAttrs.has(attributeNameWithoutBindPrefix)) {
-        const newAttributeName =
+        // Rename attribute from bindx to data-amp-bind-x
+        if (ampBindAttrs.has(attributeNameWithoutBindPrefix)) {
+          const newAttributeName =
             `${AMP_BIND_DATA_ATTRIBUTE_PREFIX}${attributeNameWithoutBindPrefix}`;
-        node.attribs[newAttributeName] = node.attribs[attributeName];
-        delete node.attribs[attributeName];
-        usesAmpBind = true;
+          node.attribs[newAttributeName] = node.attribs[attributeName];
+          delete node.attribs[attributeName];
+          usesAmpBind = true;
+        }
+        if (usesAmpBind) {
+          allRequiredExtensions.add('amp-bind');
+        }
       }
-    }
-    if (usesAmpBind) {
-      allRequiredExtensions.add('amp-bind');
     }
   }
 
