@@ -82,7 +82,7 @@ AMP Optimizer supports converting Markdown to AMPHTML. A typical conversion flow
 README.md => HTML => AMP Optimizer => valid AMP
 ```
 
-If markdown mode is enabled via `markdown: true`, AMP Optimizer will convert `<img>` tags into
+If Markdown mode is enabled via `markdown: true`, AMP Optimizer will convert `<img>` tags into
 either `amp-img` or `amp-anim` tags. All other Markdown features are
 already supported by AMP. AMP Optimizer will try to resolve image
 dimensions from the actual files. Images larger than 320px will automatically
@@ -115,7 +115,7 @@ const ampOptimizer = AmpOptimizer.create({
 const markdown = `
 # Markdown 🤯
 
-Here is an image declared in markdown syntax: 
+Here is an image declared in Markdown syntax: 
 
 ![A random image](https://unsplash.it/800/600).
 
@@ -141,7 +141,44 @@ You can find a working sample [here](demo/markdown/).
 
 ### Custom transformations
 
-It's very easy to add custom HTML transformations on top of AMP Optimizer.  Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
+It's very easy to add custom HTML transformations on top of AMP Optimizer:
+
+```
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+const {createElement, firstChildByTag, appendChild} = AmpOptimizer.NodeUtils;
+
+class CustomTransformer {
+  constructor(config) {
+    this.log_ = config.log.tag('CUSTOM');
+  }
+  transform(tree, params) {
+    this.log_.info('Running custom transformation for ', params.filePath);
+    const html = firstChildByTag(tree, 'html');
+    if (!html) return;
+    const head = firstChildByTag(html, 'head');
+    if (!head) return;
+    const desc = createElement('meta', {
+      name: 'description',
+      content: 'this is just a demo',
+    });
+    appendChild(head, desc);
+  }
+}
+
+// it's best to run custom transformers first
+const customTransformations = [CustomTransformer, ...AmpOptimizer.TRANSFORMATIONS_AMP_FIRST];
+
+// pass custom transformers when creating the optimizer
+const optimizer = AmpOptimizer.create({
+  transformations: customTransformations,
+});
+// you can add custom parameters on a per document basis
+const transformedHtml = await optimizer.transformHtml(html, {
+  filePath,
+});
+```
+
+Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
 
 ### CLI
 
@@ -157,8 +194,6 @@ The biggest performance gain results from [removing the AMP boilerplate code](ht
 
 * if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
 * if an AMP component uses the `media`, `sizes` or `heights` attribut ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
-
-* if an AMP component uses the `intrinsic` layout. The good news is: support for `intrinsic` layout is currently [work in progress](https://github.com/ampproject/amp-toolbox/issues/264).
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
