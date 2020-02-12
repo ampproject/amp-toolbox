@@ -44,5 +44,9 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer",
-  "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f"
+  "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f",
+  "devDependencies": {
+    "markdown-it": "^10.0.0",
+    "probe-image-size": "^5.0.0"
+  }
 }

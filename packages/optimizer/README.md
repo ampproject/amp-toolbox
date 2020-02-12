@@ -1,12 +1,13 @@
 # AMP Optimizer
 
 [![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer)
+[![changelog](https://img.shields.io/badge/Changelog-2.0-%235500d7)](CHANGELOG.md)
 
-AMP Optimizer is a tool to server-side enhance the rendering performance of AMP pages. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
+AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering performance. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
 * Server-side render AMP layouts.
-* Automatically import all missing AMP Extensions.
-* Automaticallly add any missing mandatary AMP tags.
+* **Automatically import all missing AMP Extensions**.
+* **Automaticallly add any missing mandatary AMP tags**.
 * Remove the AMP boilerplate (when possible).
 * Inline critical CSS.
 * Speed-up AMP framework and custom font loading.
@@ -35,28 +36,120 @@ const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
 const ampOptimizer = AmpOptimizer.create();
 
-// It's possible to pass incomplete documents and AMP Optimizer will add any 
-// missing tags required by a valid AMP document.
 const originalHtml = `
-  <h1>Hello World!</h1>
-  <amp-twitter width="375" height="472" layout="responsive" data-tweetid="1182321926473162752"></amp-twitter>
-`;
+<!doctype html>
+<html ⚡>
+  ...
+</html>`;
 
 ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
   console.log(optimizedHtml);
 });
-
 ```
 
 You can find a sample implementation [here](demo/simple/). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](../optimizer-express).
+
+### Incomplete markup
+
+It's possible to pass incomplete documents and AMP Optimizer will add any 
+missing tags and extension imports required by a valid AMP document. 
+
+```
+const originalHtml = `
+  <h1>Hello World!</h1>
+  <amp-twitter width="375" 
+               height="472" 
+               layout="responsive" 
+               data-tweetid="1182321926473162752">
+  </amp-twitter>
+`;
+
+// you can pass the canonical URL, default is `.`
+const opts = {
+  canonical: '/example.html'
+}
+ampOptimizer.transformHtml(originalHtml, params).then((optimizedHtml) => {
+  // optimizedHtml will be a valid AMP document
+  console.log(optimizedHtml);
+});
+```
+
+### Markup support
+
+AMP Optimizer supports converting Markdown to AMPHTML. A typical conversion flow would be:
+
+```
+README.md => HTML => AMP Optimizer => valid AMP
+```
+
+If markdown mode is enabled via `markdown: true`, AMP Optimizer will convert `<img>` tags into
+either `amp-img` or `amp-anim` tags. All other Markdown features are
+already supported by AMP. AMP Optimizer will try to resolve image
+dimensions from the actual files. Images larger than 320px will automatically
+get an intrinsic layout. 
+
+You can pass an additional option `imageBasePath` to specifies a base path used to resolve an image during build,
+this can be a file system path or URL prefix.
+
+**Important:** for image size detection to work, an optional dependency
+`probe-image-size` needs to be installed via NPM.
+
+```
+npm install probe-image-size --save-dev
+```
+
+Example:
+
+```
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+const md = require('markdown-it')({
+  // don't sanitize html if you want to support AMP components in Markdown
+  html: true,
+});
+
+// enable markdown mode
+const ampOptimizer = AmpOptimizer.create({
+  markdown: true,
+});
+
+const markdown = `
+# Markdown 🤯
+
+Here is an image declared in markdown syntax: 
+
+![A random image](https://unsplash.it/800/600).
+
+You can also use directly use AMP components:
+
+<amp-twitter width="375" 
+             height="472" 
+             layout="responsive" 
+             data-tweetid="1182321926473162752">
+</amp-twitter>
+
+Any missing extensions will be automatically imported.
+`;
+
+const html = md.render(markdown);
+
+const amphtml = await ampOptimizer.transformHtml(html, {
+  canonical: filePath,
+});
+```
+
+You can find a working sample [here](demo/markdown/).
+
+### Custom transformations
+
+It's very easy to add custom HTML transformations on top of AMP Optimizer.  Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
+
+### CLI
 
 There's also a [command line version](../cli/README.md) available:
 
 ```shell
 $ npx @ampproject/toolbox-cli myFile.html
 ```
-
-Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
 
 ## Why doesn't my AMP page render faster?
 
