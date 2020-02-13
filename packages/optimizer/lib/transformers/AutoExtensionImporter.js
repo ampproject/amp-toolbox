@@ -200,13 +200,44 @@ class AutoExtensionImporter {
       const customElement = this.getCustomElement_(node);
       if (customElement) {
         existingImports.add(customElement);
-      }
-      // Explicitly detect amp-access via the script tag in the header
+      } else
+      // Explicitly detect amp-access via the script tag in the header to be able to handle amp-access extensions
       if (node.tagName === 'script' && node.attribs['id'] === 'amp-access') {
         extensionsToImport.add('amp-access');
+        extensionsToImport.add('amp-analytics');
+        const jsonData = this.getJson(node);
+        if (jsonData.vendor === 'laterpay') {
+          extensionsToImport.add('amp-access-laterpay');
+        }
+      // Explicitly detect amp-subscriptions via the script tag in the header to be able to handle amp-subscriptions extensions
+      } else if (node.tagName === 'script' && node.attribs['id'] === 'amp-subscriptions') {
+        extensionsToImport.add('amp-subscriptions');
+        extensionsToImport.add('amp-analytics');
+        const jsonData = this.getJson(node);
+        if (jsonData.services && jsonData.services.length) {
+          for (const service of jsonData.services) {
+            if (service.serviceId === 'subscribe.google.com') {
+              extensionsToImport.add('amp-subscriptions-google');
+            }
+          }
+        }
       }
       node = nextNode(node);
     }
+  }
+
+  getJson(node) {
+    for (const child of (node.children || [])) {
+      if (!child.data) {
+        continue;
+      }
+      try {
+        return JSON.parse(child.data);
+      } catch (error) {
+        this.log_.error('Could not parse JSON in <script id="amp-access">', error.message);
+      }
+    }
+    return {};
   }
 
   /**
