@@ -51,7 +51,8 @@ function escaper(match) {
  * This transformer supports the following option:
  *
  * * `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
- * * `imageBasePath`: specifies a base path used to resolve an image during build.
+ * * `imageBasePath`: specifies a base path used to resolve an image during build. You can
+ *    also pass a function `(imgSrc, params) => '../img/' + imgSrc` for calculating the image path.
  * * `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
  * * `blurredPlaceholdersCacheSize`: Specifies the max number of blurred images to be cached
  *   to avoid expensive recalculation. Set to 0 if caching should be disabled. Set to -1 if
@@ -111,7 +112,7 @@ class AddBlurryImagePlaceholders {
    * @return {Array} An array of promises that all represents the resolution of
    * a blurred placeholder being added in an appropriate place.
    */
-  transform(root) {
+  transform(root, params) {
     // Check if placeholders should be generated
     if (!this.blurredPlaceholders_) {
       return;
@@ -136,7 +137,7 @@ class AddBlurryImagePlaceholders {
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
-        const promise = this.addBlurryPlaceholder_(src).then((img) => {
+        const promise = this.addBlurryPlaceholder_(src, params).then((img) => {
           node.attribs.noloading = '';
           appendChild(node, img);
         });
@@ -160,7 +161,7 @@ class AddBlurryImagePlaceholders {
    * placeholder itself.
    * @private
    */
-  async addBlurryPlaceholder_(src) {
+  async addBlurryPlaceholder_(src, params) {
     const img = createElement('img', {
       class: 'i-amphtml-blurry-placeholder',
       placeholder: '',
@@ -168,7 +169,7 @@ class AddBlurryImagePlaceholders {
       alt: '',
     });
     try {
-      const dataURI = await this.getCachedDataURI(src);
+      const dataURI = await this.getCachedDataURI(src, params);
       let svg = `<svg xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       viewBox="0 0 ${dataURI.width} ${dataURI.height}">
@@ -202,8 +203,8 @@ class AddBlurryImagePlaceholders {
   /**
    * Returns a cached dataURI if exists, otherwise creates a new one.
    */
-  getCachedDataURI(src) {
-    const resolvedSrc = this.pathResolver_.resolve(src);
+  getCachedDataURI(src, params) {
+    const resolvedSrc = this.pathResolver_.resolve(src, params);
     if (this.cache_) {
       const dataURIPromise = this.cache_.get(resolvedSrc);
       if (dataURIPromise) {
