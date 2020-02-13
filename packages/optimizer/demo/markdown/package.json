@@ -1,0 +1,10 @@
+{
+  "name": "markdown",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AMP Optimizer supports converting Markdown to AMPHTML.",
+  "devDependencies": {
+    "markdown-it": "10.0.0",
+    "probe-image-size": "5.0.0"
+  }
+}

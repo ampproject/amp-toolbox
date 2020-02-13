@@ -78,7 +78,7 @@ async function customAmpTransformation(filePath, html) {
   }
 
   // it's best to run custom transformers first
-  const customTransformations = [CustomTransformer].concat(AmpOptimizer.TRANSFORMATIONS_AMP_FIRST);
+  const customTransformations = [CustomTransformer, ...AmpOptimizer.TRANSFORMATIONS_AMP_FIRST];
 
   // pass custom transformers when creating the optimizer
   const optimizer = AmpOptimizer.create({
