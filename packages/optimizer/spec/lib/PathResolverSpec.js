@@ -47,6 +47,21 @@ describe('PathResolver', () => {
       expect(resolvePath('../img/', 'page.html?query=true')).toEqual(resolve('../img/page.html'));
     });
   });
+  describe('callback', () => {
+    it('gets called with params and path', () => {
+      const params = {something: 'value'};
+      let actualPath; let actualParams;
+      const callback = (path, params) => {
+        actualPath = path;
+        actualParams = params;
+        return 'test.txt';
+      };
+      const result = new PathResolver(callback).resolve('file.txt', params);
+      expect(result).toEqual('test.txt');
+      expect(actualPath).toEqual('file.txt');
+      expect(actualParams).toEqual(params);
+    });
+  });
 });
 
 function resolvePath(base, path) {

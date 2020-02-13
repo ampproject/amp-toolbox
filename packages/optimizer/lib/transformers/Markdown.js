@@ -42,7 +42,9 @@ const LAYOUT_MIN_WIDTH = 320; // minimum mobile device screen width
  *
  * - `markdown [Boolean]`: enables Markdown HTML support. Default is `false`.
  * - `imageBasePath`: specifies a base path used to resolve an image during build,
- *   this can be a file system path or URL prefix.
+ *   this can be a file system path or URL prefix.You can also pass a function
+ *   `(imgSrc, params) => '../img/' + imgSrc` for dynamically calculating the image path.
+
  */
 class Markdown {
   constructor(config) {
@@ -51,7 +53,7 @@ class Markdown {
     // used for resolving image files
     this.pathResolver = new PathResolver(config.imageBasePath);
   }
-  async transform(tree) {
+  async transform(tree, params) {
     if (!this.enabled) {
       return;
     }
@@ -68,19 +70,19 @@ class Markdown {
     while (node) {
       const tmpNode = nextNode(node);
       if (node.tagName === 'img') {
-        promises.push(this.transformImg(node));
+        promises.push(this.transformImg(node, params));
       }
       node = tmpNode;
     }
     return Promise.all(promises);
   }
 
-  async transformImg(imgNode) {
+  async transformImg(imgNode, params) {
     const src = imgNode.attribs && imgNode.attribs.src;
     if (!src) {
       return;
     }
-    const resolvedSrc = this.pathResolver.resolve(src);
+    const resolvedSrc = this.pathResolver.resolve(src, params);
     let dimensions;
     try {
       dimensions = await fetchImageDimensions(resolvedSrc);

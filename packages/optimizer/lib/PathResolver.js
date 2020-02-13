@@ -22,21 +22,19 @@ const DUMMY_HOST = 'https://example.com';
 
 /**
  * Resolves a given URL / path against an optional base. The base can either specify an URL or
- * a relative filesystem path.
+ * a relative filesystem path. It's also possible to pass a function for calculating the image
+ * path.
  */
 class PathResolver {
   /**
    * Create a PathResolver.
-   * @param {string}  [base=''] - relative path or base URL
+   * @param {string|function}  [base=''] - relative path or base URL
    */
   constructor(base='') {
-    this.base_ = base;
-    try {
-      new URL(base);
-      this.baseSpecifiesHost_ = true;
-    } catch (_) {
-      // base is not a valid host
-      this.baseSpecifiesHost_ = false;
+    if (typeof base === 'function') {
+      this.implementation = base;
+    } else {
+      this.implementation = this.createStaticResolver(base);
     }
   }
 
@@ -44,22 +42,36 @@ class PathResolver {
    * Resolves the given path against the base.
    *
    * @param {string} path - an absolute or relative URL
+   * @param {Object} params - the params object getting passed when calling ampOptimizer.transformHtml(html, params)
    * @returns {string}
    */
-  resolve(path) {
+  resolve(path, params) {
+    return this.implementation(path, params);
+  }
+
+  createStaticResolver(base) {
+    let baseSpecifiesHost = false;
     try {
-      if (this.baseSpecifiesHost_) {
-        return new URL(path, this.base_).toString();
-      } else {
-        return new URL(path).toString();
-      }
+      new URL(base);
+      baseSpecifiesHost = true;
     } catch (_) {
-      // path and base specify a relative path
+      // base is not a valid host
     }
-    // remove query params to be able to find a file on the local filesystem
-    path = new URL(path, DUMMY_HOST).pathname.substring(1);
-    // resolve path to make debugging easier in case a file cannot be found locally
-    return resolve(join(this.base_, path));
+    return (path) => {
+      try {
+        if (baseSpecifiesHost) {
+          return new URL(path, base).toString();
+        } else {
+          return new URL(path).toString();
+        }
+      } catch (_) {
+      // path and base specify a relative path
+      }
+      // remove query params to be able to find a file on the local filesystem
+      path = new URL(path, DUMMY_HOST).pathname.substring(1);
+      // resolve path to make debugging easier in case a file cannot be found locally
+      return resolve(join(base, path));
+    };
   }
 }
 
