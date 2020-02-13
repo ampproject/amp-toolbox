@@ -6,12 +6,11 @@
 AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering performance. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
 * Server-side render AMP layouts.
-* **Automatically import all missing AMP Extensions**.
+* **Automatically import all missing AMP component scripts**.
 * **Automaticallly add any missing mandatary AMP tags**.
 * Remove the AMP boilerplate (when possible).
-* Inline critical CSS.
-* Speed-up AMP framework and custom font loading.
 * Move CSS keyframe animations to the bottom of the page.
+* Optimize AMP framework and custom font loading
 * Generate CSP for inlined [`amp-script`](https://amp.dev/documentation/components/amp-script/) code.
 
 The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/). To give it a try, check out [the online playground](https://toolbox-optimizer.glitch.me/).
@@ -82,14 +81,11 @@ AMP Optimizer supports converting Markdown to AMPHTML. A typical conversion flow
 README.md => HTML => AMP Optimizer => valid AMP
 ```
 
-If Markdown mode is enabled via `markdown: true`, AMP Optimizer will convert `<img>` tags into
-either `amp-img` or `amp-anim` tags. All other Markdown features are
-already supported by AMP. AMP Optimizer will try to resolve image
-dimensions from the actual files. Images larger than 320px will automatically
-get an intrinsic layout. 
+The AMP Optimizer converts `<img>` tags into `<amp-img>` or `<amp-anim>` tags when in Markdown mode. Enable Markdown mode via `markdown : true`. AMP Optimizer will try to resolve image dimensions from the actual files. Images wider than 320px will automatically get an `intrinsic` layout.
 
-You can pass an additional option `imageBasePath` to specifies a base path used to resolve an image during build,
-this can be a file system path or URL prefix.
+All other Markdown features are already supported by AMP.
+
+You can pass an additional option `imageBasePath` to specify a base path used to resolve an image during build, this can be a file system path or URL prefix.
 
 **Important:** for image size detection to work, an optional dependency
 `probe-image-size` needs to be installed via NPM.
@@ -119,7 +115,7 @@ Here is an image declared in Markdown syntax:
 
 ![A random image](https://unsplash.it/800/600).
 
-You can also use directly use AMP components:
+You can directly declare AMP components:
 
 <amp-twitter width="375" 
              height="472" 
@@ -141,7 +137,7 @@ You can find a working sample [here](demo/markdown/).
 
 ### Custom transformations
 
-It's very easy to add custom HTML transformations on top of AMP Optimizer:
+AMP Optimizer supports custom HTML transformations:
 
 ```
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
@@ -193,7 +189,7 @@ $ npx @ampproject/toolbox-cli myFile.html
 The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:
 
 * if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
-* if an AMP component uses the `media`, `sizes` or `heights` attribut ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
+* if an AMP component uses the `media`, `sizes` or `heights` attribute ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
