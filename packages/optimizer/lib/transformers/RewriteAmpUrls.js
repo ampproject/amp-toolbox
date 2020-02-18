@@ -67,6 +67,11 @@ class RewriteAmpUrls {
       }
       node = node.nextSibling;
     }
+
+    if (!this._usesAmpCacheUrl(host)) {
+      const versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
+      referenceNode = this._addMeta(head, referenceNode, 'runtime-host', versionlessHost);
+    }
   }
 
   _usesAmpCacheUrl(url) {
@@ -92,6 +97,12 @@ class RewriteAmpUrls {
     });
     insertAfter(parent, preload, node);
     return preload;
+  }
+
+  _addMeta(parent, node, name, content) {
+    const meta = createElement('meta', {name, content});
+    insertAfter(parent, meta, node);
+    return meta;
   }
 }
 
