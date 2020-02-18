@@ -12,7 +12,7 @@ function compare(
   actual: typeof expected
 ) {
   return Object.keys(expected).reduce((acc, k) => {
-    if (!actual[k]) {
+    if (typeof actual[k] === "undefined") {
       acc[k] = `expected: [${expected[k]}], actual: property missing`;
       return acc;
     } else if (expected[k] !== actual[k]) {
