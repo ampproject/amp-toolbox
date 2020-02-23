@@ -36,7 +36,7 @@
     "css": "2.2.4",
     "domhandler": "3.0.0",
     "domutils": "2.0.0",
-    "htmlparser2": "4.0.0",
+    "htmlparser2": "4.1.0",
     "normalize-html-whitespace": "1.0.0",
     "terser": "4.6.3"
   },
