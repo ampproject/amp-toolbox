@@ -15,7 +15,12 @@
  */
 'use strict';
 
-const {createElement, firstChildByTag, insertAfter} = require('../NodeUtils');
+const {
+  createElement,
+  firstChildByTag,
+  insertAfter,
+  insertBefore,
+} = require('../NodeUtils');
 const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
@@ -37,9 +42,13 @@ const {calculateHost} = require('../RuntimeHostHelper');
  *   URLs being re-written from `https://cdn.ampproject.org/v0.js` to
  *   `/amp/v0.js`. This option is experimental and not recommended.
  *
- * Both parameters are optional. If no option is provided, runtime URLs won't be
- * re-written. You can combine both parameters to rewrite AMP runtime URLs
- * to versioned URLs on a different origin.
+ * * `geoApiUrl`: specifies amp-geo API URL to use as a fallback when
+ *   amp-geo-0.1.js is served unpatched, i.e. when
+ *   {{AMP_ISO_COUNTRY_HOTPATCH}} is not replaced dynamically.
+ *
+ * All parameters are optional. If no option is provided, runtime URLs won't be
+ * re-written. You can combine `ampRuntimeVersion` and  `ampUrlPrefix` to
+ * rewrite AMP runtime URLs to versioned URLs on a different origin.
  *
  * This transformer also adds a preload header for the AMP runtime (v0.js) to trigger HTTP/2
  * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
@@ -68,9 +77,13 @@ class RewriteAmpUrls {
       node = node.nextSibling;
     }
 
+    // runtime-host and amp-geo-api meta tags should appear before the first script
     if (!this._usesAmpCacheUrl(host)) {
       const versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
-      referenceNode = this._addMeta(head, referenceNode, 'runtime-host', versionlessHost);
+      this._addMeta(head, 'runtime-host', versionlessHost);
+    }
+    if (params.geoApiUrl) {
+      this._addMeta(head, 'amp-geo-api', params.geoApiUrl);
     }
   }
 
@@ -99,10 +112,9 @@ class RewriteAmpUrls {
     return preload;
   }
 
-  _addMeta(parent, node, name, content) {
+  _addMeta(parent, name, content) {
     const meta = createElement('meta', {name, content});
-    insertAfter(parent, meta, node);
-    return meta;
+    insertBefore(parent, meta, firstChildByTag(parent, 'script'));
   }
 }
 

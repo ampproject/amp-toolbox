@@ -337,6 +337,30 @@ const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
 console.log(optimizedHtml);
 ```
 
+### Fallback API for amp-geo
+
+If the hosting environment for the AMP framework does not have the ability to [patch `{{AMP_ISO_COUNTRY_HOTPATCH}}` in `amp-geo.js`](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem) at delivery time, a fallback API can be specified.
+
+Example:
+```
+const ampOptimizer = require('@ampproject/toolbox-optimizer');
+
+// The input string
+const originalHtml = `
+<!doctype html>
+<html ⚡>
+...
+`;
+
+const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
+  // this will instruct amp-geo to fetch the user's country from an API
+  // which returns JSON in format: {"country": "de"}
+  geoApiUrl: 'https://example.com/geo'
+});
+
+console.log(optimizedHtml);
+```
+
 ## Development & Testing
 
 AMP Optimizer uses a snapshot based testing approach. To execute the tests, run in the project root:
