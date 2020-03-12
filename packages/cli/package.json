@@ -33,7 +33,7 @@
     "@ampproject/toolbox-optimizer": "^2.0.0",
     "@ampproject/toolbox-runtime-version": "^2.0.0",
     "@ampproject/toolbox-update-cache": "^2.0.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.5",
     "node-fetch": "2.6.0"
   },
   "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f"
