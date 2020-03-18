@@ -18,6 +18,7 @@
 const Terser = require('terser');
 const {remove} = require('../NodeUtils');
 const normalizeWhitespace = require('normalize-html-whitespace');
+const htmlEscape = require('../htmlEscape');
 
 // Ignore comments of the form <!-- __AAAA_BBBB___ --> by default (used by Next.js)
 const COMMENT_DEFAULT_IGNORE = /^\s*__[a-bA-Z0-9_-]+__\s*$/;
@@ -143,7 +144,9 @@ class MinifyHtml {
 
   minifyJson(child) {
     try {
-      child.data = JSON.stringify(JSON.parse(child.data), null, '');
+      let jsonString = JSON.stringify(JSON.parse(child.data), null, '');
+      jsonString = htmlEscape(jsonString);
+      child.data = jsonString;
     } catch (e) {
       // log invalid JSON, but don't fail
       this.log.warn('Invalid JSON', child.data);
