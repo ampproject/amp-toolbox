@@ -1,3 +1,28 @@
+## 2.0.1
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#622](https://github.com/ampproject/amp-toolbox/pull/622) optimizer: Add meta tags for singleDoc self-host ([@mdmower](https://github.com/mdmower))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#649](https://github.com/ampproject/amp-toolbox/pull/649) Encode JSON values ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#618](https://github.com/ampproject/amp-toolbox/pull/618) Fix: auto extension import amp-access-laterpay & amp-subscriptions-google ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`
+  * [#626](https://github.com/ampproject/amp-toolbox/pull/626) Test explicitly for existance of value ([@dritter](https://github.com/dritter))
+
+#### :house: Internal
+* `cli`, `lighthouse-plugin-amp`, `linter`, `optimizer`
+  * [#648](https://github.com/ampproject/amp-toolbox/pull/648) update dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+* Other
+  * [#624](https://github.com/ampproject/amp-toolbox/pull/624) Update dependency nock to v12 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#625](https://github.com/ampproject/amp-toolbox/pull/625) Update dependency @ampproject/rollup-plugin-closure-compiler to v0.22.2 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 3
+- Dominik Ritter ([@dritter](https://github.com/dritter))
+- Matt Mower ([@mdmower](https://github.com/mdmower))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## 2.0.0
 
 Migration notes:
