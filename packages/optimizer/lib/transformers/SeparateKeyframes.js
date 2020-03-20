@@ -61,6 +61,9 @@ class SeparateKeyframes {
     const head = firstChildByTag(html, 'head');
     if (!head) return;
     const body = firstChildByTag(html, 'body') || head;
+    if (this.isAmpStory(body)) {
+      return;
+    }
     let stylesCustomTag;
     let stylesKeyframesTag;
 
@@ -196,6 +199,10 @@ class SeparateKeyframes {
   logInvalid(name, property) {
     this.log_.warn(`Found invalid keyframe property '${
       property}' in '${name}' not moving to style[amp-keyframes]`);
+  }
+
+  isAmpStory(body) {
+    return body.children.some((child) => child.tagName === 'amp-story');
   }
 }
 
