@@ -15,9 +15,9 @@ Command-line (local build):
 ```sh
 # from the amp-toolbox root
 $ npm install
-$ npm run build # generates packages/linter/src/cli.js
+$ npm run build # generates packages/linter/dist/cli.js
 $ cd packages/linter
-$ node src/cli.js https://amp.dev/
+$ node dist/cli.js https://amp.dev/
 ```
 
 Command-line (from npm):
@@ -57,13 +57,12 @@ performed.
 
 These scripts can be invoked in the usual way by `npm run XXX` if `npm install`
 is run in this directory. They can also be invoked from the `amp-toolbox` root
-directory without installing locally by `lerna run --scope '*/toolbox-linter'
-XXX`. (lerna sets the `PATH` so that the required binaries are available.)
+directory without installing locally by `lerna run --scope '*/toolbox-linter' XXX`. (lerna sets the `PATH` so that the required binaries are available.)
 
 #### `build`
 
 Populates the `dist` directory with the appropriate `*.js` and `*.d.ts` files.
-Note that tests are *not* included. This script is intended to be used when
+Note that tests are _not_ included. This script is intended to be used when
 building the npm package.
 
 #### `transpile`
