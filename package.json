@@ -32,7 +32,7 @@
     "babel-plugin-filter-imports": "4.0.0",
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
-    "fetch-mock": "9.2.1",
+    "fetch-mock": "9.3.1",
     "html-minifier": "4.0.0",
     "husky": "4.2.3",
     "jest": "25.1.0",
