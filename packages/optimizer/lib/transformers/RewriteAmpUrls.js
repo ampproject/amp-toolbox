@@ -112,9 +112,9 @@ class RewriteAmpUrls {
     return preload;
   }
 
-  _addMeta(parent, name, content) {
+  _addMeta(head, name, content) {
     const meta = createElement('meta', {name, content});
-    insertBefore(parent, meta, firstChildByTag(parent, 'script'));
+    insertBefore(head, meta, firstChildByTag(head, 'script'));
   }
 }
 

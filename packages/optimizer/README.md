@@ -339,7 +339,13 @@ console.log(optimizedHtml);
 
 ### Fallback API for amp-geo
 
-If the hosting environment for the AMP framework does not have the ability to [patch `{{AMP_ISO_COUNTRY_HOTPATCH}}` in `amp-geo.js`](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem) at delivery time, a fallback API can be specified.
+Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched at delivery time to replace `{{AMP_ISO_COUNTRY_HOTPATCH}}` with the ISO 3166-1 alpha-2 country code where the request originated ([reference](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem)). If your host does not have this capability, you can instead rely on a web API to return the country at runtime. The web API must be secure (HTTPS), adhere to [AMP CORS guidelines](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/), and return JSON in the following format:
+
+```
+{"country": "de"}
+```
+
+where in this example, `de` is the ISO 3166-1 alpha-2 country code for Germany.
 
 Example:
 ```
