@@ -21,7 +21,7 @@ const {loadUrlOrFile} = require('../lib/io');
 test('loads url', async () => {
   expect(
       await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world'),
-  ).toBe('{"hello":"world"}');
+  ).toBe('Requests must set content-type=application/json');
 });
 test('loads file', async () => {
   expect(
