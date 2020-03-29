@@ -16,6 +16,7 @@
 
 'use strict';
 
+const buildOptions = require('minimist-options');
 const minimist = require('minimist');
 const {log} = require('@ampproject/toolbox-core');
 
@@ -25,14 +26,39 @@ class Cli {
   }
 
   run(argv) {
-    const args = minimist(argv);
-    const command = args._[0] || 'help';
+    // First pass of minimist is just used to identify command
+    const command = minimist(argv)._[0] || 'help';
 
+    // Customize minimist options based on command
+    const minimistOptions = {};
+    switch (command) {
+      case 'download-framework':
+        Object.assign(minimistOptions, buildOptions({
+          clear: {
+            type: 'boolean',
+            default: true,
+          },
+          rtv: {
+            type: 'string',
+          },
+        }));
+      default:
+        break;
+    }
+
+    // Re-run minimist with param option handling
+    const args = minimist(argv, minimistOptions);
+
+    // Execute command with arguments
     switch (command) {
       case 'curls':
         return require('./cmds/curls')(args, this.logger_);
+      case 'download-framework':
+        return require('./cmds/downloadFramework')(args, this.logger_);
       case 'help':
         return require('./cmds/help')(args, this.logger_);
+      case 'lint':
+        return require('./cmds/lint')(argv, this.logger_);
       case 'optimize':
         const OptimizeCmd = require('./cmds/optimize.js');
         return new OptimizeCmd().run(args, this.logger_);
@@ -40,8 +66,6 @@ class Cli {
         return require('./cmds/runtimeVersion')(args, this.logger_);
       case 'update-cache':
         return require('./cmds/updateCache')(args, this.logger_);
-      case 'lint':
-        return require('./cmds/lint')(argv, this.logger_);
       case 'version':
         return require('./cmds/version')(args, this.logger_);
       default:
