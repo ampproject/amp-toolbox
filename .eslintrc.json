@@ -29,7 +29,7 @@
     "valid-jsdoc": 0,
     "prefer-arrow-callback": 1,
     "no-var": 1,
-    "no-undef": 1
+    "no-undef": "warn"
   },
   "env": {
     "node": true,
