@@ -23,7 +23,7 @@ List all known caches:
   const allCaches = await Caches.list();
 ```
 
-Which will return:
+Which will return an array similar to:
 
 ```
 [
@@ -36,22 +36,14 @@ Which will return:
     "thirdPartyFrameDomainSuffix": "ampproject.net"
   },
   {
-    "id": "cloudflare",
-    "name": "Cloudflare AMP Cache",
-    "docs": "https://amp.cloudflare.com/",
-    "cacheDomain": "amp.cloudflare.com",
-    "updateCacheApiDomainSuffix": "amp.cloudflare.com",
-    "thirdPartyFrameDomainSuffix": "cloudflareamp.net"
-  },
-  {
     "id": "bing",
     "name": "Bing AMP Cache",
     "docs": "https://www.bing.com/webmaster/help/bing-amp-cache-bc1c884c",
-    "cacheDomain": "bing-amp.com",
-    "updateCacheApiDomainSuffix": "bing-amp.com",
-    "thirdPartyFrameDomainSuffix": "bing-amp.net"
+    "cacheDomain": "www.bing-amp.com",
+    "updateCacheApiDomainSuffix": "www.bing-amp.com",
+    "thirdPartyFrameDomainSuffix": "www.bing-amp.net"
   }
-] 
+]
 ```
 
 Fetching info about a specific AMP cache via the cache id:
