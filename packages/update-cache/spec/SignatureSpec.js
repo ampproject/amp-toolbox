@@ -47,10 +47,11 @@ C8iytkhnemDhNLoBYVaO1tPRSXkyelek+8s3HeKe86Qvc1tbhNV9
 -----END RSA PRIVATE KEY-----
 `;
 
-const TEST_EXPECTED = 'Zgk0Fdq9EyoLK0Fspm4GLNfkpFxQRBgWuJyfj7cyDUGjdm9-OB9dK821aasvrF4lBl4dg8-T' +
-'0tO1AJynH0kAb3TaZNHrrI6ItgarhHO34EtkGH_g-h9VHbpNUO8lCcthK55TaUWTHLPgdSmztEuloOVxpQdauSOSqpShg-' +
-'1OqDXMyeaBqQETeb7rFF0VvyEkysWRkEaee-qrcinaeBEGIrHn5zw0Z3zhh8EBjCdgFBo8vYa3x2FXg5fPWLHLgUfQv1IN' +
-'51wf684vhJDJOP-tuS8I-DKa41gzDsH50V5rRB1f1H3tCN2L4toJ8hWOz1kco5kRDbwATXtGNBnet7q--A';
+const TEST_EXPECTED =
+  'Zgk0Fdq9EyoLK0Fspm4GLNfkpFxQRBgWuJyfj7cyDUGjdm9-OB9dK821aasvrF4lBl4dg8-T' +
+  '0tO1AJynH0kAb3TaZNHrrI6ItgarhHO34EtkGH_g-h9VHbpNUO8lCcthK55TaUWTHLPgdSmztEuloOVxpQdauSOSqpShg-' +
+  '1OqDXMyeaBqQETeb7rFF0VvyEkysWRkEaee-qrcinaeBEGIrHn5zw0Z3zhh8EBjCdgFBo8vYa3x2FXg5fPWLHLgUfQv1IN' +
+  '51wf684vhJDJOP-tuS8I-DKa41gzDsH50V5rRB1f1H3tCN2L4toJ8hWOz1kco5kRDbwATXtGNBnet7q--A';
 
 describe('Signature', () => {
   const signature = new Signature(PRIVATE_KEY);

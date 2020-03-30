@@ -27,35 +27,36 @@ describe('update-cache', () => {
   });
 
   it('Display Error if URL is missing', (done) => {
-    return updateCacheCmd({'_': []}, mockLogger)
-        .then(() => done(new Error('Expected Promise to be Rejected')))
-        .catch((err) => {
-          expect(err.message).toBe('Missing URL');
-          done();
-        });
+    return updateCacheCmd({_: []}, mockLogger)
+      .then(() => done(new Error('Expected Promise to be Rejected')))
+      .catch((err) => {
+        expect(err.message).toBe('Missing URL');
+        done();
+      });
   });
 
   it('Displays an Error if privateKey is unavailable', (done) => {
-    return updateCacheCmd({'_': ['', 'https://www.example.com']}, mockLogger)
-        .then(() => done(new Error('Expected Promise to be Rejected')))
-        .catch((err) => {
-          expect(err.message).toBe('./privateKey.pem does not exist');
-          done();
-        });
+    return updateCacheCmd({_: ['', 'https://www.example.com']}, mockLogger)
+      .then(() => done(new Error('Expected Promise to be Rejected')))
+      .catch((err) => {
+        expect(err.message).toBe('./privateKey.pem does not exist');
+        done();
+      });
   });
 
   it('Displays an Error if privateKey is invalid', (done) => {
     const args = {
-      '_': ['', 'https://www.example.com'],
-      'privateKey': __dirname + '/invalidKey.pem',
+      _: ['', 'https://www.example.com'],
+      privateKey: __dirname + '/invalidKey.pem',
     };
 
     return updateCacheCmd(args, mockLogger)
-        .then(() => done(new Error('Expected Promise to be Rejected')))
-        .catch((err) => {
-          expect(err.message)
-              .toBe('Error generating cache invalidation URL: init failed:not supported argument');
-          done();
-        });
+      .then(() => done(new Error('Expected Promise to be Rejected')))
+      .catch((err) => {
+        expect(err.message).toBe(
+          'Error generating cache invalidation URL: init failed:not supported argument'
+        );
+        done();
+      });
   });
 });

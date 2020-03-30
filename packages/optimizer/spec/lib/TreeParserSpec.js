@@ -76,15 +76,24 @@ describe('Tree Parser', () => {
             </body>
           </html>`);
       const expectedNodes = [
-        'undefined-root', 'undefined-directive',
-        'undefined-text', 'html-tag',
-        'undefined-text', 'head-tag',
-        'undefined-text', 'script-script',
-        'undefined-text', 'undefined-text',
-        'body-tag', 'undefined-text',
-        'p-tag', 'undefined-text',
-        'span-tag', 'undefined-text',
-        'undefined-text', 'undefined-text',
+        'undefined-root',
+        'undefined-directive',
+        'undefined-text',
+        'html-tag',
+        'undefined-text',
+        'head-tag',
+        'undefined-text',
+        'script-script',
+        'undefined-text',
+        'undefined-text',
+        'body-tag',
+        'undefined-text',
+        'p-tag',
+        'undefined-text',
+        'span-tag',
+        'undefined-text',
+        'undefined-text',
+        'undefined-text',
       ];
       expect(traverse(root)).toEqual(expectedNodes);
     });

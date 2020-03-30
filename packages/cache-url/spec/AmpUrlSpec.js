@@ -28,7 +28,6 @@ if (typeof window !== 'undefined') {
   createCurlsSubdomain = ampToolboxCacheUrl.createCurlsSubdomain;
 }
 
-
 describe('AmpUrl', () => {
   const domainSuffix = 'cdn.ampproject.org';
 
@@ -113,7 +112,8 @@ describe('AmpUrl', () => {
         curlsSubdomain: '4lxc7wqq7b25walg4rdiil62veijrmqui5z3ept2lyfqqwpowryq',
       },
       {
-        url: 'https://itwasadarkandstormynight.therainfellintorrents.exceptatoccasionalintervalswhenitwascheckedby.aviolentgustofwindwhichsweptupthestreets.com',
+        url:
+          'https://itwasadarkandstormynight.therainfellintorrents.exceptatoccasionalintervalswhenitwascheckedby.aviolentgustofwindwhichsweptupthestreets.com',
         curlsSubdomain: 'dgz4cnrxufaulnwku4ow5biptyqnenjievjht56hd7wqinbdbteq',
       },
       // Wikipedia's example of an IDN: "bücher.ch" -> "bücher-ch".

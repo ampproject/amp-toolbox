@@ -42,8 +42,7 @@ async function pairedAmpTransformation(filePath, html) {
   const optimizer = AmpOptimizer.create({
     transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
   });
-  const ampFilePath = filePath.substring(1, filePath.length)
-      .replace('.html', '.amp.html');
+  const ampFilePath = filePath.substring(1, filePath.length).replace('.html', '.amp.html');
   const transformedHtml = await optimizer.transformHtml(html, {
     // needed to calculate the `<link rel=amphtml href=${ampUrl}>`
     ampUrl: ampFilePath,
@@ -180,4 +179,3 @@ function writeFile(folder, filePath, content) {
     });
   });
 }
-

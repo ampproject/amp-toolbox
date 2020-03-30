@@ -17,35 +17,35 @@ export abstract class Rule {
           /([a-z])([A-Z])/g,
           (_, c1, c2) => `${c1} ${c2.toLowerCase()}`
         ) + "?",
-      info: ""
+      info: "",
     };
   }
   protected async pass(s?: string) {
     return {
       status: Status.PASS,
       message: s,
-      ...this.meta()
+      ...this.meta(),
     };
   }
   protected async fail(s: string) {
     return {
       status: Status.FAIL,
       message: s,
-      ...this.meta()
+      ...this.meta(),
     };
   }
   protected async warn(s: string) {
     return {
       status: Status.WARN,
       message: s,
-      ...this.meta()
+      ...this.meta(),
     };
   }
   protected async info(s: string) {
     return {
       status: Status.INFO,
       message: s,
-      ...this.meta()
+      ...this.meta(),
     };
   }
 }

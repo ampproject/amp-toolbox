@@ -27,7 +27,7 @@ export class AmpImgAmpPixelPreferred extends Rule {
     return {
       url: "",
       title: "1x1 images are specified by <amp-pixel>",
-      info: ""
+      info: "",
     };
   }
 }

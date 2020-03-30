@@ -15,20 +15,20 @@ const UA = {
   googlebot_mobile: [
     "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36",
     "(KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36",
-    "(compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    "(compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
   ].join(" "),
   googlebot_desktop: [
     "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible;",
-    "Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
+    "Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36",
   ].join(" "),
   chrome_mobile: [
     "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012)",
-    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Mobile Safari/537.36"
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Mobile Safari/537.36",
   ].join(" "),
   chrome_desktop: [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3)",
-    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
-  ].join(" ")
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
+  ].join(" "),
 };
 
 export function cli(argv: string[], logger = console, cmd = "amplint") {
@@ -53,7 +53,7 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
       /^(googlebot_desktop|googlebot_mobile|chrome_desktop|chrome_mobile)$/i,
       "googlebot_mobile"
     )
-    .on("--help", function() {
+    .on("--help", function () {
       logger.log("");
       logger.log("Examples:");
       logger.log(`  $ ${cmd} https://amp.dev/`);
@@ -77,9 +77,9 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
   // One reason to support curl-style arguments is to provide cookies that avoid
   // GDPR interstitials.
   const headers: { [k: string]: string } = seq(2, argv.length - 1)
-    .filter(n => argv[n] === "-H")
-    .map(n => argv[n + 1])
-    .map(s => {
+    .filter((n) => argv[n] === "-H")
+    .map((n) => argv[n + 1])
+    .map((s) => {
       const [h, ...v] = s.split(": ");
       return [h, v.join("")];
     })
@@ -91,8 +91,10 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
   // Options is argv with "curl" and all -H flags removed (to pass to
   // program.parse())
   const options = seq(0, argv.length - 1)
-    .filter(n => argv[n] !== "curl" && argv[n] !== "-H" && argv[n - 1] !== "-H")
-    .map(n => argv[n]);
+    .filter(
+      (n) => argv[n] !== "curl" && argv[n] !== "-H" && argv[n - 1] !== "-H"
+    )
+    .map((n) => argv[n]);
 
   program.parse(options);
 
@@ -115,7 +117,7 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
     }
   )
     .then(logger.info.bind(logger))
-    .catch(e => {
+    .catch((e) => {
       logger.error(e.stack || e.message || e);
       process.exitCode = 1;
     });
@@ -126,7 +128,7 @@ export async function easyLint({
   userAgent,
   format,
   force,
-  headers
+  headers,
 }: {
   url: string;
   userAgent: string;
@@ -140,7 +142,7 @@ export async function easyLint({
     if (url === "-") {
       return Promise.resolve({
         body: readFileSync("/dev/stdin").toString(),
-        headers: {}
+        headers: {},
       });
     }
     const debug = fetchToCurl(url, { headers });
@@ -149,7 +151,7 @@ export async function easyLint({
       return res.ok
         ? Promise.resolve({
             headers: res.headers,
-            body: await res.text()
+            body: await res.text(),
           })
         : Promise.reject(
             `couldn't load [${url}]: ${res.statusText} [debug: ${debug}]`
@@ -168,7 +170,7 @@ export async function easyLint({
       $,
       headers,
       url,
-      mode
+      mode,
     })
   );
 }
@@ -210,14 +212,14 @@ function printer(
   switch (type) {
     case "tsv":
       return flatten(data)
-        .map(l => l.join(sep))
+        .map((l) => l.join(sep))
         .join("\n");
     case "html":
       const res = flatten(data).splice(1);
       const thead = `<tr><th>Name</th><th>Status</th><th>Message</th><tr>`;
       const tbody = res
-        .map(r => r.map(td => `<td>${escape(td)}</td>`).join(""))
-        .map(r => `<tr>${r}</tr>`)
+        .map((r) => r.map((td) => `<td>${escape(td)}</td>`).join(""))
+        .map((r) => `<tr>${r}</tr>`)
         .join("");
       return [
         `<table class="amplint">`,
@@ -227,7 +229,7 @@ function printer(
         `<tbody>`,
         tbody,
         `</tbody>`,
-        `</table>`
+        `</table>`,
       ].join("\n");
     case "json":
       return JSON.stringify(data, null, 2);
@@ -235,7 +237,7 @@ function printer(
     default:
       return flatten(data)
         .splice(1)
-        .map(l =>
+        .map((l) =>
           l[3] === ""
             ? `${colorStatus(l[2] as Status)} ${l[1]}\n`
             : `${colorStatus(l[2] as Status)} ${l[1]}\n> ${l[3]}\n`

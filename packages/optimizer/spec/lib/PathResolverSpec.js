@@ -17,20 +17,27 @@
 const {join, resolve} = require('path');
 const PathResolver = require('../../lib/PathResolver.js');
 
-
 describe('PathResolver', () => {
   describe('absolute URLs', () => {
     it('ignores empty base', () => {
-      expect(resolvePath('', 'https://example.com/page.html?query=true')).toEqual('https://example.com/page.html?query=true');
+      expect(resolvePath('', 'https://example.com/page.html?query=true')).toEqual(
+        'https://example.com/page.html?query=true'
+      );
     });
     it('ignores undefined base', () => {
-      expect(resolvePath(undefined, 'https://example.com/page.html?query=true')).toEqual('https://example.com/page.html?query=true');
+      expect(resolvePath(undefined, 'https://example.com/page.html?query=true')).toEqual(
+        'https://example.com/page.html?query=true'
+      );
     });
     it('ignores base host', () => {
-      expect(resolvePath('https://test.de', 'https://example.com/page.html?query=true')).toEqual('https://example.com/page.html?query=true');
+      expect(resolvePath('https://test.de', 'https://example.com/page.html?query=true')).toEqual(
+        'https://example.com/page.html?query=true'
+      );
     });
     it('ignores base path', () => {
-      expect(resolvePath('../img/', 'https://example.com/page.html?query=true')).toEqual('https://example.com/page.html?query=true');
+      expect(resolvePath('../img/', 'https://example.com/page.html?query=true')).toEqual(
+        'https://example.com/page.html?query=true'
+      );
     });
   });
   describe('relative URLs', () => {
@@ -41,7 +48,9 @@ describe('PathResolver', () => {
       expect(resolvePath('', '/page.html')).toEqual(join(process.cwd(), 'page.html'));
     });
     it('resolves against base host and keeps query params', () => {
-      expect(resolvePath('https://test.de', 'page.html?query=true')).toEqual('https://test.de/page.html?query=true');
+      expect(resolvePath('https://test.de', 'page.html?query=true')).toEqual(
+        'https://test.de/page.html?query=true'
+      );
     });
     it('resolves against base relative path and removes query params', () => {
       expect(resolvePath('../img/', 'page.html?query=true')).toEqual(resolve('../img/page.html'));
@@ -50,7 +59,8 @@ describe('PathResolver', () => {
   describe('callback', () => {
     it('gets called with params and path', () => {
       const params = {something: 'value'};
-      let actualPath; let actualParams;
+      let actualPath;
+      let actualParams;
       const callback = (path, params) => {
         actualPath = path;
         actualParams = params;

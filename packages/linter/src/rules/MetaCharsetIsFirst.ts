@@ -14,7 +14,7 @@ export class MetaCharsetIsFirst extends Rule {
       url:
         "https://html.spec.whatwg.org/multipage/parsing.html#determining-the-character-encoding",
       title: "<meta charset> is the first <meta> tag",
-      info: ""
+      info: "",
     };
   }
 }

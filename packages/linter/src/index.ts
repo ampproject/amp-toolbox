@@ -26,7 +26,7 @@ export enum LintMode {
   AmpStory = "ampstory",
   Amp4Ads = "amp4ads",
   Amp4Email = "amp4email",
-  Sxg = "sxg"
+  Sxg = "sxg",
 }
 
 export enum Status {
@@ -34,7 +34,7 @@ export enum Status {
   FAIL = "FAIL",
   WARN = "WARN",
   INFO = "INFO",
-  INTERNAL_ERROR = "INTERNAL_ERROR"
+  INTERNAL_ERROR = "INTERNAL_ERROR",
 }
 
 export interface Result {
@@ -78,7 +78,7 @@ function testsForMode(type: LintMode) {
     SxgAmppkgIsForwarded,
     SxgContentNegotiationIsOk,
     SxgVaryOnAcceptAct,
-    SxgDumpSignedExchangeVerify
+    SxgDumpSignedExchangeVerify,
   ]);
   tests.set(LintMode.Amp, [
     AmpVideoIsSmall,
@@ -88,7 +88,7 @@ function testsForMode(type: LintMode) {
     AmpImgHeightWidthIsOk,
     AmpImgAmpPixelPreferred,
     EndpointsAreAccessibleFromOrigin,
-    EndpointsAreAccessibleFromCache
+    EndpointsAreAccessibleFromCache,
   ]);
   tests.set(
     LintMode.AmpStory,
@@ -99,7 +99,7 @@ function testsForMode(type: LintMode) {
       StoryRuntimeIsV1,
       StoryMetadataIsV1,
       StoryIsMostlyText,
-      StoryMetadataThumbnailsAreOk
+      StoryMetadataThumbnailsAreOk,
     ])
   );
   return tests.get(type) || [];
@@ -109,7 +109,7 @@ export async function lint(
   context: Context
 ): Promise<{ [key: string]: Result | Result[] }> {
   const res = await Promise.all(
-    testsForMode(context.mode).map(async tc => {
+    testsForMode(context.mode).map(async (tc) => {
       const t = new tc();
       try {
         const r = await t.run(context);
@@ -120,7 +120,7 @@ export async function lint(
           // artificially create a "PASS".
           return [
             t.constructor.name,
-            [Object.assign({ status: Status.PASS, message: "" }, t.meta())]
+            [Object.assign({ status: Status.PASS, message: "" }, t.meta())],
           ];
         } else {
           return [t.constructor.name, r];
@@ -130,8 +130,8 @@ export async function lint(
           t.constructor.name,
           {
             status: Status.INTERNAL_ERROR,
-            message: JSON.stringify(e)
-          } as Result
+            message: JSON.stringify(e),
+          } as Result,
         ];
       }
     })

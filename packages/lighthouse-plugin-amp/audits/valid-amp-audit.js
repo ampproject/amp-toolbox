@@ -9,19 +9,23 @@ const Audit = require('lighthouse').Audit;
 const amphtmlValidator = require('amphtml-validator');
 const fetch = require('node-fetch');
 
-const TABLE_COLUMN_HEADINGS = [{
-  key: 'line',
-  text: 'Location',
-  itemType: 'text',
-}, {
-  key: 'msg',
-  text: 'Error',
-  itemType: 'text',
-}, {
-  key: 'url',
-  text: 'URL',
-  itemType: 'url',
-}];
+const TABLE_COLUMN_HEADINGS = [
+  {
+    key: 'line',
+    text: 'Location',
+    itemType: 'text',
+  },
+  {
+    key: 'msg',
+    text: 'Error',
+    itemType: 'text',
+  },
+  {
+    key: 'url',
+    text: 'URL',
+    itemType: 'url',
+  },
+];
 
 /**
  * @fileoverview Validates page against the AMP HTML spec.

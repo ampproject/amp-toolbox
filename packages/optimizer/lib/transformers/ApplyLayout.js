@@ -27,8 +27,17 @@ const {
   getLayoutSizeDefinedClass,
 } = require('../ParseLayout.js');
 
-const SUPPORTED_LAYOUTS = ['', 'nodisplay', 'fixed', 'fixed-height', 'responsive',
-  'container', 'fill', 'flex-item', 'intrinsic'];
+const SUPPORTED_LAYOUTS = [
+  '',
+  'nodisplay',
+  'fixed',
+  'fixed-height',
+  'responsive',
+  'container',
+  'fill',
+  'flex-item',
+  'intrinsic',
+];
 
 function isSupportedLayout(layout) {
   return SUPPORTED_LAYOUTS.indexOf(layout) > -1;
@@ -63,8 +72,8 @@ function apply(layout, width, height, node) {
       // Do nothing here, but emit <i-amphtml-sizer> later.
       break;
     case 'intrinsic':
-      // Do nothing here, but emit <i-amphtml-sizer> later.
-      // break;
+    // Do nothing here, but emit <i-amphtml-sizer> later.
+    // break;
     case 'fill':
     case 'container':
       // Do nothing here.
@@ -78,7 +87,7 @@ function apply(layout, width, height, node) {
       }
       break;
     default:
-      // Do nothing.
+    // Do nothing.
   }
   // We prepend just in case an existing value (which shouldn't be there for
   // valid docs) doesn't end with ';'.
@@ -91,8 +100,7 @@ function apply(layout, width, height, node) {
 }
 
 function maybeAddSizerInto(node, layout, width, height) {
-  if (!width.isSet || width.numeral === 0 ||
-     !height.isSet || width.unit !== height.unit) {
+  if (!width.isSet || width.numeral === 0 || !height.isSet || width.unit !== height.unit) {
     return;
   }
   let sizer = null;
@@ -108,7 +116,7 @@ function maybeAddSizerInto(node, layout, width, height) {
 }
 
 function createResponsiveSizer(width, height) {
-  const padding = height.numeral / width.numeral * 100;
+  const padding = (height.numeral / width.numeral) * 100;
   const sizer = createElement('i-amphtml-sizer', {
     style: `display:block;padding-top:${padding.toFixed(4)}%;`,
   });
@@ -120,7 +128,7 @@ function createIntrinsicSizer(width, height) {
   // trick Note a naked svg won't work because other things expect the
   // i-amphtml-sizer element
   const sizer = createElement('i-amphtml-sizer', {
-    'class': 'i-amphtml-sizer',
+    class: 'i-amphtml-sizer',
   });
   const sizerImg = createElement('img', {
     'alt': '',
@@ -134,21 +142,19 @@ function createIntrinsicSizer(width, height) {
 }
 
 module.exports = {
-  applyLayout: function(customElement, log) {
+  applyLayout: function (customElement, log) {
     const ampLayout = parseLayout(customElement.attribs.layout);
     const widthAttribute = getAttributeOrNull(customElement, 'width');
-    const inputWidth = cssLength(
-        widthAttribute,
-        /* allow_auto=*/true,
-        /* allow_fluid=*/false);
+    const inputWidth = cssLength(widthAttribute, /* allow_auto=*/ true, /* allow_fluid=*/ false);
     if (!inputWidth.isValid) {
       log.debug('cannot perform SSR: invalid input width\n', widthAttribute);
       return false;
     }
     const heightAttribute = getAttributeOrNull(customElement, 'height');
-    const inputHeight = cssLength(heightAttribute,
-        /* allow_auto=*/true,
-        /* allow_fluid=*/ampLayout === 'fluid',
+    const inputHeight = cssLength(
+      heightAttribute,
+      /* allow_auto=*/ true,
+      /* allow_fluid=*/ ampLayout === 'fluid'
     );
     if (!inputHeight.isValid) {
       log.debug('cannot perform SSR: invalid input height\n', heightAttribute);
@@ -159,8 +165,13 @@ module.exports = {
     const height = calculateHeight(ampLayout, inputHeight, customElement.tagName);
     const width = calculateWidth(ampLayout, inputWidth, customElement.tagName);
 
-    const layout = calculateLayout(ampLayout, width, height,
-        getAttributeOrNull(customElement, 'sizes'), getAttributeOrNull(customElement, 'heights'));
+    const layout = calculateLayout(
+      ampLayout,
+      width,
+      height,
+      getAttributeOrNull(customElement, 'sizes'),
+      getAttributeOrNull(customElement, 'heights')
+    );
 
     if (!isSupportedLayout(layout)) {
       log.debug('cannot perform SSR: unsupported layout', layout);

@@ -21,12 +21,14 @@ const port = 3000;
 
 const ampCors = require('@ampproject/toolbox-cors');
 
-app.use(ampCors({
-  verbose: true,
-}));
+app.use(
+  ampCors({
+    verbose: true,
+  })
+);
 
 app.get('/', (req, res) => {
-/* eslint-disable max-len */
+  /* eslint-disable max-len */
   res.send(`<!doctype html>
 <html ⚡> <head>
   <meta charset="utf-8">

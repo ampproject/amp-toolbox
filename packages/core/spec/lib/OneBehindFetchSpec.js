@@ -20,7 +20,6 @@ const mockFetch = require('fetch-mock');
 const nodeFetch = require('node-fetch');
 const fetch = mockFetch.sandbox();
 
-
 describe('oneBehindFetch', () => {
   beforeEach(() => {
     oneBehindFetch.setDelegate(fetch);
@@ -48,4 +47,3 @@ describe('oneBehindFetch', () => {
     expect(await data.text()).toBe('world');
   });
 });
-

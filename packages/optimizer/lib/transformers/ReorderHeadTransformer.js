@@ -41,10 +41,12 @@ class HeadNodes {
   }
 
   uniquifyAndSortCustomElements() {
-    this._scriptRenderDelayingExtensions =
-      this._removeDuplicateCustomExtensions(this._scriptRenderDelayingExtensions);
-    this._scriptNonRenderDelayingExtensions =
-      this._removeDuplicateCustomExtensions(this._scriptNonRenderDelayingExtensions);
+    this._scriptRenderDelayingExtensions = this._removeDuplicateCustomExtensions(
+      this._scriptRenderDelayingExtensions
+    );
+    this._scriptNonRenderDelayingExtensions = this._removeDuplicateCustomExtensions(
+      this._scriptNonRenderDelayingExtensions
+    );
   }
 
   _removeDuplicateCustomExtensions(extensions) {
@@ -132,8 +134,7 @@ class HeadNodes {
       this._styleAmpCustom = node;
       return;
     }
-    if (hasAttribute(node, 'amp-boilerplate') ||
-      hasAttribute(node, 'amp4ads-boilerplate')) {
+    if (hasAttribute(node, 'amp-boilerplate') || hasAttribute(node, 'amp4ads-boilerplate')) {
       this._styleAmpBoilerplate = node;
       return;
     }
@@ -147,23 +148,19 @@ class HeadNodes {
         this._linkStyleAmpRuntime = node;
         return;
       }
-      if (!this._styleAmpCustom) { // We haven't seen amp-custom yet.
+      if (!this._styleAmpCustom) {
+        // We haven't seen amp-custom yet.
         this._linkStylesheetsBeforeAmpCustom.push(node);
         return;
       }
     }
 
-    if (rel === 'icon' ||
-      rel === 'shortcut icon' ||
-      rel === 'icon shortcut') {
+    if (rel === 'icon' || rel === 'shortcut icon' || rel === 'icon shortcut') {
       this._linkIcons.push(node);
       return;
     }
 
-    if (rel === 'preload' ||
-      rel === 'prefetch' ||
-      rel === 'dns-prefetch' ||
-      rel === 'preconnect') {
+    if (rel === 'preload' || rel === 'prefetch' || rel === 'dns-prefetch' || rel === 'preconnect') {
       this._resourceHintLinks.push(node);
       return;
     }

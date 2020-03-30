@@ -53,11 +53,10 @@ C8iytkhnemDhNLoBYVaO1tPRSXkyelek+8s3HeKe86Qvc1tbhNV9
 // Create an instance of the factory using the private key.
 const updateCacheUrlProvider = UpdateCacheUrlProvider.create(PRIVATE_KEY);
 
-updateCacheUrlProvider.calculateFromOriginUrl('https://www.example.com')
-    .then((cacheUpdateUrls) => {
-      cacheUpdateUrls.forEach((cacheUpdateUrlInfo) => {
-        console.log('Cache ID:' + cacheUpdateUrlInfo.cacheId);
-        console.log('Cache Name:' + cacheUpdateUrlInfo.cacheName);
-        console.log('cache-update URL:' + cacheUpdateUrlInfo.updateCacheUrl);
-      });
-    });
+updateCacheUrlProvider.calculateFromOriginUrl('https://www.example.com').then((cacheUpdateUrls) => {
+  cacheUpdateUrls.forEach((cacheUpdateUrlInfo) => {
+    console.log('Cache ID:' + cacheUpdateUrlInfo.cacheId);
+    console.log('Cache Name:' + cacheUpdateUrlInfo.cacheName);
+    console.log('cache-update URL:' + cacheUpdateUrlInfo.updateCacheUrl);
+  });
+});

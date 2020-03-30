@@ -16,7 +16,6 @@
 
 'use strict';
 
-
 const Caches = require('@ampproject/toolbox-cache-list');
 
 async function demo() {

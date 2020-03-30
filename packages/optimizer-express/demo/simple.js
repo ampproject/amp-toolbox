@@ -30,18 +30,20 @@ app.use((req, res, next) => {
 // This allows the middleware to intercept the page rendered by static and transform it.
 app.use(AmpOptimizerMiddleware.create());
 
-app.use(minifyHTML({
-  override: true,
-  exception_url: false,
-  htmlMinifier: {
-    removeComments: true,
-    collapseWhitespace: true,
-    collapseBooleanAttributes: true,
-    removeAttributeQuotes: true,
-    removeEmptyAttributes: true,
-    minifyJS: true,
-  },
-}));
+app.use(
+  minifyHTML({
+    override: true,
+    exception_url: false,
+    htmlMinifier: {
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeEmptyAttributes: true,
+      minifyJS: true,
+    },
+  })
+);
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);

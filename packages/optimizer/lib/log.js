@@ -19,4 +19,3 @@
 const {log} = require('@ampproject/toolbox-core');
 
 module.exports = log.tag('AMP Optimizer');
-

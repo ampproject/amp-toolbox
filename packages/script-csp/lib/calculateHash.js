@@ -19,9 +19,7 @@
 
 const crypto = require('crypto');
 
-const SUPPORTED_ALGORITHMS = new Set([
-  'sha384',
-]);
+const SUPPORTED_ALGORITHMS = new Set(['sha384']);
 
 const DEFAULT_ALGORITHM = 'sha384';
 
@@ -51,10 +49,7 @@ function calculateHash(src, {algorithm = DEFAULT_ALGORITHM} = {}) {
 }
 
 function base64URLFormat(base64) {
-  return base64
-      .replace(/=/g, '')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_');
+  return base64.replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 }
 
 module.exports = {calculateHash};

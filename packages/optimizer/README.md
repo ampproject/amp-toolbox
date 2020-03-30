@@ -337,6 +337,36 @@ const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
 console.log(optimizedHtml);
 ```
 
+### Fallback API for amp-geo
+
+Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched at delivery time to replace `{{AMP_ISO_COUNTRY_HOTPATCH}}` with the ISO 3166-1 alpha-2 country code where the request originated ([reference](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem)). If your host does not have this capability, you can instead rely on a web API to return the country at runtime. The web API must be secure (HTTPS), adhere to [AMP CORS guidelines](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/), and return JSON in the following format:
+
+```
+{"country": "de"}
+```
+
+where in this example, `de` is the ISO 3166-1 alpha-2 country code for Germany.
+
+Example:
+```
+const ampOptimizer = require('@ampproject/toolbox-optimizer');
+
+// The input string
+const originalHtml = `
+<!doctype html>
+<html ⚡>
+...
+`;
+
+const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
+  // this will instruct amp-geo to fetch the user's country from an API
+  // which returns JSON in format: {"country": "de"}
+  geoApiUrl: 'https://example.com/geo'
+});
+
+console.log(optimizedHtml);
+```
+
 ## Development & Testing
 
 AMP Optimizer uses a snapshot based testing approach. To execute the tests, run in the project root:

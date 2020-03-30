@@ -15,7 +15,7 @@ export class AmpImgHeightWidthIsOk extends Rule {
     ): Promise<Result> => {
       const success = ({
         height,
-        width
+        width,
       }: {
         height: number;
         width: number;
@@ -79,10 +79,7 @@ export class AmpImgHeightWidthIsOk extends Rule {
             // filter out <amp-img> elements that are the first child of an
             // <amp-story-grid-layer template="fill"> (for these, height/width is
             // ignored).
-            (_, e) =>
-              !$(e)
-                .parent()
-                .is("amp-story-grid-layer[template=fill]")
+            (_, e) => !$(e).parent().is("amp-story-grid-layer[template=fill]")
           )
           .map((_, e) => {
             const src = $(e).attr("src") || "";
@@ -99,7 +96,7 @@ export class AmpImgHeightWidthIsOk extends Rule {
     return {
       url: "",
       title: "All <amp-img> have reasonable width and height",
-      info: ""
+      info: "",
     };
   }
 }

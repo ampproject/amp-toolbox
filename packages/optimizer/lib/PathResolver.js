@@ -30,7 +30,7 @@ class PathResolver {
    * Create a PathResolver.
    * @param {string|function}  [base=''] - relative path or base URL
    */
-  constructor(base='') {
+  constructor(base = '') {
     if (typeof base === 'function') {
       this.implementation = base;
     } else {
@@ -65,7 +65,7 @@ class PathResolver {
           return new URL(path).toString();
         }
       } catch (_) {
-      // path and base specify a relative path
+        // path and base specify a relative path
       }
       // remove query params to be able to find a file on the local filesystem
       path = new URL(path, DUMMY_HOST).pathname.substring(1);

@@ -15,7 +15,7 @@ export class StoryRuntimeIsV1 extends Rule {
       url:
         "https://amp.dev/documentation/components/amp-story/#migrating-from-0.1-to-1.0",
       title: "AMP Story v1.0 is used",
-      info: ""
+      info: "",
     };
   }
 }

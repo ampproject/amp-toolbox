@@ -148,23 +148,23 @@ describe('AmpValidatorRules', () => {
 
 function makeRules(rules) {
   return new AmpValidatorRules(
-      Object.assign(
+    Object.assign(
+      {
+        errorFormats: [],
+        errorSpecificity: [],
+        attrLists: [
           {
-            errorFormats: [],
-            errorSpecificity: [],
-            attrLists: [
-              {
-                name: '$AMP_LAYOUT_ATTRS',
-                attrs: [],
-              },
-              {
-                name: '$GLOBAL_ATTRS',
-                attrs: [],
-              },
-            ],
-            tags: [],
+            name: '$AMP_LAYOUT_ATTRS',
+            attrs: [],
           },
-          rules,
-      ),
+          {
+            name: '$GLOBAL_ATTRS',
+            attrs: [],
+          },
+        ],
+        tags: [],
+      },
+      rules
+    )
   );
 }

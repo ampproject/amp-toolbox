@@ -50,8 +50,10 @@ class ServerSideRendering {
     const head = firstChildByTag(html, 'head');
 
     // A simple check ensuring that the Server-side rendering is only applied once.
-    if (typeof (html.attribs['i-amphtml-layout']) !== 'undefined' &&
-      html.attribs['i-amphtml-layout'] !== null) {
+    if (
+      typeof html.attribs['i-amphtml-layout'] !== 'undefined' &&
+      html.attribs['i-amphtml-layout'] !== null
+    ) {
       return;
     }
     html.attribs['i-amphtml-layout'] = '';
@@ -76,8 +78,8 @@ class ServerSideRendering {
       // boilerplate.
       if (node.attribs.heights || node.attribs.media || node.attribs.sizes) {
         this.log_.debug(
-            'cannot remove boilerplate as either heights, media or sizes attribute is set:\n',
-            node.attribs,
+          'cannot remove boilerplate as either heights, media or sizes attribute is set:\n',
+          node.attribs
         );
         canRemoveBoilerplate = false;
       }
@@ -121,8 +123,11 @@ class ServerSideRendering {
     for (let node = head.firstChild; node; node = node.nextSibling) {
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc, which we checked for above.
-      if (node.tagName === 'script' && hasAttribute(node, 'custom-element') &&
-          node.attribs['custom-element'] === 'amp-experiment') {
+      if (
+        node.tagName === 'script' &&
+        hasAttribute(node, 'custom-element') &&
+        node.attribs['custom-element'] === 'amp-experiment'
+      ) {
         continue;
       }
       if (isRenderDelayingExtension(node)) {
@@ -145,8 +150,10 @@ class ServerSideRendering {
     // tag in the head is only ever used for boilerplate.
     const toRemove = [];
     for (let node = head.firstChild; node; node = node.nextSibling) {
-      if (node.tagName === 'noscript' ||
-          (node.tagName === 'style' && hasAttribute(node, 'amp-boilerplate'))) {
+      if (
+        node.tagName === 'noscript' ||
+        (node.tagName === 'style' && hasAttribute(node, 'amp-boilerplate'))
+      ) {
         toRemove.push(node);
       }
     }
@@ -159,9 +166,11 @@ class ServerSideRendering {
   isAmpExperimentUsed(ampExperimentNode) {
     let script;
     for (const child of ampExperimentNode.children || []) {
-      if (child.tagName === 'script' &&
-         child.attribs &&
-         child.attribs['type'] === 'application/json') {
+      if (
+        child.tagName === 'script' &&
+        child.attribs &&
+        child.attribs['type'] === 'application/json'
+      ) {
         script = child;
         break;
       }
@@ -183,8 +192,7 @@ class ServerSideRendering {
     try {
       const parsedJson = JSON.parse(scriptChild.data);
       // If JSON is empty, then not used.
-      return typeof(parsedJson) === 'object' &&
-          Object.keys(parsedJson).length > 0;
+      return typeof parsedJson === 'object' && Object.keys(parsedJson).length > 0;
     } catch (e) {
       // invalid JSON
       return false;

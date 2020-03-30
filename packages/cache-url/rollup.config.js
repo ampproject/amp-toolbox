@@ -31,13 +31,13 @@ const plugins = [
 ];
 
 const nodeFilterImports = {
-  'imports': {
+  imports: {
     './browser/Sha256': ['default'],
   },
 };
 
 const browserFilterImports = {
-  'imports': {
+  imports: {
     './node/Sha256': ['default'],
   },
 };
@@ -58,7 +58,6 @@ const browserPlugins = [
   ...plugins,
 ];
 
-
 // Start our server if we are watching
 if (process.env.ROLLUP_WATCH) {
   const servePlugin = serve({
@@ -74,9 +73,7 @@ if (process.env.ROLLUP_WATCH) {
 if (semver.gt(process.version, '7.99.99')) {
   const compiler = require('@ampproject/rollup-plugin-closure-compiler');
   const filesize = require('rollup-plugin-filesize');
-  browserPlugins.push(
-      compiler(),
-  );
+  browserPlugins.push(compiler());
   nodePlugins.push(filesize());
   browserPlugins.push(filesize());
 }

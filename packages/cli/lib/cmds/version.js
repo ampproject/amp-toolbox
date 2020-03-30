@@ -21,6 +21,6 @@ const packageInfo = require('../../package.json');
 function version(_, logger) {
   logger.info(`v${packageInfo.version}`);
   return Promise.resolve();
-};
+}
 
 module.exports = version;

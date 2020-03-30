@@ -28,9 +28,7 @@ async function curls(args, logger) {
   const cacheId = args.cache;
   if (!cacheId) {
     const allCaches = await caches.list();
-    return Promise.all(
-        allCaches.map((cache) => printCurl(cache, url, logger)),
-    );
+    return Promise.all(allCaches.map((cache) => printCurl(cache, url, logger)));
   } else {
     const cache = await caches.get(cacheId);
     if (!cache) {
@@ -38,7 +36,7 @@ async function curls(args, logger) {
     }
     return printCurl(cache, url, logger);
   }
-};
+}
 
 async function printCurl(cache, url, logger) {
   const curl = await createCacheUrl(cache.cacheDomain, url);

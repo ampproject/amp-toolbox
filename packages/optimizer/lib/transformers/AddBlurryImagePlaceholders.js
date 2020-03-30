@@ -33,7 +33,7 @@ const ESCAPE_TABLE = {
   ':': '%3A',
   '<': '%3C',
   '>': '%3E',
-  '"': '\'',
+  '"': "'",
 };
 const ESCAPE_REGEX = new RegExp(Object.keys(ESCAPE_TABLE).join('|'), 'g');
 function escaper(match) {
@@ -74,8 +74,10 @@ class AddBlurryImagePlaceholders {
 
     // check whether all required dependencies are installed
     if (!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
-      this.log_.warn('jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
-        'for this transformer to work');
+      this.log_.warn(
+        'jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
+          'for this transformer to work'
+      );
       // we can't generate placeholders
       this.blurredPlaceholders_ = false;
       return;
@@ -152,7 +154,6 @@ class AddBlurryImagePlaceholders {
     return Promise.all(promises);
   }
 
-
   /**
    * Adds a child image that is a blurry placeholder.
    * @param {String} src The image that the bitmap is based on.
@@ -196,7 +197,7 @@ class AddBlurryImagePlaceholders {
     } catch (err) {
       this.log_.debug(src, '[FAIL]');
       this.log_.error(err.message);
-    };
+    }
     return img;
   }
 
@@ -277,9 +278,11 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   hasPlaceholder_(node) {
-    return node.childNodes.find((child) => {
-      return child.attribs && child.attribs.placeholder !== undefined;
-    }) !== undefined;
+    return (
+      node.childNodes.find((child) => {
+        return child.attribs && child.attribs.placeholder !== undefined;
+      }) !== undefined
+    );
   }
 
   /**
@@ -327,7 +330,8 @@ class AddBlurryImagePlaceholders {
     // Checks if the image is a poster or a responsive image as these are the
     // two most common cases where blurred placeholders would be wanted.
     const isPoster = tagName == 'amp-video';
-    const isResponsiveImgWithLoading = tagName == 'amp-img' &&
+    const isResponsiveImgWithLoading =
+      tagName == 'amp-img' &&
       (node.attribs.layout == 'intrinsic' ||
         node.attribs.layout == 'responsive' ||
         node.attribs.layout == 'fill');
