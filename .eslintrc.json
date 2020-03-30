@@ -1,7 +1,6 @@
 {
   "extends": "google",
   "parserOptions": {
-    "ecmaVersion": 2017,
     "sourceType": "module"
   },
   "rules": {
@@ -29,10 +28,12 @@
     "require-jsdoc": 0,
     "valid-jsdoc": 0,
     "prefer-arrow-callback": 1,
-    "no-var": 1
+    "no-var": 1,
+    "no-undef": 1
   },
   "env": {
     "node": true,
-    "jasmine": true
+    "jasmine": true,
+    "es2017": true
   }
 }
