@@ -36,7 +36,7 @@
     "transpile": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
     "test": "$npm_execpath run transpile && cd tests && for t in helper.js local.js network.js ; do ( test -e $t || $npm_execpath run build ) && ( node $t | tap-parser -t ) || exit 1 ; done ; exit 0",
     "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'",
-    "lint:fix": "prettier --fix 'src/**/*.ts' 'tests/**/*.ts'"
+    "lint:fix": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'"
   },
   "prettier": {
     "quoteProps": "consistent"
