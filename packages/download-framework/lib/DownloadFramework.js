@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const Caches = require('@ampproject/toolbox-cache-list');
+const cacheListProvider = require('@ampproject/toolbox-cache-list');
 const crossFetch = require('cross-fetch');
 const fs = require('fs');
 const https = require('https');
@@ -40,8 +40,10 @@ const fetchOptions = {
 };
 
 class DownloadFramework {
-  constructor(fetch) {
+  constructor(fetch, cacheList, runtimeVersion) {
     this.fetch_ = fetch || crossFetch;
+    this.cacheList_ = cacheList || cacheListProvider;
+    this.runtimeVersion_ = runtimeVersion || runtimeVersionProvider;
   }
 
   /**
@@ -100,7 +102,7 @@ class DownloadFramework {
     // Verify RTV is URL compatible if specified, otherwise fetch RTV from AMP
     // framework cache (using ampUrlPrefix if specified).
     if (!rtv) {
-      rtv = await runtimeVersionProvider.currentVersion({ampUrlPrefix});
+      rtv = await this.runtimeVersion_.currentVersion({ampUrlPrefix});
       if (!rtv) {
         ret.error = 'Could not determine runtime version to download';
         log.error(ret.error);
@@ -118,7 +120,7 @@ class DownloadFramework {
     // If AMP framework cache was specified, verify it is an absolute URL.
     // Otherwise, assume Google's AMP framework cache.
     if (!ampUrlPrefix) {
-      const googleAmpCache = await Caches.get('google');
+      const googleAmpCache = await this.cacheList_.get('google');
       if (!googleAmpCache) {
         ret.error = 'Could not determine AMP cache domain';
         log.error(ret.error);
@@ -328,7 +330,7 @@ class DownloadFramework {
     wstream.on('finish', resolve);
     wstream.on('error', reject);
 
-    return await savePromise;
+    return savePromise;
   }
 }
 
