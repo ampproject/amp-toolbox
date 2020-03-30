@@ -36,7 +36,7 @@ describe('ParseLayout', () => {
         expect(parsed.isAuto).toBe(false);
       }
     });
-    it('uses \'px\' when unit is empty', () => {
+    it("uses 'px' when unit is empty", () => {
       const parsed = cssLength('10', false);
       expect(parsed.isSet).toBe(true);
       expect(parsed.isValid).toBe(true);
@@ -56,13 +56,13 @@ describe('ParseLayout', () => {
       expect(parsed.isValid).toBe(false);
     });
     it('handles garbage input as invalid', () => {
-      expect((cssLength('100%', false)).isValid).toBe(false);
-      expect((cssLength('not a number', false)).isValid).toBe(false);
-      expect((cssLength('1.1.1', false)).isValid).toBe(false);
-      expect((cssLength('5inches', false)).isValid).toBe(false);
-      expect((cssLength('fahrenheit', false)).isValid).toBe(false);
-      expect((cssLength('px', false)).isValid).toBe(false);
-      expect((cssLength('ix unciae"', false)).isValid).toBe(false);
+      expect(cssLength('100%', false).isValid).toBe(false);
+      expect(cssLength('not a number', false).isValid).toBe(false);
+      expect(cssLength('1.1.1', false).isValid).toBe(false);
+      expect(cssLength('5inches', false).isValid).toBe(false);
+      expect(cssLength('fahrenheit', false).isValid).toBe(false);
+      expect(cssLength('px', false).isValid).toBe(false);
+      expect(cssLength('ix unciae"', false).isValid).toBe(false);
     });
     it('handles input / auto combinations correctly', () => {
       {

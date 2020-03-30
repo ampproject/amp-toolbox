@@ -45,6 +45,6 @@ class MockLogger {
     this.errors = [];
     this.logs = [];
   }
-};
+}
 
 module.exports = MockLogger;

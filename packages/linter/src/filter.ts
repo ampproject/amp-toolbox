@@ -13,7 +13,7 @@ export function isAccessControlHeaders(
   origin: string,
   sourceOrigin: string
 ): (res: Response) => Promise<Response> {
-  return res => {
+  return (res) => {
     const h1 = res.headers.get("access-control-allow-origin") || "";
     if (h1 !== origin && h1 !== "*") {
       throw new Error(

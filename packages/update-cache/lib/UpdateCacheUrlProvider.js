@@ -41,19 +41,21 @@ class UpdateCacheUrlProvider {
    * update-cache url.
    */
   calculateFromOriginUrl(originUrl, timestamp = defaultTimestamp_()) {
-    return this._caches.list().then((caches) => Promise.all(
+    return this._caches.list().then((caches) =>
+      Promise.all(
         caches.map((cache) =>
           createCacheUrl(cache.updateCacheApiDomainSuffix, originUrl)
-              .then((cacheUrl) => this.calculateFromCacheUrl(cacheUrl, timestamp))
-              .then((updateCacheUrl) => {
-                return {
-                  cacheId: cache.id,
-                  cacheName: cache.name,
-                  updateCacheUrl: updateCacheUrl,
-                };
-              }),
-        ),
-    ));
+            .then((cacheUrl) => this.calculateFromCacheUrl(cacheUrl, timestamp))
+            .then((updateCacheUrl) => {
+              return {
+                cacheId: cache.id,
+                cacheName: cache.name,
+                updateCacheUrl: updateCacheUrl,
+              };
+            })
+        )
+      )
+    );
   }
 
   /**

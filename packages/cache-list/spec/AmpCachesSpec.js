@@ -20,7 +20,7 @@ const AmpCaches = require('../index');
 const fetchMock = require('fetch-mock').sandbox();
 
 const CACHES_JSON = JSON.parse(
-    `{
+  `{
   "caches": [
     {
       "id": "google",
@@ -29,7 +29,8 @@ const CACHES_JSON = JSON.parse(
       "updateCacheApiDomainSuffix": "cdn.ampproject.org"
     }
   ]
-}`);
+}`
+);
 
 const caches = new AmpCaches(fetchMock);
 
@@ -42,29 +43,26 @@ describe('Caches', () => {
   });
   describe('list', () => {
     it('returns an array with the caches', (done) => {
-      caches.list()
-          .then((cacheList) => {
-            expect(cacheList.length).toBe(1);
-            done();
-          });
+      caches.list().then((cacheList) => {
+        expect(cacheList.length).toBe(1);
+        done();
+      });
     });
   });
 
   describe('get', () => {
     it('returns the correct cache', (done) => {
-      caches.get('google')
-          .then((googleCache) => {
-            expect(googleCache).toEqual(CACHES_JSON.caches[0]);
-            done();
-          });
+      caches.get('google').then((googleCache) => {
+        expect(googleCache).toEqual(CACHES_JSON.caches[0]);
+        done();
+      });
     });
 
     it('returns undefined for unexisting cache', (done) => {
-      caches.get('unexisting')
-          .then((cache) => {
-            expect(cache).toBeUndefined();
-            done();
-          });
+      caches.get('unexisting').then((cache) => {
+        expect(cache).toBeUndefined();
+        done();
+      });
     });
   });
 });

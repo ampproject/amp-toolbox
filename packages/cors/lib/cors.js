@@ -42,7 +42,7 @@ const DEFAULT_OPTIONS = {
  * @param {Caches} [caches=new Caches()]
  * @return {Function} next middleware function
  */
-module.exports = (options, caches=new Caches()) => {
+module.exports = (options, caches = new Caches()) => {
   options = Object.assign(DEFAULT_OPTIONS, options);
   log.verbose(options.verbose);
   if (options.email === true) {
@@ -77,9 +77,11 @@ module.exports = (options, caches=new Caches()) => {
     }
 
     // Check if origin is a valid AMP cache
-    if (originHeaders.origin &&
-        options.verifyOrigin &&
-        !await isValidOrigin(originHeaders.origin, sourceOrigin)) {
+    if (
+      originHeaders.origin &&
+      options.verifyOrigin &&
+      !(await isValidOrigin(originHeaders.origin, sourceOrigin))
+    ) {
       log.warn('invalid Origin', originHeaders.origin);
       response.status(403).end(); // forbidden
       return;

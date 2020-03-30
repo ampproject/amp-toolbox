@@ -81,7 +81,9 @@ describe('AMP Cors', () => {
       request.headers['Origin'] = 'https://ampbyexample-com.cdn.ampproject.org';
       request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       cors(request, response, () => {
-        expect(response.headers['Access-Control-Allow-Origin']).toBe('https://ampbyexample-com.cdn.ampproject.org');
+        expect(response.headers['Access-Control-Allow-Origin']).toBe(
+          'https://ampbyexample-com.cdn.ampproject.org'
+        );
         done();
       });
     });
@@ -96,10 +98,12 @@ describe('AMP Cors', () => {
         request.url = '/sample?__amp_source_origin=sender@example.com';
         cors(request, response, () => {
           expect(response.headers['Access-Control-Allow-Origin']).toBe('https://mail.google.com');
-          expect(response.headers['Access-Control-Expose-Headers'])
-              .toContain('AMP-Access-Control-Allow-Source-Origin');
-          expect(response.headers['AMP-Access-Control-Allow-Source-Origin'])
-              .toBe('sender@example.com');
+          expect(response.headers['Access-Control-Expose-Headers']).toContain(
+            'AMP-Access-Control-Allow-Source-Origin'
+          );
+          expect(response.headers['AMP-Access-Control-Allow-Source-Origin']).toBe(
+            'sender@example.com'
+          );
         }).then(() => done());
       });
     });
@@ -130,8 +134,7 @@ describe('AMP Cors', () => {
       });
       it('is true [default]', (done) => {
         cors(request, response, () => {
-          expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual(['AMP-Redirect-To']);
+          expect(response.headers['Access-Control-Expose-Headers']).toEqual(['AMP-Redirect-To']);
           done();
         });
       });
@@ -139,8 +142,7 @@ describe('AMP Cors', () => {
         options.enableAmpRedirectTo = false;
         cors = ampCors(options, caches);
         cors(request, response, () => {
-          expect(response.headers['Access-Control-Expose-Headers'])
-              .toEqual([]);
+          expect(response.headers['Access-Control-Expose-Headers']).toEqual([]);
           done();
         });
       });
@@ -160,7 +162,7 @@ describe('AMP Cors', () => {
         request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
       });
       it('does not change the status code', (done) => {
-        cors(request, response, () =>{
+        cors(request, response, () => {
           expect(response.status_).toEqual(200);
           done();
         });
@@ -183,4 +185,3 @@ describe('AMP Cors', () => {
     });
   });
 });
-

@@ -38,9 +38,7 @@ describe('optimize', () => {
   });
 
   it('runs optimizer', () => {
-    expect(
-        mockLogger.getLogs().startsWith('<!doctype html><html amp i-amphtml-layout'),
-    ).toBe(true);
+    expect(mockLogger.getLogs().startsWith('<!doctype html><html amp i-amphtml-layout')).toBe(true);
   });
   it('loads url / path', () => {
     expect(inputUrl).toBe('https://example.com');

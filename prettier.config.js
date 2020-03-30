@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 The AMP HTML Authors. All Rights Reserved.
+ * Copyright 2019 The AMP HTML Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
-
-jasmine.getEnv().clearReporters(); // remove default reporter logs
-jasmine.getEnv().addReporter(
-  new SpecReporter({
-    // add jasmine-spec-reporter
-    spec: {
-      displayPending: true,
-      displayStacktrace: false,
-      displaySuccessful: false,
+module.exports = {
+  bracketSpacing: false,
+  singleQuote: true,
+  printWidth: 100,
+  trailingComma: 'es5',
+  quoteProps: 'consistent',
+  jsxSingleQuote: true,
+  parser: 'typescript',
+  overrides: [
+    {
+      files: ['.eslintrc', '.prettierrc', '.renovaterc.json', '*.json'],
+      options: {parser: 'json'},
     },
-    summary: {
-      displayStacktrace: true,
+    {
+      files: ['*.html'],
+      options: {parser: 'html'},
     },
-  })
-);
+    {
+      files: ['*.md'],
+      options: {parser: 'markdown'},
+    },
+  ],
+};

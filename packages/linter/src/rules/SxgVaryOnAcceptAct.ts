@@ -10,7 +10,7 @@ export class SxgVaryOnAcceptAct extends Rule {
     const debug = `debug: ${fetchToCurl(url, { headers })}`;
     const vary = ("" + res.headers.get("vary"))
       .split(",")
-      .map(s => s.toLowerCase().trim());
+      .map((s) => s.toLowerCase().trim());
     if (vary.length == 0)
       return this.fail(`[vary] header is missing [${debug}]`);
     if (!vary.includes("amp-cache-transform"))
@@ -25,7 +25,7 @@ export class SxgVaryOnAcceptAct extends Rule {
     return {
       url: "",
       title: "vary header is correct",
-      info: ""
+      info: "",
     };
   }
 }

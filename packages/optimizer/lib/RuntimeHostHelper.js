@@ -15,15 +15,9 @@
  */
 'use strict';
 
-const {
-  AMP_CACHE_HOST,
-  appendRuntimeVersion,
-} = require('./AmpConstants.js');
+const {AMP_CACHE_HOST, appendRuntimeVersion} = require('./AmpConstants.js');
 
-function calculateHost({
-  ampUrlPrefix = AMP_CACHE_HOST,
-  ampRuntimeVersion,
-}) {
+function calculateHost({ampUrlPrefix = AMP_CACHE_HOST, ampRuntimeVersion}) {
   if (ampRuntimeVersion) {
     ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, ampRuntimeVersion);
   }
@@ -33,4 +27,3 @@ function calculateHost({
 module.exports = {
   calculateHost,
 };
-

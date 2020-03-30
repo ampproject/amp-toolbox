@@ -59,9 +59,8 @@ class GoogleFontsPreconnect {
         const referenceNode = findMetaViewport(head);
         insertAfter(head, linkPreconnect, referenceNode);
         this.log_.debug(
-            'adding <link rel="dns=prefetch preconnect" href="' +
-            linkPreconnect.attribs.href +
-            '">');
+          'adding <link rel="dns=prefetch preconnect" href="' + linkPreconnect.attribs.href + '">'
+        );
 
         // We only need 1 preconnect, so we can skip the remaining elements and return.
         return;
@@ -70,9 +69,11 @@ class GoogleFontsPreconnect {
   }
 
   isGoogleFontsLinkNode_(node) {
-    return node.tagName === 'link' &&
+    return (
+      node.tagName === 'link' &&
       node.attribs.rel === 'stylesheet' &&
-      node.attribs.href.startsWith('https://fonts.googleapis.com');
+      node.attribs.href.startsWith('https://fonts.googleapis.com')
+    );
   }
 }
 

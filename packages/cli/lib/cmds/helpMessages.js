@@ -19,23 +19,12 @@ module.exports = {
     '',
     '',
     'Options:',
-    '--privateKey .............. path to the private key file. Defaults to \'./privateKey.pem\'.',
+    "--privateKey .............. path to the private key file. Defaults to './privateKey.pem'.",
   ].join('\n'),
-  'lint': [
-    'Usage:',
-    '',
-    '',
-    'amp lint url',
-    '',
-    'Examples:',
-    '  $ amplint https://amp.dev/',
-  ].join('\n'),
-  'runtime-version': [
-    'Usage:',
-    '',
-    '',
-    'amp runtime-version',
-  ].join('\n'),
+  'lint': ['Usage:', '', '', 'amp lint url', '', 'Examples:', '  $ amplint https://amp.dev/'].join(
+    '\n'
+  ),
+  'runtime-version': ['Usage:', '', '', 'amp runtime-version'].join('\n'),
   'curls': [
     'Usage:',
     '',
@@ -46,10 +35,5 @@ module.exports = {
     'Options:',
     '--cache ................... AMP cache id as specified here: https://cdn.ampproject.org/caches.json.',
   ].join('\n'),
-  'optimize': [
-    'Usage:',
-    '',
-    '',
-    'amp optimize [url|file]',
-  ].join('\n'),
+  'optimize': ['Usage:', '', '', 'amp optimize [url|file]'].join('\n'),
 };

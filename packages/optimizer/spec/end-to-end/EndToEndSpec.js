@@ -19,10 +19,10 @@ const createSpec = require('../helpers/TransformerRunner.js');
 const log = require('../../lib/log.js');
 const {DomTransformer, TRANSFORMATIONS_PAIRED_AMP} = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
-const fetch = fetchMock.sandbox()
-    .mock('https://cdn.ampproject.org/rtv/123456789000000/v0.css', '/* v0.css */')
-    .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
-
+const fetch = fetchMock
+  .sandbox()
+  .mock('https://cdn.ampproject.org/rtv/123456789000000/v0.css', '/* v0.css */')
+  .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
 
 createSpec({
   name: 'End-to-End: AMP First',

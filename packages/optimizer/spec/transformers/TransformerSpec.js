@@ -22,7 +22,6 @@ log.verbose();
 const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
 
-
 describe('Transfomers', () => {
   ['experimental', 'valid'].forEach((subDir) => {
     loadTestConfigs(subDir).forEach(createSpec);
@@ -34,10 +33,11 @@ function loadTestConfigs(subDir) {
   return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
 
-    const fetch = fetchMock.sandbox()
-        .mock('https://cdn.ampproject.org/rtv/metadata', '{"ampRuntimeVersion":"012345678900000"}')
-        .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */')
-        .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
+    const fetch = fetchMock
+      .sandbox()
+      .mock('https://cdn.ampproject.org/rtv/metadata', '{"ampRuntimeVersion":"012345678900000"}')
+      .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */')
+      .mock('https://cdn.ampproject.org/rtv/001515617716922/v0.css', '/* v0.css */');
     const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
     const config = {
       validatorRules,

@@ -19,10 +19,13 @@
 const UpdateCacheUrlProvider = require('../lib/UpdateCacheUrlProvider');
 
 const signature = {generate: () => 'RESULT_SIGNATURE'};
-const caches = {list: () => Promise.resolve([
-  {id: 'test', name: 'Test', updateCacheApiDomainSuffix: 'test.com'},
-  {id: 'example', name: 'Example', updateCacheApiDomainSuffix: 'example.com'},
-])};
+const caches = {
+  list: () =>
+    Promise.resolve([
+      {id: 'test', name: 'Test', updateCacheApiDomainSuffix: 'test.com'},
+      {id: 'example', name: 'Example', updateCacheApiDomainSuffix: 'example.com'},
+    ]),
+};
 
 describe('UpdateCacheUrlProvider', () => {
   const updateCacheUrl = new UpdateCacheUrlProvider(signature, caches);
@@ -48,12 +51,11 @@ describe('UpdateCacheUrlProvider', () => {
   describe('calculateFromOriginUrl', () => {
     it('Generates update cache URL for each known cache', () => {
       const timestamp = 1;
-      updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp)
-          .then((result) => {
-            expect(result.length).toBe(2);
-            expect(result[0].cacheId).toBe('test');
-            expect(result[1].cacheId).toBe('example');
-          });
+      updateCacheUrl.calculateFromOriginUrl('https://test.com', timestamp).then((result) => {
+        expect(result.length).toBe(2);
+        expect(result[0].cacheId).toBe('test');
+        expect(result[1].cacheId).toBe('example');
+      });
     });
   });
 });

@@ -38,7 +38,7 @@ async function urlHasContentType(
 
 const REQUEST_HEADERS = {
   "accept": "application/signed-exchange;v=b3",
-  "amp-cache-transform": `google;v="1"`
+  "amp-cache-transform": `google;v="1"`,
 };
 const EXPECTED_VERSION = "1b3";
 const SECONDS_IN_A_DAY = 24 * 60 * 60;
@@ -48,8 +48,8 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     const opt = {
       headers: {
         ...REQUEST_HEADERS,
-        ...headers
-      }
+        ...headers,
+      },
     };
     const res = await fetch(url, opt);
     const hdr = res.headers.get("content-type") || "";
@@ -70,14 +70,14 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     let sxg;
     try {
       sxg = await execa(CMD_DUMP_SXG, CMD_DUMP_SXG_ARGS, { input: body }).then(
-        spawn => {
+        (spawn) => {
           const stdout = JSON.parse(spawn.stdout);
           return {
             isValid: stdout.Valid,
             version: stdout.Version,
             uri: stdout.RequestURI,
             status: stdout.ResponseStatus,
-            signatures: stdout.Signatures
+            signatures: stdout.Signatures,
           };
         }
       );
@@ -91,7 +91,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
       isValid: true,
       version: EXPECTED_VERSION,
       uri: url,
-      status: 200
+      status: 200,
     };
     const diff = compare(expected, sxg);
     if (Object.keys(diff).length !== 0) {
@@ -141,7 +141,7 @@ export class SxgDumpSignedExchangeVerify extends Rule {
     return {
       url: "",
       title: `verification by ${CMD_DUMP_SXG} tool`,
-      info: ""
+      info: "",
     };
   }
 }

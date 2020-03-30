@@ -17,7 +17,7 @@
 'use strict';
 
 class Log {
-  constructor(tag='', verbose=false, output=console) {
+  constructor(tag = '', verbose = false, output = console) {
     this.tag_ = tag;
     this.verbose_ = verbose;
     this.prefix_ = tag ? this.inverse_(tag) : '';
@@ -53,7 +53,7 @@ class Log {
     this.output_.log('\n');
   }
 
-  verbose(isVerbose=true) {
+  verbose(isVerbose = true) {
     this.verbose_ = !!isVerbose;
   }
 
@@ -97,4 +97,3 @@ class Log {
 }
 
 module.exports = new Log();
-

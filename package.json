@@ -12,8 +12,8 @@
     "test:node": "jest && lerna run test",
     "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-    "lint": "eslint . && lerna run lint",
-    "lint:fix": "eslint --fix . && lerna run lint:fix"
+    "lint": "eslint  -c .eslintrc.json . && lerna run lint",
+    "lint:fix": "eslint  -c .eslintrc.json --fix . && lerna run lint:fix"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,8 @@
     "babel-plugin-filter-imports": "4.0.0",
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "fetch-mock": "9.3.1",
     "html-minifier": "4.0.0",
     "husky": "4.2.3",

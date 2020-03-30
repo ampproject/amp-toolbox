@@ -19,7 +19,7 @@ export class SxgAmppkgIsForwarded extends Rule {
           `/amppkg/ not forwarded to amppackager [debug: ${fetchToCurl(
             validity,
             {
-              headers
+              headers,
             }
           )}]`
         );
@@ -28,7 +28,7 @@ export class SxgAmppkgIsForwarded extends Rule {
     return {
       url: "",
       title: "/amppkg/ is forwarded correctly",
-      info: ""
+      info: "",
     };
   }
 }

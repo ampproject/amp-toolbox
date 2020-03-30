@@ -18,4 +18,3 @@
 const RuntimeVersion = require('./lib/RuntimeVersion.js');
 const {oneBehindFetch} = require('@ampproject/toolbox-core');
 module.exports = new RuntimeVersion(oneBehindFetch);
-

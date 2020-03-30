@@ -23,7 +23,7 @@ const {removeElement, append, prepend} = require('domutils');
  * Depth-first walk through the DOM tree.
  * @param {Node} node
  */
-const nextNode = function(node) {
+const nextNode = function (node) {
   // Walk downwards if there are children
   const firstChild = node.firstChild;
   if (firstChild) {
@@ -43,13 +43,12 @@ const nextNode = function(node) {
   return null;
 };
 
-
 /**
  * Remove node from DOM
  *
  * @param {Node} node
  */
-const remove = function(node) {
+const remove = function (node) {
   removeElement(node);
 };
 
@@ -59,7 +58,7 @@ const remove = function(node) {
  * @param {Node} parent
  * @param {Node} node
  */
-const appendChild = function(parent, node) {
+const appendChild = function (parent, node) {
   if (!node) {
     return;
   }
@@ -73,7 +72,7 @@ const appendChild = function(parent, node) {
  * @param {Node} newNode the node to be inserted.
  * @param {Node} referenceNode the reference node, where the new node will be added before.
  */
-const insertBefore = function(parent, newNode, referenceNode) {
+const insertBefore = function (parent, newNode, referenceNode) {
   if (referenceNode) {
     prepend(referenceNode, newNode);
     return;
@@ -90,7 +89,7 @@ const insertBefore = function(parent, newNode, referenceNode) {
  * @param {Node} newNode the node to be inserted.
  * @param {Node} referenceNode the reference node, where the new node will be added after.
  */
-const insertAfter = function(parent, newNode, referenceNode) {
+const insertAfter = function (parent, newNode, referenceNode) {
   if (referenceNode) {
     append(referenceNode, newNode);
     return;
@@ -106,7 +105,7 @@ const insertAfter = function(parent, newNode, referenceNode) {
  * @param {Node} parent
  * @param {Array<Node>} node
  */
-const appendAll = function(node, nodes) {
+const appendAll = function (node, nodes) {
   if (!nodes) {
     return;
   }
@@ -121,13 +120,11 @@ const appendAll = function(node, nodes) {
  * @param {Node} node
  * @param {String} tagName
  */
-const firstChildByTag = function(node, tagName) {
+const firstChildByTag = function (node, tagName) {
   if (!node || !node.children) {
     return null;
   }
-  return node.children.find(
-      (child) => child.tagName && child.tagName === tagName,
-  );
+  return node.children.find((child) => child.tagName && child.tagName === tagName);
 };
 
 //
@@ -136,7 +133,7 @@ const firstChildByTag = function(node, tagName) {
  * @param {Node} node
  * @param {String} attributeName
  */
-const hasAttribute = function(node, attribute) {
+const hasAttribute = function (node, attribute) {
   if (!node.attribs) return false;
   return attribute in node.attribs;
 };
@@ -146,28 +143,28 @@ const hasAttribute = function(node, attribute) {
  * @param {Node} nodeToMove
  * @param {Node} newParent
  */
-const move = function(nodeToMove, newParent) {
+const move = function (nodeToMove, newParent) {
   remove(nodeToMove);
   appendChild(newParent, nodeToMove);
 };
 
 /**
-   * Creates a new element
-   *
-   * @param {string} tagName
-   * @param {obj} [attribs={}]
-   * @returns {Node} new node
-   */
+ * Creates a new element
+ *
+ * @param {string} tagName
+ * @param {obj} [attribs={}]
+ * @returns {Node} new node
+ */
 const createElement = (tagName, attribs) => {
   return new Element(tagName, attribs);
 };
 
 /**
-   * Inserts text
-   *
-   * @param {Node} node
-   * @param {string} the text
-   */
+ * Inserts text
+ *
+ * @param {Node} node
+ * @param {string} the text
+ */
 const insertText = (node, text) => {
   const dataNode = new DataNode('text', text);
   appendChild(node, dataNode);
@@ -180,7 +177,6 @@ const createDocType = () => {
   const result = new DataNode('directive', '!doctype html');
   return result;
 };
-
 
 module.exports = {
   appendChild,
@@ -195,5 +191,4 @@ module.exports = {
   hasAttribute,
   firstChildByTag,
   move,
-}
-;
+};

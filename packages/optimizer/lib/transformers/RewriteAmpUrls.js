@@ -15,12 +15,7 @@
  */
 'use strict';
 
-const {
-  createElement,
-  firstChildByTag,
-  insertAfter,
-  insertBefore,
-} = require('../NodeUtils');
+const {createElement, firstChildByTag, insertAfter, insertBefore} = require('../NodeUtils');
 const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
@@ -68,9 +63,11 @@ class RewriteAmpUrls {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
         referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
-      } else if (node.tagName === 'link' &&
-                  node.attribs.rel === 'stylesheet' &&
-                  this._usesAmpCacheUrl(node.attribs.href)) {
+      } else if (
+        node.tagName === 'link' &&
+        node.attribs.rel === 'stylesheet' &&
+        this._usesAmpCacheUrl(node.attribs.href)
+      ) {
         node.attribs.href = this._replaceUrl(node.attribs.href, host);
         referenceNode = this._addPreload(head, referenceNode, node.attribs.href, 'style');
       }
@@ -99,8 +96,7 @@ class RewriteAmpUrls {
   }
 
   _addPreload(parent, node, href, type) {
-    if (!href.endsWith('v0.js') &&
-      !href.endsWith('v0.css')) {
+    if (!href.endsWith('v0.js') && !href.endsWith('v0.css')) {
       return node;
     }
     const preload = createElement('link', {

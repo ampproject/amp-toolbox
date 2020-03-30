@@ -111,7 +111,6 @@ module.exports = {
   // Automatically restore mock state between every test
   // restoreMocks: false,
 
-
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
 
@@ -134,9 +133,7 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: [
-    '**/?(*)+(Spec|spec|test).[tj]s?(x)',
-  ],
+  testMatch: ['**/?(*)+(Spec|spec|test).[tj]s?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

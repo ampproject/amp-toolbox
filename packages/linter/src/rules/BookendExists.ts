@@ -16,7 +16,7 @@ export class BookendExists extends Rule {
       url:
         "https://amp.dev/documentation/components/amp-story/#bookend:-amp-story-bookend",
       title: "A bookend exists",
-      info: ""
+      info: "",
     };
   }
 }

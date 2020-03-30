@@ -143,14 +143,14 @@ const imageExtensions = [
 ];
 
 const exports = {
-  isPathNameAnImage: ((filePath) => {
+  isPathNameAnImage: (filePath) => {
     return imageExtensions.some((extension) => {
       if (filePath.endsWith(extension)) {
         return true;
       }
       return false;
     });
-  }),
+  },
 };
 
 export default exports;

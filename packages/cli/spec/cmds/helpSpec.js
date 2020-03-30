@@ -31,32 +31,29 @@ describe('Version', () => {
     const args = {
       _: ['help'],
     };
-    return helpCmd(args, mockLogger)
-        .then(() => {
-          const output = mockLogger.getLogs();
-          expect(output).toBe(messages['main']);
-        });
+    return helpCmd(args, mockLogger).then(() => {
+      const output = mockLogger.getLogs();
+      expect(output).toBe(messages['main']);
+    });
   });
 
   it('prints the generic help, if unknown command', () => {
     const args = {
       _: ['help', 'unknown'],
     };
-    return helpCmd(args, mockLogger)
-        .then(() => {
-          const output = mockLogger.getLogs();
-          expect(output).toBe(messages['main']);
-        });
+    return helpCmd(args, mockLogger).then(() => {
+      const output = mockLogger.getLogs();
+      expect(output).toBe(messages['main']);
+    });
   });
 
   it('prints help for "update-cache"', () => {
     const args = {
       _: ['help', 'update-cache'],
     };
-    return helpCmd(args, mockLogger)
-        .then(() => {
-          const output = mockLogger.getLogs();
-          expect(output).toBe(messages['update-cache']);
-        });
+    return helpCmd(args, mockLogger).then(() => {
+      const output = mockLogger.getLogs();
+      expect(output).toBe(messages['update-cache']);
+    });
   });
 });

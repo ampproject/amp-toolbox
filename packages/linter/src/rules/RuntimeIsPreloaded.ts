@@ -6,9 +6,9 @@ export class RuntimeIsPreloaded extends Rule {
     const attr = [
       "href='https://cdn.ampproject.org/v0.js'",
       "rel='preload'",
-      "as='script'"
+      "as='script'",
     ]
-      .map(s => `[${s}]`)
+      .map((s) => `[${s}]`)
       .join("");
     const isPreloaded = $(`link${attr}`).length > 0;
     return isPreloaded
@@ -22,7 +22,7 @@ export class RuntimeIsPreloaded extends Rule {
       url:
         "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/#optimize-the-amp-runtime-loading",
       title: "Runtime is preloaded",
-      info: ""
+      info: "",
     };
   }
 }

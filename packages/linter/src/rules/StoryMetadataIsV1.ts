@@ -13,9 +13,9 @@ export class StoryMetadataIsV1 extends Rule {
       "title",
       "publisher",
       "publisher-logo-src",
-      "poster-portrait-src"
+      "poster-portrait-src",
     ]
-      .map(a => ($(`amp-story[${a}]`).length > 0 ? false : a))
+      .map((a) => ($(`amp-story[${a}]`).length > 0 ? false : a))
       .filter(Boolean) as string[];
     if (attr.length > 0) {
       return this.warn(
@@ -32,7 +32,7 @@ export class StoryMetadataIsV1 extends Rule {
       url:
         "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
       title: "Preview metadata is specified correctly",
-      info: ""
+      info: "",
     };
   }
 }

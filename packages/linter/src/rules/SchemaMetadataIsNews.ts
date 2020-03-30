@@ -22,7 +22,7 @@ export class SchemaMetadataIsNews extends Rule {
     return {
       url: "",
       title: "schema.org metadata has news or article type",
-      info: ""
+      info: "",
     };
   }
 }

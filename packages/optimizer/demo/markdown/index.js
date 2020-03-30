@@ -18,6 +18,4 @@ async function compileMarkdownToAmp(filePath) {
   return amphtml;
 }
 
-
 compileMarkdownToAmp('./README.md').then(console.log);
-

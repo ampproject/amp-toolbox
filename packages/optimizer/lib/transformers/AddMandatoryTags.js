@@ -73,7 +73,8 @@ const BOILERPLATES = {
               'amp-boilerplate': '',
             },
             // eslint-disable-next-line max-len
-            text: 'body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}',
+            text:
+              'body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}',
           },
         ],
       },
@@ -91,7 +92,8 @@ const BOILERPLATES = {
           'amp-boilerplate': '',
         },
         // eslint-disable-next-line max-len
-        text: 'body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}',
+        text:
+          'body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}',
       },
     },
     {
@@ -175,8 +177,9 @@ class AddMandatoryTags {
     }
 
     // Add the doctype if none is present
-    let doctype =
-      root.children.find((child) => child.type === 'directive' && child.name === '!doctype');
+    let doctype = root.children.find(
+      (child) => child.type === 'directive' && child.name === '!doctype'
+    );
     if (!doctype) {
       doctype = createDocType();
       insertBefore(root, doctype, root.firstChild);
