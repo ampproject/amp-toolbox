@@ -13,6 +13,6 @@
     "mkdirp": "1.0.3"
   },
   "devDependencies": {
-    "@ampproject/toolbox-optimizer": "1.1.0-beta.0"
+    "@ampproject/toolbox-optimizer": "1.1.2"
   }
 }
