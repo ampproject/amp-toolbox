@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* global window */
+
 /**
  * @param {string} str The string to convert to sha256
  * @return {!Promise<string>}
@@ -22,7 +24,7 @@
 export default function browserSha256(str) {
   // Transform the string into an arraybuffer.
   const buffer = new TextEncoder('utf-8').encode(str);
-  return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
+  return window.crypto.subtle.digest('SHA-256', buffer).then((hash) => {
     return hex_(hash);
   });
 }

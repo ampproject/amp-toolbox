@@ -16,7 +16,7 @@ Here is an image declared in markdown syntax:
 
 ![A random image](https://unsplash.it/800/600).
 
-You can also use directly use AMP components:
+You can also directly use AMP components:
 
   <amp-twitter width="375" 
                height="472" 
