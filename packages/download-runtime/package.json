@@ -23,9 +23,10 @@
     "@ampproject/toolbox-cache-list": "^2.0.0",
     "@ampproject/toolbox-core": "^2.0.0",
     "@ampproject/toolbox-runtime-version": "^2.0.0",
+    "at-least-node": "1.0.0",
     "cross-fetch": "3.0.4",
     "fetch-mock": "9.2.1",
-    "fs-extra": "^9.0.0"
+    "fs-extra": "9.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
