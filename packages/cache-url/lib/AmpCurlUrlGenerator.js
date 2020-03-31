@@ -73,12 +73,14 @@ function createCurlsSubdomain(url) {
   // Get our domain from the passed url string
   const domain = new Url(url).hostname;
   if (isEligibleForHumanReadableCacheEncoding_(domain)) {
-    const curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
+    let curlsEncoding = constructHumanReadableCurlsCacheDomain_(domain);
     if (curlsEncoding.length > MAX_DOMAIN_LABEL_LENGTH_) {
       return constructFallbackCurlsCacheDomain_(domain);
-    } else {
-      return Promise.resolve(curlsEncoding);
     }
+    if (hasInvalidHyphen34_(curlsEncoding)) {
+      curlsEncoding = constructCurlsCacheDomainForHyphen34_(curlsEncoding);
+    }
+    return Promise.resolve(curlsEncoding);
   } else {
     return constructFallbackCurlsCacheDomain_(domain);
   }
@@ -87,6 +89,7 @@ function createCurlsSubdomain(url) {
 /**
  * Determines whether the given domain can be validly encoded into a human
  * readable curls encoded cache domain.  A domain is eligible as long as:
+ *   It does not have hyphens in positions 3&4.
  *   It does not exceed 63 characters
  *   It does not contain a mix of right-to-left and left-to-right characters
  *   It contains a dot character
@@ -96,6 +99,9 @@ function createCurlsSubdomain(url) {
  * @private
  */
 function isEligibleForHumanReadableCacheEncoding_(domain) {
+  if (hasInvalidHyphen34_(domain)) {
+    return false;
+  }
   const unicode = punycode.toUnicode(domain);
   return (
     domain.length <= MAX_DOMAIN_LABEL_LENGTH_ &&
@@ -222,6 +228,33 @@ function encode32_(paddedHexString) {
   for (let i = 0; i < replace; i++) parts.push('=');
 
   return parts.join('');
+}
+
+/**
+ * Determines if a domain or curls encoded proxy domain is allowed to have a
+ * hyphen in positions 3&4.
+ *
+ * @param {string} domainOrCurls A publisher domain or curls encoded proxy
+ *   domain
+ * @return {boolean}
+ * @private
+ */
+function hasInvalidHyphen34_(domainOrCurls) {
+  return domainOrCurls.slice(2, 4) == '--' && domainOrCurls.slice(0, 2) != 'xn';
+}
+
+/**
+ * Constructs a human readable curls for when the constructed curls has a
+ * hyphen in position 3&4.
+ *
+ * @param {string} curlsEncoding The curls encoded domain with hyphen in
+ *   position 3&4
+ * @return {string} The transformed curls encoded domain
+ * @private
+ */
+function constructCurlsCacheDomainForHyphen34_(curlsEncoding) {
+  const prefix = '0-';
+  return prefix.concat(curlsEncoding, '-0');
 }
 
 /** @module AmpCurlUrl */

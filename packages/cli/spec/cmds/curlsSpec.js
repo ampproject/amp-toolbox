@@ -31,7 +31,6 @@ describe('curls', () => {
       const output = mockLogger.logs;
       expect(output).toEqual([
         'https://amp-dev.cdn.ampproject.org/c/s/amp.dev',
-        'https://amp-dev.amp.cloudflare.com/c/s/amp.dev',
         'https://amp-dev.bing-amp.com/c/s/amp.dev',
       ]);
     });
