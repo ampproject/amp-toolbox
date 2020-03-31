@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* global window */
+
 'use strict';
 
 // Check if we are in a browser environment

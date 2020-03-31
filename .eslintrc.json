@@ -1,11 +1,15 @@
 {
   "extends": ["plugin:prettier/recommended"],
   "parserOptions": {
-    "ecmaVersion": 2017,
     "sourceType": "module"
+  },
+  "rules": {
+    "no-undef": "error"
   },
   "env": {
     "node": true,
-    "jasmine": true
+    "jasmine": true,
+    "es2017": true,
+    "jest": true
   }
 }
