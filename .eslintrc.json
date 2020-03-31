@@ -3,9 +3,13 @@
   "parserOptions": {
     "sourceType": "module"
   },
+  "rules": {
+    "no-undef": "error"
+  },
   "env": {
     "node": true,
     "jasmine": true,
-    "es2017": true
+    "es2017": true,
+    "jest": true
   }
 }

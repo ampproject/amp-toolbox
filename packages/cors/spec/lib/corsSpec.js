@@ -20,6 +20,7 @@ let request;
 let response;
 let cors;
 let options;
+let caches;
 
 describe('AMP Cors', () => {
   beforeEach(() => {
