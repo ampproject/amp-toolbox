@@ -65,15 +65,9 @@ Populates the `dist` directory with the appropriate `*.js` and `*.d.ts` files.
 Note that tests are _not_ included. This script is intended to be used when
 building the npm package.
 
-#### `transpile`
-
-Transpiles `*.ts` into `*.js`. Unlike `build`, tests are included, and the
-`*.js` files are output into the same directory as the corresponding `*.ts`.
-This script is intended to be used during development.
-
 #### `test`
 
-Runs the tests. Automatically runs `transpile` first.
+Runs the tests. 
 
 #### `lint`
 
