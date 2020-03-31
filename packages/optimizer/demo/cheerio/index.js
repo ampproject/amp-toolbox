@@ -23,12 +23,7 @@ const AmpOptimizer = require('../../index.js');
 const cheerio = require('cheerio');
 
 if (process.argv.length !== 3 || !fs.existsSync(process.argv[2])) {
-  process.stderr.write([
-    'usage:',
-    process.argv[0],
-    process.argv[1],
-    'filename',
-  ].join(' '));
+  process.stderr.write(['usage:', process.argv[0], process.argv[1], 'filename'].join(' '));
   process.exit(1);
 }
 
@@ -57,7 +52,7 @@ class CheerioTransformer {
     $('title').text('Optimized: ' + $('title').text());
     // Injects amp-fx-parallax component
     $('head').append(
-        '<script async custom-element="amp-fx-parallax" src="https://cdn.ampproject.org/v0/amp-fx-parallax-0.1.js"></script>',
+      '<script async custom-element="amp-fx-parallax" src="https://cdn.ampproject.org/v0/amp-fx-parallax-0.1.js"></script>'
     );
     // Enables parallax scrolling
     $('h1').attr('amp-fx-parallax', params.ampFxParallax);
@@ -71,8 +66,6 @@ const optimizer = AmpOptimizer.create({
   transformations: AmpOptimizer.TRANSFORMATIONS_AMP_FIRST.concat([CheerioTransformer]),
 });
 
-optimizer.transformHtml(
-    fs.readFileSync(FILENAME, 'utf8'),
-    {ampFxParallax: '1.7'},
-).then((html) => console.log(html));
-
+optimizer
+  .transformHtml(fs.readFileSync(FILENAME, 'utf8'), {ampFxParallax: '1.7'})
+  .then((html) => console.log(html));

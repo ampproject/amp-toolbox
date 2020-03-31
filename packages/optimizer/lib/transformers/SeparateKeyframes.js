@@ -175,13 +175,9 @@ class SeparateKeyframes {
     }
     // Insert keyframes styles to Node
     const keyframesTextNode = stylesKeyframesTag.children[0];
-    const currentKeyframesTree = css.parse(
-        keyframesTextNode && keyframesTextNode.data || '',
-    );
-    currentKeyframesTree.stylesheet.rules = (
-      keyframesTree.stylesheet.rules.concat(
-          currentKeyframesTree.stylesheet.rules,
-      )
+    const currentKeyframesTree = css.parse((keyframesTextNode && keyframesTextNode.data) || '');
+    currentKeyframesTree.stylesheet.rules = keyframesTree.stylesheet.rules.concat(
+      currentKeyframesTree.stylesheet.rules
     );
     const keyframesText = css.stringify(currentKeyframesTree, this.stringifyOptions_);
 
@@ -197,8 +193,9 @@ class SeparateKeyframes {
     stylesCustomTag.children[0].data = css.stringify(cssTree, this.stringifyOptions_);
   }
   logInvalid(name, property) {
-    this.log_.warn(`Found invalid keyframe property '${
-      property}' in '${name}' not moving to style[amp-keyframes]`);
+    this.log_.warn(
+      `Found invalid keyframe property '${property}' in '${name}' not moving to style[amp-keyframes]`
+    );
   }
 
   isAmpStory(body) {

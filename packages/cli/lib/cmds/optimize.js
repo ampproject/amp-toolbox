@@ -20,7 +20,7 @@ const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {loadUrlOrFile} = require('../io.js');
 
 class OptimizeCmd {
-  constructor(optimizer=AmpOptimizer.create(), load=loadUrlOrFile) {
+  constructor(optimizer = AmpOptimizer.create(), load = loadUrlOrFile) {
     this.optimizer_ = optimizer;
     this.load_ = load;
   }
@@ -29,8 +29,7 @@ class OptimizeCmd {
     const html = await this.load_(urlOrPath);
     const optimized = await this.optimizer_.transformHtml(html);
     logger.info(optimized);
-  };
+  }
 }
-
 
 module.exports = OptimizeCmd;

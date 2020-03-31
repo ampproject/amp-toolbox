@@ -14,7 +14,7 @@ export class StoryIsMostlyText extends Rule {
     return {
       url: "",
       title: "Text is HTML (and not embedded into video)",
-      info: ""
+      info: "",
     };
   }
 }

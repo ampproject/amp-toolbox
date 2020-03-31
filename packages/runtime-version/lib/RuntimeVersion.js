@@ -70,7 +70,9 @@ class RuntimeVersion {
       if (this.isAbsoluteUrl_(customMetaUrl)) {
         runtimeMetaUrl = customMetaUrl;
       } else {
-        log.warn('ampUrlPrefix is not an absolute URL. Falling back to https://cdn.ampproject.org.');
+        log.warn(
+          'ampUrlPrefix is not an absolute URL. Falling back to https://cdn.ampproject.org.'
+        );
       }
     }
     const response = await this.fetch_(runtimeMetaUrl);
@@ -101,7 +103,7 @@ class RuntimeVersion {
     try {
       new URL(url);
       return true;
-    } catch (ex) { }
+    } catch (ex) {}
 
     return false;
   }

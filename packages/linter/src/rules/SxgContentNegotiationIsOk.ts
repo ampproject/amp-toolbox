@@ -6,7 +6,7 @@ import { fetchToCurl } from "../helper";
 export class SxgContentNegotiationIsOk extends Rule {
   async run({ url, headers }: Context) {
     const opt1 = {
-      headers: Object.assign({ accept: "text/html" }, headers)
+      headers: Object.assign({ accept: "text/html" }, headers),
     };
     const res1 = await fetch(url, opt1);
     const hdr1 = res1.headers.get("content-type") || "";
@@ -22,7 +22,7 @@ export class SxgContentNegotiationIsOk extends Rule {
       headers: Object.assign(
         { accept: "application/signed-exchange;v=b3" },
         headers
-      )
+      ),
     };
     const res2 = await fetch(url, opt2);
     const hdr2 = res2.headers.get("content-type") || "";
@@ -38,10 +38,10 @@ export class SxgContentNegotiationIsOk extends Rule {
       headers: Object.assign(
         {
           "accept": "application/signed-exchange;v=b3",
-          "amp-cache-transform": `google;v="1"`
+          "amp-cache-transform": `google;v="1"`,
         },
         headers
-      )
+      ),
     };
     const res3 = await fetch(url, opt3);
     const hdr3 = res3.headers.get("content-type") || "";
@@ -59,7 +59,7 @@ export class SxgContentNegotiationIsOk extends Rule {
     return {
       url: "",
       title: "content negotiation is correct",
-      info: ""
+      info: "",
     };
   }
 }

@@ -41,7 +41,7 @@ if (WRITE_SNAPSHOT) {
   console.log('[AMP Optimizer Test] Creating new snapshot');
 }
 
-module.exports = function(testConfig) {
+module.exports = function (testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach((testDir) => {
       it(basename(testDir), async (done) => {
@@ -65,11 +65,10 @@ module.exports = function(testConfig) {
         const tree = await treeParser.parse(input);
 
         // parse expected output
-        const expectedOutputPath =
-          join(
-              testDir,
-            testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html',
-          );
+        const expectedOutputPath = join(
+          testDir,
+          testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html'
+        );
         let expectedOutput = '';
         try {
           expectedOutput = getFileContents(expectedOutputPath);

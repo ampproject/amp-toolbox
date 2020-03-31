@@ -27,7 +27,7 @@ class TestTransformer {
   }
 }
 
-function runMiddlewareForUrl(middleware, url, options={accepts: () => 'html', input: AMP_DOC}) {
+function runMiddlewareForUrl(middleware, url, options = {accepts: () => 'html', input: AMP_DOC}) {
   return new Promise((resolve) => {
     const mockResponse = new MockExpressResponse();
     const next = () => mockResponse.send(options.input);
@@ -51,10 +51,9 @@ describe('Express Middleware', () => {
     const middleware = AmpOptimizerMiddleware.create(new TestTransformer());
 
     const runStaticTest = (url, expected) => {
-      runMiddlewareForUrl(middleware, url)
-          .then((result) => {
-            expect(result).toEqual(expected);
-          });
+      runMiddlewareForUrl(middleware, url).then((result) => {
+        expect(result).toEqual(expected);
+      });
     };
 
     ['/image.jpg', '/image.svg', '/script.js', '/style.css'].forEach((url) => {
@@ -66,17 +65,19 @@ describe('Express Middleware', () => {
     });
 
     it('applies transformation if req.accept method does not exist', () => {
-      runMiddlewareForUrl(middleware, '/page.html', {accepts: null, input: AMP_DOC})
-          .then((result) => {
-            expect(result).toEqual(TRANSFORMED_AMP_DOC);
-          });
+      runMiddlewareForUrl(middleware, '/page.html', {accepts: null, input: AMP_DOC}).then(
+        (result) => {
+          expect(result).toEqual(TRANSFORMED_AMP_DOC);
+        }
+      );
     });
 
     it('skips transformation if request does not accept HTML', () => {
-      runMiddlewareForUrl(middleware, '/page.html', {accepts: () => '', input: AMP_DOC})
-          .then((result) => {
-            expect(result).toEqual(AMP_DOC);
-          });
+      runMiddlewareForUrl(middleware, '/page.html', {accepts: () => '', input: AMP_DOC}).then(
+        (result) => {
+          expect(result).toEqual(AMP_DOC);
+        }
+      );
     });
   });
 
@@ -88,10 +89,9 @@ describe('Express Middleware', () => {
     const middleware = AmpOptimizerMiddleware.create({ampOptimizer: transformer});
 
     it('sends the original content when optimizer fails', () => {
-      runMiddlewareForUrl(middleware, '/page.html')
-          .then((result) => {
-            expect(result).toEqual(AMP_DOC);
-          });
+      runMiddlewareForUrl(middleware, '/page.html').then((result) => {
+        expect(result).toEqual(AMP_DOC);
+      });
     });
   });
 });

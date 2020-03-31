@@ -32,7 +32,7 @@ class AmpOptimizerMiddleware {
    *
    * @param {AmpOptimizer} [options.ampOptimizer] AMP Optimizer instance used to apply server-side render transformations.
    */
-  static create(ampOptimizer=AmpOptimizer.create()) {
+  static create(ampOptimizer = AmpOptimizer.create()) {
     return (req, res, next) => {
       // If this is a request for a resource, such as image, JS or CSS, do not apply optimizations.
       if (AmpOptimizerMiddleware.isResourceRequest_(req)) {
@@ -110,9 +110,10 @@ class AmpOptimizerMiddleware {
     // Checks if mime-type for request is text/html. If mime type is unknown, assume text/html,
     // as it is probably a directory request.
     const mimeType = mime.lookup(req.url) || 'text/html';
-    return (req.accepts && req.accepts('html') !== 'html') ||
-      mimeType !== 'text/html' &&
-      !req.url.endsWith('/'); // adjust for /abc.com/, which return application/x-msdownload
+    return (
+      (req.accepts && req.accepts('html') !== 'html') ||
+      (mimeType !== 'text/html' && !req.url.endsWith('/'))
+    ); // adjust for /abc.com/, which return application/x-msdownload
   }
 }
 

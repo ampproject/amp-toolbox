@@ -24,7 +24,7 @@ const {
 const NodeUtils = require('./lib/NodeUtils.js');
 
 module.exports = {
-  create: (config=DEFAULT_CONFIG) => new DomTransformer(config),
+  create: (config = DEFAULT_CONFIG) => new DomTransformer(config),
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
   DEFAULT_CONFIG,

@@ -13,7 +13,7 @@ export class IsValid extends Rule {
     return {
       url: "https://validator.amp.dev/",
       title: "Document is valid AMP",
-      info: ""
+      info: "",
     };
   }
 }

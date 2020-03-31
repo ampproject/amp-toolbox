@@ -69,7 +69,7 @@ export function fetchToCurl(
   const headers = init.headers || {};
 
   const h = Object.keys(headers)
-    .map(k => `-H '${k}: ${headers[k]}'`)
+    .map((k) => `-H '${k}: ${headers[k]}'`)
     .join(" ");
 
   return `curl -sS ${includeHeaders ? " -i " : ""}${h} '${url}'`;

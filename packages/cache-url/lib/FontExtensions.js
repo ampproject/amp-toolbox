@@ -217,14 +217,14 @@ const fontExtensions = [
 ];
 
 const exports = {
-  isPathNameAFont: ((filePath) => {
+  isPathNameAFont: (filePath) => {
     return fontExtensions.some((extension) => {
       if (filePath.endsWith(extension)) {
         return true;
       }
       return false;
     });
-  }),
+  },
 };
 
 export default exports;

@@ -1,10 +1,7 @@
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     frameworks: ['jasmine'],
-    files: [
-      'packages/cache-url/dist/**/*.umd.js',
-      'packages/cache-url/spec/**/*.js',
-    ],
+    files: ['packages/cache-url/dist/**/*.umd.js', 'packages/cache-url/spec/**/*.js'],
     reporters: ['progress'],
     port: 9876, // karma web server port
     colors: true,

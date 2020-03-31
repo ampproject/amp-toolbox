@@ -9,7 +9,7 @@ import {
   buildSourceOrigin,
   addSourceOrigin,
   fetchToCurl,
-  absoluteUrl
+  absoluteUrl,
 } from "../helper";
 import { Context } from "../index";
 import { Rule } from "../rule";
@@ -25,7 +25,7 @@ export class EndpointsAreAccessibleFromCache extends Rule {
     const e = corsEndpoints(context.$);
     const product = cartesian(
       e,
-      (await caches()).map(c => c.cacheDomain)
+      (await caches()).map((c) => c.cacheDomain)
     );
     const canXhrCache = async (xhrUrl: string, cacheSuffix: string) => {
       const sourceOrigin = buildSourceOrigin(context.url);
@@ -36,7 +36,7 @@ export class EndpointsAreAccessibleFromCache extends Rule {
       const headers = Object.assign({}, { origin }, context.headers);
 
       const curl = fetchToCurl(addSourceOrigin(xhrUrl, sourceOrigin), {
-        headers
+        headers,
       });
 
       return fetch(addSourceOrigin(xhrUrl, sourceOrigin), { headers })
@@ -45,7 +45,8 @@ export class EndpointsAreAccessibleFromCache extends Rule {
         .then(isJson)
         .then(
           () => this.pass(`${xhrUrl} is accessible from ${cacheSuffix}`),
-          e => this.fail(`can't XHR [${xhrUrl}]: ${e.message} [debug: ${curl}]`)
+          (e) =>
+            this.fail(`can't XHR [${xhrUrl}]: ${e.message} [debug: ${curl}]`)
         );
     };
     return (
@@ -61,7 +62,7 @@ export class EndpointsAreAccessibleFromCache extends Rule {
       url:
         "https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/",
       title: "Endpoints are accessible from cache",
-      info: ""
+      info: "",
     };
   }
 }

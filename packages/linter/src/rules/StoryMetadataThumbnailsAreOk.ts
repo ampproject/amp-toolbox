@@ -12,7 +12,7 @@ function inlineMetadata($: CheerioStatic) {
     "poster-square-src": e.attr("poster-square-src"), // optional
     "publisher": e.attr("publisher"),
     "publisher-logo-src": e.attr("publisher-logo-src"),
-    "title": e.attr("title")
+    "title": e.attr("title"),
   };
   return metadata;
 }
@@ -57,7 +57,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       }
       try {
         const info = await dimensions(context, url);
-        const failed = expected.filter(fn => !fn(info)).map(fn => fn.name);
+        const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
         return failed.length === 0
           ? this.pass()
           : this.fail(
@@ -65,7 +65,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
                 url: url,
                 width: info.width,
                 height: info.height,
-                mime: info.mime
+                mime: info.mime,
               })}] failed [${failed.join(", ")}]`
             );
       } catch (e) {
@@ -85,18 +85,18 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       assert("poster-portrait-src", true, [
         isRaster,
         isPortrait,
-        isAtLeast696x928
+        isAtLeast696x928,
       ]),
       assert("poster-square-src", false, [
         isRaster,
         isSquare,
-        isAtLeast928x928
+        isAtLeast928x928,
       ]),
       assert("poster-landscape-src", false, [
         isRaster,
         isLandscape,
-        isAtLeast928x696
-      ])
+        isAtLeast928x696,
+      ]),
     ];
     return (await Promise.all(res)).filter(notPass);
   }
@@ -105,7 +105,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       url:
         "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
       title: "Preview metadata is specified correctly",
-      info: ""
+      info: "",
     };
   }
 }

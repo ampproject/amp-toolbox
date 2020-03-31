@@ -76,8 +76,7 @@ class MinifyHtml {
     if (opts.canCollapseWhitespace && !this.canCollapseWhitespace(node.tagName)) {
       childOpts.canCollapseWhitespace = false;
     }
-    if (node.tagName === 'head' ||
-          node.tagName === 'html') {
+    if (node.tagName === 'head' || node.tagName === 'html') {
       childOpts.inBody = false;
     } else if (node.tagName === 'body') {
       childOpts.inBody = true;
@@ -133,9 +132,9 @@ class MinifyHtml {
     const result = Terser.minify(child.data);
     if (result.error) {
       this.log.warn(
-          'Could not minify inline amp-script',
-          child.data,
-          `${result.error.name}: ${result.error.message}`,
+        'Could not minify inline amp-script',
+        child.data,
+        `${result.error.name}: ${result.error.message}`
       );
       return;
     }
@@ -154,21 +153,22 @@ class MinifyHtml {
   }
 
   isInlineAmpScript(node) {
-    return node.attribs &&
-      node.attribs.type === 'text/plain' &&
-      node.attribs.target === 'amp-script';
+    return (
+      node.attribs && node.attribs.type === 'text/plain' && node.attribs.target === 'amp-script'
+    );
   }
 
   isJson(node) {
-    return node.attribs &&
-      (node.attribs.type === 'application/json' || node.attribs.type === 'application/ld+json');
+    return (
+      node.attribs &&
+      (node.attribs.type === 'application/json' || node.attribs.type === 'application/ld+json')
+    );
   }
 
   canCollapseWhitespace(tagName) {
-    return 'script' !== tagName &&
-      'style' !== tagName &&
-      'pre' !== tagName &&
-      'textarea' !== tagName;
+    return (
+      'script' !== tagName && 'style' !== tagName && 'pre' !== tagName && 'textarea' !== tagName
+    );
   }
 
   canTrimWhitespace(tagName) {

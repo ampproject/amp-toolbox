@@ -107,7 +107,7 @@ class DomTransformer {
    * @param {Object} config - The config.
    * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
    */
-  constructor(config=DEFAULT_CONFIG) {
+  constructor(config = DEFAULT_CONFIG) {
     this.setConfig(config);
   }
 
@@ -147,7 +147,7 @@ class DomTransformer {
   setConfig(config) {
     config = Object.assign({}, DEFAULT_CONFIG, config);
     if (!config.runtimeVersion) {
-    // Re-use custom fetch implementation for runtime version provider
+      // Re-use custom fetch implementation for runtime version provider
       config.runtimeVersion = new RuntimeVersion(config.fetch);
     }
     log.verbose(config.verbose);

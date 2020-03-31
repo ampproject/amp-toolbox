@@ -20,4 +20,3 @@ const UpdateCacheUrlProvider = require('./lib/UpdateCacheUrlProvider');
 
 /** @module UpdateCacheUrlProvider */
 module.exports = UpdateCacheUrlProvider;
-

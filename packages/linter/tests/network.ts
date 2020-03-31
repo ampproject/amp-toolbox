@@ -5,7 +5,7 @@ import {
   runNetworkTest,
   assertPass,
   assertFail,
-  assertFnList
+  assertFnList,
 } from "./lib";
 import { StoryMetadataThumbnailsAreOk } from "../src/rules/StoryMetadataThumbnailsAreOk";
 import { Result, Status } from "../src";
@@ -221,7 +221,7 @@ withFixture("ampimg1", () =>
       AmpImgHeightWidthIsOk,
       "https://ampbyexample.com/components/amp-img/"
     ),
-    res => {
+    (res) => {
       if (res.length !== 3) {
         return "expected 3 failures";
       }
@@ -241,7 +241,7 @@ withFixture("ampimg2", () =>
       AmpImgHeightWidthIsOk,
       "https://www.ampproject.org/docs/reference/components/amp-story"
     ),
-    res => {
+    (res) => {
       if (res.length !== 6) {
         return "expected 6 failures";
       }
@@ -268,7 +268,7 @@ withFixture("ampimg3", () =>
       AmpImgHeightWidthIsOk,
       "https://ampbyexample.com/introduction/hello_world/"
     ),
-    res => {
+    (res) => {
       return res.length === 0
         ? ""
         : `expected 0 failures, got ${JSON.stringify(res)}`;
@@ -280,7 +280,7 @@ withFixture("ampimg4", () =>
   assertFnList(
     `${AmpImgHeightWidthIsOk.name} - height/width are incorrect, but ignored`,
     runNetworkTest(AmpImgHeightWidthIsOk, "https://pyrite-coil.glitch.me"),
-    res => {
+    (res) => {
       return res.length === 0
         ? ""
         : `expected 0 failures, got ${JSON.stringify(res)}`;
@@ -292,7 +292,7 @@ withFixture("ampimg5", () =>
   assertFnList(
     `${AmpImgHeightWidthIsOk.name} - height/width are correct`,
     runNetworkTest(AmpImgHeightWidthIsOk, "https://charming-pirate.glitch.me/"),
-    res => {
+    (res) => {
       return res.length === 0
         ? ""
         : `expected 0 failures, got ${JSON.stringify(res)}`;
@@ -307,7 +307,7 @@ withFixture("cors1", () =>
       EndpointsAreAccessibleFromOrigin,
       "https://swift-track.glitch.me/"
     ),
-    res => {
+    (res) => {
       return res.length === 0
         ? ""
         : `expected 0 failures, got ${JSON.stringify(res)}`;

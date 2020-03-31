@@ -25,10 +25,9 @@ describe('Version', () => {
 
   it('prints the version', () => {
     mockLogger.clear();
-    return versionCmd({}, mockLogger)
-        .then(() => {
-          const output = mockLogger.getLogs();
-          expect(output).toBe(`v${packageInfo.version}`);
-        });
+    return versionCmd({}, mockLogger).then(() => {
+      const output = mockLogger.getLogs();
+      expect(output).toBe(`v${packageInfo.version}`);
+    });
   });
 });

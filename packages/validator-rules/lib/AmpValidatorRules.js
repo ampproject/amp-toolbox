@@ -55,21 +55,20 @@ class AmpValidatorRules {
   getTagsForFormat(format, transformed = false) {
     format = format.toLowerCase();
     return this.tags
-        .filter(
-            (tag) =>
-              tag.htmlFormat.includes(format.toUpperCase()) &&
+      .filter(
+        (tag) =>
+          tag.htmlFormat.includes(format.toUpperCase()) &&
           this.checkEntityFormat_(tag, format) &&
-          this.checkEntityTransformed_(tag, transformed),
-        )
-        .map((tag) => {
-          tag = Object.assign({}, tag);
-          tag.attrs = tag.attrs.filter(
-              (attr) =>
-                this.checkEntityFormat_(attr, format) &&
-            this.checkEntityTransformed_(attr, transformed),
-          );
-          return tag;
-        });
+          this.checkEntityTransformed_(tag, transformed)
+      )
+      .map((tag) => {
+        tag = Object.assign({}, tag);
+        tag.attrs = tag.attrs.filter(
+          (attr) =>
+            this.checkEntityFormat_(attr, format) && this.checkEntityTransformed_(attr, transformed)
+        );
+        return tag;
+      });
   }
 
   /**
@@ -147,45 +146,41 @@ class AmpValidatorRules {
         this.attrLists_[name] = attrs;
       }
     }
-    this.specialAttrLists_.$AMP_LAYOUT_ATTRS.forEach(
-        (attr) => (attr.layout = true),
-    );
+    this.specialAttrLists_.$AMP_LAYOUT_ATTRS.forEach((attr) => (attr.layout = true));
     this.specialAttrLists_.$GLOBAL_ATTRS.forEach((attr) => (attr.global = true));
   }
 
   initTags_(rules) {
     this.tags = rules.tags
-        .filter((tag) => !tag.extensionSpec)
-        .map((tag) => {
-          tag.attrs = tag.attrs || [];
+      .filter((tag) => !tag.extensionSpec)
+      .map((tag) => {
+        tag.attrs = tag.attrs || [];
 
-          // `attrLists` contains list IDs that are looked up from the global
-          // attribute lists and merged into `attrs`.
-          if (tag.attrLists) {
-            for (const attrList of tag.attrLists) {
-              tag.attrs.push(...this.attrLists_[attrList]);
-            }
-            delete tag.attrLists;
+        // `attrLists` contains list IDs that are looked up from the global
+        // attribute lists and merged into `attrs`.
+        if (tag.attrLists) {
+          for (const attrList of tag.attrLists) {
+            tag.attrs.push(...this.attrLists_[attrList]);
           }
+          delete tag.attrLists;
+        }
 
-          // $AMP_LAYOUT_ATTRS are present in all components with ampLayout
-          if (tag.ampLayout) {
-            tag.attrs.push(...this.specialAttrLists_.$AMP_LAYOUT_ATTRS);
-          }
+        // $AMP_LAYOUT_ATTRS are present in all components with ampLayout
+        if (tag.ampLayout) {
+          tag.attrs.push(...this.specialAttrLists_.$AMP_LAYOUT_ATTRS);
+        }
 
-          // $GLOBAL_ATTRS are present in all components
-          tag.attrs.push(...this.specialAttrLists_.$GLOBAL_ATTRS);
+        // $GLOBAL_ATTRS are present in all components
+        tag.attrs.push(...this.specialAttrLists_.$GLOBAL_ATTRS);
 
-          return tag;
-        });
+        return tag;
+      });
   }
 
   initExtensions_(rules) {
     this.extensions = rules.tags
-        .filter((tag) => tag.extensionSpec)
-        .map((tag) =>
-          Object.assign({}, tag.extensionSpec, {htmlFormat: tag.htmlFormat}),
-        );
+      .filter((tag) => tag.extensionSpec)
+      .map((tag) => Object.assign({}, tag.extensionSpec, {htmlFormat: tag.htmlFormat}));
 
     for (const extension of this.extensions) {
       const name = extension.name.toLowerCase();

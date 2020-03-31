@@ -119,8 +119,10 @@ class AmpBoilerplateTransformer {
     // Fetch and inline contents of v0.css
     const response = await this.fetch_(v0CssUrl);
     if (!response.ok) {
-      throw new Error(`Could not inline v0.css. Request to ${v0CssUrl} failed with status ` +
-          `${response.status}.`);
+      throw new Error(
+        `Could not inline v0.css. Request to ${v0CssUrl} failed with status ` +
+          `${response.status}.`
+      );
     }
     const body = await response.text();
     insertText(node, body);
@@ -130,7 +132,7 @@ class AmpBoilerplateTransformer {
     try {
       new URL(url);
       return true;
-    } catch (ex) { }
+    } catch (ex) {}
 
     return false;
   }

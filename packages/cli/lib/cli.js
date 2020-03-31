@@ -21,7 +21,7 @@ const minimist = require('minimist');
 const {log} = require('@ampproject/toolbox-core');
 
 class Cli {
-  constructor(logger=log) {
+  constructor(logger = log) {
     this.logger_ = logger;
   }
 

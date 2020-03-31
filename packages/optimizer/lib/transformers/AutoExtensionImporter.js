@@ -154,9 +154,9 @@ class AutoExtensionImporter {
 
     // Some AMP components need to be detected in the head (e.g. amp-access)
     this.findExistingExtensionsAndExtensionsToImportInHead_(
-        head,
-        extensionsToImport,
-        existingImports,
+      head,
+      extensionsToImport,
+      existingImports
     );
 
     // Most AMP components can be detected in the body
@@ -181,8 +181,8 @@ class AutoExtensionImporter {
       // Use the latest version by default
       const version = extension.version[extension.version.length - 1];
       const extensionImportAttribs = {
-        'async': '',
-        'src': `${host}/v0/${extensionName}-${version}.js`,
+        async: '',
+        src: `${host}/v0/${extensionName}-${version}.js`,
       };
       extensionImportAttribs[extension.type] = extensionName;
       const extensionImport = createElement('script', extensionImportAttribs);
@@ -200,16 +200,16 @@ class AutoExtensionImporter {
       const customElement = this.getCustomElement_(node);
       if (customElement) {
         existingImports.add(customElement);
-      } else
+      }
       // Explicitly detect amp-access via the script tag in the header to be able to handle amp-access extensions
-      if (node.tagName === 'script' && node.attribs['id'] === 'amp-access') {
+      else if (node.tagName === 'script' && node.attribs['id'] === 'amp-access') {
         extensionsToImport.add('amp-access');
         extensionsToImport.add('amp-analytics');
         const jsonData = this.getJson(node);
         if (jsonData.vendor === 'laterpay') {
           extensionsToImport.add('amp-access-laterpay');
         }
-      // Explicitly detect amp-subscriptions via the script tag in the header to be able to handle amp-subscriptions extensions
+        // Explicitly detect amp-subscriptions via the script tag in the header to be able to handle amp-subscriptions extensions
       } else if (node.tagName === 'script' && node.attribs['id'] === 'amp-subscriptions') {
         extensionsToImport.add('amp-subscriptions');
         extensionsToImport.add('amp-analytics');
@@ -227,7 +227,7 @@ class AutoExtensionImporter {
   }
 
   getJson(node) {
-    for (const child of (node.children || [])) {
+    for (const child of node.children || []) {
       if (!child.data) {
         continue;
       }
@@ -244,7 +244,7 @@ class AutoExtensionImporter {
    * @private
    */
   async findExtensionsToImportInBody_(body, extensionsToImport) {
-    const extensionSpec = (await this.extensionSpec);
+    const extensionSpec = await this.extensionSpec;
     let node = body;
     while (node !== null) {
       if (node.tagName) {
@@ -295,8 +295,7 @@ class AutoExtensionImporter {
     const tagToBindAttributeMapping = extensionSpec.tagToBindAttributeMapping;
     const attributeNames = Object.keys(node.attribs);
     if (
-      attributeNames.some((a) => a.startsWith('[') ||
-      a.startsWith(AMP_BIND_DATA_ATTRIBUTE_PREFIX))
+      attributeNames.some((a) => a.startsWith('[') || a.startsWith(AMP_BIND_DATA_ATTRIBUTE_PREFIX))
     ) {
       allRequiredExtensions.add('amp-bind');
     }
@@ -312,13 +311,13 @@ class AutoExtensionImporter {
         if (!attributeName.startsWith(BIND_SHORT_FORM_PREFIX)) {
           continue;
         }
-        const attributeNameWithoutBindPrefix =
-          attributeName.substring(BIND_SHORT_FORM_PREFIX.length);
+        const attributeNameWithoutBindPrefix = attributeName.substring(
+          BIND_SHORT_FORM_PREFIX.length
+        );
 
         // Rename attribute from bindx to data-amp-bind-x
         if (ampBindAttrs.has(attributeNameWithoutBindPrefix)) {
-          const newAttributeName =
-            `${AMP_BIND_DATA_ATTRIBUTE_PREFIX}${attributeNameWithoutBindPrefix}`;
+          const newAttributeName = `${AMP_BIND_DATA_ATTRIBUTE_PREFIX}${attributeNameWithoutBindPrefix}`;
           node.attribs[newAttributeName] = node.attribs[attributeName];
           delete node.attribs[attributeName];
           usesAmpBind = true;
@@ -337,9 +336,8 @@ class AutoExtensionImporter {
     if (scriptNode.tagName !== 'script') {
       return '';
     }
-    const customElement = scriptNode.attribs['custom-element'] ||
-      scriptNode.attribs['custom-template'] ||
-      '';
+    const customElement =
+      scriptNode.attribs['custom-element'] || scriptNode.attribs['custom-template'] || '';
     if (!customElement) {
       return '';
     }

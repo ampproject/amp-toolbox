@@ -44,7 +44,7 @@ class AmpCaches {
    *
    * @param {Function} fetch - a fetch implementation
    */
-  constructor(fetch=oneBehindFetch) {
+  constructor(fetch = oneBehindFetch) {
     this.fetch_ = fetch;
   }
 

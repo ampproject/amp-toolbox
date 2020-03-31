@@ -28,15 +28,21 @@ const server = http.createServer((request, response) => {
   ampCorsMiddleware(request, response, () => {
     if (request.url.startsWith('/items')) {
       response.setHeader('Content-Type', 'application/json');
-      response.end(JSON.stringify({
-        items: [
-          {item: 'Item 1'},
-          {item: 'Item 2'},
-          {item: 'Item 3'},
-          {item: 'Item 4'},
-          {item: 'Item 5'},
-        ],
-      }, null, 2));
+      response.end(
+        JSON.stringify(
+          {
+            items: [
+              {item: 'Item 1'},
+              {item: 'Item 2'},
+              {item: 'Item 3'},
+              {item: 'Item 4'},
+              {item: 'Item 5'},
+            ],
+          },
+          null,
+          2
+        )
+      );
     } else if (request.url === '/') {
       /* eslint-disable max-len */
       response.end(`<!doctype html>
