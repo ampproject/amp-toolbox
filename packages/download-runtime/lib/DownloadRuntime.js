@@ -17,7 +17,7 @@
 
 const cacheListProvider = require('@ampproject/toolbox-cache-list');
 const crossFetch = require('cross-fetch');
-const fs = require('fs');
+const fse = require('fs-extra');
 const https = require('https');
 const log = require('@ampproject/toolbox-core').log.tag('AMP Download Runtime');
 const os = require('os');
@@ -25,10 +25,6 @@ const path = require('path');
 const runtimeVersionProvider = require('@ampproject/toolbox-runtime-version');
 const {URL} = require('url');
 const util = require('util');
-
-const readdir = util.promisify(fs.readdir);
-const rmdir = util.promisify(fs.rmdir);
-const unlink = util.promisify(fs.unlink);
 
 const RUNTIME_FILES_TXT = 'files.txt';
 const fetchOptions = {
@@ -126,7 +122,7 @@ class DownloadRuntime {
     // Download runtime to rtv-specific path
     dest = path.join(dest, 'rtv', rtv);
     ret.dest = dest;
-    fs.mkdirSync(dest, {recursive: true});
+    fse.mkdirSync(dest, {recursive: true});
 
     // If AMP runtime cache was specified, verify it is an absolute URL.
     // Otherwise, assume Google's AMP runtime cache.
@@ -222,12 +218,12 @@ class DownloadRuntime {
    * @param {string} dirpath - path to directory.
    */
   assertDirectoryWritable_(dirpath) {
-    if (!fs.existsSync(dirpath) || !fs.lstatSync(dirpath).isDirectory()) {
+    if (!fse.existsSync(dirpath) || !fse.lstatSync(dirpath).isDirectory()) {
       // Attempt to create directory
       log.info('Creating destination directory: ' + dirpath);
-      fs.mkdirSync(dirpath, {recursive: true});
+      fse.mkdirSync(dirpath, {recursive: true});
     }
-    fs.accessSync(dirpath, fs.constants.R_OK | fs.constants.W_OK);
+    fse.accessSync(dirpath, fse.constants.R_OK | fse.constants.W_OK);
   }
 
   /**
@@ -237,12 +233,12 @@ class DownloadRuntime {
    */
   async clearDirectory_(dirpath) {
     log.info('Clearing destination directory');
-    const contents = await readdir(dirpath, {withFileTypes: true});
+    const contents = await fse.readdir(dirpath, {withFileTypes: true});
     const delPromises = contents.map(async (item) => {
       if (item.isDirectory()) {
-        await rmdir(path.join(dirpath, item.name), {recursive: true});
+        await fse.remove(path.join(dirpath, item.name));
       } else {
-        await unlink(path.join(dirpath, item.name));
+        await fse.unlink(path.join(dirpath, item.name));
       }
     });
     return Promise.all(delPromises);
@@ -287,8 +283,8 @@ class DownloadRuntime {
       const fullpath = path.join(dest, dir);
 
       // Create new directories, recursively
-      if (!fs.existsSync(fullpath)) {
-        fs.mkdirSync(fullpath, {recursive: true});
+      if (!fse.existsSync(fullpath)) {
+        fse.mkdirSync(fullpath, {recursive: true});
       }
     });
   }
@@ -321,7 +317,7 @@ class DownloadRuntime {
     });
 
     // File fetched successfully, so open file stream
-    const wstream = fs.createWriteStream(fullpath);
+    const wstream = fse.createWriteStream(fullpath);
 
     // If this file is amp-geo.js, then undo the {{AMP_ISO_COUNTRY_HOTPATCH}}
     // hotpatch before saving. Otherwise, stream the file directly to disk.

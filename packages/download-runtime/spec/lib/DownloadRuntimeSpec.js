@@ -18,7 +18,7 @@ const DownloadRuntime = require('../../lib/DownloadRuntime.js');
 const fetchMock = require('fetch-mock').sandbox();
 const Readable = require('stream').Readable;
 const crossFetch = require('cross-fetch');
-const fs = require('fs');
+const fse = require('fs-extra');
 const os = require('os');
 const path = require('path');
 
@@ -54,7 +54,7 @@ describe('DownloadRuntime', () => {
     downloadRuntime = new DownloadRuntime(fetchMock, cacheListProvider, runtimeVersionProvider);
 
     options = {
-      dest: fs.mkdtempSync(path.join(os.tmpdir(), 'amp-download-')),
+      dest: fse.mkdtempSync(path.join(os.tmpdir(), 'amp-download-')),
     };
 
     // Prepare Response objects for fetch mocks
@@ -70,8 +70,8 @@ describe('DownloadRuntime', () => {
 
   afterEach(() => {
     fetchMock.reset();
-    if (fs.existsSync(options.dest) && fs.lstatSync(options.dest).isDirectory()) {
-      fs.rmdirSync(options.dest, {recursive: true});
+    if (fse.existsSync(options.dest) && fse.lstatSync(options.dest).isDirectory()) {
+      fse.removeSync(options.dest);
     }
   });
 
@@ -91,7 +91,7 @@ describe('DownloadRuntime', () => {
         for (let filename of Object.keys(fakeFiles)) {
           filename = filename.split('/').join(path.sep);
           const dest = path.join(options.dest, 'rtv', ret.rtv, filename);
-          expect(fs.existsSync(dest)).toBe(true);
+          expect(fse.existsSync(dest)).toBe(true);
         }
         done();
       });
@@ -127,8 +127,8 @@ describe('DownloadRuntime', () => {
 
     it('supports disabling destination dir clearing', (done) => {
       const testFilePath = path.join(options.dest, 'test-file.txt');
-      fs.mkdirSync(options.dest, {recursive: true});
-      fs.closeSync(fs.openSync(testFilePath, 'w'));
+      fse.mkdirSync(options.dest, {recursive: true});
+      fse.closeSync(fse.openSync(testFilePath, 'w'));
 
       options['clear'] = false;
       Object.keys(mockResponses).forEach((filename) => {
@@ -137,7 +137,7 @@ describe('DownloadRuntime', () => {
       });
       downloadRuntime.getRuntime(options).then((ret) => {
         expect(ret.status).toBe(true);
-        expect(fs.existsSync(testFilePath)).toBe(true);
+        expect(fse.existsSync(testFilePath)).toBe(true);
         done();
       });
     });
@@ -150,7 +150,7 @@ describe('DownloadRuntime', () => {
       });
       downloadRuntime.getRuntime(options).then((ret) => {
         expect(ret.status).toBe(true);
-        fs.readFile(ampGeoPath, 'utf8', (err, contents) => {
+        fse.readFile(ampGeoPath, 'utf8', (err, contents) => {
           expect(contents).toContain('{{AMP_ISO_COUNTRY_HOTPATCH}}');
           done();
         });
