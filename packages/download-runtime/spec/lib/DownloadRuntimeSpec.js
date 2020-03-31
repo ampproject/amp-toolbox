@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 The AMP HTML Authors. All Rights Reserved.
+ * Copyright 2020 The AMP HTML Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const DownloadFramework = require('../../lib/DownloadFramework.js');
+const DownloadRuntime = require('../../lib/DownloadRuntime.js');
 const fetchMock = require('fetch-mock').sandbox();
 const Readable = require('stream').Readable;
 const crossFetch = require('cross-fetch');
@@ -26,7 +26,7 @@ const defaultVersion = '2003261442330';
 const defaultRtv = '01' + defaultVersion;
 const defaultHost = 'https://cdn.ampproject.org';
 
-// AMP framework files with sample string contents
+// AMP runtime files with sample string contents
 const fakeFiles = {
   'files.txt': '',
   'version.txt': defaultVersion,
@@ -45,16 +45,16 @@ const cacheListProvider = {
   },
 };
 
-describe('DownloadFramework', () => {
-  let downloadFramework;
+describe('DownloadRuntime', () => {
+  let downloadRuntime;
   let options;
   let mockResponses;
 
   beforeEach(() => {
-    downloadFramework = new DownloadFramework(fetchMock, cacheListProvider, runtimeVersionProvider);
+    downloadRuntime = new DownloadRuntime(fetchMock, cacheListProvider, runtimeVersionProvider);
 
     options = {
-      dest: path.join(os.tmpdir(), 'amp-framework-test'),
+      dest: fs.mkdtempSync(path.join(os.tmpdir(), 'amp-download-')),
     };
 
     // Prepare Response objects for fetch mocks
@@ -75,22 +75,26 @@ describe('DownloadFramework', () => {
     }
   });
 
-  describe('getFramework', () => {
-    it('downloads latest ampproject framework by default', (done) => {
+  describe('getRuntime', () => {
+    it('downloads latest ampproject runtime by default', (done) => {
       Object.keys(mockResponses).forEach((filename) => {
         fetchMock.get(`${defaultHost}/${filename}`, mockResponses[filename]);
         fetchMock.get(`${defaultHost}/rtv/${defaultRtv}/${filename}`, mockResponses[filename]);
       });
-      downloadFramework.getFramework(options)
-          .then((ret) => {
-            expect(ret.status).toBe(true);
-            expect(ret.error).toBe('');
-            expect(ret.count).toBe(Object.keys(fakeFiles).length);
-            expect(ret.url).toBe(`${defaultHost}/rtv/${defaultRtv}/`);
-            expect(ret.dest).toBe(options.dest);
-            expect(ret.rtv).toBe(defaultRtv);
-            done();
-          });
+      downloadRuntime.getRuntime(options).then((ret) => {
+        expect(ret.status).toBe(true);
+        expect(ret.error).toBe('');
+        expect(ret.count).toBe(Object.keys(fakeFiles).length);
+        expect(ret.url).toBe(`${defaultHost}/rtv/${defaultRtv}/`);
+        expect(ret.dest).toBe(path.join(options.dest, 'rtv', defaultRtv));
+        expect(ret.rtv).toBe(defaultRtv);
+        for (let filename of Object.keys(fakeFiles)) {
+          filename = filename.split('/').join(path.sep);
+          const dest = path.join(options.dest, 'rtv', ret.rtv, filename);
+          expect(fs.existsSync(dest)).toBe(true);
+        }
+        done();
+      });
     });
 
     it('supports alternate hosts', (done) => {
@@ -100,12 +104,11 @@ describe('DownloadFramework', () => {
         fetchMock.get(`${host}/${filename}`, mockResponses[filename]);
         fetchMock.get(`${host}/rtv/${defaultRtv}/${filename}`, mockResponses[filename]);
       });
-      downloadFramework.getFramework(options)
-          .then((ret) => {
-            expect(ret.status).toBe(true);
-            expect(ret.url).toBe(`${host}/rtv/${defaultRtv}/`);
-            done();
-          });
+      downloadRuntime.getRuntime(options).then((ret) => {
+        expect(ret.status).toBe(true);
+        expect(ret.url).toBe(`${host}/rtv/${defaultRtv}/`);
+        done();
+      });
     });
 
     it('supports manually specified runtime version', (done) => {
@@ -115,12 +118,11 @@ describe('DownloadFramework', () => {
         fetchMock.get(`${defaultHost}/${filename}`, mockResponses[filename]);
         fetchMock.get(`${defaultHost}/rtv/${rtv}/${filename}`, mockResponses[filename]);
       });
-      downloadFramework.getFramework(options)
-          .then((ret) => {
-            expect(ret.status).toBe(true);
-            expect(ret.url).toBe(`${defaultHost}/rtv/${rtv}/`);
-            done();
-          });
+      downloadRuntime.getRuntime(options).then((ret) => {
+        expect(ret.status).toBe(true);
+        expect(ret.url).toBe(`${defaultHost}/rtv/${rtv}/`);
+        done();
+      });
     });
 
     it('supports disabling destination dir clearing', (done) => {
@@ -133,28 +135,26 @@ describe('DownloadFramework', () => {
         fetchMock.get(`${defaultHost}/${filename}`, mockResponses[filename]);
         fetchMock.get(`${defaultHost}/rtv/${defaultRtv}/${filename}`, mockResponses[filename]);
       });
-      downloadFramework.getFramework(options)
-          .then((ret) => {
-            expect(ret.status).toBe(true);
-            expect(fs.existsSync(testFilePath)).toBe(true);
-            done();
-          });
+      downloadRuntime.getRuntime(options).then((ret) => {
+        expect(ret.status).toBe(true);
+        expect(fs.existsSync(testFilePath)).toBe(true);
+        done();
+      });
     });
 
     it('reverts amp-geo hotpatching', (done) => {
-      const ampGeoPath = path.join(options.dest, 'v0', 'amp-geo-0.1.js');
+      const ampGeoPath = path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.js');
       Object.keys(mockResponses).forEach((filename) => {
         fetchMock.get(`${defaultHost}/${filename}`, mockResponses[filename]);
         fetchMock.get(`${defaultHost}/rtv/${defaultRtv}/${filename}`, mockResponses[filename]);
       });
-      downloadFramework.getFramework(options)
-          .then((ret) => {
-            expect(ret.status).toBe(true);
-            fs.readFile(ampGeoPath, 'utf8', (err, contents) => {
-              expect(contents).toContain('{{AMP_ISO_COUNTRY_HOTPATCH}}');
-              done();
-            });
-          });
+      downloadRuntime.getRuntime(options).then((ret) => {
+        expect(ret.status).toBe(true);
+        fs.readFile(ampGeoPath, 'utf8', (err, contents) => {
+          expect(contents).toContain('{{AMP_ISO_COUNTRY_HOTPATCH}}');
+          done();
+        });
+      });
     });
   });
 });

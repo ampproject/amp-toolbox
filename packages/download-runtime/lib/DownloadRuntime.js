@@ -19,7 +19,7 @@ const cacheListProvider = require('@ampproject/toolbox-cache-list');
 const crossFetch = require('cross-fetch');
 const fs = require('fs');
 const https = require('https');
-const log = require('@ampproject/toolbox-core').log.tag('AMP Download Framework');
+const log = require('@ampproject/toolbox-core').log.tag('AMP Download Runtime');
 const os = require('os');
 const path = require('path');
 const runtimeVersionProvider = require('@ampproject/toolbox-runtime-version');
@@ -30,7 +30,7 @@ const readdir = util.promisify(fs.readdir);
 const rmdir = util.promisify(fs.rmdir);
 const unlink = util.promisify(fs.unlink);
 
-const FRAMEWORK_FILES_TXT = 'files.txt';
+const RUNTIME_FILES_TXT = 'files.txt';
 const fetchOptions = {
   agent: new https.Agent({
     keepAlive: true,
@@ -39,7 +39,7 @@ const fetchOptions = {
   compress: true,
 };
 
-class DownloadFramework {
+class DownloadRuntime {
   constructor(fetch, cacheList, runtimeVersion) {
     this.fetch_ = fetch || crossFetch;
     this.cacheList_ = cacheList || cacheListProvider;
@@ -47,27 +47,27 @@ class DownloadFramework {
   }
 
   /**
-   * Download the AMP framework.
+   * Download the AMP runtime.
    *
    * @param {Object} options - the options.
-   * @param {string} options.dest - path to directory where AMP framework should be saved.
+   * @param {string} options.dest - path to directory where AMP runtime should be saved.
    * @param {bool} options.clear - disable clearing destination directory before saving.
-   * @param {string} options.rtv - the runtime version of the AMP framework.
-   * @param {string} options.ampUrlPrefix - absolute URL to the AMP framework.
+   * @param {string} options.rtv - the runtime version of the AMP runtime.
+   * @param {string} options.ampUrlPrefix - absolute URL to the AMP runtime.
    * @return {Promise<Object>} a promise that resolves with data about the download.
    *
    * The return object includes the success or failure status, as well as data about the AMP
-   * framework that was downloaded:
+   * runtime that was downloaded:
    * {
-   *   status {boolean} Overall AMP framework download status
+   *   status {boolean} Overall AMP runtime download status
    *   error {string} Error message on failure
-   *   count {number} Number of files in the AMP framework
-   *   url {string} URL to AMP framework
-   *   dest {string} Path to directory where AMP framework was downloaded
-   *   rtv {string} Runtime version of AMP framework
+   *   count {number} Number of files in the AMP runtime
+   *   url {string} URL to AMP runtime
+   *   dest {string} Path to directory where AMP runtime was downloaded
+   *   rtv {string} Runtime version of AMP runtime
    * }
    */
-  async getFramework(options = {}) {
+  async getRuntime(options = {}) {
     const {clear} = options;
     let {ampUrlPrefix, dest, rtv} = options;
 
@@ -80,6 +80,12 @@ class DownloadFramework {
       dest: dest,
       rtv: '',
     };
+
+    if (!dest) {
+      ret.error = 'Directory not specified';
+      log.error(ret.error);
+      return ret;
+    }
 
     // Expand ~ if it is the first path segment and non-Windows.
     // TODO: There's room for improvement in detecting which environments need this.
@@ -100,7 +106,7 @@ class DownloadFramework {
     }
 
     // Verify RTV is URL compatible if specified, otherwise fetch RTV from AMP
-    // framework cache (using ampUrlPrefix if specified).
+    // runtime cache (using ampUrlPrefix if specified).
     if (!rtv) {
       rtv = await this.runtimeVersion_.currentVersion({ampUrlPrefix});
       if (!rtv) {
@@ -115,10 +121,15 @@ class DownloadFramework {
     }
 
     ret.rtv = rtv;
-    log.info('AMP framework runtime version: ' + rtv);
+    log.info('RTV: ' + rtv);
 
-    // If AMP framework cache was specified, verify it is an absolute URL.
-    // Otherwise, assume Google's AMP framework cache.
+    // Download runtime to rtv-specific path
+    dest = path.join(dest, 'rtv', rtv);
+    ret.dest = dest;
+    fs.mkdirSync(dest, {recursive: true});
+
+    // If AMP runtime cache was specified, verify it is an absolute URL.
+    // Otherwise, assume Google's AMP runtime cache.
     if (!ampUrlPrefix) {
       const googleAmpCache = await this.cacheList_.get('google');
       if (!googleAmpCache) {
@@ -133,46 +144,45 @@ class DownloadFramework {
       return ret;
     }
 
-    // Construct URLs to RTV-specific AMP framework and files listing
-    const frameworkBaseUrl =
-      ampUrlPrefix + (ampUrlPrefix.endsWith('/') ? '' : '/') + `rtv/${rtv}/`;
-    const filesTxtUrl = frameworkBaseUrl + FRAMEWORK_FILES_TXT;
+    // Construct URLs to RTV-specific AMP runtime and files listing
+    const runtimeBaseUrl = ampUrlPrefix + (ampUrlPrefix.endsWith('/') ? '' : '/') + `rtv/${rtv}/`;
+    const filesTxtUrl = runtimeBaseUrl + RUNTIME_FILES_TXT;
 
-    ret.url = frameworkBaseUrl;
-    log.info('AMP framework base URL: ' + frameworkBaseUrl);
+    ret.url = runtimeBaseUrl;
+    log.info('URL: ' + runtimeBaseUrl);
 
     // Fetch files listing and generate URLs to each file
     let files;
     try {
       const res = await this.fetch_(filesTxtUrl);
       if (!res.ok) {
-        ret.error = 'Unable to fetch AMP framework files listing: ' + filesTxtUrl;
+        ret.error = 'Unable to fetch AMP runtime files listing: ' + filesTxtUrl;
         log.error(ret.error);
         return ret;
       }
       const text = await res.text();
       files = text
-          .split(/\r?\n/)
-          .filter((filepath) => filepath)
-          .map((filepath) => {
-            return {
-              filepath,
-              url: frameworkBaseUrl + filepath,
-            };
-          });
+        .split(/\r?\n/)
+        .filter((filepath) => filepath)
+        .map((filepath) => {
+          return {
+            filepath: filepath.split('/').join(path.sep),
+            url: runtimeBaseUrl + filepath,
+          };
+        });
 
       // Minimal sanity check that files listing includes itself
-      if (!files.some((file) => file.filepath === FRAMEWORK_FILES_TXT)) {
-        throw new Error(`Expected ${FRAMEWORK_FILES_TXT} in file listing, but it was not found.`);
+      if (!files.some((file) => file.filepath === RUNTIME_FILES_TXT)) {
+        throw new Error(`Expected ${RUNTIME_FILES_TXT} in file listing, but it was not found.`);
       }
     } catch (ex) {
-      ret.error = 'Unable to read AMP framework files listing\n' + ex.message;
+      ret.error = 'Unable to read AMP runtime files listing\n' + ex.message;
       log.error(ret.error);
       return ret;
     }
 
     ret.count = files.length;
-    log.info(`AMP framework contains ${files.length} files`);
+    log.info(`File count: ${files.length}`);
 
     // Clear destination directory by default, but allow user to disable feature
     if (clear !== false) {
@@ -182,24 +192,23 @@ class DownloadFramework {
     // Create all subdirectories in destination directory
     this.createSubdirectories_(files, dest);
 
-    log.info('Downloading AMP framework...');
+    log.info('Downloading...');
 
-    // Fetch all AMP framework files and save them in the destination dir.
+    // Fetch all AMP runtime files and save them in the destination dir.
     // Note: fetchOptions sets maxSockets, limiting the number of concurrent
     // downloads, so this isn't as crazy as it might appear.
-    const fetchAndSavePromises =
-      files.map((file) => this.fetchAndSaveAsync_(file, dest));
+    const fetchAndSavePromises = files.map((file) => this.fetchAndSaveAsync_(file, dest));
 
     // Wait for all downloads to finish
     await Promise.all(fetchAndSavePromises)
-        .then(() => {
-          ret.status = true;
-          log.info('AMP framework download complete: ' + dest);
-        })
-        .catch((error) => {
-          ret.error = 'Failed to download AMP framework\n' + error.message;
-          log.error(ret.error);
-        });
+      .then(() => {
+        ret.status = true;
+        log.info('Download complete: ' + dest);
+      })
+      .catch((error) => {
+        ret.error = 'Failed to download\n' + error.message;
+        log.error(ret.error);
+      });
 
     return ret;
   }
@@ -213,9 +222,6 @@ class DownloadFramework {
    * @param {string} dirpath - path to directory.
    */
   assertDirectoryWritable_(dirpath) {
-    if (!dirpath) {
-      throw new Error('Directory not specified');
-    }
     if (!fs.existsSync(dirpath) || !fs.lstatSync(dirpath).isDirectory()) {
       // Attempt to create directory
       log.info('Creating destination directory: ' + dirpath);
@@ -232,14 +238,14 @@ class DownloadFramework {
   async clearDirectory_(dirpath) {
     log.info('Clearing destination directory');
     const contents = await readdir(dirpath, {withFileTypes: true});
-    const unlinkPromises = contents.map(async (item) => {
+    const delPromises = contents.map(async (item) => {
       if (item.isDirectory()) {
         await rmdir(path.join(dirpath, item.name), {recursive: true});
       } else {
         await unlink(path.join(dirpath, item.name));
       }
     });
-    return Promise.all(unlinkPromises);
+    return Promise.all(delPromises);
   }
 
   /**
@@ -252,18 +258,18 @@ class DownloadFramework {
     try {
       new URL(url);
       return true;
-    } catch (ex) { }
+    } catch (ex) {}
 
     return false;
   }
 
   /**
-   * Create any subdirectories needed for AMP framework files.
+   * Create any subdirectories needed for AMP runtime files.
    *
-   * @param {Array} files - all files in AMP framework.
-   * @param {Object} files[n] - individual AMP framework file data.
-   * @param {string} files[n].filepath - relative path to AMP framework file.
-   * @param {string} files[n].url - absolute URL to AMP framework file.
+   * @param {Array} files - all files in AMP runtime.
+   * @param {Object} files[n] - individual AMP runtime file data.
+   * @param {string} files[n].filepath - relative path to AMP runtime file.
+   * @param {string} files[n].url - absolute URL to AMP runtime file.
    * @param {string} dest - directory under which subdirectories should be created.
    */
   createSubdirectories_(files, dest) {
@@ -288,11 +294,11 @@ class DownloadFramework {
   }
 
   /**
-   * Fetch an AMP framework file and save it to disk.
+   * Fetch an AMP runtime file and save it to disk.
    *
-   * @param {Object} file - individual AMP framework file data.
-   * @param {string} file.filepath - relative path to AMP framework file.
-   * @param {string} file.url - absolute URL to AMP framework file.
+   * @param {Object} file - individual AMP runtime file data.
+   * @param {string} file.filepath - relative path to AMP runtime file.
+   * @param {string} file.url - absolute URL to AMP runtime file.
    * @param {string} dest - directory under which subdirectories should be created.
    * @param {Promise}
    */
@@ -334,4 +340,4 @@ class DownloadFramework {
   }
 }
 
-module.exports = DownloadFramework;
+module.exports = DownloadRuntime;

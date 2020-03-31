@@ -1,12 +1,12 @@
 {
-  "name": "@ampproject/toolbox-download-framework",
+  "name": "@ampproject/toolbox-download-runtime",
   "version": "2.0.0",
-  "description": "Download the AMP framework",
+  "description": "Download the AMP runtime",
   "main": "index.js",
   "keywords": [
     "amp",
     "download",
-    "framework"
+    "runtime"
   ],
   "files": [
     "index.js",
@@ -15,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
-    "directory": "packages/download-framework"
+    "directory": "packages/download-runtime"
   },
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
@@ -29,6 +29,6 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/download-framework",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/download-runtime",
   "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f"
 }

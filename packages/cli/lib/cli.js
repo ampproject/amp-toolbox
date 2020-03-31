@@ -32,16 +32,19 @@ class Cli {
     // Customize minimist options based on command
     const minimistOptions = {};
     switch (command) {
-      case 'download-framework':
-        Object.assign(minimistOptions, buildOptions({
-          clear: {
-            type: 'boolean',
-            default: true,
-          },
-          rtv: {
-            type: 'string',
-          },
-        }));
+      case 'download':
+        Object.assign(
+          minimistOptions,
+          buildOptions({
+            clear: {
+              type: 'boolean',
+              default: true,
+            },
+            rtv: {
+              type: 'string',
+            },
+          })
+        );
       default:
         break;
     }
@@ -53,8 +56,8 @@ class Cli {
     switch (command) {
       case 'curls':
         return require('./cmds/curls')(args, this.logger_);
-      case 'download-framework':
-        return require('./cmds/downloadFramework')(args, this.logger_);
+      case 'download':
+        return require('./cmds/downloadRuntime')(args, this.logger_);
       case 'help':
         return require('./cmds/help')(args, this.logger_);
       case 'lint':

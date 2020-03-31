@@ -16,14 +16,14 @@
 
 'use strict';
 
-const downloadFrameworkProvider = require('@ampproject/toolbox-download-framework');
+const downloadRuntimeProvider = require('@ampproject/toolbox-download-runtime');
 
-async function downloadFramework(args, _) {
+async function downloadRuntime(args, _) {
   const {ampUrlPrefix, clear, dest, rtv} = args;
-  const ret = await downloadFrameworkProvider.getFramework({ampUrlPrefix, clear, dest, rtv});
+  const ret = await downloadRuntimeProvider.getRuntime({ampUrlPrefix, clear, dest, rtv});
   if (!ret.status) {
-    throw new Error('AMP framework download did not complete successfully');
+    throw new Error('AMP runtime download did not complete successfully');
   }
-};
+}
 
-module.exports = downloadFramework;
+module.exports = downloadRuntime;

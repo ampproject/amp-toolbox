@@ -71,7 +71,7 @@
     "@ampproject/toolbox-cli": "file:packages/cli",
     "@ampproject/toolbox-core": "file:packages/core",
     "@ampproject/toolbox-cors": "file:packages/cors",
-    "@ampproject/toolbox-download-framework": "file:packages/download-framework",
+    "@ampproject/toolbox-download-runtime": "file:packages/download-runtime",
     "@ampproject/toolbox-linter": "file:packages/linter",
     "@ampproject/toolbox-optimizer": "file:packages/optimizer",
     "@ampproject/toolbox-optimizer-express": "file:packages/optimizer-express",

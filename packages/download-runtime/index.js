@@ -15,6 +15,6 @@
  */
 'use strict';
 
-const DownloadFramework = require('./lib/DownloadFramework.js');
+const DownloadRuntime = require('./lib/DownloadRuntime.js');
 
-module.exports = new DownloadFramework();
+module.exports = new DownloadRuntime();
