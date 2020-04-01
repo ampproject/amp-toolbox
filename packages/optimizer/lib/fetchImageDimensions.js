@@ -38,7 +38,7 @@ async function fetchImageDimensionsFromFile(path) {
   }
   const fs = require('fs');
   if (!fs.existsSync(path)) {
-    throw new Error('Could not resolve file', path);
+    throw new Error('Could not resolve file: ' + path);
   }
   const stream = fs.createReadStream(path);
   try {
