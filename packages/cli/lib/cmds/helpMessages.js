@@ -56,7 +56,7 @@ module.exports = {
     '',
     'Options:',
     '--dest (optional).......... Path to download folder',
-    '                              Default: "amp-runtime" folder in working directory',
+    '                              Default: current working directory',
     '--clear (optional)......... Clear destination directory before downloading',
     '                              Default: true',
     '--rtv (optional)........... Runtime version to download',
