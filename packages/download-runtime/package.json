@@ -1,0 +1,35 @@
+{
+  "name": "@ampproject/toolbox-download-runtime",
+  "version": "2.0.1",
+  "description": "Download the AMP runtime",
+  "main": "index.js",
+  "keywords": [
+    "amp",
+    "download",
+    "runtime"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/download-runtime"
+  },
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ampproject/toolbox-cache-list": "^2.0.0",
+    "@ampproject/toolbox-core": "^2.0.0",
+    "@ampproject/toolbox-runtime-version": "^2.0.0",
+    "at-least-node": "1.0.0",
+    "cross-fetch": "3.0.4",
+    "fs-extra": "9.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/download-runtime",
+  "gitHead": "783938063dde0c32f5a79af4148eec53f26e903f"
+}

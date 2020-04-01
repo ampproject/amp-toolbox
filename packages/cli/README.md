@@ -44,6 +44,24 @@ Example:
 $ amp help update-cache
 ```
 
+### download
+
+Download a complete AMP runtime:
+
+```shell
+$ amp download
+```
+
+Supports options for specifying a custom host, version, and destination directory. See `amp help download` for the complete list.
+
+### lint
+
+Runs the AMP Linter for the given URL:
+
+```shell
+$ amp lint https://amp.dev
+```
+
 ### optimize
 
 Runs AMP Optimizer for the given file or URL:
@@ -52,18 +70,10 @@ Runs AMP Optimizer for the given file or URL:
 $ amp optimize https://amp.dev
 ```
 
-or 
+or
 
 ```shell
 $ amp optimize file.html
-```
-
-### lint
-
-Runs the AMP Linter for the given URL:
-
-```shell
-$ amp lint https://amp.dev
 ```
 
 ### runtime-version
