@@ -82,6 +82,7 @@ class SeparateKeyframes {
     if (!stylesText || !stylesText.data) return;
     stylesText = stylesText.data;
 
+    // initialize an empty keyframes tree
     const keyframesTree = postcss.parse('');
 
     const isInvalidKeyframe = (keyframe) => {
