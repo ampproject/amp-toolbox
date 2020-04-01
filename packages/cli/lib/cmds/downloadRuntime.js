@@ -25,7 +25,7 @@ async function downloadRuntime(args, _) {
   const ret = await downloadRuntimeProvider.getRuntime({
     ampUrlPrefix: host,
     clear,
-    dest: dest || path.join(process.cwd(), ''),
+    dest: dest || process.cwd(),
     rtv,
   });
   if (!ret.status) {

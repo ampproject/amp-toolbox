@@ -8,6 +8,7 @@ Supported commands:
 
 - [curls](#curls): generate AMP cache URL(s)
 - [help](#help): lists all commands
+- [download](#download): download the AMP runtime
 - [lint](#lint): checks document for errors
 - [optimize](#optimize): runs AMP Optimizer for a given URL or file
 - [runtime-version](#runtime-version): shows the current AMP runtime version [production]
