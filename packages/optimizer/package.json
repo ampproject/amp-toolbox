@@ -38,7 +38,7 @@
     "domutils": "2.0.0",
     "htmlparser2": "4.1.0",
     "normalize-html-whitespace": "1.0.0",
-    "terser": "4.6.8"
+    "terser": "4.6.10"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

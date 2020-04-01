@@ -136,6 +136,10 @@ describe('AmpUrl', () => {
         url: 'https://hello.xn--4gbrim.xn----rmckbbajlc6dj7bxne2c.xn--wgbh1c',
         curlsSubdomain: 'a6h5moukddengbsjm77rvbosevwuduec2blkjva4223o4bgafgla',
       },
+      {
+        url: 'https://en-us.example.com',
+        curlsSubdomain: '0-en--us-example-com-0',
+      },
     ];
 
     tests.forEach((test) => {
