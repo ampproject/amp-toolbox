@@ -19,7 +19,11 @@
 const ampRuntimeVersionProvider = require('@ampproject/toolbox-runtime-version');
 
 async function runtimeVersion(args, logger) {
-  const version = await ampRuntimeVersionProvider.currentVersion();
+  const {canary, host} = args;
+  const version = await ampRuntimeVersionProvider.currentVersion({
+    ampUrlPrefix: host,
+    canary,
+  });
   logger.info(version);
 }
 

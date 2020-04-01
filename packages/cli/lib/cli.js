@@ -45,6 +45,18 @@ class Cli {
             },
           })
         );
+        break;
+      case 'runtime-version':
+        Object.assign(
+          minimistOptions,
+          buildOptions({
+            canary: {
+              type: 'boolean',
+              default: false,
+            },
+          })
+        );
+        break;
       default:
         break;
     }

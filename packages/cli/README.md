@@ -85,6 +85,8 @@ $ amp runtime-version
 => 011905291911450
 ```
 
+Supports options for specifying a custom host or getting the canary version. See `amp help runtime-version` for the complete list.
+
 ### update-cache
 
 Uses the [AMP update-cache API](https://developers.google.com/amp/cache/update-cache) to update documents stored in AMP Caches.
