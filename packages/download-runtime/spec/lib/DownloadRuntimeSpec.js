@@ -90,8 +90,8 @@ describe('DownloadRuntime', () => {
         expect(ret.rtv).toBe(defaultRtv);
         for (let filename of Object.keys(fakeFiles)) {
           filename = filename.split('/').join(path.sep);
-          const dest = path.join(options.dest, 'rtv', ret.rtv, filename);
-          expect(fse.existsSync(dest)).toBe(true);
+          const filepath = path.join(options.dest, 'rtv', defaultRtv, filename);
+          expect(fse.existsSync(filepath)).toBe(true);
         }
         done();
       });
@@ -126,8 +126,9 @@ describe('DownloadRuntime', () => {
     });
 
     it('supports disabling destination dir clearing', (done) => {
-      const testFilePath = path.join(options.dest, 'test-file.txt');
-      fse.mkdirSync(options.dest, {recursive: true});
+      const testFileDir = path.join(options.dest, 'rtv', defaultRtv);
+      const testFilePath = path.join(testFileDir, 'test-file.txt');
+      fse.mkdirSync(testFileDir, {recursive: true});
       fse.closeSync(fse.openSync(testFilePath, 'w'));
 
       options['clear'] = false;

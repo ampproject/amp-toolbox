@@ -16,11 +16,18 @@
 
 'use strict';
 
+const path = require('path');
+
 const downloadRuntimeProvider = require('@ampproject/toolbox-download-runtime');
 
 async function downloadRuntime(args, _) {
-  const {ampUrlPrefix, clear, dest, rtv} = args;
-  const ret = await downloadRuntimeProvider.getRuntime({ampUrlPrefix, clear, dest, rtv});
+  const {host, clear, dest, rtv} = args;
+  const ret = await downloadRuntimeProvider.getRuntime({
+    ampUrlPrefix: host,
+    clear,
+    dest: dest || path.join(process.cwd(), 'amp-runtime'),
+    rtv,
+  });
   if (!ret.status) {
     throw new Error('AMP runtime download did not complete successfully');
   }
