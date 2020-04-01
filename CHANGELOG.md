@@ -1,3 +1,34 @@
+## 2.1.0 (2020-04-01)
+
+#### :rocket: Enhancement
+* `cli`, `download-runtime`
+  * [#663](https://github.com/ampproject/amp-toolbox/pull/663) download-runtime: Add tool to download AMP runtime ([@mdmower](https://github.com/mdmower))
+* `cache-url`, `cli`
+  * [#666](https://github.com/ampproject/amp-toolbox/pull/666) Update CURLs hasing algorithm ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer`
+  * [#636](https://github.com/ampproject/amp-toolbox/pull/636) optimizer: Output amp-geo API meta tags ([@mdmower](https://github.com/mdmower))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#653](https://github.com/ampproject/amp-toolbox/pull/653) Don't separate keyframes for AMP Stories ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :memo: Documentation
+* `cache-list`
+  * [#662](https://github.com/ampproject/amp-toolbox/pull/662) cache-list: Update caches example in readme ([@mdmower](https://github.com/mdmower))
+* `linter`
+  * [#656](https://github.com/ampproject/amp-toolbox/pull/656) Fix linter README ([@ithinkihaveacat](https://github.com/ithinkihaveacat))
+
+#### :house: Internal
+* `optimizer`
+  * [#672](https://github.com/ampproject/amp-toolbox/pull/672) chore(deps): update dependency @ampproject/toolbox-optimizer to v2 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#627](https://github.com/ampproject/amp-toolbox/pull/627) Pin dependencies ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 4
+- Duncan Kolba ([@dkolba](https://github.com/dkolba))
+- Matt Mower ([@mdmower](https://github.com/mdmower))
+- Michael Stillwell ([@ithinkihaveacat](https://github.com/ithinkihaveacat))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## 2.0.1
 
 #### :rocket: Enhancement
