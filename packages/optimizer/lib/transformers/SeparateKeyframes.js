@@ -16,7 +16,9 @@
 'use strict';
 
 const {insertText, createElement, hasAttribute, firstChildByTag} = require('../NodeUtils');
-const css = require('postcss');
+const safeParser = require('postcss-safe-parser');
+const postcss = require('postcss');
+
 const cssnano = require('cssnano');
 
 const allowedKeyframeProps = new Set([
@@ -80,7 +82,7 @@ class SeparateKeyframes {
     if (!stylesText || !stylesText.data) return;
     stylesText = stylesText.data;
 
-    const keyframesTree = css.parse('');
+    const keyframesTree = postcss.parse('');
 
     const isInvalidKeyframe = (keyframe) => {
       let invalidProperty;
@@ -96,7 +98,7 @@ class SeparateKeyframes {
       return invalidProperty;
     };
 
-    const keyframesPlugin = css.plugin('postcss-amp-keyframes-mover', () => {
+    const keyframesPlugin = postcss.plugin('postcss-amp-keyframes-mover', () => {
       return (root) => {
         root.nodes = root.nodes.filter((rule) => {
           if (rule.name === 'keyframes') {
@@ -134,9 +136,10 @@ class SeparateKeyframes {
       };
     });
 
-    const {css: cssResult} = await css([...extraPlugins, keyframesPlugin])
+    const {css: cssResult} = await postcss([...extraPlugins, keyframesPlugin])
       .process(stylesText, {
         from: undefined,
+        parser: safeParser,
       })
       .catch((err) => {
         this.log_.warn(`Failed to process CSS`, err);
@@ -166,17 +169,20 @@ class SeparateKeyframes {
     }
     // Insert keyframes styles to Node
     const keyframesTextNode = stylesKeyframesTag.children[0];
-    const currentKeyframesTree = css.parse((keyframesTextNode && keyframesTextNode.data) || '');
+    const currentKeyframesTree = postcss.parse((keyframesTextNode && keyframesTextNode.data) || '');
     currentKeyframesTree.nodes = keyframesTree.nodes.concat(currentKeyframesTree.nodes);
 
     let keyframesText = '';
-    css.stringify(currentKeyframesTree, (part) => {
+    postcss.stringify(currentKeyframesTree, (part) => {
       keyframesText += part;
     });
 
     // if we have extra plugins make sure process the keyframes CSS with them
     if (extraPlugins.length > 0) {
-      const cssResult = await css(extraPlugins).process(keyframesText, {from: undefined});
+      const cssResult = await postcss(extraPlugins).process(keyframesText, {
+        from: undefined,
+        parser: safeParser,
+      });
       keyframesText = cssResult.css;
     }
 
