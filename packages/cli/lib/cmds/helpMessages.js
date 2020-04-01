@@ -25,7 +25,17 @@ module.exports = {
   'lint': ['Usage:', '', '', 'amp lint url', '', 'Examples:', '  $ amplint https://amp.dev/'].join(
     '\n'
   ),
-  'runtime-version': ['Usage:', '', '', 'amp runtime-version'].join('\n'),
+  'runtime-version': [
+    'Usage:',
+    '',
+    '',
+    'amp runtime-version',
+    '',
+    '',
+    'Options:',
+    '--canary .................. Get canary version. Defaults to false.',
+    '--host .................... AMP host. Defaults to https://cdn.ampproject.org.',
+  ].join('\n'),
   'curls': [
     'Usage:',
     '',
