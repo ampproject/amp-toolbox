@@ -16,15 +16,11 @@
 'use strict';
 
 const {insertText, createElement, hasAttribute, firstChildByTag} = require('../NodeUtils');
-const css = require('css');
-const OPTIONS_PRETTY_PRINT = {
-  indent: '  ',
-  compress: false,
-};
-const OPTIONS_COMPRESS = {
-  indent: '',
-  compress: true,
-};
+const safeParser = require('postcss-safe-parser');
+const postcss = require('postcss');
+
+const cssnano = require('cssnano');
+
 const allowedKeyframeProps = new Set([
   'animation-timing-function',
   'offset-distance',
@@ -48,14 +44,10 @@ const allowedKeyframeProps = new Set([
 class SeparateKeyframes {
   constructor(config) {
     this.log_ = config.log.tag('SeparateKeyframes');
-    if (config.minify === false) {
-      this.stringifyOptions_ = OPTIONS_PRETTY_PRINT;
-    } else {
-      this.stringifyOptions_ = OPTIONS_COMPRESS;
-    }
+    this.minify = config.minify !== false;
   }
 
-  transform(tree) {
+  async transform(tree) {
     const html = firstChildByTag(tree, 'html');
     if (!html) return;
     const head = firstChildByTag(html, 'head');
@@ -81,6 +73,8 @@ class SeparateKeyframes {
       return true;
     });
 
+    const extraPlugins = this.minify ? [cssnano] : [];
+
     // If no custom styles, there's nothing to do
     if (!stylesCustomTag) return;
     let stylesText = stylesCustomTag.children[0];
@@ -88,28 +82,15 @@ class SeparateKeyframes {
     if (!stylesText || !stylesText.data) return;
     stylesText = stylesText.data;
 
-    let cssTree;
-    try {
-      cssTree = css.parse(stylesText);
-    } catch (e) {
-      // css parser sometimes struggles with malformed css
-      // print a warning, but don't fail the transformation
-      this.log_.warn('Failed parsing css', e);
-      return;
-    }
-    const keyframesTree = {
-      type: 'stylesheet',
-      stylesheet: {
-        rules: [],
-      },
-    };
+    // initialize an empty keyframes tree
+    const keyframesTree = postcss.parse('');
 
     const isInvalidKeyframe = (keyframe) => {
       let invalidProperty;
-      for (const frame of keyframe.keyframes) {
-        for (const declaration of frame.declarations) {
-          if (!allowedKeyframeProps.has(declaration.property)) {
-            invalidProperty = declaration.property;
+      for (const frame of keyframe.nodes) {
+        for (const declaration of frame.nodes) {
+          if (!allowedKeyframeProps.has(declaration.prop)) {
+            invalidProperty = declaration.prop;
             break;
           }
         }
@@ -118,44 +99,58 @@ class SeparateKeyframes {
       return invalidProperty;
     };
 
-    cssTree.stylesheet.rules = cssTree.stylesheet.rules.filter((rule) => {
-      if (rule.type === 'keyframes') {
-        // We can't move a keyframe with an invalid property
-        // or else the style[amp-keyframes] is invalid
-        const invalidProperty = isInvalidKeyframe(rule);
-        if (invalidProperty) {
-          this.logInvalid(rule.name, invalidProperty);
-          return true;
-        }
-        keyframesTree.stylesheet.rules.push(rule);
-        return false;
-      }
-      // if rule has any keyframes duplicate rule and move just
-      // the keyframes
-      if (rule.type === 'media' || rule.type === 'supports') {
-        const copiedRule = Object.assign({}, rule, {rules: []});
-        rule.rules = rule.rules.filter((rule) => {
-          if (rule.type !== 'keyframes') return true;
-          const invalidProperty = isInvalidKeyframe(rule);
-          if (invalidProperty) {
-            this.logInvalid(rule.name, invalidProperty);
-            return true;
+    const keyframesPlugin = postcss.plugin('postcss-amp-keyframes-mover', () => {
+      return (root) => {
+        root.nodes = root.nodes.filter((rule) => {
+          if (rule.name === 'keyframes') {
+            // We can't move a keyframe with an invalid property
+            // or else the style[amp-keyframes] is invalid
+            const invalidProperty = isInvalidKeyframe(rule);
+            if (invalidProperty) {
+              this.logInvalid(rule.name, invalidProperty);
+              return true;
+            }
+            keyframesTree.nodes.push(rule);
+            return false;
           }
-          copiedRule.rules.push(rule);
+          // if rule has any keyframes duplicate rule and move just
+          // the keyframes
+          if (rule.name === 'media' || rule.name === 'supports') {
+            const copiedRule = Object.assign({}, rule, {nodes: []});
+            rule.nodes = rule.nodes.filter((rule) => {
+              if (rule.name !== 'keyframes') return true;
+              const invalidProperty = isInvalidKeyframe(rule);
+              if (invalidProperty) {
+                this.logInvalid(rule.name, invalidProperty);
+                return true;
+              }
+              copiedRule.nodes.push(rule);
+            });
+            if (copiedRule.nodes.length) {
+              keyframesTree.nodes.push(copiedRule);
+            }
+            // if no remaining rules remove it
+            return rule.nodes.length;
+          }
+          return true;
         });
-        if (copiedRule.rules.length) {
-          keyframesTree.stylesheet.rules.push(copiedRule);
-        }
-        // if no remaining rules remove it
-        return rule.rules.length;
-      }
-      return true;
+      };
     });
 
+    const {css: cssResult} = await postcss([...extraPlugins, keyframesPlugin])
+      .process(stylesText, {
+        from: undefined,
+        parser: safeParser,
+      })
+      .catch((err) => {
+        this.log_.warn(`Failed to process CSS`, err);
+        return {css: stylesText};
+      });
+
     // if no rules moved nothing to do
-    if (keyframesTree.stylesheet.rules.length === 0) {
+    if (keyframesTree.nodes.length === 0) {
       // re-serialize to compress the CSS
-      stylesCustomTag.children[0].data = css.stringify(cssTree, this.stringifyOptions_);
+      stylesCustomTag.children[0].data = cssResult;
       return;
     }
 
@@ -175,11 +170,22 @@ class SeparateKeyframes {
     }
     // Insert keyframes styles to Node
     const keyframesTextNode = stylesKeyframesTag.children[0];
-    const currentKeyframesTree = css.parse((keyframesTextNode && keyframesTextNode.data) || '');
-    currentKeyframesTree.stylesheet.rules = keyframesTree.stylesheet.rules.concat(
-      currentKeyframesTree.stylesheet.rules
-    );
-    const keyframesText = css.stringify(currentKeyframesTree, this.stringifyOptions_);
+    const currentKeyframesTree = postcss.parse((keyframesTextNode && keyframesTextNode.data) || '');
+    currentKeyframesTree.nodes = keyframesTree.nodes.concat(currentKeyframesTree.nodes);
+
+    let keyframesText = '';
+    postcss.stringify(currentKeyframesTree, (part) => {
+      keyframesText += part;
+    });
+
+    // if we have extra plugins make sure process the keyframes CSS with them
+    if (extraPlugins.length > 0) {
+      const cssResult = await postcss(extraPlugins).process(keyframesText, {
+        from: undefined,
+        parser: safeParser,
+      });
+      keyframesText = cssResult.css;
+    }
 
     if (!keyframesTextNode) {
       insertText(stylesKeyframesTag, keyframesText);
@@ -190,7 +196,7 @@ class SeparateKeyframes {
     // Add keyframes tag to end of body
     body.children.push(stylesKeyframesTag);
     // Update stylesCustomTag with filtered styles
-    stylesCustomTag.children[0].data = css.stringify(cssTree, this.stringifyOptions_);
+    stylesCustomTag.children[0].data = cssResult;
   }
   logInvalid(name, property) {
     this.log_.warn(
