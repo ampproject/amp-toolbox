@@ -18,22 +18,44 @@
 
 const curlsCmd = require('../../lib/cmds/curls.js');
 const MockLogger = require('../helpers/MockLogger');
+const fetchMock = require('fetch-mock');
 
 describe('curls', () => {
   const mockLogger = new MockLogger();
+  let fetch;
+
+  beforeEach(() => {
+    fetch = fetchMock.sandbox().mock(
+      'https://cdn.ampproject.org/caches.json',
+      `{
+          "caches": [
+            {
+              "id": "google",
+              "name": "Google AMP Cache",
+              "docs": "https://developers.google.com/amp/cache/",
+              "cacheDomain": "cdn.ampproject.org",
+              "updateCacheApiDomainSuffix": "cdn.ampproject.org",
+              "thirdPartyFrameDomainSuffix": "ampproject.net"
+            }
+          ]
+        }`
+    );
+  });
 
   afterEach(() => {
     mockLogger.clear();
   });
 
   it('prints all cache URLs', () => {
-    return curlsCmd({_: ['', 'https://amp.dev']}, mockLogger).then(() => {
+    return curlsCmd(
+      {
+        _: ['', 'https://amp.dev'],
+        fetch,
+      },
+      mockLogger
+    ).then(() => {
       const output = mockLogger.logs;
-      expect(output).toEqual([
-        'https://amp-dev.cdn.ampproject.org/c/s/amp.dev',
-        'https://amp-dev.amp.cloudflare.com/c/s/amp.dev',
-        'https://amp-dev.bing-amp.com/c/s/amp.dev',
-      ]);
+      expect(output).toEqual(['https://amp-dev.cdn.ampproject.org/c/s/amp.dev']);
     });
   });
 });

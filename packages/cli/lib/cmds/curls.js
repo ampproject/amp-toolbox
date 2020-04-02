@@ -18,7 +18,6 @@
 
 const {createCacheUrl} = require('@ampproject/toolbox-cache-url');
 const AmpCaches = require('@ampproject/toolbox-cache-list');
-const caches = new AmpCaches();
 
 async function curls(args, logger) {
   const url = args._[1];
@@ -26,6 +25,7 @@ async function curls(args, logger) {
     throw new Error('Missing URL');
   }
   const cacheId = args.cache;
+  const caches = new AmpCaches(args.fetch || require('node-fetch'));
   if (!cacheId) {
     const allCaches = await caches.list();
     return Promise.all(allCaches.map((cache) => printCurl(cache, url, logger)));
