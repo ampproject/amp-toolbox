@@ -29,7 +29,7 @@
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.1.0",
     "@ampproject/toolbox-cache-url": "^2.1.0",
-    "@ampproject/toolbox-download-runtime": "^2.1.0",
+    "@ampproject/toolbox-runtime-fetch": "^2.1.0",
     "@ampproject/toolbox-linter": "^2.1.0",
     "@ampproject/toolbox-optimizer": "^2.1.0",
     "@ampproject/toolbox-runtime-version": "^2.1.0",
