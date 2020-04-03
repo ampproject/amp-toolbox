@@ -7,8 +7,8 @@ The AMP Toolbox command line interface consists of a Node.js program called `amp
 Supported commands:
 
 - [curls](#curls): generate AMP cache URL(s)
-- [help](#help): lists all commands
 - [download](#download): download the AMP runtime
+- [help](#help): lists all commands
 - [lint](#lint): checks document for errors
 - [optimize](#optimize): runs AMP Optimizer for a given URL or file
 - [runtime-version](#runtime-version): shows the current AMP runtime version [production]
@@ -24,6 +24,24 @@ $ npm install @ampproject/toolbox-cli -g
 ```
 
 ## Commands
+
+### curls
+
+Translate a URL to AMP Cache URLs:
+
+```shell
+$ amp curls https://amp.dev
+```
+
+### download
+
+Download a complete AMP runtime:
+
+```shell
+$ amp download
+```
+
+Supports options for specifying a custom host, version, and destination directory. See `amp help download` for the complete list.
 
 ### help
 
@@ -44,16 +62,6 @@ Example:
 ```shell
 $ amp help update-cache
 ```
-
-### download
-
-Download a complete AMP runtime:
-
-```shell
-$ amp download
-```
-
-Supports options for specifying a custom host, version, and destination directory. See `amp help download` for the complete list.
 
 ### lint
 
