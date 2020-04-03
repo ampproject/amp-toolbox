@@ -1,6 +1,6 @@
 # AMP Download Runtime
 
-[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-download-runtime.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-download-runtime)
+[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-runtime-fetch.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-runtime-fetch)
 
 The AMP Download Runtime tool fetches a complete, compiled AMP runtime and saves it to disk. You can use this tool to fetch [AMP Project releases](https://github.com/ampproject/amphtml/releases) from `cdn.ampproject.org` or direct it to download an AMP runtime hosted elsewhere.
 
@@ -11,7 +11,7 @@ Special handling is included for amp-geo. For hosting environments that [dynamic
 Install via:
 
 ```sh
-npm install @ampproject/toolbox-download-runtime --save
+npm install @ampproject/toolbox-runtime-fetch --save
 ```
 
 ## Options
@@ -28,7 +28,7 @@ Note: When downloading [AMP Project releases](https://github.com/ampproject/amph
 Basic usage:
 
 ```js
-const downloadRuntime = require('@ampproject/toolbox-download-runtime');
+const downloadRuntime = require('@ampproject/toolbox-runtime-fetch');
 
 let result;
 

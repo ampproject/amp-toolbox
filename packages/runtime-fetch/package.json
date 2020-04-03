@@ -1,5 +1,5 @@
 {
-  "name": "@ampproject/toolbox-download-runtime",
+  "name": "@ampproject/toolbox-runtime-fetch",
   "version": "2.1.0",
   "description": "Download the AMP runtime",
   "main": "index.js",
@@ -15,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
-    "directory": "packages/download-runtime"
+    "directory": "packages/runtime-fetch"
   },
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
@@ -30,6 +30,6 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/download-runtime",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/runtime-fetch",
   "gitHead": "a6bc962a0af397c2fc21de1e8a730257947d8fb6"
 }
