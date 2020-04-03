@@ -1,3 +1,26 @@
+## 2.1.1 (2020-04-03)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#679](https://github.com/ampproject/amp-toolbox/pull/679) Update to use postcss and cssnano for SeparateKeyframes transform ([@ijjk](https://github.com/ijjk))
+* `cli`
+  * [#677](https://github.com/ampproject/amp-toolbox/pull/677) cli: Expose runtime-version options ([@mdmower](https://github.com/mdmower))
+
+#### :bug: Bug Fix
+* `cli`, `runtime-fetch`
+  * [#683](https://github.com/ampproject/amp-toolbox/pull/683) Rename download-runtime => runtime-fetch ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+* `optimizer`
+  * [#675](https://github.com/ampproject/amp-toolbox/pull/675) Update dependency @ampproject/toolbox-optimizer to v2.1.0 ([@renovate-bot](https://github.com/renovate-bot))
+* `cli`
+  * [#676](https://github.com/ampproject/amp-toolbox/pull/676) cli: Minor download cleanup ([@mdmower](https://github.com/mdmower))
+
+#### Committers: 3
+- JJ Kasper ([@ijjk](https://github.com/ijjk))
+- Matt Mower ([@mdmower](https://github.com/mdmower))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## 2.1.0 (2020-04-01)
 
 #### :rocket: Enhancement
