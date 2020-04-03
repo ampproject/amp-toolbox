@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A linter for AMP documents",
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^2.1.0",
-    "@ampproject/toolbox-cache-url": "^2.1.0",
+    "@ampproject/toolbox-cache-list": "^2.2.0",
+    "@ampproject/toolbox-cache-url": "^2.2.0",
     "amphtml-validator": "1.0.30",
     "chalk": "4.0.0",
     "cheerio": "1.0.0-rc.3",

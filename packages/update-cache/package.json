@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-update-cache",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Implements the AMP update-cache API, as described at https://developers.google.com/amp/cache/update-cache ",
   "main": "index.js",
   "repository": {
@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/update-cache",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^2.1.0",
-    "@ampproject/toolbox-cache-url": "^2.1.0",
+    "@ampproject/toolbox-cache-list": "^2.2.0",
+    "@ampproject/toolbox-cache-url": "^2.2.0",
     "jsrsasign": "8.0.13"
   },
   "gitHead": "a6bc962a0af397c2fc21de1e8a730257947d8fb6"
