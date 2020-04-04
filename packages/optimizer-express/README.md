@@ -6,12 +6,12 @@ amp-optimizer-express is an [express](http://expressjs.com/) middleware that opt
 times for websites using AMP for their canonical pages. The middleware uses the same
 server-side-rendering optimizations as the Google AMP Cache.
 
-The middleware uses the [amp-optimizer](../optimizer) component to apply server-side-rendering on the fly.
+The middleware uses the [amp-optimizer](/packages/optimizer) component to apply server-side-rendering on the fly.
 
 ## How it works
 
 amp-optimizer-express intercepts the responses and replaces their content with a version that has been
-transformed by [amp-optimizer](../optimizer).
+transformed by [amp-optimizer](/packages/optimizer).
 
 As the server-side-rendered version of the content is not valid AMP, the component also
 provides the original content on an alternative URL. Server-side-rendering

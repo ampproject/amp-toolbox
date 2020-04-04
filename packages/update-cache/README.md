@@ -2,8 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-update-cache.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-update-cache)
 
-Generates AMP Cache invalidation URLs for all known AMP Caches. For more info see the [Google AMP Cache documentation](
-https://developers.google.com/amp/cache/update-ping#update-cache-request).
+Generates AMP Cache invalidation URLs for all known AMP Caches. For more info see the [Google AMP Cache documentation](https://developers.google.com/amp/cache/update-ping#update-cache-request).
 
 ## Usage
 

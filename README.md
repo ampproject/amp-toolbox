@@ -20,18 +20,18 @@ limitations under the License.
 
 A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
-- **[amp-cache-url](./packages/cache-url):** a javascript library for translating origin URLs to the [AMP Cache URL format](https://developers.google.com/amp/cache/overview).
-- **[amp-cache-list](./packages/cache-list):** a javascript library for listing the known AMP Caches.
-- **[amp-cli](./packages/cli):** a command line version of AMP Toolbox
-- **[amp-cors](./packages/cors):** a connect/express middleware to automatically add [AMP Cors headers](https://www.ampproject.org/docs/fundamentals/amp-cors-requests).
-- **[amp-linter](./packages/linter):** a javascript library for linting AMP documents (includes CLI mode).
-- **[amp-optimizer](./packages/optimizer):** a javascript library implementing server-side-rendering for AMP pages.
-- **[amp-optimizer-express](./packages/optimizer-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
-- **[amp-runtime-fetch](./packages/runtime-fetch):** a javascript library for downloading the AMP runtime.
-- **[amp-runtime-version](./packages/runtime-version):** a javascript library for querying the current AMP runtime version.
-- **[amp-script-csp](./packages/script-csp):** a javascript library for calculating [`amp-script`](https://amp.dev/documentation/components/amp-script/) compatible CSP hashes.
-- **[amp-update-cache](./packages/update-cache):** a javascript library for updating AMP documents in AMP Caches.
-- **[amp-validator-rules](./packages/validator-rules):** a javascript library for querying AMP validator rules.
+- **[amp-cache-url](/packages/cache-url):** a javascript library for translating origin URLs to the [AMP Cache URL format](https://developers.google.com/amp/cache/overview).
+- **[amp-cache-list](/packages/cache-list):** a javascript library for listing the known AMP Caches.
+- **[amp-cli](/packages/cli):** a command line version of AMP Toolbox
+- **[amp-cors](/packages/cors):** a connect/express middleware to automatically add [AMP Cors headers](https://www.ampproject.org/docs/fundamentals/amp-cors-requests).
+- **[amp-linter](/packages/linter):** a javascript library for linting AMP documents (includes CLI mode).
+- **[amp-optimizer](/packages/optimizer):** a javascript library implementing server-side-rendering for AMP pages.
+- **[amp-optimizer-express](/packages/optimizer-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
+- **[amp-runtime-fetch](/packages/runtime-fetch):** a javascript library for downloading the AMP runtime.
+- **[amp-runtime-version](/packages/runtime-version):** a javascript library for querying the current AMP runtime version.
+- **[amp-script-csp](/packages/script-csp):** a javascript library for calculating [`amp-script`](https://amp.dev/documentation/components/amp-script/) compatible CSP hashes.
+- **[amp-update-cache](/packages/update-cache):** a javascript library for updating AMP documents in AMP Caches.
+- **[amp-validator-rules](/packages/validator-rules):** a javascript library for querying AMP validator rules.
 
 ## Development
 
@@ -55,7 +55,7 @@ npm test
 
 ### Adding new dependencies
 
-amp-toolbox uses [Lerna](https://lerna.js.org/) to manage it's packages. To keep build times low, `devDependencies` ([but not CLI dependencies](https://github.com/lerna/lerna/issues/1079#issuecomment-337660289)) must be added to the root [package.json](package.json) file. Runtime dependencies are managed for each package individually.
+amp-toolbox uses [Lerna](https://lerna.js.org/) to manage it's packages. To keep build times low, `devDependencies` ([but not CLI dependencies](https://github.com/lerna/lerna/issues/1079#issuecomment-337660289)) must be added to the root [package.json](/package.json) file. Runtime dependencies are managed for each package individually.
 
 When adding a new package inside the `packages` directory, register the package via:
 
@@ -92,8 +92,8 @@ npm run lint:fix
 
 ## Contributing
 
-Please see [the CONTRIBUTING file](CONTRIBUTING.md) for information on contributing to the AMP Project.
+Please see [the CONTRIBUTING file](/CONTRIBUTING.md) for information on contributing to the AMP Project.
 
 ## License
 
-AMP Toolbox is made by the [AMP Project](https://www.ampproject.org/), and is licensed under the [Apache License, Version 2.0](./LICENSE).
+AMP Toolbox is made by the [AMP Project](https://www.ampproject.org/), and is licensed under the [Apache License, Version 2.0](/LICENSE).

@@ -1,7 +1,6 @@
 # AMP Optimizer
 
 [![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer)
-[![changelog](https://img.shields.io/badge/Changelog-2.0-%235500d7)](CHANGELOG.md)
 
 AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering performance. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
@@ -47,7 +46,7 @@ ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
 });
 ```
 
-You can find a sample implementation [here](demo/simple/). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](../optimizer-express).
+You can find a sample implementation [here](/packages/optimizer/demo/simple). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](/packages/optimizer-express).
 
 ### Incomplete markup
 
@@ -134,7 +133,7 @@ const amphtml = await ampOptimizer.transformHtml(html, {
 });
 ```
 
-You can find a working sample [here](demo/markdown/).
+You can find a working sample [here](/packages/optimizer/demo/markdown).
 
 ### Custom transformations
 
@@ -175,11 +174,11 @@ const transformedHtml = await optimizer.transformHtml(html, {
 });
 ```
 
-Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
+Checkout [the samples](/packages/optimizer/demo/simple/index.js) to learn how to customize AMP Optimizer.
 
 ### CLI
 
-There's also a [command line version](../cli/README.md) available:
+There's also a [command line version](/packages/cli/README.md) available:
 
 ```shell
 $ npx @ampproject/toolbox-cli myFile.html
@@ -264,7 +263,7 @@ Versioning the AMP runtime URLs has one main benefit: versioned AMP runtime URLs
 
 **Important:** when using versioned AMP runtime URLs make sure to invalidate all caches whenever a new AMP runtime is released. This is to ensure that your AMP pages always use the latest version of the AMP runtime.
 
-You can use [@ampproject/toolbox-runtime-version](../@ampproject/toolbox-runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
+You can use [@ampproject/toolbox-runtime-version](/packages/runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
 
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
