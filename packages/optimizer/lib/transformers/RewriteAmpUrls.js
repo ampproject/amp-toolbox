@@ -26,7 +26,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
  * This transformer supports two parameters:
  *
  * * `ampRuntimeVersion`: specifies a
- *   [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version")
+ *   [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version)
  *   version</a> of the AMP runtime. For example: `ampRuntimeVersion:
  *   "001515617716922"` will result in AMP runtime URLs being re-written
  *   from `https://cdn.ampproject.org/v0.js` to
@@ -40,6 +40,12 @@ const {calculateHost} = require('../RuntimeHostHelper');
  * * `geoApiUrl`: specifies amp-geo API URL to use as a fallback when
  *   amp-geo-0.1.js is served unpatched, i.e. when
  *   {{AMP_ISO_COUNTRY_HOTPATCH}} is not replaced dynamically.
+ *
+ * * `lts`: Use long-term stable URLs. This option is not compatible with
+ *   `ampRuntimeVersion` or `ampUrlPrefix`; an error will be thrown if
+ *   these options are included together. Similarly, the `geoApiUrl`
+ *   option is ineffective with the lts flag, but will simply be ignored
+ *   rather than throwing an error.
  *
  * All parameters are optional. If no option is provided, runtime URLs won't be
  * re-written. You can combine `ampRuntimeVersion` and  `ampUrlPrefix` to
@@ -75,11 +81,11 @@ class RewriteAmpUrls {
     }
 
     // runtime-host and amp-geo-api meta tags should appear before the first script
-    if (!this._usesAmpCacheUrl(host)) {
+    if (!this._usesAmpCacheUrl(host) && !params.lts) {
       const versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
       this._addMeta(head, 'runtime-host', versionlessHost);
     }
-    if (params.geoApiUrl) {
+    if (params.geoApiUrl && !params.lts) {
       this._addMeta(head, 'amp-geo-api', params.geoApiUrl);
     }
   }
