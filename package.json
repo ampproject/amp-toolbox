@@ -39,7 +39,7 @@
     "husky": "4.2.3",
     "jest": "25.2.6",
     "jimp": "0.10.0",
-    "js-beautify": "1.10.3",
+    "js-beautify": "1.11.0",
     "karma": "4.4.1",
     "karma-chrome-launcher": "3.1.0",
     "karma-jasmine": "3.1.1",
