@@ -1,9 +1,14 @@
 {
-  "extends": ["plugin:prettier/recommended"],
+  "extends": [
+    "plugin:jsdoc/recommended",
+    "plugin:prettier/recommended"
+  ],
   "parserOptions": {
     "sourceType": "module"
   },
   "rules": {
+    "jsdoc/require-returns-description": "off",
+    "jsdoc/newline-after-description": "off",
     "no-undef": "error"
   },
   "env": {
