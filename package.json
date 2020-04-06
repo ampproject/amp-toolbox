@@ -31,7 +31,7 @@
     "amphtml-validator": "1.0.30",
     "babel-plugin-filter-imports": "4.0.0",
     "eslint": "6.8.0",
-    "eslint-config-google": "0.14.0",
+    "eslint-plugin-jsdoc": "22.1.0",
     "eslint-config-prettier": "6.10.1",
     "eslint-plugin-prettier": "3.1.2",
     "fetch-mock": "9.3.1",
