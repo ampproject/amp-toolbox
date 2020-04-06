@@ -84,9 +84,6 @@ class RuntimeVersion {
     if (options.ampUrlPrefix && !this.isAbsoluteUrl_(options.ampUrlPrefix)) {
       throw new Error('host must be an absolute URL');
     }
-    if (options.ampUrlPrefix && options.lts) {
-      throw new Error('lts flag is not compatible with custom host');
-    }
     if (options.canary && options.lts) {
       throw new Error('lts flag is not compatible with canary flag');
     }
@@ -101,7 +98,7 @@ class RuntimeVersion {
     const host = options.ampUrlPrefix ? options.ampUrlPrefix.replace(/\/$/, '') : AMP_CACHE_HOST;
 
     let rtv = await this.getVersionFromRuntimeMetadata_(host, releaseType);
-    if (!rtv) {
+    if (!rtv && releaseType === ReleaseType.prod) {
       rtv = await this.getVersionFromVersionTxt_(host, releaseType);
     }
 
@@ -166,13 +163,20 @@ class RuntimeVersion {
   }
 
   /**
-   * Get runtime version from <host>/version.txt, manually prepending config code
+   * Get runtime version from <host>/version.txt, manually prepending
+   * production release code '01'. This method cannot be used to detect
+   * canary or lts releases.
    *
    * @param {string} host - runtime host.
    * @param {ReleaseType} releaseType - release type.
    * @returns {Promise<string>} a promise containing the runtime version.
    */
   async getVersionFromVersionTxt_(host, releaseType) {
+    if (releaseType !== ReleaseType.prod) {
+      log.debug(`version.txt lookup only supported for prod releases`);
+      return;
+    }
+
     let versionTxtUrl = host + VERSION_TXT_PATH;
     log.debug(`Falling back to ${versionTxtUrl}`);
 
@@ -196,19 +200,7 @@ class RuntimeVersion {
       return;
     }
 
-    const rtv = this.getRtvConfigCode_(releaseType) + version;
-
-    // Verify rtv path exists
-    try {
-      versionTxtUrl = `${host}/rtv/${rtv}${VERSION_TXT_PATH}`;
-      response = await this.fetch_(versionTxtUrl);
-    } catch (ex) {}
-    if (!response || !response.ok) {
-      log.error('RTV could not be verified');
-      return;
-    }
-
-    return rtv;
+    return this.getRtvConfigCode_(releaseType) + version;
   }
 
   /**

@@ -78,37 +78,22 @@ describe('RuntimeVersion', () => {
     });
     it('supports getting release version from host without metadata endpoint', (done) => {
       const host = 'https://example.com/amp';
-      const rtv = defaultMetadata.ampRuntimeVersion;
-      const version = rtv.substring(2);
+      const version = defaultMetadata.ampRuntimeVersion.substring(2);
       fetchMock.get(`${host}/version.txt`, version);
-      fetchMock.get(`${host}/rtv/${rtv}/version.txt`, version);
       runtimeVersion.currentVersion({ampUrlPrefix: host}).then((rtv) => {
-        expect(rtv).toBe(rtv);
+        expect(rtv).toBe(defaultMetadata.ampRuntimeVersion);
         done();
       });
     });
-    it('supports getting canary version from host without metadata endpoint', (done) => {
-      const host = 'https://example.com/amp';
-      const rtv = defaultMetadata.diversions[0];
-      const version = rtv.substring(2);
-      fetchMock.get(`${host}/version.txt`, version);
-      fetchMock.get(`${host}/rtv/${rtv}/version.txt`, version);
-      runtimeVersion.currentVersion({ampUrlPrefix: host, canary: true}).then((rtv) => {
-        expect(rtv).toBe(rtv);
+    it('gracefully returns undefined if version not found', (done) => {
+      runtimeVersion.currentVersion().then((rtv) => {
+        expect(rtv).toBeUndefined();
         done();
       });
     });
     it('does not support simultaneous use of lts and canary flags', (done) => {
       fetchMock.get(`${defaultHost}/rtv/metadata`, defaultMetadata);
       runtimeVersion.currentVersion({canary: true, lts: true}).catch((error) => {
-        expect(error.message).toMatch(/not compatible/);
-        done();
-      });
-    });
-    it('does not support simultaneous use of lts flag and custom host', (done) => {
-      const host = 'https://example.com/amp';
-      fetchMock.get(`${host}/rtv/metadata`, defaultMetadata);
-      runtimeVersion.currentVersion({ampUrlPrefix: host, lts: true}).catch((error) => {
         expect(error.message).toMatch(/not compatible/);
         done();
       });
