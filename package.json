@@ -36,7 +36,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "fetch-mock": "9.3.1",
     "html-minifier": "4.0.0",
-    "husky": "4.2.3",
+    "husky": "4.2.5",
     "jest": "25.2.6",
     "jimp": "0.10.0",
     "js-beautify": "1.10.3",
