@@ -22,6 +22,17 @@ import createCurlsSubdomain from './AmpCurlUrlGenerator';
 import Url from 'url-parse';
 
 /**
+ * @enum {string}
+ */
+const ServingTypes = {
+  CONTENT: 'content',
+  VIEWER: 'viewer',
+  WEB_PACKAGE: 'web_package',
+  CERTIFICATE: 'certificate',
+  IMAGE: 'image',
+};
+
+/**
  * Translates the canonicalUrl to the AMP Cache equivalent, for a given AMP Cache.
  * Example:
  * createCacheUrl('cdn.ampproject.org', 'https://hello-world.com')
@@ -29,11 +40,12 @@ import Url from 'url-parse';
  *
  * @param {string} domainSuffix the AMP Cache domain suffix
  * @param {string} url the canonical URL
+ * @param {?ServingTypes=} servingType AMP Cache serving type. e.g. viewer, content...
  * @return {!Promise<string>} The converted AMP cache URL
  */
-function createCacheUrl(domainSuffix, url) {
+function createCacheUrl(domainSuffix, url, servingType = null) {
   const canonicalUrl = new Url(url);
-  let pathSegment = _getResourcePath(canonicalUrl.pathname);
+  let pathSegment = _getResourcePath(canonicalUrl.pathname, servingType);
   pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
 
   return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
@@ -50,14 +62,19 @@ function createCacheUrl(domainSuffix, url) {
 /**
  * Returns the AMP Cache path, based on the mime type of the file that is being loaded.
  * @param {string} pathname the pathname on the canonical url.
+ * @param {?ServingTypes=} servingType AMP Cache serving type. e.g. viewer, content...
  */
-function _getResourcePath(pathname) {
+function _getResourcePath(pathname, servingType = null) {
   if (imageExtensions.isPathNameAnImage(pathname)) {
     return '/i';
   }
 
   if (fontExtensions.isPathNameAFont(pathname)) {
     return '/r';
+  }
+
+  if (servingType === ServingTypes.VIEWER) {
+    return '/v';
   }
 
   // Default to document
