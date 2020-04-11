@@ -84,35 +84,19 @@ class AmpBoilerplateTransformer {
   }
 
   async _inlineCss(node, params) {
-    let version = params.ampRuntimeVersion;
-    const ampUrlPrefix = params.ampUrlPrefix;
+    let {ampRuntimeVersion, ampUrlPrefix, lts} = params;
 
-    // use version passed in via params if available
-    // otherwise fetch the current prod version
-    let v0CssUrl = AMP_CACHE_HOST + V0_CSS_PATH;
-    if (!ampUrlPrefix) {
-      if (version) {
-        v0CssUrl = appendRuntimeVersion(AMP_CACHE_HOST, version) + V0_CSS_PATH;
-      } else {
-        version = await this.runtimeVersion_.currentVersion();
-      }
-    } else {
-      // TODO: If ampUrlPrefix is a relative URL, this will fall back to
-      // fetching the latest runtime version and boilerplate CSS from
-      // cdn.ampproject.org. Is this our best option?
-      if (version) {
-        const customCssUrl = appendRuntimeVersion(ampUrlPrefix, version) + V0_CSS_PATH;
-        if (this._isAbsoluteUrl(customCssUrl)) {
-          v0CssUrl = customCssUrl;
-        }
-      } else {
-        version = await this.runtimeVersion_.currentVersion({ampUrlPrefix});
-        const customCssUrl = ampUrlPrefix + V0_CSS_PATH;
-        if (this._isAbsoluteUrl(customCssUrl)) {
-          v0CssUrl = customCssUrl;
-        }
-      }
+    // TODO: If ampUrlPrefix is a relative URL, this will fall back to
+    // fetching the latest runtime version and boilerplate CSS from
+    // cdn.ampproject.org. Is this our best option?
+    if (ampUrlPrefix && !this._isAbsoluteUrl(ampUrlPrefix)) {
+      ampUrlPrefix = undefined;
+      ampRuntimeVersion = undefined;
     }
+
+    const version =
+      ampRuntimeVersion || (await this.runtimeVersion_.currentVersion({ampUrlPrefix, lts}));
+    const v0CssUrl = appendRuntimeVersion(ampUrlPrefix || AMP_CACHE_HOST, version) + V0_CSS_PATH;
 
     node.attribs['i-amphtml-version'] = version;
 
