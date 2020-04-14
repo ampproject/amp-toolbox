@@ -15,10 +15,10 @@
  */
 'use strict';
 
-const glob = require('glob');
-const fs = require('fs');
+const util = require('util');
+const glob = util.promisify(require('glob'));
+const fsPromises = require('fs').promises;
 const path = require('path');
-const mkdirp = require('mkdirp');
 
 const AmpOptimizer = require('../../index.js');
 const {createElement, firstChildByTag, appendChild} = require('../../lib/NodeUtils.js');
@@ -33,7 +33,7 @@ const DIST_DIR = path.join(__dirname, 'dist');
 async function validAmpTransformation(filePath, html) {
   const optimizer = AmpOptimizer.create();
   const transformedHtml = await optimizer.transformHtml(html);
-  writeFile('valid', filePath, transformedHtml);
+  await writeFile('valid', filePath, transformedHtml);
 }
 
 // Advanced demo performing transformations resulting in invalid AMP using
@@ -51,8 +51,8 @@ async function pairedAmpTransformation(filePath, html) {
     // enables blurry image placeholder generation
     blurredPlaceholders: true,
   });
-  writeFile('paired', filePath, transformedHtml);
-  writeFile('paired', ampFilePath, html);
+  await writeFile('paired', filePath, transformedHtml);
+  await writeFile('paired', ampFilePath, html);
 }
 
 // Demo how to implement a custom transformer
@@ -87,7 +87,7 @@ async function customAmpTransformation(filePath, html) {
   const transformedHtml = await optimizer.transformHtml(html, {
     filePath,
   });
-  writeFile('custom', filePath, transformedHtml);
+  await writeFile('custom', filePath, transformedHtml);
 }
 
 // Demo how to implement a custom transformer
@@ -126,9 +126,10 @@ async function manuallySelectingTransformations(filePath, html) {
   const transformedHtml = await optimizer.transformHtml(html, {
     filePath,
   });
-  writeFile('manual', filePath, transformedHtml);
+  await writeFile('manual', filePath, transformedHtml);
 }
 
+// Run transforms in parallel
 [
   validAmpTransformation,
   pairedAmpTransformation,
@@ -143,39 +144,17 @@ async function manuallySelectingTransformations(filePath, html) {
 });
 
 // Collect all files in the src dir.
-function collectInputFiles(pattern) {
-  return new Promise((resolve, reject) => {
-    glob(pattern, {root: SRC_DIR, nomount: true}, (err, files) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(files);
-    });
-  });
+async function collectInputFiles(pattern) {
+  return glob(pattern, {root: SRC_DIR, nomount: true});
 }
 
-function readFile(fileName) {
-  return new Promise((resolve, reject) => {
-    const filePath = path.join(SRC_DIR, fileName);
-    fs.readFile(filePath, 'utf8', (err, contents) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(contents);
-    });
-  });
+async function readFile(fileName) {
+  const filePath = path.join(SRC_DIR, fileName);
+  return fsPromises.readFile(filePath, 'utf8');
 }
 
-function writeFile(folder, filePath, content) {
+async function writeFile(folder, filePath, content) {
   filePath = path.join(DIST_DIR, folder, filePath);
-  mkdirp(path.dirname(filePath), (err) => {
-    if (err) {
-      throw err;
-    }
-    fs.writeFile(filePath, content, (err) => {
-      if (err) {
-        throw err;
-      }
-    });
-  });
+  await fsPromises.mkdir(path.dirname(filePath), {recursive: true});
+  return fsPromises.writeFile(filePath, content);
 }
