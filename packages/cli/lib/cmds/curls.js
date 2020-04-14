@@ -25,21 +25,22 @@ async function curls(args, logger) {
     throw new Error('Missing URL');
   }
   const cacheId = args.cache;
+  const servingType = args.servingType;
   const caches = new AmpCaches(args.fetch || require('node-fetch'));
   if (!cacheId) {
     const allCaches = await caches.list();
-    return Promise.all(allCaches.map((cache) => printCurl(cache, url, logger)));
+    return Promise.all(allCaches.map((cache) => printCurl(cache, url, logger, servingType)));
   } else {
     const cache = await caches.get(cacheId);
     if (!cache) {
       throw new Error('Unknown cache: ' + cacheId);
     }
-    return printCurl(cache, url, logger);
+    return printCurl(cache, url, logger, servingType);
   }
 }
 
-async function printCurl(cache, url, logger) {
-  const curl = await createCacheUrl(cache.cacheDomain, url);
+async function printCurl(cache, url, logger, servingType = null) {
+  const curl = await createCacheUrl(cache.cacheDomain, url, servingType);
   logger.info(curl);
 }
 

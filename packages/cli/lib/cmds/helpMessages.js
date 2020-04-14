@@ -45,6 +45,7 @@ module.exports = {
     '',
     'Options:',
     '--cache ................... AMP cache id as specified here: https://cdn.ampproject.org/caches.json.',
+    '--servingType ............. Serving type as specified here: https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cache-urls/',
   ].join('\n'),
   'optimize': ['Usage:', '', '', 'amp optimize [url|file]'].join('\n'),
   'download': [
