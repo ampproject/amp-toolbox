@@ -47,7 +47,7 @@ ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
 });
 ```
 
-You can find a sample implementation [here](demo/simple/). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](../optimizer-express).
+You can find a sample implementation [here](https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer/demo/simple/). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](../optimizer-express).
 
 ### Incomplete markup
 
@@ -134,7 +134,7 @@ const amphtml = await ampOptimizer.transformHtml(html, {
 });
 ```
 
-You can find a working sample [here](demo/markdown/).
+You can find a working sample [here](https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer/demo/markdown/).
 
 ### Custom transformations
 
@@ -175,7 +175,7 @@ const transformedHtml = await optimizer.transformHtml(html, {
 });
 ```
 
-Checkout [the samples](demo/simple/index.js) to learn how to customize AMP Optimizer.
+Checkout [the samples](https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer/demo/simple/index.js) to learn how to customize AMP Optimizer.
 
 ### CLI
 
