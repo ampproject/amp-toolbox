@@ -38,7 +38,7 @@
     "html-minifier": "4.0.0",
     "husky": "4.2.3",
     "jest": "25.2.6",
-    "jimp": "0.10.0",
+    "jimp": "0.10.2",
     "js-beautify": "1.10.3",
     "karma": "4.4.1",
     "karma-chrome-launcher": "3.1.0",
