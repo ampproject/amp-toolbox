@@ -58,4 +58,18 @@ describe('curls', () => {
       expect(output).toEqual(['https://amp-dev.cdn.ampproject.org/c/s/amp.dev']);
     });
   });
+
+  it('supports servingType option', () => {
+    return curlsCmd(
+      {
+        _: ['', 'https://amp.dev'],
+        servingType: 'viewer',
+        fetch,
+      },
+      mockLogger
+    ).then(() => {
+      const output = mockLogger.logs;
+      expect(output).toEqual(['https://amp-dev.cdn.ampproject.org/v/s/amp.dev']);
+    });
+  });
 });
