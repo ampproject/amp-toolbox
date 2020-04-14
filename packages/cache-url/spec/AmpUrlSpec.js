@@ -85,6 +85,11 @@ describe('AmpUrl', () => {
         });
       });
     });
+
+    it('transforms a url using the supportType parameter', async () => {
+      const result = await createCacheUrl(domainSuffix, 'https://www.example.com', 'viewer');
+      expect(result).toBe('https://www-example-com.cdn.ampproject.org/v/s/www.example.com');
+    });
   });
 
   describe('createCurlsSubdomain', () => {
