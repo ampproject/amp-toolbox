@@ -1,3 +1,32 @@
+## 2.3.0 (2020-04-15)
+
+#### :rocket: Enhancement
+* `runtime-fetch`
+  * [#711](https://github.com/ampproject/amp-toolbox/pull/711) runtime-fetch: Update amp-geo for subdivision matching ([@mdmower](https://github.com/mdmower))
+* `cli`, `optimizer`
+  * [#691](https://github.com/ampproject/amp-toolbox/pull/691) optimizer: Add lts option to URL rewriter ([@mdmower](https://github.com/mdmower))
+* `cli`, `runtime-version`
+  * [#695](https://github.com/ampproject/amp-toolbox/pull/695) runtime-version: Update for custom hosts and lts ([@mdmower](https://github.com/mdmower))
+* `cache-url`
+  * [#701](https://github.com/ampproject/amp-toolbox/pull/701) Adds types to module ([@Enriqe](https://github.com/Enriqe))
+* `cache-url`, `cli`
+  * [#705](https://github.com/ampproject/amp-toolbox/pull/705) Add support for serving types in createCacheUrl ([@Enriqe](https://github.com/Enriqe))
+
+#### :memo: Documentation
+* `cors`, `optimizer-express`, `optimizer`, `update-cache`
+  * [#690](https://github.com/ampproject/amp-toolbox/pull/690) Use relative links compatible with github&npmjs ([@mdmower](https://github.com/mdmower))
+* `cli`
+  * [#685](https://github.com/ampproject/amp-toolbox/pull/685) cli: Add curls command to readme ([@mdmower](https://github.com/mdmower))
+
+#### :house: Internal
+* `optimizer`
+  * [#684](https://github.com/ampproject/amp-toolbox/pull/684) Update dependency @ampproject/toolbox-optimizer to v2.2.0 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 3
+- Enrique Marroquin ([@Enriqe](https://github.com/Enriqe))
+- Matt Mower ([@mdmower](https://github.com/mdmower))
+- Matthias Rohmer ([@matthiasrohmer](https://github.com/matthiasrohmer))
+
 ## 2.2.0 (2020-04-03)
 
 #### :rocket: Enhancement
