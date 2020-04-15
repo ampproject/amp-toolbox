@@ -46,6 +46,19 @@ class Cli {
           })
         );
         break;
+      case 'optimize':
+        Object.assign(
+          minimistOptions,
+          buildOptions({
+            lts: {
+              type: 'boolean',
+              default: false,
+            },
+            rtv: {
+              type: 'string',
+            },
+          })
+        );
       case 'runtime-version':
         Object.assign(
           minimistOptions,
