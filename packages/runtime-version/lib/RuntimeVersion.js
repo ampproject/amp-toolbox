@@ -121,9 +121,13 @@ class RuntimeVersion {
     let response;
     try {
       response = await this.fetch_(runtimeMetaUrl);
-    } catch (ex) {}
+    } catch (ex) {
+      // Avoid exception to give fallback mechanism getVersionFromVersionTxt_()
+      // a chance to lookup version, and to gracefully return 'undefined' if no
+      // version is ultimately found.
+    }
     if (!response || !response.ok) {
-      log.debug('RTV metadata endpoint could not be reached');
+      log.debug('RTV metadata endpoint did not respond with a successful status code');
       return;
     }
 
@@ -183,9 +187,11 @@ class RuntimeVersion {
     let response;
     try {
       response = await this.fetch_(versionTxtUrl);
-    } catch (ex) {}
+    } catch (ex) {
+      // Prefer gracefully returning 'undefined' version to throwing.
+    }
     if (!response || !response.ok) {
-      log.debug('version.txt endpoint could not be reached');
+      log.debug('version.txt endpoint did not respond with a successful status code');
       return;
     }
 
