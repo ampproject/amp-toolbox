@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-validator-rules",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A library that helps query AMP Validator rules",
   "main": "index.js",
   "keywords": [
