@@ -39,7 +39,7 @@
     "htmlparser2": "4.1.0",
     "normalize-html-whitespace": "1.0.0",
     "postcss-safe-parser": "4.0.2",
-    "terser": "4.6.8"
+    "terser": "4.6.11"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
