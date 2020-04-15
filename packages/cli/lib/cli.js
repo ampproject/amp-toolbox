@@ -54,6 +54,10 @@ class Cli {
               type: 'boolean',
               default: false,
             },
+            lts: {
+              type: 'boolean',
+              default: false,
+            },
           })
         );
         break;

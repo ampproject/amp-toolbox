@@ -34,6 +34,7 @@ module.exports = {
     '',
     'Options:',
     '--canary .................. Get canary version. Defaults to false.',
+    '--lts ..................... Get long-term stable version. Defaults to false.',
     '--host .................... AMP host. Defaults to https://cdn.ampproject.org.',
   ].join('\n'),
   'curls': [

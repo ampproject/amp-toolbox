@@ -15,33 +15,94 @@
  */
 
 const RuntimeVersion = require('../../lib/RuntimeVersion.js');
-const fetch = require('node-fetch');
+const fetchMock = require('fetch-mock').sandbox();
+
+const defaultHost = 'https://cdn.ampproject.org';
+const defaultMetadata = {
+  ampRuntimeVersion: '012004030010070',
+  diversions: ['002004012111560'],
+  ltsRuntimeVersion: '012002251816300',
+};
 
 describe('RuntimeVersion', () => {
-  const runtimeVersion = new RuntimeVersion(fetch);
+  let runtimeVersion;
+
+  beforeEach(() => {
+    runtimeVersion = new RuntimeVersion(fetchMock);
+
+    // Set unmatched fetch-mock responses to "not found"
+    fetchMock.catch(404);
+  });
+
+  afterEach(() => {
+    fetchMock.reset();
+  });
 
   describe('currentVersion', () => {
     it('returns release version by default', (done) => {
-      runtimeVersion.currentVersion().then((version) => {
-        expect(version).toMatch(/[0-9]+/);
+      fetchMock.get(`${defaultHost}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion().then((rtv) => {
+        expect(rtv).toBe(defaultMetadata.ampRuntimeVersion);
         done();
       });
     });
     it('returns canary version if specified via option', (done) => {
-      runtimeVersion.currentVersion({canary: true}).then((version) => {
-        expect(version).toMatch(/[0-9]+/);
+      fetchMock.get(`${defaultHost}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion({canary: true}).then((rtv) => {
+        expect(rtv).toBe(defaultMetadata.diversions[0]);
         done();
       });
     });
-    it('pads release version to 15 chars', (done) => {
-      runtimeVersion.currentVersion().then((version) => {
-        expect(version.length).toBe(15);
+    it('returns lts version if specified via option', (done) => {
+      fetchMock.get(`${defaultHost}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion({lts: true}).then((rtv) => {
+        expect(rtv).toBe(defaultMetadata.ltsRuntimeVersion);
         done();
       });
     });
-    it('pads canary version to 15 chars', (done) => {
-      runtimeVersion.currentVersion({canary: true}).then((version) => {
-        expect(version.length).toBe(15);
+    it('supports getting release version from alternate host', (done) => {
+      const host = 'https://example.com/amp';
+      fetchMock.get(`${host}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion({ampUrlPrefix: host}).then((rtv) => {
+        expect(rtv).toBe(defaultMetadata.ampRuntimeVersion);
+        done();
+      });
+    });
+    it('supports getting canary version from alternate host', (done) => {
+      const host = 'https://example.com/amp';
+      fetchMock.get(`${host}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion({ampUrlPrefix: host, canary: true}).then((rtv) => {
+        expect(rtv).toBe(defaultMetadata.diversions[0]);
+        done();
+      });
+    });
+    it('supports getting release version from host without metadata endpoint', (done) => {
+      const host = 'https://example.com/amp';
+      const version = defaultMetadata.ampRuntimeVersion.substring(2);
+      fetchMock.get(`${host}/version.txt`, version);
+      runtimeVersion.currentVersion({ampUrlPrefix: host}).then((rtv) => {
+        expect(rtv).toBe(defaultMetadata.ampRuntimeVersion);
+        done();
+      });
+    });
+    it('gracefully returns undefined if version not found', (done) => {
+      runtimeVersion.currentVersion().then((rtv) => {
+        expect(rtv).toBeUndefined();
+        done();
+      });
+    });
+    it('does not support simultaneous use of lts and canary flags', (done) => {
+      fetchMock.get(`${defaultHost}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion({canary: true, lts: true}).catch((error) => {
+        expect(error.message).toMatch(/not compatible/);
+        done();
+      });
+    });
+    it('does not support relative URL for custom host', (done) => {
+      const host = '/amp';
+      fetchMock.get(`${host}/rtv/metadata`, defaultMetadata);
+      runtimeVersion.currentVersion({ampUrlPrefix: host}).catch((error) => {
+        expect(error.message).toMatch(/absolute URL/);
         done();
       });
     });
