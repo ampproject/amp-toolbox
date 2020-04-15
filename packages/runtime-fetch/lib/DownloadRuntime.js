@@ -322,7 +322,10 @@ class DownloadRuntime {
     // If this file is amp-geo.js, then undo the {{AMP_ISO_COUNTRY_HOTPATCH}}
     // hotpatch before saving. Otherwise, stream the file directly to disk.
     if (/amp-geo-([\d.]+|latest)\.m?js/.test(filepath)) {
-      const text = (await res.text()).replace(/[a-z]{2} {26}/i, '{{AMP_ISO_COUNTRY_HOTPATCH}}');
+      const text = (await res.text()).replace(
+        /[a-z]{2}(?:-[a-z0-9]{2} {23}| {26})/i,
+        '{{AMP_ISO_COUNTRY_HOTPATCH}}'
+      );
       wstream.write(text, wstream.close.bind(wstream));
     } else {
       res.body.pipe(wstream);
