@@ -31,6 +31,7 @@ const fakeFiles = {
   'files.txt': '',
   'version.txt': defaultVersion,
   'v0/amp-geo-0.1.js': 'd=/^(\\w{2})?\\s*/.exec("us                          ")',
+  'v0/amp-geo-0.1.mjs': 'd=/^(\\w{2})?\\s*/.exec("us-ca                       ")',
   'v0/examples/version.txt': defaultVersion,
 };
 fakeFiles['files.txt'] = Object.keys(fakeFiles).join('\n');
@@ -144,15 +145,21 @@ describe('DownloadRuntime', () => {
     });
 
     it('reverts amp-geo hotpatching', (done) => {
-      const ampGeoPath = path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.js');
+      const ampGeoFilePaths = [
+        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.js'), // country
+        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.mjs'), // subdivision
+      ];
       Object.keys(mockResponses).forEach((filename) => {
         fetchMock.get(`${defaultHost}/${filename}`, mockResponses[filename]);
         fetchMock.get(`${defaultHost}/rtv/${defaultRtv}/${filename}`, mockResponses[filename]);
       });
       downloadRuntime.getRuntime(options).then((ret) => {
         expect(ret.status).toBe(true);
-        fse.readFile(ampGeoPath, 'utf8', (err, contents) => {
-          expect(contents).toContain('{{AMP_ISO_COUNTRY_HOTPATCH}}');
+        const readFilePromises = ampGeoFilePaths.map((filePath) => fse.readFile(filePath, 'utf8'));
+        Promise.all(readFilePromises).then((readFileResults) => {
+          readFileResults.forEach((contents) => {
+            expect(contents).toContain('{{AMP_ISO_COUNTRY_HOTPATCH}}');
+          });
           done();
         });
       });
