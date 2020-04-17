@@ -33,6 +33,7 @@ const fakeFiles = {
   'v0/amp-geo-0.1.js': 'd=/^(\\w{2})?\\s*/.exec("                            ")',
   'v0/amp-geo-0.1.mjs': 'd=/^(\\w{2})?\\s*/.exec("us                          ")',
   'v0/amp-geo-latest.js': 'd=/^(\\w{2})?\\s*/.exec("us us-ca                    ")',
+  'v0/amp-geo-latest.mjs': 'd=/^(\\w{2})?\\s*/.exec("fj fj-w                     ")',
   'v0/examples/version.txt': defaultVersion,
 };
 fakeFiles['files.txt'] = Object.keys(fakeFiles).join('\n');

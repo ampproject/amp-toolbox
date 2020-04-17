@@ -323,7 +323,7 @@ class DownloadRuntime {
     // hotpatch before saving. Otherwise, stream the file directly to disk.
     if (/amp-geo-([\d.]+|latest)\.m?js/.test(filepath)) {
       const text = (await res.text()).replace(
-        / {28}|[a-z]{2} {26}|[a-z]{2} [a-z]{2}-[a-z]{2} {20}/i,
+        / {28}|[a-z]{2} {26}|[a-z]{2} [a-z]{2}-[a-z0-9]{1,3} {19,21}/i,
         '{{AMP_ISO_COUNTRY_HOTPATCH}}'
       );
       wstream.write(text, wstream.close.bind(wstream));
