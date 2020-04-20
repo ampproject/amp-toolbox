@@ -21,8 +21,9 @@ const {DomTransformer, TRANSFORMATIONS_PAIRED_AMP} = require('../../lib/DomTrans
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock
   .sandbox()
-  .mock('https://cdn.ampproject.org/rtv/123456789000000/v0.css', '/* v0.css */')
-  .mock('https://cdn.ampproject.org/v0.css', '/* v0.css */');
+  .mock('https://cdn.ampproject.org/rtv/123456789000000/v0.css', '/* ampproject.org/rtv v0.css */')
+  .mock('https://example.com/amp/rtv/123456789000000/v0.css', '/* example.com v0.css */')
+  .mock('https://cdn.ampproject.org/v0.css', '/* ampproject.org v0.css */');
 
 createSpec({
   name: 'End-to-End: AMP First',
