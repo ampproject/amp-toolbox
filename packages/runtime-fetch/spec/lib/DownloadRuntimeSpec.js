@@ -30,8 +30,9 @@ const defaultHost = 'https://cdn.ampproject.org';
 const fakeFiles = {
   'files.txt': '',
   'version.txt': defaultVersion,
-  'v0/amp-geo-0.1.js': 'd=/^(\\w{2})?\\s*/.exec("us                          ")',
-  'v0/amp-geo-0.1.mjs': 'd=/^(\\w{2})?\\s*/.exec("us-ca                       ")',
+  'v0/amp-geo-0.1.js': 'd=/^(\\w{2})?\\s*/.exec("                            ")',
+  'v0/amp-geo-0.1.mjs': 'd=/^(\\w{2})?\\s*/.exec("us                          ")',
+  'v0/amp-geo-latest.js': 'd=/^(\\w{2})?\\s*/.exec("us us-ca                    ")',
   'v0/examples/version.txt': defaultVersion,
 };
 fakeFiles['files.txt'] = Object.keys(fakeFiles).join('\n');
@@ -146,8 +147,9 @@ describe('DownloadRuntime', () => {
 
     it('reverts amp-geo hotpatching', (done) => {
       const ampGeoFilePaths = [
-        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.js'), // country
-        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.mjs'), // subdivision
+        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.js'), // indeterminate
+        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-0.1.mjs'), // country
+        path.join(options.dest, 'rtv', defaultRtv, 'v0', 'amp-geo-latest.js'), // country + subdivision
       ];
       Object.keys(mockResponses).forEach((filename) => {
         fetchMock.get(`${defaultHost}/${filename}`, mockResponses[filename]);
