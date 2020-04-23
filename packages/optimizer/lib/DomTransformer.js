@@ -43,6 +43,8 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
+  // Detect hero image and preload link rel=preload
+  'PreloadHeroImage',
   'PruneDuplicateResourceHints',
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
@@ -79,6 +81,8 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
+  // Detect hero image and preload link rel=preload
+  'PreloadHeroImage',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
