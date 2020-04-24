@@ -55,6 +55,9 @@ const {calculateHost} = require('../RuntimeHostHelper');
  * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
  */
 class RewriteAmpUrls {
+  constructor(config) {
+    this.esmModulesEnabled = config.experimentEsm;
+  }
   transform(root, params) {
     const html = firstChildByTag(root, 'html');
     const head = firstChildByTag(html, 'head');
@@ -68,7 +71,7 @@ class RewriteAmpUrls {
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
-        if (params.experimentEsm) {
+        if (this.esmModulesEnabled) {
           this._addEsm(node, node.attribs.src.endsWith('v0.js'));
         }
         referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
