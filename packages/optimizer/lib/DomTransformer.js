@@ -94,7 +94,6 @@ const DEFAULT_CONFIG = {
   fetch: oneBehindFetch,
   log,
   transformations: TRANSFORMATIONS_AMP_FIRST,
-  validatorRules,
   verbose: false,
 };
 
@@ -128,8 +127,9 @@ class DomTransformer {
    * @param {Tree} tree - a DOM tree.
    * @param {Object} params - a dictionary containing transformer specific parameters.
    */
-  transformTree(tree, params) {
+  async transformTree(tree, params) {
     params = params || {};
+    params.validatorRules = params.validatorRules || (await validatorRules.fetch());
     log.verbose(params.verbose || false);
     const sequence = async (promise, transformer) => {
       await promise;

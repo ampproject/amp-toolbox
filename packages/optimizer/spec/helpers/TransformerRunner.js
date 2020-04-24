@@ -29,7 +29,7 @@ const BEAUTIFY_OPTIONS = {
 const treeParser = require('../../lib/TreeParser.js');
 
 const TRANSFORMER_PARAMS = {
-  verbose: true,
+  //verbose: true,
   ampUrl: 'https://example.com/amp-version.html',
 };
 
@@ -76,7 +76,9 @@ module.exports = function (testConfig) {
           // file doesn't exist if no snapshot has been written yet
           // that's ok as the test will fail by comparing to an empty string
         }
-        await testConfig.transformer.transform(tree, testConfig.validAmp ? {} : params);
+        params = testConfig.validAmp ? {} : params;
+        params.validatorRules = await require('@ampproject/toolbox-validator-rules').fetch();
+        await testConfig.transformer.transform(tree, params);
         const actualOutput = serialize(tree, params.__format);
         if (WRITE_SNAPSHOT) {
           writeFileContents(expectedOutputPath, actualOutput);

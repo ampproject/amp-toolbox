@@ -43,7 +43,6 @@ function loadTestConfigs(subDir) {
       .mock('https://example.com/amp/rtv/012345678922222/v0.css', '/* v0-host.css */');
     const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
     const config = {
-      validatorRules,
       fetch,
       log,
       runtimeVersion: {
