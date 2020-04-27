@@ -61,7 +61,7 @@
     "rollup-plugin-serve": "1.0.1",
     "semver": "7.3.2",
     "tap-parser": "10.0.1",
-    "tar": "6.0.1",
+    "tar": "6.0.2",
     "throat": "5.0.0",
     "typescript": "3.8.3"
   },
