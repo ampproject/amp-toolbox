@@ -18,8 +18,8 @@
 const treeParser = require('./TreeParser');
 const log = require('./log');
 const {oneBehindFetch} = require('@ampproject/toolbox-core');
-const validatorRules = require('@ampproject/toolbox-validator-rules');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
+const fetchRuntimeParameters = require('./fetchRuntimeParameters');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
@@ -125,15 +125,14 @@ class DomTransformer {
   /**
    * Transforms a DOM tree.
    * @param {Tree} tree - a DOM tree.
-   * @param {Object} params - a dictionary containing transformer specific parameters.
+   * @param {Object} customParams - a dictionary containing transformer specific parameters.
    */
-  async transformTree(tree, params) {
-    params = params || {};
-    params.validatorRules = params.validatorRules || (await validatorRules.fetch());
-    log.verbose(params.verbose || false);
+  async transformTree(tree, customParams = {}) {
+    const runtimeParameters = await fetchRuntimeParameters(this.config, customParams);
+    log.verbose(runtimeParameters.verbose);
     const sequence = async (promise, transformer) => {
       await promise;
-      return transformer.transform(tree, params);
+      return transformer.transform(tree, runtimeParameters);
     };
     return this.transformers_.reduce(sequence, Promise.resolve());
   }
@@ -145,13 +144,13 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
-    config = Object.assign({}, DEFAULT_CONFIG, config);
-    if (!config.runtimeVersion) {
+    this.config = Object.assign({}, DEFAULT_CONFIG, config);
+    if (!this.config.runtimeVersion) {
       // Re-use custom fetch implementation for runtime version provider
-      config.runtimeVersion = new RuntimeVersion(config.fetch);
+      this.config.runtimeVersion = new RuntimeVersion(this.config.fetch);
     }
-    log.verbose(config.verbose);
-    this.initTransformers_(config);
+    log.verbose(this.config.verbose);
+    this.initTransformers_(this.config);
   }
 
   /**

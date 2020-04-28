@@ -22,9 +22,7 @@ const {
   hasAttribute,
   firstChildByTag,
 } = require('../NodeUtils');
-const {AMP_CACHE_HOST, appendRuntimeVersion} = require('../AmpConstants.js');
-
-const V0_CSS_PATH = '/v0.css';
+const {AMP_CACHE_HOST, V0_CSS_PATH, appendRuntimeVersion} = require('../AmpConstants.js');
 
 /**
  * AmpBoilerplateTransformer - This DOM transformer adds
@@ -47,11 +45,21 @@ class AmpBoilerplateTransformer {
       return; // invalid doc
     }
     // amp-runtime is added by server-side-rendering
-    const ampRuntimeStyle = this._findAmpRuntimeStyle(head);
-    if (!ampRuntimeStyle) {
+    const ampRuntimeStylesNode = this._findAmpRuntimeStyle(head);
+    if (!ampRuntimeStylesNode) {
       return; // keep existing boilerplate
     }
-    return this._addStaticCss(ampRuntimeStyle, params);
+    // inline CSS
+    let {ampRuntimeVersion, ampRuntimeStyles} = params;
+    if (!ampRuntimeVersion || !ampRuntimeStyles) {
+      // these should be set by DomTransformer
+      this.log_.error(
+        'Missing parameters both ampRuntimeVersion and ampRuntimeStyles need to be present'
+      );
+      return;
+    }
+    ampRuntimeStylesNode.attribs['i-amphtml-version'] = ampRuntimeVersion;
+    insertText(ampRuntimeStylesNode, ampRuntimeStyles);
   }
 
   _findAmpRuntimeStyle(head) {
@@ -63,62 +71,6 @@ class AmpBoilerplateTransformer {
       node = node.nextSibling;
     }
     return null;
-  }
-
-  async _addStaticCss(node, params) {
-    // we can always inline v0.css as the AMP runtime will take care of keeping v0.css in sync
-    try {
-      return this._inlineCss(node, params);
-    } catch (error) {
-      this.log_.error(error);
-      this._linkCss(node);
-    }
-  }
-
-  _linkCss(node) {
-    const cssStyleNode = createElement('link', {
-      rel: 'stylesheet',
-      href: AMP_CACHE_HOST + V0_CSS_PATH,
-    });
-    insertBefore(node.parent, cssStyleNode, node);
-  }
-
-  async _inlineCss(node, params) {
-    let {ampRuntimeVersion, ampUrlPrefix, lts} = params;
-
-    // TODO: If ampUrlPrefix is a relative URL, this will fall back to
-    // fetching the latest runtime version and boilerplate CSS from
-    // cdn.ampproject.org. Is this our best option?
-    if (ampUrlPrefix && !this._isAbsoluteUrl(ampUrlPrefix)) {
-      ampUrlPrefix = undefined;
-      ampRuntimeVersion = undefined;
-    }
-
-    const version =
-      ampRuntimeVersion || (await this.runtimeVersion_.currentVersion({ampUrlPrefix, lts}));
-    const v0CssUrl = appendRuntimeVersion(ampUrlPrefix || AMP_CACHE_HOST, version) + V0_CSS_PATH;
-
-    node.attribs['i-amphtml-version'] = version;
-
-    // Fetch and inline contents of v0.css
-    const response = await this.fetch_(v0CssUrl);
-    if (!response.ok) {
-      throw new Error(
-        `Could not inline v0.css. Request to ${v0CssUrl} failed with status ` +
-          `${response.status}.`
-      );
-    }
-    const body = await response.text();
-    insertText(node, body);
-  }
-
-  _isAbsoluteUrl(url) {
-    try {
-      new URL(url);
-      return true;
-    } catch (ex) {}
-
-    return false;
   }
 }
 

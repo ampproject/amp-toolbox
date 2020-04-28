@@ -19,5 +19,6 @@ module.exports = {
   AMP_TAGS: ['amp', '⚡', '⚡4ads', 'amp4ads', '⚡4email', 'amp4email'],
   AMP_CACHE_HOST: 'https://cdn.ampproject.org',
   AMP_FORMATS: ['AMP', 'AMP4EMAIL', 'AMP4ADS'],
+  AMP_RUNTIME_CSS_PATH: '/v0.css',
   appendRuntimeVersion: (prefix, version) => prefix + '/rtv/' + version,
 };
