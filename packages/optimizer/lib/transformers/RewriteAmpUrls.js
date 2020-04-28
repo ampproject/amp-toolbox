@@ -55,6 +55,9 @@ const {calculateHost} = require('../RuntimeHostHelper');
  * push for CDNs (see https://www.w3.org/TR/preload/#server-push-(http/2)).
  */
 class RewriteAmpUrls {
+  constructor(config) {
+    this.esmModulesEnabled = config.experimentEsm;
+  }
   transform(root, params) {
     const html = firstChildByTag(root, 'html');
     const head = firstChildByTag(html, 'head');
@@ -68,6 +71,9 @@ class RewriteAmpUrls {
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
+        if (this.esmModulesEnabled) {
+          this._addEsm(node, node.attribs.src.endsWith('v0.js'));
+        }
         referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
       } else if (
         node.tagName === 'link' &&
@@ -99,6 +105,31 @@ class RewriteAmpUrls {
 
   _replaceUrl(url, ampUrlPrefix) {
     return ampUrlPrefix + url.substring(AMP_CACHE_HOST.length);
+  }
+
+  _addEsm(scriptNode, preload) {
+    const esmScriptUrl = scriptNode.attribs.src.replace(/\.js$/, '.mjs');
+    if (preload) {
+      const preload = createElement('link', {
+        as: 'script',
+        crossorigin: 'anonymous',
+        href: esmScriptUrl,
+        rel: 'preload',
+      });
+      insertBefore(scriptNode.parent, preload, scriptNode);
+    }
+    const nomoduleNode = createElement('script', {
+      async: '',
+      nomodule: '',
+      src: scriptNode.attribs.src,
+    });
+    insertBefore(scriptNode.parent, nomoduleNode, scriptNode);
+
+    scriptNode.attribs.type = 'module';
+    // Without crossorigin=anonymous browser loads the script twice because
+    // of preload.
+    scriptNode.attribs.crossorigin = 'anonymous';
+    scriptNode.attribs.src = esmScriptUrl;
   }
 
   _addPreload(parent, node, href, type) {
