@@ -6,7 +6,7 @@ AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering
 
 * Server-side render AMP layouts.
 * **Automatically import all missing AMP component scripts**.
-* **Automaticallly add any missing mandatary AMP tags**.
+* **Automaticallly add any missing mandatory AMP tags**.
 * Remove the AMP boilerplate (when possible).
 * Remove not needed whitespace.
 * Extract and move CSS keyframe animations to the bottom of the page.
