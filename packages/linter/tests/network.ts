@@ -54,6 +54,21 @@ withFixture("thumbnails3", () =>
   )
 );
 
+withFixture("thumbnails4", () =>
+  assertFnList(
+    `${StoryMetadataThumbnailsAreOk.name} - publisher-logo-src is webp`,
+    runNetworkTest(
+      StoryMetadataThumbnailsAreOk,
+      "https://fantastic-lemon-asterisk.glitch.me/"
+    ),
+    (actual: Result[]) => {
+      return actual.length === 0
+        ? ""
+        : `expected no errors, got ${JSON.stringify(actual)}`;
+    }
+  )
+);
+
 withFixture("testvalidity1", () =>
   assertPass(
     `${IsValid.name} - valid`,
@@ -421,4 +436,4 @@ withFixture("sxgamppkg3", () => {
 });
 
 console.log(`# ${basename(__filename)} - tests with mocked HTTP responses`);
-console.log(`1..40`);
+console.log(`1..41`);
