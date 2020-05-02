@@ -37,7 +37,7 @@
     "fetch-mock": "9.4.0",
     "html-minifier": "4.0.0",
     "husky": "4.2.5",
-    "jest": "25.4.0",
+    "jest": "25.5.4",
     "jimp": "0.10.3",
     "js-beautify": "1.11.0",
     "karma": "5.0.2",
