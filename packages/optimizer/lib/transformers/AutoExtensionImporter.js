@@ -61,80 +61,78 @@ class AutoExtensionImporter {
     this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AutoExtensionImporter');
     this.experimentBindAttributeEnabled = config.experimentBindAttribute === true;
-
-    // We use the validation rules to infer extension imports. The rules are downloaded once and for
-    // efficency, we initially extract all needed rules
-    this.initExtensionSpec_(config.validatorRules);
   }
 
   /**
    * @private
    */
-  async initExtensionSpec_(validatorRules) {
-    this.extensionSpec = validatorRules.fetch().then((rules) => {
-      // Map extension names to info required for generating the extension imports
-      const extensionsMap = new Map();
-      for (const ext of rules.extensions) {
-        if (ext.htmlFormat.includes(this.format)) {
-          extensionsMap.set(ext.name, {
-            name: ext.name,
-            type: ext.extensionType === 'CUSTOM_TEMPLATE' ? 'custom-template' : 'custom-element',
-            version: ext.version.filter((v) => v !== 'latest'),
-          });
+  createExtensionsSpec(params) {
+    const rules = params.validatorRules;
+    // Map extension names to info required for generating the extension imports
+    const extensionsMap = new Map();
+    for (const ext of rules.extensions) {
+      if (ext.htmlFormat.includes(this.format)) {
+        extensionsMap.set(ext.name, {
+          name: ext.name,
+          type: ext.extensionType === 'CUSTOM_TEMPLATE' ? 'custom-template' : 'custom-element',
+          version: ext.version.filter((v) => v !== 'latest'),
+        });
+      }
+    }
+    // Maps tags (e.g. amp-state) to their extension (e.g. amp-bind)
+    const tagToExtensionsMapping = new Map();
+    // Maps tags to their extension specific allowed attributes
+    // (e.g. amp-img => amp-fx => amp-fx-collection)
+    const tagToAttributeMapping = new Map();
+    // Maps tags to their bindable attributes (e.g. div => text)
+    const tagToBindAttributeMapping = new Map();
+    // Iterate over all available tags
+    for (const tag of rules.getTagsForFormat(this.format)) {
+      const tagName = tag.tagName.toLowerCase();
+      // Map amp tags to their required extension(s)
+      if (tagName.startsWith('amp-')) {
+        // HACK: some tags define multiple validation rules for attribute based imports
+        // e.g. amp-carousel, amp-carousel[lightbox]
+        // these are handled differently, so we filter them out here
+        let requiresExtension = tag.requiresExtension || [];
+        requiresExtension = requiresExtension.filter((ext) => !manualExtensions.includes(ext));
+        tagToExtensionsMapping.set(tagName, requiresExtension);
+      }
+      // Collects all bindable attributes
+      const bindableAttributes = new Set();
+      // Process the tag specific attributes
+      for (const attribute of tag.attrs) {
+        // Hack: fix missing attribute dependencies (e.g. amp-img => lightbox => amp-lightbox-gallery)
+        if (manualAttributeToExtensionMapping.has(attribute.name)) {
+          attribute.requiresExtension = [manualAttributeToExtensionMapping.get(attribute.name)];
+        }
+        // Map attributes to tags and extensions (e.g. amp-img => amp-fx => amp-fx-collection)
+        if (attribute.requiresExtension && attribute.requiresExtension.length > 0) {
+          const attributeMapping = tagToAttributeMapping.get(tagName) || [];
+          attributeMapping.push(attribute);
+          tagToAttributeMapping.set(tagName, attributeMapping);
+        }
+        // Maps tags to bindable attributes which are named `[text]`
+        if (attribute.name.startsWith('[')) {
+          bindableAttributes.add(attribute.name.substring(1, attribute.name.length - 1));
         }
       }
-      // Maps tags (e.g. amp-state) to their extension (e.g. amp-bind)
-      const tagToExtensionsMapping = new Map();
-      // Maps tags to their extension specific allowed attributes
-      // (e.g. amp-img => amp-fx => amp-fx-collection)
-      const tagToAttributeMapping = new Map();
-      // Maps tags to their bindable attributes (e.g. div => text)
-      const tagToBindAttributeMapping = new Map();
-      // Iterate over all available tags
-      for (const tag of rules.getTagsForFormat(this.format)) {
-        const tagName = tag.tagName.toLowerCase();
-        // Map amp tags to their required extension(s)
-        if (tagName.startsWith('amp-')) {
-          // HACK: some tags define multiple validation rules for attribute based imports
-          // e.g. amp-carousel, amp-carousel[lightbox]
-          // these are handled differently, so we filter them out here
-          let requiresExtension = tag.requiresExtension || [];
-          requiresExtension = requiresExtension.filter((ext) => !manualExtensions.includes(ext));
-          tagToExtensionsMapping.set(tagName, requiresExtension);
-        }
-        // Collects all bindable attributes
-        const bindableAttributes = new Set();
-        // Process the tag specific attributes
-        for (const attribute of tag.attrs) {
-          // Hack: fix missing attribute dependencies (e.g. amp-img => lightbox => amp-lightbox-gallery)
-          if (manualAttributeToExtensionMapping.has(attribute.name)) {
-            attribute.requiresExtension = [manualAttributeToExtensionMapping.get(attribute.name)];
-          }
-          // Map attributes to tags and extensions (e.g. amp-img => amp-fx => amp-fx-collection)
-          if (attribute.requiresExtension && attribute.requiresExtension.length > 0) {
-            const attributeMapping = tagToAttributeMapping.get(tagName) || [];
-            attributeMapping.push(attribute);
-            tagToAttributeMapping.set(tagName, attributeMapping);
-          }
-          // Maps tags to bindable attributes which are named `[text]`
-          if (attribute.name.startsWith('[')) {
-            bindableAttributes.add(attribute.name.substring(1, attribute.name.length - 1));
-          }
-        }
-        tagToBindAttributeMapping.set(tagName, bindableAttributes);
-      }
-      return {
-        extensionsMap,
-        tagToExtensionsMapping,
-        tagToAttributeMapping,
-        tagToBindAttributeMapping,
-      };
-    });
+      tagToBindAttributeMapping.set(tagName, bindableAttributes);
+    }
+    return {
+      extensionsMap,
+      tagToExtensionsMapping,
+      tagToAttributeMapping,
+      tagToBindAttributeMapping,
+    };
   }
 
   async transform(root, params) {
     if (!this.enabled) {
       return;
+    }
+    if (!this.extensionSpec_) {
+      this.extensionSpec_ = this.createExtensionsSpec(params);
     }
     if (!AMP_FORMATS.includes(this.format)) {
       this.log_.error('Unsupported AMPHTML format', this.format);
@@ -176,7 +174,7 @@ class AutoExtensionImporter {
       if (existingImports.has(extensionName)) {
         continue;
       }
-      const extension = (await this.extensionSpec).extensionsMap.get(extensionName.trim());
+      const extension = this.extensionSpec_.extensionsMap.get(extensionName.trim());
       this.log_.debug('auto importing', extensionName);
       // Use the latest version by default
       const version = extension.version[extension.version.length - 1];
@@ -244,12 +242,11 @@ class AutoExtensionImporter {
    * @private
    */
   async findExtensionsToImportInBody_(body, extensionsToImport) {
-    const extensionSpec = await this.extensionSpec;
     let node = body;
     while (node !== null) {
       if (node.tagName) {
-        this.addRequiredExtensionByTag_(node, extensionSpec, extensionsToImport);
-        this.addRequiredExtensionByAttributes_(node, extensionSpec, extensionsToImport);
+        this.addRequiredExtensionByTag_(node, extensionsToImport);
+        this.addRequiredExtensionByAttributes_(node, extensionsToImport);
       }
       node = nextNode(node);
     }
@@ -258,9 +255,9 @@ class AutoExtensionImporter {
   /**
    * @private
    */
-  addRequiredExtensionByTag_(node, extensionSpec, allRequiredExtensions) {
+  addRequiredExtensionByTag_(node, allRequiredExtensions) {
     // Check for required extensions by tag name
-    const requiredExtensions = extensionSpec.tagToExtensionsMapping.get(node.tagName);
+    const requiredExtensions = this.extensionSpec_.tagToExtensionsMapping.get(node.tagName);
     if (requiredExtensions) {
       requiredExtensions.forEach((ext) => allRequiredExtensions.add(ext));
     }
@@ -273,12 +270,12 @@ class AutoExtensionImporter {
   /**
    * @private
    */
-  addRequiredExtensionByAttributes_(node, extensionSpec, allRequiredExtensions) {
+  addRequiredExtensionByAttributes_(node, allRequiredExtensions) {
     if (!node.tagName || !node.attribs) {
       return;
     }
     // Look for element attributes indicating AMP components (e.g. amp-fx)
-    const tagToAttributeMapping = extensionSpec.tagToAttributeMapping;
+    const tagToAttributeMapping = this.extensionSpec_.tagToAttributeMapping;
     const attributesForTag = tagToAttributeMapping.get(node.tagName) || [];
     attributesForTag.forEach((attribute) => {
       if (node.attribs[attribute.name] !== undefined) {
@@ -292,7 +289,7 @@ class AutoExtensionImporter {
       allRequiredExtensions.add('amp-form');
     }
     // Check for amp-bind attribute bindings
-    const tagToBindAttributeMapping = extensionSpec.tagToBindAttributeMapping;
+    const tagToBindAttributeMapping = this.extensionSpec_.tagToBindAttributeMapping;
     const attributeNames = Object.keys(node.attribs);
     if (
       attributeNames.some((a) => a.startsWith('[') || a.startsWith(AMP_BIND_DATA_ATTRIBUTE_PREFIX))

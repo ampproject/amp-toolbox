@@ -77,6 +77,7 @@ class RuntimeVersion {
    *
    * @param {object} options - the options.
    * @param {boolean} options.canary - true if canary should be returned.
+   * @param {boolean} options.lts - true if lts should be returned.
    * @param {string} options.ampUrlPrefix - the domain & path to an AMP runtime.
    * @returns {Promise<string>} a promise containing the current version.
    */
