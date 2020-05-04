@@ -45,7 +45,19 @@ class MaxAge {
     if (!match) {
       return MaxAge.zero();
     }
-    const maxAge = parseInt(match[1], 10);
+    return MaxAge.create(match[1]);
+  }
+
+  /**
+   * Creates a new MaxAge instance from a number or string.
+   *
+   * @param {Number|String} maxAge the max age in seconds
+   * @returns {MaxAge}
+   */
+  static create(maxAge) {
+    if (!Number.isInteger(maxAge)) {
+      maxAge = parseInt(maxAge, 10);
+    }
     return new MaxAge(Date.now(), maxAge);
   }
 

@@ -17,7 +17,7 @@
 
 const treeParser = require('./TreeParser');
 const log = require('./log');
-const {oneBehindFetch} = require('@ampproject/toolbox-core');
+let fetch = require('cross-fetch');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetchRuntimeParameters = require('./fetchRuntimeParameters');
 
@@ -95,7 +95,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
 ];
 
 const DEFAULT_CONFIG = {
-  fetch: oneBehindFetch,
+  fetch,
   log,
   transformations: TRANSFORMATIONS_AMP_FIRST,
   verbose: false,

@@ -15,8 +15,27 @@
  */
 'mode strict';
 
-const validatorRules = require('@ampproject/toolbox-validator-rules');
+const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
+const {MaxAge} = require('@ampproject/toolbox-core');
 const {AMP_CACHE_HOST, AMP_RUNTIME_CSS_PATH, appendRuntimeVersion} = require('./AmpConstants.js');
+
+const KEY_VALIDATOR_RULES = 'validator-rules';
+const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
+
+class Cache {
+  constructor() {
+    this.memoryCache = new Map();
+  }
+
+  get(key) {
+    return this.memoryCache.get(key);
+  }
+
+  set(key, value) {
+    return this.memoryCache.set(key, value);
+  }
+}
+const cache = new Cache();
 
 /**
  * Initializes the runtime parameters used by the transformers based on given config and parameter values.
@@ -38,15 +57,27 @@ async function fetchRuntimeParameters(config, customRuntimeParameters) {
   runtimeParameters.lts = customRuntimeParameters.lts || config.lts || false;
   runtimeParameters.rtv = customRuntimeParameters.rtv || config.rtv || false;
   // Fetch the validator rules
-  runtimeParameters.validatorRules = config.validatorRules || (await validatorRules.fetch());
+  try {
+    runtimeParameters.validatorRules = config.validatorRules || (await fetchValidatorRules_());
+  } catch (error) {
+    config.log.error('Could not fetch validator rules', error);
+  }
   let {ampUrlPrefix, ampRuntimeVersion, ampRuntimeStyles, lts} = runtimeParameters;
   // Use existing runtime version or fetch lts or latest
-  runtimeParameters.ampRuntimeVersion =
-    ampRuntimeVersion || (await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}));
+  try {
+    runtimeParameters.ampRuntimeVersion =
+      ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
+  } catch (error) {
+    config.log.error('Could not fetch latest AMP runtime version', error);
+  }
   // Fetch runtime styles based on the runtime version
-  runtimeParameters.ampRuntimeStyles =
-    ampRuntimeStyles ||
-    (await fetchAmpRuntimeStyles_(config, ampUrlPrefix, runtimeParameters.ampRuntimeVersion));
+  try {
+    runtimeParameters.ampRuntimeStyles =
+      ampRuntimeStyles ||
+      (await fetchAmpRuntimeStyles_(config, ampUrlPrefix, runtimeParameters.ampRuntimeVersion));
+  } catch (error) {
+    config.log.error('Could not fetch AMP runtime CSS', error);
+  }
   return runtimeParameters;
 }
 
@@ -66,11 +97,9 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   const runtimeCssUrl =
     appendRuntimeVersion(ampUrlPrefix || AMP_CACHE_HOST, ampRuntimeVersion) + AMP_RUNTIME_CSS_PATH;
   // Fetch runtime styles
-  const response = await config.fetch(runtimeCssUrl);
-  if (!response.ok) {
-    config.log.error(
-      `Could not fetch ${runtimeCssUrl}, failed with status ` + `${response.status}.`
-    );
+  const styles = await downloadAmpRuntimeStyles_(config, runtimeCssUrl);
+  if (!styles) {
+    config.log.error(`Could not download ${runtimeCssUrl}`);
     if (ampUrlPrefix || ampRuntimeVersion) {
       // Try to download latest from cdn.ampproject.org instead
       return fetchAmpRuntimeStyles_(AMP_CACHE_HOST, await config.runtimeVersion.currentVersion());
@@ -78,7 +107,66 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
       return '';
     }
   }
-  return response.text();
+  return styles;
+}
+
+/**
+ * @private
+ */
+async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
+  let styles = cache.get(runtimeCssUrl);
+  if (!styles) {
+    const response = await config.fetch(runtimeCssUrl);
+    if (!response.ok) {
+      return null;
+    }
+    styles = await response.text();
+    cache.set(runtimeCssUrl, styles);
+  }
+  return styles;
+}
+
+/**
+ * @private
+ */
+async function fetchAmpRuntimeVersion_(context) {
+  const versionKey = context.ampUrlPrefix + '-' + context.lts;
+  let ampRuntimeData = cache.get(versionKey);
+  if (!ampRuntimeData) {
+    ampRuntimeData = await fetchLatestRuntimeData_(versionKey, context);
+  } else if (ampRuntimeData.maxAge.isExpired()) {
+    // return the cached version, but update the cache in the background
+    fetchLatestRuntimeData_(versionKey, context);
+  }
+  return ampRuntimeData.version;
+}
+
+/**
+ * @private
+ */
+async function fetchLatestRuntimeData_(versionKey, {config, ampUrlPrefix, lts}) {
+  const ampRuntimeData = {
+    version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
+    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE),
+  };
+  cache.set(versionKey, ampRuntimeData);
+  return ampRuntimeData;
+}
+
+/**
+ * @private
+ */
+async function fetchValidatorRules_() {
+  let rawRules = cache.get('validator-rules');
+  let validatorRules;
+  if (!rawRules) {
+    validatorRules = await validatorRulesProvider.fetch();
+    // We save the raw rules to make the validation rules JSON serializable
+    cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
+  } else {
+    validatorRules = await validatorRulesProvider.fetch({rules: rawRules});
+  }
+  return validatorRules;
 }
 
 /**
