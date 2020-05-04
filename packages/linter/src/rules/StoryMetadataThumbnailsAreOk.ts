@@ -31,7 +31,9 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       return height > 0.74 * width && height < 0.76 * width;
     }
     function isRaster({ mime }: ImageSize) {
-      return ["image/jpeg", "image/gif", "image/png"].includes(mime);
+      return ["image/jpeg", "image/gif", "image/png", "image/webp"].includes(
+        mime
+      );
     }
     function isAtLeast96x96({ width, height }: ImageSize) {
       return width >= 96 && height >= 96;
