@@ -155,10 +155,7 @@ class PreloadHeroImage {
 
     if (!width && !height) {
       if (layout === 'fill') {
-        console.log('getting dim parent', this.nodeDimensionsFromParent(ampImg));
-        const dim = this.nodeDimensionsFromParent(ampImg);
-        width = dim.width;
-        height = dim.height;
+        ({width, height} = this.nodeDimensionsFromParent(ampImg));
       } else {
         return null;
       }
