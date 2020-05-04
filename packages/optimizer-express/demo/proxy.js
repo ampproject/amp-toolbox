@@ -27,7 +27,7 @@ const apicache = require('apicache');
 const cache = apicache.middleware;
 
 // Read proxy for command line, or default to ampbyexample.com.
-const target = process.argv[2] || 'https://www.ampbyexample.com';
+const target = process.argv[2] || 'https://amp.dev';
 
 // Create a HTTP Proxy server the target
 const proxy = httpProxy.createProxyServer({
