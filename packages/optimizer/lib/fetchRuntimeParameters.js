@@ -19,11 +19,16 @@ const validatorRules = require('@ampproject/toolbox-validator-rules');
 const {AMP_CACHE_HOST, AMP_RUNTIME_CSS_PATH, appendRuntimeVersion} = require('./AmpConstants.js');
 
 /**
- * Creates the runtime parameters used by the transformers. Runtime parameters might
- * change at runtime with new AMP releases.
+ * Initializes the runtime parameters used by the transformers based on given config and parameter values.
+ * If missing, the following parameters are fetched from cdn.ampproject.org:
+ *
+ * - validatorRules: the latest version of the AMP validator rules as served from https://cdn.ampproject.org/v0/validator.json
+ * - ampRuntimeVersion: the latest AMP runtime version or the latest lts version if the lts flag is set
+ * - ampRuntimeStules: the latest AMP runtime CSS styles or the latest lts version if the lts flag is set
  *
  * @param {Object} config - the AMP Optimizer config
  * @param {Object} customRuntimeParameters - user defined runtime parameters
+ * @returns {Promise<Object>} - the runtime parameters
  */
 async function fetchRuntimeParameters(config, customRuntimeParameters) {
   const runtimeParameters = Object.assign({}, customRuntimeParameters);

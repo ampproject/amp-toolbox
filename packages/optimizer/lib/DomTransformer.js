@@ -141,6 +141,7 @@ class DomTransformer {
    * Set the config.
    * @param {Object} config - The config.
    * @param {boolean} config.verbose - true if verbose mode should be enabled [default: false].
+   * @param {Object} config.fetch - the fetch implementation to use.
    * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
