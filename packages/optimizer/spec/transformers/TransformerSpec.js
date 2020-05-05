@@ -44,6 +44,7 @@ function loadTestConfigs(subDir) {
     const config = {
       fetch,
       log,
+      cache: false,
       runtimeVersion: {
         currentVersion: async (params) => {
           if (params.ampUrlPrefix) {

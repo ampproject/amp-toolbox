@@ -16,19 +16,12 @@
 'mode strict';
 
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
-const {MaxAge, FileSystemCache} = require('@ampproject/toolbox-core');
-const {join} = require('path');
-const {mkdirSync, existsSync} = require('fs');
+const {MaxAge} = require('@ampproject/toolbox-core');
 const {AMP_CACHE_HOST, AMP_RUNTIME_CSS_PATH, appendRuntimeVersion} = require('./AmpConstants.js');
 
 const KEY_VALIDATOR_RULES = 'validator-rules';
 const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
-
-const cacheDir = join(__dirname, '../.cache');
-console.log('cache dir', cacheDir);
-const cache = FileSystemCache.get({
-  baseDir: cacheDir,
-});
+const cache = require('./cache.js');
 
 /**
  * Initializes the runtime parameters used by the transformers based on given config and parameter values.
@@ -46,40 +39,123 @@ async function fetchRuntimeParameters(config, customRuntimeParameters) {
   const runtimeParameters = Object.assign({}, customRuntimeParameters);
   // Configure the log level
   runtimeParameters.verbose = customRuntimeParameters.verbose || config.verbose || false;
-  // Copy lts and rtv runtime flag from custom parameters or the static config. Both are disabled by default.
-  runtimeParameters.lts = customRuntimeParameters.lts || config.lts || false;
-  runtimeParameters.rtv = customRuntimeParameters.rtv || config.rtv || false;
-  // Fetch the validator rules
+  await initValidatorRules(runtimeParameters, customRuntimeParameters, config);
+  await initRuntimeVersion(runtimeParameters, customRuntimeParameters, config);
+  await initRuntimeStyles(runtimeParameters, config);
+  return runtimeParameters;
+}
+
+/**
+ * Fetches the AMP validator rules if they're not provided.
+ *
+ * @private
+ */
+async function initValidatorRules(runtimeParameters, customRuntimeParameters, config) {
   try {
     runtimeParameters.validatorRules =
-      config.validatorRules || (await fetchValidatorRules_(config));
+      customRuntimeParameters.validatorRules ||
+      config.validatorRules ||
+      (await fetchValidatorRules_(config));
   } catch (error) {
     config.log.error('Could not fetch validator rules', error);
   }
-  let {ampUrlPrefix, ampRuntimeVersion, ampRuntimeStyles, lts} = runtimeParameters;
-  // Use existing runtime version or fetch lts or latest
+}
+
+/**
+ * @private
+ */
+async function fetchValidatorRules_(config) {
+  if (config.cache === false) {
+    return validatorRulesProvider.fetch();
+  }
+  let rawRules = await cache.get('validator-rules');
+  let validatorRules;
+  if (!rawRules) {
+    config.log.debug('Downloading AMP validation rules');
+    validatorRules = await validatorRulesProvider.fetch();
+    // We save the raw rules to make the validation rules JSON serializable
+    cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
+  } else {
+    validatorRules = await validatorRulesProvider.fetch({rules: rawRules});
+  }
+  return validatorRules;
+}
+
+/**
+ * Fetch runtime styles based on the runtime version
+ *
+ * @private
+ */
+async function initRuntimeStyles(runtimeParameters, config) {
+  try {
+    runtimeParameters.ampRuntimeStyles =
+      runtimeParameters.ampRuntimeStyles ||
+      (await fetchAmpRuntimeStyles_(
+        config,
+        runtimeParameters.ampUrlPrefix,
+        runtimeParameters.ampRuntimeVersion
+      ));
+  } catch (error) {
+    config.log.error('Could not fetch AMP runtime CSS', error);
+  }
+}
+
+/**
+ * Use provided runtime version or fetch latest (lts) version.
+ *
+ * @private
+ */
+async function initRuntimeVersion(runtimeParameters, customRuntimeParameters, config) {
+  // Copy lts and rtv runtime flag from custom parameters or the static config. Both are disabled by default.
+  runtimeParameters.lts = customRuntimeParameters.lts || config.lts || false;
+  runtimeParameters.rtv = customRuntimeParameters.rtv || config.rtv || false;
+  let {ampUrlPrefix, ampRuntimeVersion, lts} = runtimeParameters;
   try {
     runtimeParameters.ampRuntimeVersion =
       ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
   } catch (error) {
     config.log.error('Could not fetch latest AMP runtime version', error);
   }
-  // Fetch runtime styles based on the runtime version
-  try {
-    runtimeParameters.ampRuntimeStyles =
-      ampRuntimeStyles ||
-      (await fetchAmpRuntimeStyles_(config, ampUrlPrefix, runtimeParameters.ampRuntimeVersion));
-  } catch (error) {
-    config.log.error('Could not fetch AMP runtime CSS', error);
+}
+
+/**
+ * @private
+ */
+async function fetchAmpRuntimeVersion_(context) {
+  if (context.config.cache === false) {
+    return (await fetchLatestRuntimeData_(context)).version;
   }
-  return runtimeParameters;
+  const versionKey = context.ampUrlPrefix + '-' + context.lts;
+  let ampRuntimeData = await cache.get(versionKey);
+  if (!ampRuntimeData) {
+    context.config.log.debug('Downloading AMP runtime version');
+    ampRuntimeData = await fetchLatestRuntimeData_(context, versionKey);
+  } else if (MaxAge.fromJson(ampRuntimeData.maxAge).isExpired()) {
+    // return the cached version, but update the cache in the background
+    fetchLatestRuntimeData_(versionKey, context);
+  }
+  return ampRuntimeData.version;
+}
+
+/**
+ * @private
+ */
+async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey = null) {
+  const ampRuntimeData = {
+    version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
+    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toJson(),
+  };
+  if (versionKey) {
+    cache.set(versionKey, ampRuntimeData);
+  }
+  return ampRuntimeData;
 }
 
 /**
  * @private
  */
 async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
-  if (ampUrlPrefix && !_isAbsoluteUrl(ampUrlPrefix)) {
+  if (ampUrlPrefix && !isAbsoluteUrl_(ampUrlPrefix)) {
     config.log.warn(
       `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style.`
     );
@@ -108,7 +184,10 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
  * @private
  */
 async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
-  let styles = await cache.get(runtimeCssUrl);
+  let styles;
+  if (config.cache !== false) {
+    styles = await cache.get(runtimeCssUrl);
+  }
   if (!styles) {
     config.log.debug(`Downloading AMP runtime styles from ${runtimeCssUrl}`);
     const response = await config.fetch(runtimeCssUrl);
@@ -116,7 +195,9 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
       return null;
     }
     styles = await response.text();
-    cache.set(runtimeCssUrl, styles);
+    if (config.cache !== false) {
+      cache.set(runtimeCssUrl, styles);
+    }
   }
   return styles;
 }
@@ -124,52 +205,7 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
 /**
  * @private
  */
-async function fetchAmpRuntimeVersion_(context) {
-  const versionKey = context.ampUrlPrefix + '-' + context.lts;
-  let ampRuntimeData = await cache.get(versionKey);
-  if (!ampRuntimeData) {
-    context.config.log.debug('Downloading AMP runtime version');
-    ampRuntimeData = await fetchLatestRuntimeData_(versionKey, context);
-  } else if (MaxAge.fromJson(ampRuntimeData.maxAge).isExpired()) {
-    // return the cached version, but update the cache in the background
-    fetchLatestRuntimeData_(versionKey, context);
-  }
-  return ampRuntimeData.version;
-}
-
-/**
- * @private
- */
-async function fetchLatestRuntimeData_(versionKey, {config, ampUrlPrefix, lts}) {
-  const ampRuntimeData = {
-    version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
-    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toJson(),
-  };
-  cache.set(versionKey, ampRuntimeData);
-  return ampRuntimeData;
-}
-
-/**
- * @private
- */
-async function fetchValidatorRules_(config) {
-  let rawRules = await cache.get('validator-rules');
-  let validatorRules;
-  if (!rawRules) {
-    config.log.debug('Downloading AMP validation rules');
-    validatorRules = await validatorRulesProvider.fetch();
-    // We save the raw rules to make the validation rules JSON serializable
-    cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
-  } else {
-    validatorRules = await validatorRulesProvider.fetch({rules: rawRules});
-  }
-  return validatorRules;
-}
-
-/**
- * @private
- */
-function _isAbsoluteUrl(url) {
+function isAbsoluteUrl_(url) {
   try {
     new URL(url);
     return true;

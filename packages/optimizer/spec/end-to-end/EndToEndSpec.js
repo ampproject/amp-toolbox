@@ -32,6 +32,7 @@ createSpec({
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
+        cache: false,
         fetch,
         log,
         markdown: true,
@@ -49,6 +50,7 @@ createSpec({
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
+        cache: false,
         fetch,
         transformations: TRANSFORMATIONS_PAIRED_AMP,
         runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
