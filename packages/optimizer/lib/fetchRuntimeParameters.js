@@ -25,6 +25,7 @@ const KEY_VALIDATOR_RULES = 'validator-rules';
 const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
 
 const cacheDir = join(__dirname, '../.cache');
+console.log('cache dir', cacheDir);
 const cache = FileSystemCache.get({
   baseDir: cacheDir,
 });
@@ -50,7 +51,8 @@ async function fetchRuntimeParameters(config, customRuntimeParameters) {
   runtimeParameters.rtv = customRuntimeParameters.rtv || config.rtv || false;
   // Fetch the validator rules
   try {
-    runtimeParameters.validatorRules = config.validatorRules || (await fetchValidatorRules_());
+    runtimeParameters.validatorRules =
+      config.validatorRules || (await fetchValidatorRules_(config));
   } catch (error) {
     config.log.error('Could not fetch validator rules', error);
   }
@@ -108,6 +110,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
 async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
   let styles = await cache.get(runtimeCssUrl);
   if (!styles) {
+    config.log.debug(`Downloading AMP runtime styles from ${runtimeCssUrl}`);
     const response = await config.fetch(runtimeCssUrl);
     if (!response.ok) {
       return null;
@@ -125,6 +128,7 @@ async function fetchAmpRuntimeVersion_(context) {
   const versionKey = context.ampUrlPrefix + '-' + context.lts;
   let ampRuntimeData = await cache.get(versionKey);
   if (!ampRuntimeData) {
+    context.config.log.debug('Downloading AMP runtime version');
     ampRuntimeData = await fetchLatestRuntimeData_(versionKey, context);
   } else if (MaxAge.fromJson(ampRuntimeData.maxAge).isExpired()) {
     // return the cached version, but update the cache in the background
@@ -141,7 +145,6 @@ async function fetchLatestRuntimeData_(versionKey, {config, ampUrlPrefix, lts}) 
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
     maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toJson(),
   };
-  console.log('set version', versionKey, ampRuntimeData);
   cache.set(versionKey, ampRuntimeData);
   return ampRuntimeData;
 }
@@ -149,10 +152,11 @@ async function fetchLatestRuntimeData_(versionKey, {config, ampUrlPrefix, lts}) 
 /**
  * @private
  */
-async function fetchValidatorRules_() {
+async function fetchValidatorRules_(config) {
   let rawRules = await cache.get('validator-rules');
   let validatorRules;
   if (!rawRules) {
+    config.log.debug('Downloading AMP validation rules');
     validatorRules = await validatorRulesProvider.fetch();
     // We save the raw rules to make the validation rules JSON serializable
     cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);

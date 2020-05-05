@@ -132,8 +132,8 @@ class DomTransformer {
    * @param {Object} customParams - a dictionary containing transformer specific parameters.
    */
   async transformTree(tree, customParams = {}) {
+    log.verbose(customParams.verbose || false);
     const runtimeParameters = await fetchRuntimeParameters(this.config, customParams);
-    log.verbose(runtimeParameters.verbose);
     const sequence = async (promise, transformer) => {
       await promise;
       return transformer.transform(tree, runtimeParameters);
