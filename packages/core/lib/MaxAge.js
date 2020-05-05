@@ -65,6 +65,14 @@ class MaxAge {
    * @param {Number} timestampInMs time when max-age value was received
    * @param {Number} value max-age value in seconds
    **/
+  static fromJson(timestampInMs, value) {
+    return new MaxAge(timestampInMs, value);
+  }
+
+  /**
+   * @param {Number} timestampInMs time when max-age value was received
+   * @param {Number} value max-age value in seconds
+   **/
   constructor(timestampInMs, value) {
     this.timestampInMs_ = timestampInMs;
     this.value = value;
@@ -80,6 +88,17 @@ class MaxAge {
   isExpired(currentTimeInMs = Date.now()) {
     const maxAgeInMs = this.value * 1000;
     return this.timestampInMs_ + maxAgeInMs < currentTimeInMs;
+  }
+
+  /**
+   * Returns a JSON compatible representation.
+   * @returns {Object} the MaxAge data
+   */
+  toJson() {
+    return {
+      timestampInMs: this.timestampInMs_,
+      maxAge: this.maxAge,
+    };
   }
 }
 

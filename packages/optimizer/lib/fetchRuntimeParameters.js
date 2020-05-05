@@ -16,26 +16,18 @@
 'mode strict';
 
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
-const {MaxAge} = require('@ampproject/toolbox-core');
+const {MaxAge, FileSystemCache} = require('@ampproject/toolbox-core');
+const {join} = require('path');
+const {mkdirSync, existsSync} = require('fs');
 const {AMP_CACHE_HOST, AMP_RUNTIME_CSS_PATH, appendRuntimeVersion} = require('./AmpConstants.js');
 
 const KEY_VALIDATOR_RULES = 'validator-rules';
 const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
 
-class Cache {
-  constructor() {
-    this.memoryCache = new Map();
-  }
-
-  get(key) {
-    return this.memoryCache.get(key);
-  }
-
-  set(key, value) {
-    return this.memoryCache.set(key, value);
-  }
-}
-const cache = new Cache();
+const cacheDir = join(__dirname, '../.cache');
+const cache = FileSystemCache.get({
+  baseDir: cacheDir,
+});
 
 /**
  * Initializes the runtime parameters used by the transformers based on given config and parameter values.
@@ -114,7 +106,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
  * @private
  */
 async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
-  let styles = cache.get(runtimeCssUrl);
+  let styles = await cache.get(runtimeCssUrl);
   if (!styles) {
     const response = await config.fetch(runtimeCssUrl);
     if (!response.ok) {
@@ -131,10 +123,10 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
  */
 async function fetchAmpRuntimeVersion_(context) {
   const versionKey = context.ampUrlPrefix + '-' + context.lts;
-  let ampRuntimeData = cache.get(versionKey);
+  let ampRuntimeData = await cache.get(versionKey);
   if (!ampRuntimeData) {
     ampRuntimeData = await fetchLatestRuntimeData_(versionKey, context);
-  } else if (ampRuntimeData.maxAge.isExpired()) {
+  } else if (MaxAge.fromJson(ampRuntimeData.maxAge).isExpired()) {
     // return the cached version, but update the cache in the background
     fetchLatestRuntimeData_(versionKey, context);
   }
@@ -147,8 +139,9 @@ async function fetchAmpRuntimeVersion_(context) {
 async function fetchLatestRuntimeData_(versionKey, {config, ampUrlPrefix, lts}) {
   const ampRuntimeData = {
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
-    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE),
+    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toJson(),
   };
+  console.log('set version', versionKey, ampRuntimeData);
   cache.set(versionKey, ampRuntimeData);
   return ampRuntimeData;
 }
@@ -157,7 +150,7 @@ async function fetchLatestRuntimeData_(versionKey, {config, ampUrlPrefix, lts}) 
  * @private
  */
 async function fetchValidatorRules_() {
-  let rawRules = cache.get('validator-rules');
+  let rawRules = await cache.get('validator-rules');
   let validatorRules;
   if (!rawRules) {
     validatorRules = await validatorRulesProvider.fetch();

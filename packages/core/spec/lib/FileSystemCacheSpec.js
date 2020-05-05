@@ -13,12 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-module.exports = {
-  FileSystemCache: require('./lib/FileSystemCache.js'),
-  MaxAge: require('./lib/MaxAge.js'),
-  oneBehindFetch: require('./lib/oneBehindFetch.js'),
-  log: require('./lib/Log.js'),
-  isAmp: require('./lib/IsAmp.js'),
-};
+const FileSystemCache = require('../../lib/FileSystemCache.js');
+
+let cache;
+
+beforeEach(async () => {
+  cache = FileSystemCache.get();
+  await cache.clear();
+});
+//afterEach(async () => await cache.clear());
+
+test('returns null by default', async () => {
+  const result = await cache.get('key');
+  expect(result).toBe(null);
+});
+
+test('returns default value', async () => {
+  const result = await cache.get('key', 'value');
+  expect(result).toBe('value');
+});
+
+test('returns cached value', async () => {
+  await cache.set('key', 'value');
+  const result = await cache.get('key');
+  expect(result).toBe('value');
+});
