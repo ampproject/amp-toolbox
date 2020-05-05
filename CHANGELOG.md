@@ -1,3 +1,31 @@
+## 2.3.1 (2020-05-05)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#736](https://github.com/ampproject/amp-toolbox/pull/736) Extract runtime parameters ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#730](https://github.com/ampproject/amp-toolbox/pull/730) Add experimental image preloading support ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#722](https://github.com/ampproject/amp-toolbox/pull/722) Add experimental module/no-module support ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `linter`
+  * [#744](https://github.com/ampproject/amp-toolbox/pull/744) WebP is okay for metadata ([@ithinkihaveacat](https://github.com/ithinkihaveacat))
+
+#### :house: Internal
+* Other
+  * [#746](https://github.com/ampproject/amp-toolbox/pull/746) Update dependency jest to v26.0.1 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#714](https://github.com/ampproject/amp-toolbox/pull/714) Update dependency fetch-mock to v9.4.0 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#720](https://github.com/ampproject/amp-toolbox/pull/720) Update dependency jest to v25.4.0 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#717](https://github.com/ampproject/amp-toolbox/pull/717) Update dependency karma to v5.0.2 ([@renovate-bot](https://github.com/renovate-bot))
+* `optimizer`
+  * [#713](https://github.com/ampproject/amp-toolbox/pull/713) Update dependency @ampproject/toolbox-optimizer to v2.3.0 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 5
+- Alberto A. Medina ([@amedina](https://github.com/amedina))
+- Matt Mower ([@mdmower](https://github.com/mdmower))
+- Michael Stillwell ([@ithinkihaveacat](https://github.com/ithinkihaveacat))
+- Naina Raisinghani ([@nainar](https://github.com/nainar))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## 2.3.0 (2020-04-15)
 
 #### :rocket: Enhancement
