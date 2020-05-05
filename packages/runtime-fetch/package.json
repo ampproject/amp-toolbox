@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-runtime-fetch",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Download the AMP runtime",
   "main": "index.js",
   "keywords": [
@@ -22,7 +22,7 @@
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.3.0",
     "@ampproject/toolbox-core": "^2.3.0",
-    "@ampproject/toolbox-runtime-version": "^2.3.0",
+    "@ampproject/toolbox-runtime-version": "^2.3.1",
     "at-least-node": "1.0.0",
     "cross-fetch": "3.0.4",
     "fs-extra": "9.0.0"
