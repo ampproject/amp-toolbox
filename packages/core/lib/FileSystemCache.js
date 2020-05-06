@@ -15,6 +15,7 @@
  */
 'use strict';
 const fs = require('fs').promises;
+const {existsSync, mkdirSync} = require('fs');
 const crypto = require('crypto');
 const log = require('./Log');
 const LRUCache = require('lru-cache');
@@ -54,12 +55,12 @@ class FileSystemCache {
   }
 
   async set(key, value) {
-    const cacheFile = this.createCacheFileName(key);
     try {
       this.cache.set(key, value);
-      if (!fs.existsSync(this.opts.baseDir)) {
-        fs.mkdirSync(this.opts.baseDir);
+      if (!existsSync(this.opts.baseDir)) {
+        mkdirSync(this.opts.baseDir);
       }
+      const cacheFile = this.createCacheFileName(key);
       return fs.writeFile(cacheFile, JSON.stringify(value, null, ''), 'utf-8');
     } catch (e) {
       this.opts.log.error('Could not write cache file', e);
@@ -67,11 +68,19 @@ class FileSystemCache {
   }
 
   async clear() {
-    try {
-      return await this.deleteDir_(this.opts.baseDir);
-    } catch (e) {
-      // doesn't exist
+    const dir = this.opts.baseDir;
+    if (!existsSync(dir)) {
+      return;
     }
+    let entries = await fs.readdir(dir, {withFileTypes: true});
+    await Promise.all(
+      entries.map((entry) => {
+        let fullPath = path.join(dir, entry.name);
+        return entry.isFile() && entry.name.endsWith('.json')
+          ? fs.unlink(fullPath)
+          : Promise.resolve();
+      })
+    );
   }
 
   createCacheFileName(key) {
