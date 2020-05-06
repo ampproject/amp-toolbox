@@ -24,7 +24,7 @@ const {AMP_CACHE_HOST, AMP_RUNTIME_CSS_PATH, appendRuntimeVersion} = require('./
  *
  * - validatorRules: the latest version of the AMP validator rules as served from https://cdn.ampproject.org/v0/validator.json
  * - ampRuntimeVersion: the latest AMP runtime version or the latest lts version if the lts flag is set
- * - ampRuntimeStules: the latest AMP runtime CSS styles or the latest lts version if the lts flag is set
+ * - ampRuntimeStyles: the latest AMP runtime CSS styles or the latest lts CSS styles if the lts flag is set
  *
  * @param {Object} config - the AMP Optimizer config
  * @param {Object} customRuntimeParameters - user defined runtime parameters
