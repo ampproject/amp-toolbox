@@ -181,7 +181,7 @@ Checkout [the samples](/packages/optimizer/demo/simple/index.js) to learn how to
 There's also a [command line version](/packages/cli/README.md) available:
 
 ```shell
-$ npx @ampproject/toolbox-cli myFile.html
+$ npx @ampproject/toolbox-cli optimize myFile.html
 ```
 
 ## Why doesn't my AMP page render faster?
