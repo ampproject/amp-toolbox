@@ -8,6 +8,8 @@
     "postinstall": "run-s bootstrap link",
     "link": "lerna link",
     "generate:changelog": "lerna-changelog",
+    "publish": "lerna publish",
+    "publish:alpha": "lerna publish --preid alpha --dist-tag alpha",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jest && lerna run test",
     "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
