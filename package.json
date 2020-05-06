@@ -28,7 +28,7 @@
     "@types/escape-html": "0.0.20",
     "@types/nock": "11.1.0",
     "@types/node-fetch": "2.5.7",
-    "amphtml-validator": "1.0.30",
+    "amphtml-validator": "1.0.31",
     "babel-plugin-filter-imports": "4.0.0",
     "diff": "4.0.2",
     "eslint": "6.8.0",
