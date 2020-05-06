@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 The AMP HTML Authors. All Rights Reserved.
+ * Copyright 2020 The AMP HTML Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,14 @@
  */
 'use strict';
 
-module.exports = {
-  FileSystemCache: require('./lib/FileSystemCache.js'),
-  MaxAge: require('./lib/MaxAge.js'),
-  oneBehindFetch: require('./lib/oneBehindFetch.js'),
-  log: require('./lib/Log.js'),
-  isAmp: require('./lib/IsAmp.js'),
-};
+const {FileSystemCache} = require('@ampproject/toolbox-core');
+const path = require('path');
+const log = require('./log');
+
+// a shared cache implementation
+const cache = FileSystemCache.create({
+  log,
+  baseDir: path.join(__dirname, '..', '.cache'),
+});
+
+module.exports = cache;

@@ -16,7 +16,6 @@
 
 const fetchMock = require('fetch-mock');
 const {basename, join} = require('path');
-const validatorRules = require('@ampproject/toolbox-validator-rules');
 const log = require('../../lib/log.js').tag('TransformerSpec');
 log.verbose();
 const {getDirectories} = require('../helpers/Utils.js');
@@ -45,6 +44,7 @@ function loadTestConfigs(subDir) {
     const config = {
       fetch,
       log,
+      cache: false,
       runtimeVersion: {
         currentVersion: async (params) => {
           if (params.ampUrlPrefix) {

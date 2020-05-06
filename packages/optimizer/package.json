@@ -8,9 +8,13 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/optimizer"
   },
+  "scripts": {
+    "postinstall": "scripts/init.js"
+  },
   "files": [
     "index.js",
-    "lib"
+    "lib",
+    "scripts"
   ],
   "keywords": [
     "amp"
@@ -19,9 +23,6 @@
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
     "jimp": {
-      "optional": true
-    },
-    "lru-cache": {
       "optional": true
     },
     "probe-image-size": {
@@ -37,6 +38,7 @@
     "domhandler": "3.0.0",
     "domutils": "2.0.0",
     "htmlparser2": "4.1.0",
+    "lru-cache": "5.1.1",
     "normalize-html-whitespace": "1.0.0",
     "postcss-safe-parser": "4.0.2",
     "terser": "4.6.13"
