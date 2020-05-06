@@ -132,7 +132,6 @@ class AutoExtensionImporter {
       return;
     }
     if (!params.validatorRules) {
-      throw new Error('missing validation rules');
       this.log_.error('Missing validation rules, cannot auto import extensions');
       return;
     }

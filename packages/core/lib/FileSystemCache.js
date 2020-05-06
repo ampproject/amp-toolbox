@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 'use strict';
-const {join} = require('path');
-const {rmdir, readdir, readFile, writeFile, unlink, existsSync, mkdirSync} = require('fs');
-const {promisify} = require('util');
+const fs = require('fs').promises;
 const crypto = require('crypto');
+const log = require('./Log');
+const LRUCache = require('lru-cache');
 
 const path = require('path');
-const readFileAsync = promisify(readFile);
-const writeFileAsync = promisify(writeFile);
-const readdirAsync = promisify(readdir);
-const rmdirAsync = promisify(rmdir);
-const unlinkAsync = promisify(unlink);
+
+const DEFAULT_OPTS = {
+  baseDir: path.join(__dirname, '.cache'),
+  log,
+  maxItems: 50,
+};
 
 class FileSystemCache {
-  static get(
-    opts = {
-      baseDir: join(__dirname, '.cache'),
-    }
-  ) {
-    return new FileSystemCache(opts);
+  static create(opts = {}) {
+    return new FileSystemCache(Object.assign(DEFAULT_OPTS, opts));
   }
 
   constructor(opts) {
     this.opts = opts;
-    this.cache = new Map();
+    this.cache = new LRUCache(opts.maxItems);
   }
 
   async get(key, defaultValue = null) {
@@ -47,7 +44,7 @@ class FileSystemCache {
     }
     const cacheFile = this.createCacheFileName(key);
     try {
-      const content = await readFileAsync(cacheFile, 'utf-8');
+      const content = await fs.readFile(cacheFile, 'utf-8');
       value = JSON.parse(content);
       this.cache.set(key, value);
     } catch (error) {
@@ -59,13 +56,13 @@ class FileSystemCache {
   async set(key, value) {
     const cacheFile = this.createCacheFileName(key);
     try {
-      this.cache[key] = value;
-      if (!existsSync(this.opts.baseDir)) {
-        mkdirSync(this.opts.baseDir);
+      this.cache.set(key, value);
+      if (!fs.existsSync(this.opts.baseDir)) {
+        fs.mkdirSync(this.opts.baseDir);
       }
-      return writeFileAsync(cacheFile, JSON.stringify(value, null, ''), 'utf-8');
+      return fs.writeFile(cacheFile, JSON.stringify(value, null, ''), 'utf-8');
     } catch (e) {
-      // could not write file
+      this.opts.log.error('Could not write cache file', e);
     }
   }
 
@@ -79,18 +76,18 @@ class FileSystemCache {
 
   createCacheFileName(key) {
     const keyHash = crypto.createHash('md5').update(key).digest('hex');
-    return join(this.opts.baseDir, keyHash + '.json');
+    return path.join(this.opts.baseDir, keyHash + '.json');
   }
 
   async deleteDir_(dir) {
-    let entries = await readdirAsync(dir, {withFileTypes: true});
+    let entries = await fs.readdir(dir, {withFileTypes: true});
     await Promise.all(
       entries.map((entry) => {
         let fullPath = path.join(dir, entry.name);
-        return entry.isDirectory() ? this.deleteDir_(fullPath) : unlinkAsync(fullPath);
+        return entry.isDirectory() ? this.deleteDir_(fullPath) : fs.unlink(fullPath);
       })
     );
-    await rmdirAsync(dir);
+    await fs.rmdir(dir);
   }
 }
 

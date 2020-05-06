@@ -39,9 +39,17 @@ async function fetchRuntimeParameters(config, customRuntimeParameters) {
   const runtimeParameters = Object.assign({}, customRuntimeParameters);
   // Configure the log level
   runtimeParameters.verbose = customRuntimeParameters.verbose || config.verbose || false;
-  await initValidatorRules(runtimeParameters, customRuntimeParameters, config);
+  // Validation rules can be downloaded in parallel
+  const validationRulePromise = initValidatorRules(
+    runtimeParameters,
+    customRuntimeParameters,
+    config
+  );
   await initRuntimeVersion(runtimeParameters, customRuntimeParameters, config);
+  // Runtime Styles depend on the Runtime version
   await initRuntimeStyles(runtimeParameters, config);
+  // Make sure validation rules are downloaded
+  await validationRulePromise;
   return runtimeParameters;
 }
 
@@ -130,7 +138,7 @@ async function fetchAmpRuntimeVersion_(context) {
   if (!ampRuntimeData) {
     context.config.log.debug('Downloading AMP runtime version');
     ampRuntimeData = await fetchLatestRuntimeData_(context, versionKey);
-  } else if (MaxAge.fromJson(ampRuntimeData.maxAge).isExpired()) {
+  } else if (MaxAge.fromObject(ampRuntimeData.maxAge).isExpired()) {
     // return the cached version, but update the cache in the background
     fetchLatestRuntimeData_(versionKey, context);
   }
@@ -143,7 +151,7 @@ async function fetchAmpRuntimeVersion_(context) {
 async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey = null) {
   const ampRuntimeData = {
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
-    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toJson(),
+    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
   };
   if (versionKey) {
     cache.set(versionKey, ampRuntimeData);

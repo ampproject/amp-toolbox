@@ -19,7 +19,7 @@ const FileSystemCache = require('../../lib/FileSystemCache.js');
 let cache;
 
 beforeEach(async () => {
-  cache = FileSystemCache.get();
+  cache = FileSystemCache.create();
   await cache.clear();
 });
 //afterEach(async () => await cache.clear());

@@ -65,7 +65,7 @@ class MaxAge {
    * @param {Number} timestampInMs time when max-age value was received
    * @param {Number} value max-age value in seconds
    **/
-  static fromJson(timestampInMs, value) {
+  static fromObject(timestampInMs, value) {
     return new MaxAge(timestampInMs, value);
   }
 
@@ -94,7 +94,7 @@ class MaxAge {
    * Returns a JSON compatible representation.
    * @returns {Object} the MaxAge data
    */
-  toJson() {
+  toObject() {
     return {
       timestampInMs: this.timestampInMs_,
       maxAge: this.maxAge,

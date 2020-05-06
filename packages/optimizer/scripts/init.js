@@ -4,7 +4,7 @@ const ampOptimizer = AmpOptimizer.create();
 
 async function warmupCaches() {
   // run a dummy transformation to pre-fill the caches
-  await ampOptimizer.transformHtml('<h1>hello world</h1>', {
+  ampOptimizer.transformHtml('<h1>hello world</h1>', {
     canonical: '.',
     verbose: true,
   });

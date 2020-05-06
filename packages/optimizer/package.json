@@ -25,9 +25,6 @@
     "jimp": {
       "optional": true
     },
-    "lru-cache": {
-      "optional": true
-    },
     "probe-image-size": {
       "optional": true
     }
@@ -41,6 +38,7 @@
     "domhandler": "3.0.0",
     "domutils": "2.0.0",
     "htmlparser2": "4.1.0",
+    "lru-cache": "5.1.1",
     "normalize-html-whitespace": "1.0.0",
     "postcss-safe-parser": "4.0.2",
     "terser": "4.6.13"
