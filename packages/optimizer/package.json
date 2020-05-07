@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.4.0-alpha.0",
+  "version": "2.4.0-alpha.1",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -30,8 +30,8 @@
     }
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.4.0-alpha.0",
-    "@ampproject/toolbox-runtime-version": "^2.4.0-alpha.0",
+    "@ampproject/toolbox-core": "^2.4.0-alpha.1",
+    "@ampproject/toolbox-runtime-version": "^2.4.0-alpha.1",
     "@ampproject/toolbox-script-csp": "^2.3.0",
     "@ampproject/toolbox-validator-rules": "^2.3.0",
     "cssnano": "4.1.10",
