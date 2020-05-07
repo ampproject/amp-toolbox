@@ -71,7 +71,7 @@ class RewriteAmpUrls {
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
-        if (this.esmModulesEnabled) {
+        if (this.esmModulesEnabled || params.experimentEsm) {
           this._addEsm(node, node.attribs.src.endsWith('v0.js'));
         }
         referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
