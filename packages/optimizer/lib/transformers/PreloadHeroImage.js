@@ -114,9 +114,8 @@ class PreloadHeroImage {
       return null;
     }
 
-    const width = ampVideo.attribs.width;
-    const height = ampVideo.attribs.height;
-    if (this.isTinyNode(width, height)) {
+    const {layout, width, height} = ampVideo.attribs;
+    if (this.isTinyNode(layout, width, height)) {
       return null;
     }
     return {src: poster, srcset: ''};
@@ -128,10 +127,9 @@ class PreloadHeroImage {
       return null;
     }
 
-    const width = ampIframe.attribs.width;
-    const height = ampIframe.attribs.height;
+    const {layout, width, height} = ampIframe.attribs;
 
-    if (this.isTinyNode(width, height)) return null;
+    if (this.isTinyNode(layout, width, height)) return null;
 
     for (const child of ampIframe.children) {
       if (
@@ -171,15 +169,18 @@ class PreloadHeroImage {
         return null;
       }
     }
-    if (this.isTinyNode(width, height)) {
+    if (this.isTinyNode(layout, width, height)) {
       return null;
     }
     return {src, srcset};
   }
 
-  // Any node with width or height less than 150 pixels.
-  isTinyNode(width, height) {
+  // Any node with width or height less than 150 pixels and a non-responsive layout.
+  isTinyNode(layout, width, height) {
     if (width <= 0 || height <= 0) return true;
+    if (layout === 'intrinsic' || layout === 'responsive') {
+      return false;
+    }
     return (width > 0 && width < TINY_IMG_THRESHOLD) || (height > 0 && height < TINY_IMG_THRESHOLD);
   }
 
