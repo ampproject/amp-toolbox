@@ -110,6 +110,9 @@ class PreloadHeroImage {
   isCandidateVideoPosterImage(ampVideo) {
     const poster = ampVideo.attribs.poster;
     if (!poster) return null;
+    if (!this.isValidUrl(poster)) {
+      return null;
+    }
 
     const width = ampVideo.attribs.width;
     const height = ampVideo.attribs.height;
@@ -131,8 +134,13 @@ class PreloadHeroImage {
     if (this.isTinyNode(width, height)) return null;
 
     for (const child of ampIframe.children) {
-      if (child.tagName === 'amp-img' && child.attribs.placeholder) {
-        return {src: child.attribs.src, srcset: ''};
+      if (
+        child.tagName === 'amp-img' &&
+        child.attribs &&
+        child.attribs.placeholder !== undefined &&
+        this.isValidUrl(child.attribs.src)
+      ) {
+        return {src: child.attribs.src, srcset: child.attribs.srcset || ''};
       }
     }
     return null;
@@ -144,6 +152,9 @@ class PreloadHeroImage {
   isCandidateImageForPreloading(ampImg) {
     const src = ampImg.attribs.src;
     if (!src) {
+      return null;
+    }
+    if (!this.isValidUrl(src)) {
       return null;
     }
 
@@ -170,6 +181,15 @@ class PreloadHeroImage {
   isTinyNode(width, height) {
     if (width <= 0 || height <= 0) return true;
     return (width > 0 && width < TINY_IMG_THRESHOLD) || (height > 0 && height < TINY_IMG_THRESHOLD);
+  }
+
+  isValidUrl(src) {
+    try {
+      return new URL(src, 'https://example.com').protocol.startsWith('http');
+    } catch (e) {
+      // invalid URL
+      return false;
+    }
   }
 
   nodeDimensionsFromParent(node) {
