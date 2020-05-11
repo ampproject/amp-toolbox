@@ -4,7 +4,6 @@ import { Rule } from "../rule";
 export class MetadataIncludesOGImageSrc extends Rule {
   run({ $ }: Context) {
     let hasOGImage = false;
-    let e: string = "";
 
     $("meta").each(function (i, elem) {
       if (
@@ -13,7 +12,7 @@ export class MetadataIncludesOGImageSrc extends Rule {
         elem.attribs.content
       ) {
         hasOGImage = true;
-        return false; //break the loop
+        return false; 
       }
     });
 
