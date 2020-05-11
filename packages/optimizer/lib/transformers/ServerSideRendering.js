@@ -25,6 +25,7 @@ const {
 } = require('../NodeUtils');
 const {isRenderDelayingExtension, isCustomElement} = require('../Extensions.js');
 const {applyLayout} = require('./ApplyLayout.js');
+const ApplyCommonAttributes = require('./ApplyCommonAttributes');
 
 class ServerSideRendering {
   constructor(config) {
@@ -42,6 +43,7 @@ class ServerSideRendering {
   }
 
   transform(root) {
+    const applyCommonAttributes = new ApplyCommonAttributes(this.log_);
     const html = firstChildByTag(root, 'html');
     if (!html) {
       return;
@@ -73,17 +75,6 @@ class ServerSideRendering {
         continue;
       }
 
-      // If these attributes are used on any AMP custom element tags within
-      // the document, we can't remove the boilerplate - they require the
-      // boilerplate.
-      if (node.attribs.heights || node.attribs.media || node.attribs.sizes) {
-        this.log_.debug(
-          'cannot remove boilerplate as either heights, media or sizes attribute is set:\n',
-          node.attribs
-        );
-        canRemoveBoilerplate = false;
-      }
-
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc. We check for that here rather than checking for the existence
       // of the amp-experiment script in IsRenderDelayingExtension below.
@@ -109,6 +100,10 @@ class ServerSideRendering {
         canRemoveBoilerplate = false;
         continue;
       }
+
+      // Collect media, heights and sizes attributes to be convert them into CSS later,
+      // this needs to run after applyLayout
+      applyCommonAttributes.applyToNode(node);
     }
 
     // Emit the amp-runtime marker to indicate that we're applying
@@ -120,6 +115,7 @@ class ServerSideRendering {
     const referenceNode = head.children && head.children.length ? head.children[0] : null;
     insertBefore(head, ampRuntimeMarker, referenceNode);
 
+    let customStyles;
     for (let node = head.firstChild; node; node = node.nextSibling) {
       // amp-experiment is a render delaying extension iff the tag is used in
       // the doc, which we checked for above.
@@ -134,6 +130,14 @@ class ServerSideRendering {
         this.log_.debug('cannot remove boilerplate: amp-dynamic-css-classes');
         canRemoveBoilerplate = false;
       }
+      if (hasAttribute(node, 'amp-custom')) {
+        customStyles = node;
+      }
+    }
+    // Add attribute styles to the custom-styles and remove the attributes
+    applyCommonAttributes.applyToCustomStyles(head, customStyles);
+    if (!applyCommonAttributes.canRemoveBoilerplate) {
+      canRemoveBoilerplate = false;
     }
 
     // Below, we're only concerned about removing the boilerplate.
