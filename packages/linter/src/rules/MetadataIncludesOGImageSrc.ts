@@ -12,7 +12,7 @@ export class MetadataIncludesOGImageSrc extends Rule {
         elem.attribs.content
       ) {
         hasOGImage = true;
-        return false; 
+        return false;
       }
     });
 
