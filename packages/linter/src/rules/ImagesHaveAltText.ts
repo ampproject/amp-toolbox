@@ -1,28 +1,23 @@
-
 import { Context } from "../index";
 import { Rule } from "../rule";
 
 export class ImagesHaveAltText extends Rule {
   run({ $ }: Context) {
-    let containsAltText = true;
     let imgsWithoutAlt = "";
 
-    $('amp-img').each(function (i, elem) {
-      if(!(elem.attribs.alt)) {
-        containsAltText = false;
+    $("amp-img").each(function (i, elem) {
+      if (!elem.attribs.alt) {
         imgsWithoutAlt = imgsWithoutAlt + "- " + elem.attribs.src + "\n";
       }
-
     });
 
-    return !containsAltText
+    return imgsWithoutAlt.length > 0
       ? this.warn(`Missing alt text from images: \n` + imgsWithoutAlt)
       : this.pass();
   }
   meta() {
     return {
-      url:
-        "https://html.spec.whatwg.org/multipage/parsing.html#determining-the-character-encoding",
+      url: "https://blog.amp.dev/2020/02/12/seo-for-amp-stories/",
       title: "Images contain alt text",
       info: "",
     };
