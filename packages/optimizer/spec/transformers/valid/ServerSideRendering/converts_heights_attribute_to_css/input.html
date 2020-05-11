@@ -8,12 +8,21 @@
     <link href=https://example.com/favicon.ico rel=icon>
   </head>
   <body>
+    <!-- converts heights to css -->
     <amp-img
       height=256
       heights="(min-width:500px) 200px, 80%"
       layout=responsive
       src=https://acme.org/image1.png
       width=320>
+    </amp-img>
+    <!-- removes invalid heights -->
+    <amp-img
+      height=300
+      layout=responsive
+      heights="(min-width: 320px), 100vw"
+      src=https://acme.org/image1.png
+      width=400>
     </amp-img>
   </body>
 </html>

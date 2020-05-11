@@ -101,8 +101,8 @@ class ServerSideRendering {
         continue;
       }
 
-      // Collect media, heights and sizes attributes to be convert them into CSS later,
-      // this needs to run after applyLayout
+      // Collect media, heights and sizes attributes to convert them into CSS later.
+      // Important: this needs to run after applyLayout.
       applyCommonAttributes.applyToNode(node);
     }
 
