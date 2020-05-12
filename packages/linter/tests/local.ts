@@ -105,7 +105,7 @@ assertWarn(
 );
 
 assertPass(
-  `${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is presentt`,
+  `${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is present`,
   runLocalTest(
     MetadataIncludesOGImageSrc,
     "local/MetadataIncludesOGImageSrc-1/source.html"

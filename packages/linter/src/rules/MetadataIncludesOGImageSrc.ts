@@ -22,7 +22,7 @@ export class MetadataIncludesOGImageSrc extends Rule {
   }
   meta() {
     return {
-      url: "https://ogp.me/",
+      url: "https://blog.amp.dev/2020/02/12/seo-for-amp-stories/",
       title: "Metadata includes og:image and src",
       info: "",
     };
