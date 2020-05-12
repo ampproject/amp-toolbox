@@ -4,6 +4,8 @@ import { MetaCharsetIsFirst } from "../src/rules/MetaCharsetIsFirst";
 import { RuntimeIsPreloaded } from "../src/rules/RuntimeIsPreloaded";
 import { SchemaMetadataIsNews } from "../src/rules/SchemaMetadataIsNews";
 import { StoryRuntimeIsV1 } from "../src/rules/StoryRuntimeIsV1";
+import { ImagesHaveAltText } from "../src/rules/ImagesHaveAltText";
+import { MetadataIncludesOGImageSrc } from "../src/rules/MetadataIncludesOGImageSrc";
 import { basename } from "path";
 import { BookendExists } from "../src/rules/BookendExists";
 
@@ -102,5 +104,31 @@ assertWarn(
   runLocalTest(BookendExists, "local/BookendExists-3/source.html")
 );
 
+assertPass(
+  `${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is present`,
+  runLocalTest(
+    MetadataIncludesOGImageSrc,
+    "local/MetadataIncludesOGImageSrc-1/source.html"
+  )
+);
+
+assertWarn(
+  `${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is missing`,
+  runLocalTest(
+    MetadataIncludesOGImageSrc,
+    "local/MetadataIncludesOGImageSrc-2/source.html"
+  )
+);
+
+assertPass(
+  `${ImagesHaveAltText.name} - All <amp-img> have alt text`,
+  runLocalTest(ImagesHaveAltText, "local/ImagesHaveAltText-1/source.html")
+);
+
+assertWarn(
+  `${ImagesHaveAltText.name} - At least one <amp-img> is missing alt text`,
+  runLocalTest(ImagesHaveAltText, "local/ImagesHaveAltText-2/source.html")
+);
+
 console.log(`# ${basename(__filename)} - HTML-only tests`);
-console.log(`1..16`);
+console.log(`1..20`);
