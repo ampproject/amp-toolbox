@@ -67,7 +67,7 @@
     "tap-parser": "10.0.1",
     "tar": "6.0.2",
     "throat": "5.0.0",
-    "typescript": "3.8.3"
+    "typescript": "3.9.2"
   },
   "dependencies": {
     "@ampproject/toolbox-cache-list": "file:packages/cache-list",
