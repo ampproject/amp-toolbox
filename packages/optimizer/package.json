@@ -9,7 +9,7 @@
     "directory": "packages/optimizer"
   },
   "scripts": {
-    "postinstall": "scripts/init.js"
+    "postinstall": "node scripts/init.js"
   },
   "files": [
     "index.js",
