@@ -32,6 +32,10 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'Markdown',
   // Adds missing AMP extensions
   'AutoExtensionImporter',
+  // Applies image optimizations, must run before PreloadHeroImage
+  'OptimizeImages',
+  // Detect hero image and preload link rel=preload
+  'PreloadHeroImage',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes the boilerplate
@@ -43,8 +47,6 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
-  // Detect hero image and preload link rel=preload
-  'PreloadHeroImage',
   'PruneDuplicateResourceHints',
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
@@ -68,6 +70,10 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AutoExtensionImporter',
   // Adds a link to the valid AMP version
   'AddAmpLink',
+  // Applies image optimizations, must run before PreloadHeroImage
+  'OptimizeImages',
+  // Detect hero image and preload link rel=preload
+  'PreloadHeroImage',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes ⚡ or 'amp' from the html tag
@@ -81,8 +87,6 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
-  // Detect hero image and preload link rel=preload
-  'PreloadHeroImage',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
