@@ -79,8 +79,8 @@ async function fetchValidatorRules_(config) {
   let rawRules = await cache.get('validator-rules');
   let validatorRules;
   if (!rawRules) {
-    config.log.debug('Downloading AMP validation rules');
     validatorRules = await validatorRulesProvider.fetch();
+    config.log.debug('Downloaded AMP validation rules');
     // We save the raw rules to make the validation rules JSON serializable
     cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
   } else {
@@ -136,8 +136,8 @@ async function fetchAmpRuntimeVersion_(context) {
   const versionKey = context.ampUrlPrefix + '-' + context.lts;
   let ampRuntimeData = await cache.get(versionKey);
   if (!ampRuntimeData) {
-    context.config.log.debug('Downloading AMP runtime version');
     ampRuntimeData = await fetchLatestRuntimeData_(context, versionKey);
+    context.config.log.debug('Downloaded AMP runtime v' + ampRuntimeData.version);
   } else if (MaxAge.fromObject(ampRuntimeData.maxAge).isExpired()) {
     // return the cached version, but update the cache in the background
     fetchLatestRuntimeData_(versionKey, context);
@@ -197,12 +197,12 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
     styles = await cache.get(runtimeCssUrl);
   }
   if (!styles) {
-    config.log.debug(`Downloading AMP runtime styles from ${runtimeCssUrl}`);
     const response = await config.fetch(runtimeCssUrl);
     if (!response.ok) {
       return null;
     }
     styles = await response.text();
+    config.log.debug(`Downloaded AMP runtime styles from ${runtimeCssUrl}`);
     if (config.cache !== false) {
       cache.set(runtimeCssUrl, styles);
     }
