@@ -9,12 +9,11 @@
     "directory": "packages/optimizer"
   },
   "scripts": {
-    "postinstall": "scripts/init.js"
+    "postinstall": "node lib/warmup.js"
   },
   "files": [
     "index.js",
-    "lib",
-    "scripts"
+    "lib"
   ],
   "keywords": [
     "amp"
