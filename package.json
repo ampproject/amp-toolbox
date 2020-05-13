@@ -27,7 +27,7 @@
     "@types/cheerio": "0.22.18",
     "@types/debug": "4.1.5",
     "@types/diff": "4.0.2",
-    "@types/escape-html": "0.0.20",
+    "@types/escape-html": "1.0.0",
     "@types/nock": "11.1.0",
     "@types/node-fetch": "2.5.7",
     "amphtml-validator": "1.0.31",
