@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.4.0-alpha.2",
+  "version": "2.4.0",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -9,12 +9,11 @@
     "directory": "packages/optimizer"
   },
   "scripts": {
-    "postinstall": "scripts/init.js"
+    "postinstall": "node lib/warmup.js"
   },
   "files": [
     "index.js",
-    "lib",
-    "scripts"
+    "lib"
   ],
   "keywords": [
     "amp"
@@ -36,7 +35,7 @@
     "@ampproject/toolbox-validator-rules": "^2.3.0",
     "cssnano": "4.1.10",
     "domhandler": "3.0.0",
-    "domutils": "2.0.0",
+    "domutils": "2.1.0",
     "htmlparser2": "4.1.0",
     "lru-cache": "5.1.1",
     "normalize-html-whitespace": "1.0.0",

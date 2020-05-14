@@ -35,7 +35,6 @@ class PreloadHeroImage {
   constructor(config) {
     this.log = config.log;
     this.enabled = config.preloadHeroImage !== false && config.experimentPreloadHeroImage;
-    this.log.info('enabled', this.enabled);
   }
   async transform(root, params) {
     if (!this.enabled || params.preloadHeroImage === false) {
