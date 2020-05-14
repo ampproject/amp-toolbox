@@ -1,3 +1,36 @@
+## v2.4.0 (2020-05-13)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#770](https://github.com/ampproject/amp-toolbox/pull/770) Fix postinstall failing on windows ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer`
+  * [#753](https://github.com/ampproject/amp-toolbox/pull/753) Fix typos in parameter documentation ([@schlessera](https://github.com/schlessera))
+
+#### :rocket: Enhancement
+* `core`, `optimizer`
+  * [#747](https://github.com/ampproject/amp-toolbox/pull/747) Optimizer: cache runtime artifacts on filesystem ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`
+  * [#755](https://github.com/ampproject/amp-toolbox/pull/755) Added og:image and alt text checks to linter for Stories ([@Dbrown910](https://github.com/Dbrown910))
+
+#### :memo: Documentation
+* `optimizer`
+  * [#752](https://github.com/ampproject/amp-toolbox/pull/752) Add missing command name to CLI documentation ([@matthiasrohmer](https://github.com/matthiasrohmer))
+
+#### :house: Internal
+* Other
+  * [#751](https://github.com/ampproject/amp-toolbox/pull/751) Update dependency rollup to v2.8.0 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#749](https://github.com/ampproject/amp-toolbox/pull/749) Update dependency fetch-mock to v9.5.0 ([@renovate-bot](https://github.com/renovate-bot))
+* `lighthouse-plugin-amp`, `linter`
+  * [#750](https://github.com/ampproject/amp-toolbox/pull/750) Update dependency amphtml-validator to v1.0.31 ([@renovate-bot](https://github.com/renovate-bot))
+* `optimizer`
+  * [#748](https://github.com/ampproject/amp-toolbox/pull/748) Update dependency @ampproject/toolbox-optimizer to v2.3.1 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Matthias Rohmer ([@matthiasrohmer](https://github.com/matthiasrohmer))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## 2.3.1 (2020-05-05)
 
 #### :rocket: Enhancement
