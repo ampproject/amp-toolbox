@@ -20,6 +20,7 @@ import { SxgDumpSignedExchangeVerify } from "./rules/SxgDumpSignedExchangeVerify
 import { SxgAmppkgIsForwarded } from "./rules/SxgAmppkgIsForwarded";
 import { MetadataIncludesOGImageSrc } from "./rules/MetadataIncludesOGImageSrc";
 import { ImagesHaveAltText } from "./rules/ImagesHaveAltText";
+import { IsValid } from "./rules/IsValid";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -77,12 +78,14 @@ export function guessMode($: CheerioStatic): LintMode {
 function testsForMode(type: LintMode) {
   const tests: Map<LintMode, Array<RuleConstructor>> = new Map();
   tests.set(LintMode.Sxg, [
+    IsValid,
     SxgAmppkgIsForwarded,
     SxgContentNegotiationIsOk,
     SxgVaryOnAcceptAct,
     SxgDumpSignedExchangeVerify,
   ]);
   tests.set(LintMode.Amp, [
+    IsValid,
     AmpVideoIsSmall,
     AmpVideoIsSpecifiedByAttribute,
     MetaCharsetIsFirst,
@@ -95,6 +98,7 @@ function testsForMode(type: LintMode) {
   tests.set(
     LintMode.AmpStory,
     (tests.get(LintMode.Amp) || []).concat([
+      IsValid,
       LinkRelCanonicalIsOk,
       BookendExists,
       SchemaMetadataIsNews,
