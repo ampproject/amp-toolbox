@@ -155,18 +155,20 @@ async function fetchAmpRuntimeVersion_(context) {
  * @private
  */
 async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey = null) {
-  try {
-    const ampRuntimeData = {
-      version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
-      maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
-    };
-    if (versionKey) {
-      cache.set(versionKey, ampRuntimeData);
-    }
-    return ampRuntimeData;
-  } catch (e) {
-    config.log.error(e.message);
+  let ampRuntimeData;
+  ampRuntimeData = {
+    version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
+    maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
+  };
+  if (!ampRuntimeData.version && ampUrlPrefix !== AMP_CACHE_HOST) {
+    config.log.error(
+      `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
+    );
+    ampRuntimeData = await fetchLatestRuntimeData_({config, AMP_CACHE_HOST, lts}, versionKey);
+  } else if (versionKey) {
+    cache.set(versionKey, ampRuntimeData);
   }
+  return ampRuntimeData;
 }
 
 /**
@@ -175,7 +177,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
 async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   if (ampUrlPrefix && !isAbsoluteUrl_(ampUrlPrefix)) {
     config.log.warn(
-      `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style. Falling back to latest v0.css on cdn.ampproject.org`
+      `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style. Falling back to latest v0.css on ${AMP_CACHE_HOST}`
     );
     // Gracefully fallback to latest runtime version
     ampUrlPrefix = AMP_CACHE_HOST;
