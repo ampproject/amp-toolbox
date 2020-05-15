@@ -19,9 +19,7 @@ export class StoryMetadataIsV1 extends Rule {
       .filter(Boolean) as string[];
     if (attr.length > 0) {
       return this.warn(
-        `<amp-story> is missing attribute(s) that will soon be mandatory: [${attr.join(
-          ", "
-        )}]`
+        `<amp-story> is missing attribute(s): [${attr.join(", ")}]`
       );
     } else {
       return this.pass();
@@ -31,7 +29,7 @@ export class StoryMetadataIsV1 extends Rule {
     return {
       url:
         "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
-      title: "Preview metadata is specified correctly",
+      title: "Required story metadata attributes in <amp-story> tag",
       info: "",
     };
   }

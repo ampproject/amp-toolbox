@@ -17,6 +17,17 @@ function inlineMetadata($: CheerioStatic) {
   return metadata;
 }
 
+const outputMessageMap: { [key: string]: string } = {
+  isPortrait: " a 3:4 aspect ratio",
+  isSquare: " a 1:1 aspect ratio",
+  isRaster: " of type .jpeg, .gif, .png, or .webp",
+  isLandscape: " a 4:3 aspect ratio",
+  isAtLeast96x96: " 96x96 or larger",
+  isAtLeast696x928: " 696x928px or larger",
+  isAtLeast928x696: " 928x696px or larger",
+  isAtLeast928x928: " 928x928px or larger",
+};
+
 export class StoryMetadataThumbnailsAreOk extends Rule {
   async run(context: Context) {
     // Requirements are from
@@ -55,22 +66,19 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     ): Promise<Result> => {
       const url = metadata[attr];
       if (!url) {
-        return isMandatory ? this.fail(`[${attr}] is missing`) : this.pass();
+        return isMandatory ? this.fail(`${attr} is missing`) : this.pass();
       }
       try {
         const info = await dimensions(context, url);
         const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
-        return failed.length === 0
-          ? this.pass()
-          : this.fail(
-              `[${attr} = ${JSON.stringify({
-                url: url,
-                width: info.width,
-                height: info.height,
-                mime: info.mime,
-              })}] failed [${failed.join(", ")}]`
-            );
+        if (failed.length === 0) return this.pass();
+        else {
+          return this.fail(
+            formatForHumans(attr.toString(), url, failed.join(", "))
+          );
+        }
       } catch (e) {
+        console.log("returning from 3");
         const s = absoluteUrl(url, context.url);
         switch (e.message) {
           case "unrecognized file format":
@@ -82,6 +90,21 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
         }
       }
     };
+
+    let formatForHumans: (
+      attr: string,
+      url: any,
+      failed: string
+    ) => string = function (attr: string, url: any, failed: string) {
+      let m = `${attr} should be`;
+      failed.split(",").forEach(function (el) {
+        m = m + outputMessageMap[el] + " and";
+      });
+      //Remove the last ' and' + tack on the src
+      m = m.slice(0, m.length - 4) + `\nsrc: ${url}`;
+      return m;
+    };
+
     const res = [
       assert("publisher-logo-src", true, [isRaster, isSquare, isAtLeast96x96]),
       assert("poster-portrait-src", true, [
@@ -106,7 +129,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     return {
       url:
         "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
-      title: "Preview metadata is specified correctly",
+      title: "AMP Story preview metadata is correct size and aspect ratio",
       info: "",
     };
   }
