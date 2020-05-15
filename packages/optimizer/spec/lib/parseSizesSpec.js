@@ -53,9 +53,9 @@ describe('parseSizes', () => {
   });
   it('whitespace', () => {
     expect(
-      parseSizes(`(min-width: 50em) 33vw,
+      parseSizes(` (min-width: 50em) 33vw,
                (min-width: 28em) 50vw,
-               100vw`)
+               100vw `)
     ).toEqual({
       values: [
         {

@@ -40,7 +40,7 @@ let Size;
  * See https://html.spec.whatwg.org/multipage/images.html#parsing-a-sizes-attribute
  *
  * @param {String} string
- * @returns {!Sizes}
+ * @returns {Sizes}
  */
 const parseSizes = (string) => {
   const result = {
@@ -50,7 +50,7 @@ const parseSizes = (string) => {
   if (!string) {
     return result;
   }
-  const sizes = string.split(/\s*,\s*/);
+  const sizes = string.trim().split(/\s*,\s*/);
   for (let i = 0; i < sizes.length; i++) {
     const sizeString = sizes[i];
     if (i === sizes.length - 1) {
