@@ -122,7 +122,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     return {
       url:
         "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
-        title: "AMP Story preview metadata is correct size and aspect ratio",
+      title: "AMP Story preview metadata is correct size and aspect ratio",
       info: "",
     };
   }
