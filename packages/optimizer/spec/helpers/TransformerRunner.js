@@ -67,7 +67,7 @@ module.exports = function (testConfig) {
         // parse expected output
         const expectedOutputPath = join(
           testDir,
-          testConfig.validAmp ? 'expected_output.valid.html' : 'expected_output.html'
+          testConfig.tag ? `expected_output.${testConfig.tag}.html` : 'expected_output.html'
         );
         let expectedOutput = '';
         try {

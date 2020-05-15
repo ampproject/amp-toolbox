@@ -17,11 +17,12 @@
 
 const {AMP_CACHE_HOST, appendRuntimeVersion} = require('./AmpConstants.js');
 
-function calculateHost({ampUrlPrefix = AMP_CACHE_HOST, ampRuntimeVersion, lts, rtv = false}) {
-  if (lts && ampRuntimeVersion) {
-    throw new Error('lts flag is not compatible with runtime version parameter');
-  }
-
+function calculateHost({
+  ampUrlPrefix = AMP_CACHE_HOST,
+  ampRuntimeVersion,
+  lts = false,
+  rtv = false,
+}) {
   ampUrlPrefix = ampUrlPrefix.replace(/\/$/, '');
   if (ampRuntimeVersion && rtv) {
     ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, ampRuntimeVersion);
