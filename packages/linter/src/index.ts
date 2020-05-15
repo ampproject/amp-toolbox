@@ -100,8 +100,6 @@ function testsForMode(type: LintMode) {
     (tests.get(LintMode.Amp) || []).concat([
       IsValid,
       LinkRelCanonicalIsOk,
-      BookendExists,
-      SchemaMetadataIsNews,
       StoryRuntimeIsV1,
       StoryMetadataIsV1,
       StoryIsMostlyText,
