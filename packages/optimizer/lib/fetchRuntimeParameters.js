@@ -165,7 +165,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
       `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
     );
     ampRuntimeData = await fetchLatestRuntimeData_({config, AMP_CACHE_HOST, lts}, versionKey);
-  } else if (versionKey) {
+  } else if (ampRuntimeData.version && versionKey) {
     cache.set(versionKey, ampRuntimeData);
   }
   return ampRuntimeData;

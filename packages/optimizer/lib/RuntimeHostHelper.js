@@ -23,6 +23,9 @@ function calculateHost({
   lts = false,
   rtv = false,
 }) {
+  if (lts && rtv) {
+    throw new Error('lts flag is not compatible with runtime version parameter');
+  }
   ampUrlPrefix = ampUrlPrefix.replace(/\/$/, '');
   if (ampRuntimeVersion && rtv) {
     ampUrlPrefix = appendRuntimeVersion(ampUrlPrefix, ampRuntimeVersion);
