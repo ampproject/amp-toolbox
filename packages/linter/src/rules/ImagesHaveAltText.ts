@@ -4,6 +4,7 @@ import { Rule } from "../rule";
 export class ImagesHaveAltText extends Rule {
   run({ $ }: Context) {
     let imgsWithoutAlt: { [key: string]: number } = {};
+    let output = "";
 
     $("amp-img").each(function (i, elem) {
       if (!elem.attribs.alt) {
@@ -15,16 +16,9 @@ export class ImagesHaveAltText extends Rule {
       }
     });
 
-    let output = "";
-    let m = `${JSON.stringify(imgsWithoutAlt)}`.split(",");
-    m.forEach(function (el) {
-      output +=
-        el
-          .replace('{"', "")
-          .replace('":', " (found ")
-          .replace('"', "")
-          .replace("}", "") + " times)\n";
-    });
+    for (let key in imgsWithoutAlt) {
+      output += key + " (used " + imgsWithoutAlt[key] + " times)\n";
+    }
 
     return Object.keys(imgsWithoutAlt).length > 0
       ? this.warn("Missing alt text from images: \n" + output)
