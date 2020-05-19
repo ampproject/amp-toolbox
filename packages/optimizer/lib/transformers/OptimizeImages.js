@@ -20,9 +20,14 @@ const {hasAttribute, nextNode, firstChildByTag} = require('../NodeUtils');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
 
+// Don't generate srcsets for images larger than MAX_IMG_SIZE
 const MAX_IMG_SIZE = 820;
-const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 300;
-const NUM_SRCSET_DPR = [1.0, 2.0, 3.0];
+
+// Don't generate srcset's for images with width smaller than MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT
+// this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
+const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 100;
+
+// All legimate srcset widths.
 const SRCSET_WIDTH = [
   39,
   47,
@@ -45,28 +50,12 @@ const SRCSET_WIDTH = [
   1200,
 ];
 
-/**
- * Default implementation that does not perform any kind of image optimization, but generates a `srcset` string
- * by appending the width to the file name (e.g. image.jpg => image.32w.jpg).
- *
- * @param {string} src - the image src
- * @param {number} width - the required widths (in px)
- * @returns {string|undefined} - the image URL or undefined if no image is available in this dimension
-
- */
-const DEFAULT_IMAGE_OPTIMIZER = (src, width) => {
-  // we cannot rename if the image does not have a file extension
-  const index = src.lastIndexOf('.');
-  if (index === -1) {
-    return null;
-  }
-  const prefix = src.substring(0, index);
-  const postfix = src.substring(index, src.length);
-  return `${prefix}.${width}w${postfix}`;
-};
+// DPR values used to calculate the required sccset values. We'll take the initial image width and multiply it with
+// these values and match the result to the closest supported srcset width (see above).
+const NUM_SRCSET_DPR = [1.0, 2.0, 3.0];
 
 /**
- *
+ * Calculates the srcset width for a given image width.
  */
 class SrcsetWidth {
   constructor() {
@@ -117,9 +106,7 @@ class SrcsetWidth {
    * Returns the current legitimate width and moves the state to the next one.
    */
   nextWidth() {
-    const nextWidth = this.widthList_[this.widthList_.length - 1];
-    this.widthList_.pop();
-    return nextWidth;
+    return this.widthList_.pop();
   }
 
   /**
@@ -142,9 +129,8 @@ class SrcsetWidth {
 /**
  * ImageTransformer - generates srcset attribute for amp-img.
  *
- * This transformer supports the following option:
+ * This transformer requires the following option:
  *
- * - `optimizeImages`: set to `true` to enable image optimization, by default it will encode addition widt
  * - `imageOptimizer`: a function for customizing the srcset generation. The function should return a URL
  *    pointing to a version of the `src` image with the given `width`. If no image is available, it should
  *    return a falsy value. For example:
@@ -154,13 +140,12 @@ class SrcsetWidth {
 class OptimizeImages {
   constructor(config) {
     this.log = config.log;
-    this.enabled = !!config.optimizeImages;
-    this.imageOptimizer = config.imageOptimizer || DEFAULT_IMAGE_OPTIMIZER;
+    this.imageOptimizer = config.imageOptimizer;
     this.srcsetWidth = new SrcsetWidth();
   }
 
   async transform(root) {
-    if (!this.enabled) {
+    if (!this.imageOptimizer) {
       return;
     }
     const html = firstChildByTag(root, 'html');

@@ -45,6 +45,7 @@ function loadTestConfigs(subDir) {
       fetch,
       log,
       cache: false,
+      imageOptimizer: require('../../lib/image-optimizers/simpleRename'),
       runtimeVersion: {
         currentVersion: async (params) => {
           if (params.ampUrlPrefix) {
