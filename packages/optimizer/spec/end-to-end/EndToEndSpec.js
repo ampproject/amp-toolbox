@@ -28,6 +28,7 @@ const fetch = fetchMock
 createSpec({
   name: 'End-to-End: AMP First',
   testDir: __dirname,
+  tag: 'default',
   validAmp: true,
   transformer: {
     transform: (tree, params) => {
@@ -44,9 +45,29 @@ createSpec({
 });
 
 createSpec({
+  name: 'End-to-End: LTS',
+  testDir: __dirname,
+  tag: 'lts',
+  validAmp: true,
+  transformer: {
+    transform: (tree, params) => {
+      const ampOptimizer = new DomTransformer({
+        cache: false,
+        fetch,
+        log,
+        markdown: true,
+        lts: true,
+        runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
+      });
+      return ampOptimizer.transformTree(tree, params);
+    },
+  },
+});
+
+createSpec({
   name: 'End-to-End: Paired AMP',
   testDir: __dirname,
-  validAmp: false,
+  tag: 'paired',
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
