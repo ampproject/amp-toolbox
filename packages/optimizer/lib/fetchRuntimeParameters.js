@@ -118,6 +118,12 @@ async function initRuntimeVersion(runtimeParameters, customRuntimeParameters, co
   runtimeParameters.lts = customRuntimeParameters.lts || config.lts || false;
   runtimeParameters.rtv = customRuntimeParameters.rtv || config.rtv || false;
   let {ampUrlPrefix, ampRuntimeVersion, lts} = runtimeParameters;
+  if (lts && ampRuntimeVersion) {
+    config.log.warn(
+      '`ampRuntimeVersion` and `lts` cannot be defined at the same time. Using LTS version.'
+    );
+    ampRuntimeVersion = '';
+  }
   try {
     runtimeParameters.ampRuntimeVersion =
       ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
@@ -149,11 +155,17 @@ async function fetchAmpRuntimeVersion_(context) {
  * @private
  */
 async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey = null) {
-  const ampRuntimeData = {
+  let ampRuntimeData;
+  ampRuntimeData = {
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
     maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
   };
-  if (versionKey) {
+  if (!ampRuntimeData.version && ampUrlPrefix !== AMP_CACHE_HOST) {
+    config.log.error(
+      `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
+    );
+    ampRuntimeData = await fetchLatestRuntimeData_({config, AMP_CACHE_HOST, lts}, versionKey);
+  } else if (ampRuntimeData.version && versionKey) {
     cache.set(versionKey, ampRuntimeData);
   }
   return ampRuntimeData;
@@ -165,7 +177,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
 async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   if (ampUrlPrefix && !isAbsoluteUrl_(ampUrlPrefix)) {
     config.log.warn(
-      `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style.`
+      `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style. Falling back to latest v0.css on ${AMP_CACHE_HOST}`
     );
     // Gracefully fallback to latest runtime version
     ampUrlPrefix = AMP_CACHE_HOST;
@@ -177,10 +189,14 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   // Fetch runtime styles
   const styles = await downloadAmpRuntimeStyles_(config, runtimeCssUrl);
   if (!styles) {
-    config.log.error(`Could not download ${runtimeCssUrl}`);
+    config.log.error(`Could not download ${runtimeCssUrl}. Falling back to latest v0.css.`);
     if (ampUrlPrefix || ampRuntimeVersion) {
       // Try to download latest from cdn.ampproject.org instead
-      return fetchAmpRuntimeStyles_(AMP_CACHE_HOST, await config.runtimeVersion.currentVersion());
+      return fetchAmpRuntimeStyles_(
+        config,
+        AMP_CACHE_HOST,
+        await config.runtimeVersion.currentVersion()
+      );
     } else {
       return '';
     }
