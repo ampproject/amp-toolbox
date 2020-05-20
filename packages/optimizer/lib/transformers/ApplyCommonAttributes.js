@@ -17,6 +17,7 @@
 
 const parseSizes = require('../parseSizes');
 const {appendChild, createElement, insertText, hasAttribute} = require('../NodeUtils');
+const {isCustomElement} = require('../Extensions.js');
 const ID_PREFIX = 'i-amp-';
 
 /**
@@ -120,7 +121,7 @@ class SizesTransformer {
 }
 
 /**
- * Transforms a sizes attribute into CSS by creating media queries for each size.
+ * Transforms a heights attribute into CSS by creating media queries for each height.
  */
 class HeightsTransformer {
   constructor() {
@@ -175,8 +176,12 @@ class ApplyCommonAttributes {
     this.canRemoveBoilerplate = true;
     // node counter for id generation
     this.counter = 0;
+    // nodes to check for attributes
+    this.nodesToTransform = [];
+    // existing ids in the document
+    this.ids = new Set();
     // nodes that have been transformed
-    this.nodes = [];
+    this.transformedNodes = [];
     this.attributeTransformations = {
       media: new MediaTransformer(),
       sizes: new SizesTransformer(),
@@ -185,25 +190,41 @@ class ApplyCommonAttributes {
   }
 
   /**
-   * Applies attribute transformations to the selected node.
+   * Adds a body node to potentially be transformed later.
+   *
    * @param {Node} node
    */
-  applyToNode(node) {
+  addNode(node) {
     if (!node.attribs) {
       return;
     }
-    for (const [attribute, transformer] of Object.entries(this.attributeTransformations)) {
-      if (hasAttribute(node, attribute)) {
-        try {
-          const id = this.getOrCreateId(node);
-          transformer.transform(node, id);
-          this.nodes.push(node);
-        } catch (e) {
-          this.log.debug(
-            `Cannot remove boilerplate. Failed transforming ${attribute}="${node.attribs[attribute]}".`,
-            e
-          );
-          this.canRemoveBoilerplate = false;
+    // Record the id to be able to generate ids later
+    if (hasAttribute(node, 'id')) {
+      this.ids.add(node.attribs.id);
+    }
+    if (isCustomElement(node)) {
+      this.nodesToTransform.push(node);
+    }
+  }
+
+  /**
+   * Applies attribute transformations to the selected node.
+   */
+  apply() {
+    for (const node of this.nodesToTransform) {
+      for (const [attribute, transformer] of Object.entries(this.attributeTransformations)) {
+        if (hasAttribute(node, attribute)) {
+          try {
+            const id = this.getOrCreateId(node);
+            transformer.transform(node, id);
+            this.transformedNodes.push(node);
+          } catch (e) {
+            this.log.debug(
+              `Cannot remove boilerplate. Failed transforming ${attribute}="${node.attribs[attribute]}".`,
+              e
+            );
+            this.canRemoveBoilerplate = false;
+          }
         }
       }
     }
@@ -228,7 +249,7 @@ class ApplyCommonAttributes {
       insertText(customStyles, '');
     }
     customStyles.children[0].data += styles;
-    for (const node of this.nodes) {
+    for (const node of this.transformedNodes) {
       for (const attribute of Object.keys(this.attributeTransformations)) {
         delete node.attribs[attribute];
       }
@@ -245,8 +266,13 @@ class ApplyCommonAttributes {
       return node.attribs.id;
     }
     node.attribs = node.attribs || [];
-    node.attribs.id = ID_PREFIX + this.counter;
+    const id = ID_PREFIX + this.counter;
     this.counter++;
+    if (this.ids.has(id)) {
+      // generate a new id if this one already exists
+      return this.getOrCreateId(node);
+    }
+    node.attribs.id = id;
     return node.attribs.id;
   }
 }

@@ -65,6 +65,7 @@ class ServerSideRendering {
     // not to remove the boilerplate.
     let canRemoveBoilerplate = true;
     for (let node = body; node; node = nextNode(node)) {
+      applyCommonAttributes.addNode(node);
       // Skip tags that are not AMP custom elements.
       if (!isCustomElement(node)) {
         continue;
@@ -100,11 +101,11 @@ class ServerSideRendering {
         canRemoveBoilerplate = false;
         continue;
       }
-
-      // Collect media, heights and sizes attributes to convert them into CSS later.
-      // Important: this needs to run after applyLayout.
-      applyCommonAttributes.applyToNode(node);
     }
+
+    // Transform media, sizes and heights attributes
+    // Important: this needs to run after applyLayout.
+    applyCommonAttributes.apply();
 
     // Emit the amp-runtime marker to indicate that we're applying
     // server side rendering in the document.
