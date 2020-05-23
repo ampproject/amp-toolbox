@@ -33,7 +33,7 @@
     "amphtml-validator": "1.0.31",
     "babel-plugin-filter-imports": "4.0.0",
     "diff": "4.0.2",
-    "eslint": "7.0.0",
+    "eslint": "7.1.0",
     "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.3",
