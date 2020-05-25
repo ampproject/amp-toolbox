@@ -40,7 +40,7 @@
     "lru-cache": "5.1.1",
     "normalize-html-whitespace": "1.0.0",
     "postcss-safe-parser": "4.0.2",
-    "terser": "4.6.13"
+    "terser": "4.7.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

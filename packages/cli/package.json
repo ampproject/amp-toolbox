@@ -35,7 +35,7 @@
     "@ampproject/toolbox-runtime-version": "^2.4.0-alpha.1",
     "@ampproject/toolbox-update-cache": "^2.4.0-alpha.1",
     "minimist": "1.2.5",
-    "minimist-options": "4.0.2",
+    "minimist-options": "4.1.0",
     "node-fetch": "2.6.0"
   },
   "gitHead": "aeceb5cb83cc111c08297415ab469696f2f7994e"
