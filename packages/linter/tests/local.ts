@@ -6,6 +6,8 @@ import { SchemaMetadataIsNews } from "../src/rules/SchemaMetadataIsNews";
 import { StoryRuntimeIsV1 } from "../src/rules/StoryRuntimeIsV1";
 import { ImagesHaveAltText } from "../src/rules/ImagesHaveAltText";
 import { MetadataIncludesOGImageSrc } from "../src/rules/MetadataIncludesOGImageSrc";
+import { VideosHaveAltText } from "../src/rules/VideosHaveAltText";
+import { VideosAreSubtitled } from "../src/rules/VideosAreSubtitled";
 import { basename } from "path";
 import { BookendExists } from "../src/rules/BookendExists";
 
@@ -130,5 +132,25 @@ assertWarn(
   runLocalTest(ImagesHaveAltText, "local/ImagesHaveAltText-2/source.html")
 );
 
+assertPass(
+  `${VideosHaveAltText.name} - All <amp-video> have alt text`,
+  runLocalTest(VideosHaveAltText, "local/VideosHaveAltText-1/source.html")
+);
+
+assertWarn(
+  `${VideosHaveAltText.name} - At least one <amp-video> is missing alt text`,
+  runLocalTest(VideosHaveAltText, "local/VideosHaveAltText-2/source.html")
+);
+
+assertPass(
+  `${VideosAreSubtitled.name} - All <amp-video> have subtitles`,
+  runLocalTest(VideosAreSubtitled, "local/VideosAreSubtitled-1/source.html")
+);
+
+assertWarn(
+  `${VideosAreSubtitled.name} - One or more <amp-video> are missing subtitles`,
+  runLocalTest(VideosAreSubtitled, "local/VideosAreSubtitled-2/source.html")
+);
+
 console.log(`# ${basename(__filename)} - HTML-only tests`);
-console.log(`1..20`);
+console.log(`1..24`);
