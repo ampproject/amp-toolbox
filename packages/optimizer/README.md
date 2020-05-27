@@ -4,7 +4,7 @@
 
 AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering performance. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
-* Server-side render AMP layouts.
+* [Server-side render AMP layouts](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/).
 * **Automatically import all missing AMP component scripts**.
 * **Automatically add any missing mandatory AMP tags**.
 * Remove the AMP boilerplate (when possible).
