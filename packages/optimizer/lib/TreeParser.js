@@ -18,7 +18,7 @@
 const {Parser} = require('htmlparser2');
 const {DomHandler, NodeWithChildren} = require('domhandler');
 const {appendAll} = require('./NodeUtils');
-const serialize = require('dom-serializer');
+const render = require('dom-serializer').default;
 
 // https://github.com/fb55/domhandler#option-normalizewhitespace
 const PARSER_OPTIONS = {};
@@ -61,7 +61,7 @@ class TreeParser {
    * @param {Tree} tree
    */
   serialize(node) {
-    return serialize(node, {});
+    return render(node, {});
   }
 }
 
