@@ -47,29 +47,34 @@ const SRCSET_WIDTH = [
   680,
   820,
   1000,
-  1200,
+  1500,
+  2000,
+  2500,
 ];
 
-// DPR values used to calculate the required sccset values. We'll take the initial image width and multiply it with
-// these values and match the result to the closest supported srcset width (see above).
-const NUM_SRCSET_DPR = [1.0, 2.0, 3.0];
+// The maximum number of values. We'll take the initial image width and generate more width values by
+// multiplying by multiples of 1.0 up the given max value (e.g. 3 => 1.0, 2.0, 3.0)
+// and match the result to the closest supported srcset width (see above).
+const MAX_SRCSET_VALUES = 3;
 
 /**
  * Calculates the srcset width for a given image width.
  */
 class SrcsetWidth {
-  constructor() {
+  constructor(maxSrcsetValues=MAX_SRCSET_VALUES) {
     this.widthList_ = [];
+    this.maxSrcsetValues = maxSrcsetValues;
   }
 
   /**
    * Sets the base width, i.e., renderered dimension measured in CSS pixels.
    * Returns true if srcset is needed, that is, we'll resize the image to at
-   * least 2 legitimate widths.
-   * if max_img_width is provided the actual image size in srcset will not
-   * exceed this value. So if max_img_width is 820, the srcset will not
-   * contain any image greater than 820px. The max_img_width is not absolute
-   * number but depends on the aspect ratio. So if 650 is max_img_width, the
+   * least 2 legitimate widths (@see SRCSET_WIDTH for a list of supported widths).
+   *
+   * If maxImgWidth is provided the actual image size in srcset will not
+   * exceed this value. So if maxImgWidth is 820, the srcset will not
+   * contain any image greater than 820px. The maxImgWidth is not absolute
+   * number but depends on the aspect ratio. So if 650 is maxImgWidth, the
    * nearest aspect ratio width for this max width is 620.
    *
    * @param {Number} imgSrcWidth
@@ -82,8 +87,9 @@ class SrcsetWidth {
       return;
     }
 
-    for (let i = NUM_SRCSET_DPR.length - 1; i >= 0; --i) {
-      let width = this.roundUp(Math.ceil(imgSrcWidth * NUM_SRCSET_DPR[i]));
+    for (let i = this.maxSrcsetValues; i >= 0; --i) {
+      const dpr = i * 1.0;
+      let width = this.roundUp(Math.ceil(imgSrcWidth * dpr));
       if (maxImgWidth > 0 && width > maxImgWidth) {
         width = maxImgWidth;
       }
@@ -136,12 +142,15 @@ class SrcsetWidth {
  *    return a falsy value. For example:
  *
  *       (src, width) => `${src}?width=${width}`
+ * - `maxImgWidth`: a positive integer value defining the maximum img width (default is 820px)
  */
 class OptimizeImages {
   constructor(config) {
     this.log = config.log;
+    this.maxImageWidth = config.maxImageWidth || MAX_IMG_SIZE;
     this.imageOptimizer = config.imageOptimizer;
-    this.srcsetWidth = new SrcsetWidth();
+    const maxSrcsetValues = config.maxSrcsetValues || MAX_SRCSET_VALUES;
+    this.srcsetWidth = new SrcsetWidth(this.maxSrcsetValues);
   }
 
   async transform(root) {
