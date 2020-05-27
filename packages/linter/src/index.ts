@@ -20,6 +20,8 @@ import { SxgDumpSignedExchangeVerify } from "./rules/SxgDumpSignedExchangeVerify
 import { SxgAmppkgIsForwarded } from "./rules/SxgAmppkgIsForwarded";
 import { MetadataIncludesOGImageSrc } from "./rules/MetadataIncludesOGImageSrc";
 import { ImagesHaveAltText } from "./rules/ImagesHaveAltText";
+import { VideosHaveAltText } from "./rules/VideosHaveAltText";
+import { VideosAreSubtitled } from "./rules/VideosAreSubtitled";
 import { IsValid } from "./rules/IsValid";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
@@ -106,6 +108,8 @@ function testsForMode(type: LintMode) {
       StoryMetadataThumbnailsAreOk,
       MetadataIncludesOGImageSrc,
       ImagesHaveAltText,
+      VideosHaveAltText,
+      VideosAreSubtitled,
     ])
   );
   return tests.get(type) || [];
