@@ -24,13 +24,37 @@ const {isValidImageSrcURL} = require('../URLUtils');
 // this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
 const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 100;
 
-// All legimate srcset widths.
-const SRCSET_WIDTH = [39, 56, 82, 100, 150, 300, 500, 750, 1000, 1500, 2000, 2500];
+// All supported srcset widths.
+const SRCSET_WIDTH = [
+  39,
+  47,
+  56,
+  68,
+  82,
+  100,
+  120,
+  150,
+  180,
+  220,
+  270,
+  330,
+  390,
+  470,
+  560,
+  680,
+  820,
+  1000,
+  1200,
+  1440,
+  1750,
+  2000,
+  2500,
+];
 
 // Don't generate srcsets for images larger than the supported maximum
 const MAX_IMG_SIZE = SRCSET_WIDTH[SRCSET_WIDTH - 1];
 
-// The maximum number of values. We'll take the initial image width and generate more width values by
+// The maximum number of srcset source. We'll take the initial image width and generate more width values by
 // multiplying by multiples of 1.0 up the given max value (e.g. width=300, maxSrcsetValues=3 => 1 * 300, 2 * 300, 3 * 300)
 // and match the result to the closest supported srcset width (see above).
 const MAX_SRCSET_VALUE_COUNT = 3;
@@ -122,7 +146,7 @@ class OptimizeImages {
     this.log = config.log;
     this.imageOptimizer = config.imageOptimizer;
     this.srcsetWidth = new SrcsetWidth();
-    // TODO turn these into options
+    // TODO turn these into options https://github.com/ampproject/amp-toolbox/issues/804
     this.maxImageWidth = MAX_IMG_SIZE;
     this.maxSrcsetValues = MAX_SRCSET_VALUE_COUNT;
   }
