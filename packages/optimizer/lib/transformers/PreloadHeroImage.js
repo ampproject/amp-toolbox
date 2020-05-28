@@ -18,6 +18,7 @@
 
 const {createElement, hasAttribute, insertAfter, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
+const {isValidImageSrcURL} = require('../URLUtils');
 const parseSrcSet = require('../parseSrcSet');
 
 // Images smaller than 150px are considered tiny
@@ -109,7 +110,7 @@ class PreloadHeroImage {
   isCandidateVideoPosterImage(ampVideo) {
     const poster = ampVideo.attribs.poster;
     if (!poster) return null;
-    if (!this.isValidUrl(poster)) {
+    if (!isValidImageSrcURL(poster)) {
       return null;
     }
 
@@ -134,7 +135,7 @@ class PreloadHeroImage {
       if (
         child.tagName === 'amp-img' &&
         hasAttribute(child, 'placeholder') &&
-        this.isValidUrl(child.attribs.src)
+        isValidImageSrcURL(child.attribs.src)
       ) {
         return {src: child.attribs.src, srcset: child.attribs.srcset || ''};
       }
@@ -150,7 +151,7 @@ class PreloadHeroImage {
     if (!src) {
       return null;
     }
-    if (!this.isValidUrl(src)) {
+    if (!isValidImageSrcURL(src)) {
       return null;
     }
 
@@ -180,15 +181,6 @@ class PreloadHeroImage {
       return false;
     }
     return (width > 0 && width < TINY_IMG_THRESHOLD) || (height > 0 && height < TINY_IMG_THRESHOLD);
-  }
-
-  isValidUrl(src) {
-    try {
-      return new URL(src, 'https://example.com').protocol.startsWith('http');
-    } catch (e) {
-      // invalid URL
-      return false;
-    }
   }
 
   nodeDimensionsFromParent(node) {
