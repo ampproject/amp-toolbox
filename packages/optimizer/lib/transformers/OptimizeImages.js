@@ -21,55 +21,32 @@ const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
 
 // Don't generate srcsets for images larger than MAX_IMG_SIZE
-const MAX_IMG_SIZE = 820;
+const MAX_IMG_SIZE = 1500;
 
 // Don't generate srcset's for images with width smaller than MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT
 // this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
 const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 100;
 
 // All legimate srcset widths.
-const SRCSET_WIDTH = [
-  39,
-  47,
-  56,
-  68,
-  82,
-  100,
-  120,
-  150,
-  180,
-  220,
-  270,
-  330,
-  390,
-  470,
-  560,
-  680,
-  820,
-  1000,
-  1500,
-  2000,
-  2500,
-];
+const SRCSET_WIDTH = [39, 56, 82, 100, 150, 300, 500, 750, 1000, 1500, 2000, 2500];
 
 // The maximum number of values. We'll take the initial image width and generate more width values by
-// multiplying by multiples of 1.0 up the given max value (e.g. 3 => 1.0, 2.0, 3.0)
+// multiplying by multiples of 1.0 up the given max value (e.g. width=300, maxSrcsetValues=3 => 1 * 300, 2 * 300, 3 * 300)
 // and match the result to the closest supported srcset width (see above).
-const MAX_SRCSET_VALUES = 3;
+const MAX_SRCSET_VALUE_COUNT = 3;
 
 /**
  * Calculates the srcset width for a given image width.
  */
 class SrcsetWidth {
-  constructor(maxSrcsetValues=MAX_SRCSET_VALUES) {
+  constructor() {
     this.widthList_ = [];
-    this.maxSrcsetValues = maxSrcsetValues;
   }
 
   /**
    * Sets the base width, i.e., renderered dimension measured in CSS pixels.
    * Returns true if srcset is needed, that is, we'll resize the image to at
-   * least 2 legitimate widths (@see SRCSET_WIDTH for a list of supported widths).
+   * least 2 supported widths (@see SRCSET_WIDTH for a list of supported widths).
    *
    * If maxImgWidth is provided the actual image size in srcset will not
    * exceed this value. So if maxImgWidth is 820, the srcset will not
@@ -80,16 +57,15 @@ class SrcsetWidth {
    * @param {Number} imgSrcWidth
    * @param {Number} maxImgWidth
    */
-  setBaseWidth(imgSrcWidth, maxImgWidth = -1) {
+  setBaseWidth(imgSrcWidth, maxImgWidth = -1, maxSrcsetValues = MAX_SRCSET_VALUE_COUNT) {
     this.widthList_.length = 0;
     let previousWidth = -1;
     if (maxImgWidth > 0 && imgSrcWidth > maxImgWidth) {
       return;
     }
 
-    for (let i = this.maxSrcsetValues; i >= 0; --i) {
-      const dpr = i * 1.0;
-      let width = this.roundUp(Math.ceil(imgSrcWidth * dpr));
+    for (let i = maxSrcsetValues; i > 0; --i) {
+      let width = this.roundUp(imgSrcWidth * i);
       if (maxImgWidth > 0 && width > maxImgWidth) {
         width = maxImgWidth;
       }
@@ -102,7 +78,7 @@ class SrcsetWidth {
   }
 
   /**
-   *  Returns true if there is more legitimate width.
+   *  Returns true if there are more width values.
    */
   moreWidth() {
     return this.widthList_.length > 0;
@@ -139,18 +115,16 @@ class SrcsetWidth {
  *
  * - `imageOptimizer`: a function for customizing the srcset generation. The function should return a URL
  *    pointing to a version of the `src` image with the given `width`. If no image is available, it should
- *    return a falsy value. For example:
- *
- *       (src, width) => `${src}?width=${width}`
- * - `maxImgWidth`: a positive integer value defining the maximum img width (default is 820px)
+ *    return a falsy value. For example: (src, width) => `${src}?width=${width}`.
  */
 class OptimizeImages {
   constructor(config) {
     this.log = config.log;
-    this.maxImageWidth = config.maxImageWidth || MAX_IMG_SIZE;
     this.imageOptimizer = config.imageOptimizer;
-    const maxSrcsetValues = config.maxSrcsetValues || MAX_SRCSET_VALUES;
-    this.srcsetWidth = new SrcsetWidth(this.maxSrcsetValues);
+    this.srcsetWidth = new SrcsetWidth();
+    // TODO turn these into options
+    this.maxImageWidth = MAX_IMG_SIZE;
+    this.maxSrcsetValues = MAX_SRCSET_VALUE_COUNT;
   }
 
   async transform(root) {
@@ -214,7 +188,7 @@ class OptimizeImages {
 
     // We add srcset only when the CSS dimensions correspond to 2 or more
     // unique legitimate physical dimensions.
-    this.srcsetWidth.setBaseWidth(width, MAX_IMG_SIZE);
+    this.srcsetWidth.setBaseWidth(width, this.maxImageWidth, this.maxSrcsetValues);
     if (!this.srcsetWidth.isValid()) {
       return;
     }
