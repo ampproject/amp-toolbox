@@ -143,7 +143,7 @@ class SeparateKeyframes {
         parser: safeParser,
       })
       .catch((err) => {
-        this.log_.warn(`Failed to process CSS`, err);
+        this.log_.warn(`Failed to process CSS`, err.message);
         return {css: stylesText};
       });
 
