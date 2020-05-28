@@ -1,10 +1,15 @@
 import { Context } from "../index";
 import { Rule } from "../rule";
+import chalk from "chalk";
 
 export class ImagesHaveAltText extends Rule {
   run({ $ }: Context) {
     let imgsWithoutAlt: { [key: string]: number } = {};
     let output = "";
+
+    const color = (s: string) => {
+      return chalk.yellow(s);
+    };
 
     $("amp-img").each(function (i, elem) {
       if (!elem.attribs.alt) {
@@ -18,7 +23,7 @@ export class ImagesHaveAltText extends Rule {
 
     for (let key in imgsWithoutAlt) {
       imgsWithoutAlt[key] > 1
-        ? (output += key + " (used " + imgsWithoutAlt[key] + " times)\n")
+        ? (output += key + color(" [used " + imgsWithoutAlt[key] + " times]\n"))
         : (output += key + "\n");
     }
 
