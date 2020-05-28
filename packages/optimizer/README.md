@@ -7,7 +7,7 @@ AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering
 - [Server-side render AMP layouts](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/).
 - **Automatically import all missing AMP component scripts**.
 - **Automatically add any missing mandatory AMP tags**.
-- Auto detects and preloads hero images.
+- Auto detects and preloads hero images from amp-img, amp-iframe, amp-video, or amp-video-iframe.
 - Remove the AMP boilerplate (when possible).
 - Remove not needed whitespace.
 - Extract and move CSS keyframe animations to the bottom of the page.

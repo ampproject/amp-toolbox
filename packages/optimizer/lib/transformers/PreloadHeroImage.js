@@ -19,6 +19,7 @@
 const {createElement, hasAttribute, insertAfter, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
+const {isTemplate} = require('../AmpConstants');
 const parseSrcSet = require('../parseSrcSet');
 
 // Images smaller than 150px are considered tiny
@@ -82,7 +83,7 @@ class PreloadHeroImage {
       return null;
     }
     // Ignore images inside templates
-    if (root.tagName === 'template') {
+    if (isTemplate(root)) {
       return null;
     }
 
@@ -99,6 +100,7 @@ class PreloadHeroImage {
       return this.isCandidateIframePlaceholderImage(root);
     }
 
+    let heroImage;
     for (const child of root.children) {
       const heroImage = this.findHeroImage(child);
       if (heroImage) {
