@@ -79,6 +79,9 @@ class PreloadImages {
   }
 
   extractImageUrl(node) {
+    if (!node.attribs) {
+      return null;
+    }
     if (node.tagName === 'amp-img') {
       return node.attribs.src;
     }
