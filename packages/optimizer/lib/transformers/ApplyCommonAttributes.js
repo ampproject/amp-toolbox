@@ -160,7 +160,7 @@ class HeightsTransformer {
   toString() {
     let result = '';
     for (const {heights, defaultHeight, id} of this.heights) {
-      const selector = `#${id}:first-child`;
+      const selector = `#${id}>:first-child`;
       result += `${selector}{padding-top:${defaultHeight}}`;
       for (const height of heights) {
         result += `@media ${height.media}{${selector}{padding-top:${height.size}}}`;
