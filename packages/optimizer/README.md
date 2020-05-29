@@ -23,6 +23,8 @@ The performance optimizations can improve page rendering times by up to 50%. You
 
 ## Usage
 
+### API
+
 Install via:
 
 ```
@@ -49,7 +51,203 @@ ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
 
 You can find a sample implementation [here](/packages/optimizer/demo/simple). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](/packages/optimizer-express).
 
-### Incomplete markup
+### CLI
+
+AMP Optimizer can be used via the [AMP Toolbox CLI](/packages/cli/README.md):
+
+```shell
+$ npm install @ampproject/toolbox-cli -g
+$ amp optimize myFile.html
+```
+
+or run without installation via `npx`:
+
+```shell
+$ npx @ampproject/toolbox-cli optimize myFile.html
+```
+
+### Options
+
+Options are passed when creating a new AMP Optimizer instance:
+
+```
+const ampOptimizer = AmpOptimizer.create({
+  verbose: true
+});
+...
+```
+
+Available options are:
+
+- [autoAddBoilerplate](#autoaddboilerplate)
+- [autoExtensionImport](#autoextensionimport)
+- [format](#format)
+- [imageBasePath](#imagebasePath)
+- [imageOptimizer](#imageoptimizer)
+- [lts](#lts)
+- [markdown](#markdown)
+- [minify](#minify)
+- [preloadHeroImage](#preloadheroimage)
+- [verbose](#verbose)
+
+#### `autoAddMandatoryTags`
+
+Automatically inject any missing markup required by AMP.
+
+- name: `autoAddMandatoryTags`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+
+#### `autoExtensionImport`
+
+Automatically import any missing AMP Extensions (e.g. amp-carousel).
+
+- name: `autoExtensionImport`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
+
+#### `format`
+
+Specifies the AMP format of the input file. Defaults to `AMP`.
+
+- name: `format`
+- valid options: `[AMP|AMP4EMAIL|AMP4ADS]`
+- default: `AMP`
+- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+
+#### `imageBasePath`
+
+Specifies a base path used to resolve an image during build,
+this can be a file system path or URL prefix. You can also pass a function
+`(imgSrc, params) => '../img/' + imgSrc` for dynamically calculating the image path.
+
+- name: `imageBasePath`
+- valid options: `STRING|FUNCTION`
+- default: undefined
+- used by: [Markdown](lib/transformers/Markdown.js)
+
+#### `imageOptimizer`
+
+Enable automated image `srcset` generation by providing a function for calculating `srcset` URLs for a given image `src`. The function should return a URL pointing to a version of the `src` image with the given `width`. If no image is available, it should return a falsy value.
+
+Example:
+
+```
+const ampOptimizer = AmpOptimizer.create({
+  imageOptimizer: (src, width) => `${src}?width=${width}`
+});
+```
+
+- name: `imageOptimizer`
+- valid options: `FUNCTION`
+- default: undefined
+- used by: [OptimizeImages](lib/transformers/OptimizeImages.js)
+
+#### `lts`
+
+Use [long-term stable URLs](https://github.com/ampproject/amphtml/blob/master/contributing/lts-release.md) for downloading the AMP runtime and components.
+
+- name: `lts`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
+
+#### `markdown`
+
+This transformer adds out-of-the-box markdown support. This allows
+using AMP Optimizer to convert HTML documents created from Markdown
+files into valid AMP. A typical conversion flow would be:
+
+README.md => HTML => AMP Optimizer => valid AMP
+
+The only thing this transformer does is converting `<img>` tags into
+either `amp-img` or `amp-anim` tags. All other Markdown features are
+already supported by AMP. The transformer will try to resolve image
+dimensions from the actual files. Images larger than 320px will automatically
+get an intrinsic layout. For image detection to work, an optional dependency
+`probe-image-size` needs to be installed via NPM.
+
+- name: `markdown`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [Markdown](lib/transformers/Markdown.js)
+
+#### `minify`
+
+Minifies the generated HTML output and inlined CSS.
+
+- name: `minify`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes[(lib/transformers/SeparateKeyframes.js)
+
+#### `preloadHeroImage`
+
+Auto detect hero images for amp-img, amp-iframe, amp-video, or amp-video-iframe and injects a `link rel=preload`.
+
+- name: `preloadHeroImage`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [PreloadHeroImage](lib/transformers/PreloadHeroImage.js)
+
+#### `verbose`
+
+Enable verbose mode with more detailed logging output.
+
+- name: `verbose`
+- valid options: `[true|false]`
+- default: `false`
+
+## Features
+
+### Image optimization
+
+AMP Optimizer helps you serve optimized images. For this to work, you need to provide a function that maps an image `src` to a resized `srcset` source value. The image resizing needs to either happen at build time (e.g. for static sites) or via a image hosting service such as [thumbor](https://github.com/thumbor/thumbor).
+
+Here is an example implementation that appends the image width to the `src`:
+
+```
+const ampOptimizer = AmpOptimizer.create({
+  // parameters are the amp-img `src` and the `width` of the to be generated srcset source value
+  imageOptimizer: (src, width) => {
+    // we cannot rename if the image does not have a file extension
+    const index = src.lastIndexOf('.');
+    if (index === -1) {
+      // return null means we won't generate a srcset source value for this width
+      return null;
+    }
+    const prefix = src.substring(0, index);
+    const postfix = src.substring(index, src.length);
+    return `${prefix}.${width}w${postfix}`;
+  };
+})
+```
+
+Using this implementation, AMP Optimizer will transform the following `amp-img` declarations:
+
+```
+<!-- Injects srcset for responsive layout -->
+<amp-img src="image1.png" width="400" height="800" layout="responsive"></amp-img>
+<!-- Ignores existing srcset -->
+<amp-img layout=fill srcset="image-1x.png 1x,
+                             image-2x.png 2x"></amp-img>
+```
+
+into:
+
+```
+<!-- Injects srcset for responsive layout -->
+<amp-img src="image1.png" width="400" height="800" layout="responsive" srcset="image1.470w.png 470w, image1.820w.png 820w, image1.1440w.png 1440w"></amp-img>
+<!-- Ignores existing srcset -->
+<amp-img layout="fill" srcset="image-1x.png 1x,
+                               image-2x.png 2x"></amp-img>
+```
+
+**Important** when using `layout=responsive` use the `width` and `height` attribute to specify the minimum image dimensions. For example, for a full-bleed hero image on mobile, specify the width as`width=320`.
+
+### Auto add incomplete markup
 
 It's possible to pass incomplete documents and AMP Optimizer will add any
 missing tags and extension imports required by a valid AMP document.
@@ -74,7 +272,7 @@ ampOptimizer.transformHtml(originalHtml, params).then((optimizedHtml) => {
 });
 ```
 
-### Markup support
+### Automated Markdown conversion
 
 AMP Optimizer supports converting Markdown to AMPHTML. A typical conversion flow would be:
 
@@ -136,7 +334,7 @@ const amphtml = await ampOptimizer.transformHtml(html, {
 
 You can find a working sample [here](/packages/optimizer/demo/markdown).
 
-### Custom transformations
+## Extending AMP Optimizer with custom transformations
 
 AMP Optimizer supports custom HTML transformations:
 
@@ -177,20 +375,13 @@ const transformedHtml = await optimizer.transformHtml(html, {
 
 Checkout [the samples](/packages/optimizer/demo/simple/index.js) to learn how to customize AMP Optimizer.
 
-### CLI
+## Best Practices
 
-There's also a [command line version](/packages/cli/README.md) available:
-
-```shell
-$ npx @ampproject/toolbox-cli optimize myFile.html
-```
-
-## Why doesn't my AMP page render faster?
+### Make sure to enable AMP Boilerplate removal
 
 The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:
 
 - if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
-- if an AMP component uses the `media`, `sizes` or `heights` attribute ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
@@ -209,8 +400,6 @@ ampOptimizer.transformHtml(originalHtml, {
   verbose: true
 })
 ```
-
-## Best Practices
 
 ### Transform AMP pages at build time if possible
 
