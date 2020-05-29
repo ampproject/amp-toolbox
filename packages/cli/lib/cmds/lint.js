@@ -19,7 +19,7 @@
 const {cli} = require('@ampproject/toolbox-linter');
 
 function lint(args, logger) {
-  return cli(['dummy'].concat(args), logger, 'amp lint'); // "dummy" to simulate process.argv
+  return cli(['dummy'].concat(args).concat(['-s']), logger, 'amp lint'); // "dummy" to simulate process.argv
 }
 
 module.exports = lint;

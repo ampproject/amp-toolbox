@@ -42,6 +42,14 @@ export enum Status {
   INTERNAL_ERROR = "INTERNAL_ERROR",
 }
 
+export enum StatusNumber {
+  PASS,
+  FAIL,
+  WARN,
+  INFO,
+  INTERNAL_ERROR,
+}
+
 export interface Result {
   readonly status: Status;
   readonly message?: string;
