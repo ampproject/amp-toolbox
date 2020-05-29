@@ -222,7 +222,11 @@ class ApplyCommonAttributes {
             const nodeHasBeenTransformed = transformer.transform(node, id);
             this.transformedNodes.push(node);
             if (nodeHasBeenTransformed && !node.attribs.id) {
+              // Only update id if it's needed...
               node.attribs.id = id;
+            } else {
+              // Decrease counter otherwise
+              this.counter--;
             }
           } catch (e) {
             this.log.debug(
