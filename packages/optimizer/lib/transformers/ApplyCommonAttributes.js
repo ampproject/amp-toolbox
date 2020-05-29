@@ -33,7 +33,7 @@ class MediaTransformer {
     let mediaString = node.attribs.media.replace(/\s+/g, ' ');
     mediaString = mediaString.trim();
     if (!mediaString) {
-      return;
+      return false;
     }
 
     if (mediaString[0] === '(') {
@@ -47,6 +47,7 @@ class MediaTransformer {
     }
 
     this.addMedia(mediaString, `#${id}`);
+    return true;
   }
 
   addMedia(mediaQuery, id) {
@@ -80,7 +81,7 @@ class SizesTransformer {
       // According to the Mozilla docs, a sizes attribute without a valid srcset attribute should have no effect.
       // Therefore, it should simply be stripped, without producing media queries.
       // @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes
-      return;
+      return false;
     }
     let sizes;
     try {
@@ -88,13 +89,14 @@ class SizesTransformer {
     } catch (error) {
       this.log.error(error.message);
       // remove the sizes attribute as it's invalid anyway
-      return;
+      return false;
     }
     if (!sizes.defaultValue) {
       // remove the sizes attribute as it's invalid anyway
-      return;
+      return false;
     }
     this.addSizes(id, sizes);
+    return true;
   }
 
   addSizes(id, sizes) {
@@ -135,13 +137,14 @@ class HeightsTransformer {
     } catch (error) {
       this.log.error(error.message);
       // remove the heights attribute as it's invalid anyway
-      return;
+      return false;
     }
     if (!heights.defaultValue) {
       // remove the sizes attribute as it's invalid anyway
-      return;
+      return false;
     }
     this.addHeights(id, heights);
+    return true;
   }
 
   addHeights(id, heights) {
@@ -216,8 +219,15 @@ class ApplyCommonAttributes {
         if (hasAttribute(node, attribute)) {
           try {
             const id = this.getOrCreateId(node);
-            transformer.transform(node, id);
+            const nodeHasBeenTransformed = transformer.transform(node, id);
             this.transformedNodes.push(node);
+            if (nodeHasBeenTransformed && !node.attribs.id) {
+              // Only update id if it's needed...
+              node.attribs.id = id;
+            } else {
+              // Decrease counter otherwise
+              this.counter--;
+            }
           } catch (e) {
             this.log.debug(
               `Cannot remove boilerplate. Failed transforming ${attribute}="${node.attribs[attribute]}".`,
@@ -272,8 +282,7 @@ class ApplyCommonAttributes {
       // generate a new id if this one already exists
       return this.getOrCreateId(node);
     }
-    node.attribs.id = id;
-    return node.attribs.id;
+    return id;
   }
 }
 
