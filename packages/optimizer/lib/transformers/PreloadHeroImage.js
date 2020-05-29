@@ -27,7 +27,8 @@ const TINY_IMG_THRESHOLD = 150;
 
 /**
  * PreloadHeroImage - This transformer identifies a hero image or
- * important images on the document and attaches <link rel="preload"> element.
+ * important images on the document and attaches <link rel="preload"> element. It
+ * will only add a hero image if there is not already an existing image preload.
  *
  * This transformer supports the following option:
  *
@@ -46,6 +47,10 @@ class PreloadHeroImage {
     const head = firstChildByTag(html, 'head');
     const body = firstChildByTag(html, 'body');
     if (!body || !head) return;
+
+    if (this.hasExistingImagePreload(head)) {
+      return;
+    }
 
     const heroImage = this.findHeroImage(body);
 
@@ -76,6 +81,28 @@ class PreloadHeroImage {
     }
     this.log.debug('Preloading hero image: ', heroImage.src);
     insertAfter(head, preload, referenceNode);
+  }
+
+  hasExistingImagePreload(head) {
+    for (const node of head.children) {
+      if (this.isImagePreload(node)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isImagePreload(node) {
+    if (node.tagName !== 'link') {
+      return false;
+    }
+    if (!hasAttribute(node, 'rel')) {
+      return false;
+    }
+    if (node.attribs.rel !== 'preload') {
+      return false;
+    }
+    return node.attribs.as === 'image';
   }
 
   findHeroImage(root) {
