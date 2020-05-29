@@ -53,7 +53,7 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
       /^(googlebot_desktop|googlebot_mobile|chrome_desktop|chrome_mobile)$/i,
       "googlebot_mobile"
     )
-    .option(`-n, --no-supress`, "supress passing tests in output")
+    .option(`-s, --show-passing`, "show passing tests in output", false)
     .on("--help", function () {
       logger.log("");
       logger.log("Examples:");
@@ -115,7 +115,7 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
       force: LintMode | "auto";
       url: string;
       headers: { [k: string]: string };
-      supress: boolean;
+      showPassing: boolean;
     }
   )
     .then(logger.info.bind(logger))
@@ -131,14 +131,14 @@ export async function easyLint({
   format,
   force,
   headers,
-  supress,
+  showPassing,
 }: {
   url: string;
   userAgent: string;
   format: string;
   force: LintMode | "auto";
   headers: { [k: string]: string };
-  supress: boolean;
+  showPassing: boolean;
 }) {
   headers["user-agent"] = UA[userAgent as keyof typeof UA];
 
@@ -169,7 +169,7 @@ export async function easyLint({
   const mode = force === "auto" ? guessMode($) : force;
   return printer(
     format,
-    supress,
+    showPassing,
     await lint({
       raw,
       $,
@@ -196,7 +196,7 @@ function colorStatus(s: Status) {
 
 function printer(
   type: string,
-  supress: boolean,
+  showPassing: boolean,
   data: { [key: string]: Result | Result[] }
 ): string {
   function flatten(data: { [k: string]: Result | Result[] }): string[][] {
@@ -251,9 +251,9 @@ function printer(
         .map((l) => {
           return l[3] !== ""
             ? `${colorStatus(l[2] as Status)} ${l[1]}\n> ${l[3]}\n`
-            : supress
-            ? ""
-            : `${colorStatus(l[2] as Status)} ${l[1]}\n`;
+            : showPassing
+            ? `${colorStatus(l[2] as Status)} ${l[1]}\n`
+            : "";
         })
         .filter((line) => line.length > 0)
         .join("\n");
