@@ -19,6 +19,7 @@
 const {createElement, hasAttribute, insertAfter, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
+const {isTemplate} = require('../AmpConstants');
 const parseSrcSet = require('../parseSrcSet');
 
 // Images smaller than 150px are considered tiny
@@ -59,6 +60,9 @@ class PreloadHeroImage {
       'as': 'image',
       'data-hero': '',
     });
+    if (heroImage.media) {
+      preload.attribs.media = heroImage.media;
+    }
     if (heroImage.srcset) {
       try {
         parseSrcSet(heroImage.srcset);
@@ -79,7 +83,7 @@ class PreloadHeroImage {
       return null;
     }
     // Ignore images inside templates
-    if (root.tagName === 'template') {
+    if (isTemplate(root)) {
       return null;
     }
 
@@ -96,6 +100,7 @@ class PreloadHeroImage {
       return this.isCandidateIframePlaceholderImage(root);
     }
 
+    let heroImage;
     for (const child of root.children) {
       const heroImage = this.findHeroImage(child);
       if (heroImage) {
@@ -114,11 +119,11 @@ class PreloadHeroImage {
       return null;
     }
 
-    const {layout, width, height} = ampVideo.attribs;
+    const {layout, width, height, media} = ampVideo.attribs;
     if (this.isTinyNode(layout, width, height)) {
       return null;
     }
-    return {src: poster, srcset: ''};
+    return {src: poster, media, srcset: ''};
   }
 
   isCandidateIframePlaceholderImage(ampIframe) {
@@ -127,7 +132,7 @@ class PreloadHeroImage {
       return null;
     }
 
-    const {layout, width, height} = ampIframe.attribs;
+    const {layout, width, height, media} = ampIframe.attribs;
 
     if (this.isTinyNode(layout, width, height)) return null;
 
@@ -137,7 +142,7 @@ class PreloadHeroImage {
         hasAttribute(child, 'placeholder') &&
         isValidImageSrcURL(child.attribs.src)
       ) {
-        return {src: child.attribs.src, srcset: child.attribs.srcset || ''};
+        return {src: child.attribs.src, media, srcset: child.attribs.srcset || ''};
       }
     }
     return null;
@@ -155,11 +160,7 @@ class PreloadHeroImage {
       return null;
     }
 
-    let width = ampImg.attribs.width;
-    let height = ampImg.attribs.height;
-    const srcset = ampImg.attribs.srcset;
-
-    const layout = ampImg.attribs.layout;
+    let {width, height, srcset, layout, media} = ampImg.attribs;
 
     if (!width && !height) {
       if (layout === 'fill') {
@@ -171,7 +172,7 @@ class PreloadHeroImage {
     if (this.isTinyNode(layout, width, height)) {
       return null;
     }
-    return {src, srcset};
+    return {src, srcset, media};
   }
 
   // Any node with width or height less than 150 pixels and a non-responsive layout.
