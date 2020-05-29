@@ -1,3 +1,39 @@
+## v2.5.0 (2020-05-29)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#807](https://github.com/ampproject/amp-toolbox/pull/807) List all supported options in README ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#805](https://github.com/ampproject/amp-toolbox/pull/805) Support media attribute for hero image preloading ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#763](https://github.com/ampproject/amp-toolbox/pull/763) SSR: Add support for media, sizes and heights attribute ([@sebastianbenz](https://github.com/sebastianbenz))
+* `cli`, `linter`, `optimizer-express`, `optimizer`
+  * [#772](https://github.com/ampproject/amp-toolbox/pull/772) Add option to generate image srcsets ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`
+  * [#795](https://github.com/ampproject/amp-toolbox/pull/795) Added video subtitle and alt text checks ([@Dbrown910](https://github.com/Dbrown910))
+  * [#780](https://github.com/ampproject/amp-toolbox/pull/780) Condense linter output for image alt text check ([@Dbrown910](https://github.com/Dbrown910))
+  * [#779](https://github.com/ampproject/amp-toolbox/pull/779) Linter output changes ([@Dbrown910](https://github.com/Dbrown910))
+
+#### :bug: Bug Fix
+* `core`, `optimizer`
+  * [#799](https://github.com/ampproject/amp-toolbox/pull/799) [optimizer] add missing runtime dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer`
+  * [#781](https://github.com/ampproject/amp-toolbox/pull/781) Fix lts ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+* Other
+  * [#808](https://github.com/ampproject/amp-toolbox/pull/808) Update dependency karma-jasmine to v3.3.1 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#803](https://github.com/ampproject/amp-toolbox/pull/803) Update dependency karma-jasmine to v3.3.0 ([@renovate-bot](https://github.com/renovate-bot))
+* `optimizer-express`
+  * [#786](https://github.com/ampproject/amp-toolbox/pull/786) Update dependency http-proxy to v1.18.1 ([@renovate-bot](https://github.com/renovate-bot))
+* `optimizer`
+  * [#789](https://github.com/ampproject/amp-toolbox/pull/789) Update dependency markdown-it to v11 ([@renovate-bot](https://github.com/renovate-bot))
+  * [#773](https://github.com/ampproject/amp-toolbox/pull/773) Update dependency @ampproject/toolbox-optimizer to v2.4.0 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 4
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Kristoffer K. ([@merceyz](https://github.com/merceyz))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- patrick kettner ([@patrickkettner](https://github.com/patrickkettner))
+
 ## v2.4.0 (2020-05-13)
 
 #### :bug: Bug Fix
