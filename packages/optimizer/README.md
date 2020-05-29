@@ -4,21 +4,21 @@
 
 AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering performance. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
-* Server-side render AMP layouts.
-* **Automatically import all missing AMP component scripts**.
-* **Automatically add any missing mandatory AMP tags**.
-* Remove the AMP boilerplate (when possible).
-* Remove not needed whitespace.
-* Extract and move CSS keyframe animations to the bottom of the page.
-* Optimize AMP framework and custom font loading
-* Generate CSP for inlined [`amp-script`](https://amp.dev/documentation/components/amp-script/) code.
+- Server-side render AMP layouts.
+- **Automatically import all missing AMP component scripts**.
+- **Automatically add any missing mandatory AMP tags**.
+- Remove the AMP boilerplate (when possible).
+- Remove not needed whitespace.
+- Extract and move CSS keyframe animations to the bottom of the page.
+- Optimize AMP framework and custom font loading
+- Generate CSP for inlined [`amp-script`](https://amp.dev/documentation/components/amp-script/) code.
 
 The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/). To give it a try, check out [the online playground](https://toolbox-optimizer.glitch.me/).
 
 **Good to know:**
 
-* AMP Optimizer will produce valid AMP.
-* AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
+- AMP Optimizer will produce valid AMP.
+- AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
 
 ## Usage
 
@@ -78,43 +78,43 @@ const ampOptimizer = AmpOptimizer.create({
 
 Available options are:
 
-* [autoAddBoilerplate](#autoaddboilerplate)
-* [autoExtensionImport](#autoextensionimport)
-* [format](#format)
-* [imageBasePath](#imagebasePath)
-* [imageOptimizer](#imageoptimizer)
-* [lts](#lts)
-* [markdown](#markdown)
-* [minify](#minify)
-* [preloadHeroImage](#preloadheroimage)
-* [verbose](#verbose)
+- [autoAddBoilerplate](#autoaddboilerplate)
+- [autoExtensionImport](#autoextensionimport)
+- [format](#format)
+- [imageBasePath](#imagebasePath)
+- [imageOptimizer](#imageoptimizer)
+- [lts](#lts)
+- [markdown](#markdown)
+- [minify](#minify)
+- [preloadHeroImage](#preloadheroimage)
+- [verbose](#verbose)
 
-#### `autoAddBoilerplate`
+#### `autoAddMandatoryTags`
 
 Automatically inject any missing markup required by AMP.
 
-* name: `autoAddBoilerplate`
-* valid options: `[true|false]`
-* default: `true`
-* used by: [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+- name: `autoAddMandatoryTags`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
 
 #### `autoExtensionImport`
 
 Automatically import any missing AMP Extensions (e.g. amp-carousel).
 
-* name: `autoExtensionImport`
-* valid options: `[true|false]`
-* default: `true`
-* used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
+- name: `autoExtensionImport`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
 
 #### `format`
 
 Specifies the AMP format of the input file. Defaults to `AMP`.
 
-* name: `format`
-* valid options: `[AMP|AMP4EMAIL|AMP4ADS]`
-* default: `AMP`
-* used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+- name: `format`
+- valid options: `[AMP|AMP4EMAIL|AMP4ADS]`
+- default: `AMP`
+- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
 
 #### `imageBasePath`
 
@@ -122,16 +122,16 @@ Specifies a base path used to resolve an image during build,
 this can be a file system path or URL prefix. You can also pass a function
 `(imgSrc, params) => '../img/' + imgSrc` for dynamically calculating the image path.
 
-* name: `imageBasePath`
-* valid options: `STRING|FUNCTION`
-* default: undefined
-* used by: [Markdown](lib/transformers/Markdown.js)
+- name: `imageBasePath`
+- valid options: `STRING|FUNCTION`
+- default: undefined
+- used by: [Markdown](lib/transformers/Markdown.js)
 
 #### `imageOptimizer`
 
-Enable automated image `srcset` generation by providing a function for calculating `srcset` URLs for a given image `src`. The function should return a URL pointing to a version of the `src` image with the given `width`. If no image is available, it should return a falsy value. 
+Enable automated image `srcset` generation by providing a function for calculating `srcset` URLs for a given image `src`. The function should return a URL pointing to a version of the `src` image with the given `width`. If no image is available, it should return a falsy value.
 
-Example: 
+Example:
 
 ```
 const ampOptimizer = AmpOptimizer.create({
@@ -139,19 +139,19 @@ const ampOptimizer = AmpOptimizer.create({
 });
 ```
 
-* name: `imageOptimizer`
-* valid options: `FUNCTION`
-* default: undefined
-* used by: [OptimizeImages](lib/transformers/OptimizeImages.js)
+- name: `imageOptimizer`
+- valid options: `FUNCTION`
+- default: undefined
+- used by: [OptimizeImages](lib/transformers/OptimizeImages.js)
 
 #### `lts`
 
 Use [long-term stable URLs](https://github.com/ampproject/amphtml/blob/master/contributing/lts-release.md) for downloading the AMP runtime and components.
 
-* name: `lts`
-* valid options: `[true|false]`
-* default: `false`
-* used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
+- name: `lts`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
 
 #### `markdown`
 
@@ -168,37 +168,36 @@ dimensions from the actual files. Images larger than 320px will automatically
 get an intrinsic layout. For image detection to work, an optional dependency
 `probe-image-size` needs to be installed via NPM.
 
-* name: `markdown`
-* valid options: `[true|false]`
-* default: `false`
-* used by: [Markdown](lib/transformers/Markdown.js)
+- name: `markdown`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [Markdown](lib/transformers/Markdown.js)
 
 #### `minify`
 
 Minifies the generated HTML output and inlined CSS.
 
-* name: `minify`
-* valid options: `[true|false]`
-* default: `true`
-* used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes[(lib/transformers/SeparateKeyframes.js)
+- name: `minify`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes[(lib/transformers/SeparateKeyframes.js)
 
 #### `preloadHeroImage`
 
 Auto detect hero images for amp-img, amp-iframe, amp-video, or amp-video-iframe and injects a `link rel=preload`.
 
-* name: `preloadHeroImage`
-* valid options: `[true|false]`
-* default: `true`
-* used by: [PreloadHeroImage](lib/transformers/PreloadHeroImage.js)
+- name: `preloadHeroImage`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [PreloadHeroImage](lib/transformers/PreloadHeroImage.js)
 
 #### `verbose`
 
 Enable verbose mode with more detailed logging output.
 
-* name: `verbose`
-* valid options: `[true|false]`
-* default: `false`
-
+- name: `verbose`
+- valid options: `[true|false]`
+- default: `false`
 
 ## Features
 
@@ -231,7 +230,7 @@ Using this implementation, AMP Optimizer will transform the following `amp-img` 
 <!-- Injects srcset for responsive layout -->
 <amp-img src="image1.png" width="400" height="800" layout="responsive"></amp-img>
 <!-- Ignores existing srcset -->
-<amp-img layout=fill srcset="image-1x.png 1x, 
+<amp-img layout=fill srcset="image-1x.png 1x,
                              image-2x.png 2x"></amp-img>
 ```
 
@@ -241,11 +240,11 @@ into:
 <!-- Injects srcset for responsive layout -->
 <amp-img src="image1.png" width="400" height="800" layout="responsive" srcset="image1.470w.png 470w, image1.820w.png 820w, image1.1440w.png 1440w"></amp-img>
 <!-- Ignores existing srcset -->
-<amp-img layout="fill" srcset="image-1x.png 1x, 
+<amp-img layout="fill" srcset="image-1x.png 1x,
                                image-2x.png 2x"></amp-img>
 ```
 
-**Important** when using `layout=responsive` use the `width` and `height` attribute to specify the minimum image dimensions. For example, for a full-bleed hero image on mobile, specify the width as`width=320`. 
+**Important** when using `layout=responsive` use the `width` and `height` attribute to specify the minimum image dimensions. For example, for a full-bleed hero image on mobile, specify the width as`width=320`.
 
 ### Auto add incomplete markup
 
@@ -381,7 +380,7 @@ Checkout [the samples](/packages/optimizer/demo/simple/index.js) to learn how to
 
 The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:
 
-* if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
+- if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
@@ -483,10 +482,10 @@ Add placeholders for `amp-img` and `amp-video` posters. The placeholders are blu
 
 This transformer supports the following options:
 
-* `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
-* `imageBasePath`: specifies a base path used to resolve an image during build.
-* `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
-* `blurredPlaceholdersCacheSize`: Specifies the max number of blurred images to be cached
+- `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
+- `imageBasePath`: specifies a base path used to resolve an image during build.
+- `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
+- `blurredPlaceholdersCacheSize`: Specifies the max number of blurred images to be cached
   to avoid expensive recalculation. Set to 0 if caching should be disabled. Set to -1 if
   all placeholders should be cached (good for static sites). Defaults to 30.
 
@@ -506,6 +505,7 @@ const optimizer = AmpOptimizer.create({
 It's possible to rewrite the AMP framework and component imports to a different domain than `cdn.ampproject.org`.
 
 Example:
+
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
@@ -537,6 +537,7 @@ Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched
 where in this example, `de` is the ISO 3166-1 alpha-2 country code for Germany.
 
 Example:
+
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
@@ -581,5 +582,3 @@ $ npm run test:optimizer:snapshot
 ```
 
 to store a new snapshot version in `expected_output.html`.
-
-

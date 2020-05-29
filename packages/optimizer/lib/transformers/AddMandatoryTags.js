@@ -142,11 +142,12 @@ const BOILERPLATES = {
  * remove or convert invalid elements. This transformer supports the following option:
  *
  * - `format: [AMP|AMP4EMAIL|AMP4ADS]` - specifies the AMP format. Defaults to `AMP`.
- * - `autoAddBoilerplate: [true|false]` - set to `false` to disable auto adding the boilerplate.
+ * - `autoAddMandatoryTags: [true|false]` - set to `false` to disable auto adding the boilerplate.
  */
 class AddMandatoryTags {
   constructor(config) {
-    this.enabled = config.autoAddBoilerplate !== false;
+    // autoAddBoilerplate is the deprecated parameter
+    this.enabled = config.autoAddBoilerplate !== false && config.autoAddMandatoryTags !== false;
     this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AddMandatoryTags');
   }
