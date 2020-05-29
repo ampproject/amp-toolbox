@@ -36,7 +36,7 @@ const TINY_IMG_THRESHOLD = 150;
 class PreloadHeroImage {
   constructor(config) {
     this.log = config.log;
-    this.enabled = config.preloadHeroImage !== false && config.experimentPreloadHeroImage;
+    this.enabled = config.preloadHeroImage !== false;
   }
   async transform(root, params) {
     if (!this.enabled || params.preloadHeroImage === false) {
