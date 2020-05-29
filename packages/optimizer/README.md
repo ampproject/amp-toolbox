@@ -4,21 +4,22 @@
 
 AMP Optimizer is a tool to simplify creating AMP pages and improve AMP rendering performance. AMP Optimizer implements [AMP performance best practices](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp?format=websites) and supports [AMP server-side-rendering](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering?format=websites). By default, it will perform the following optimizations:
 
-* Server-side render AMP layouts.
-* **Automatically import all missing AMP component scripts**.
-* **Automatically add any missing mandatory AMP tags**.
-* Remove the AMP boilerplate (when possible).
-* Remove not needed whitespace.
-* Extract and move CSS keyframe animations to the bottom of the page.
-* Optimize AMP framework and custom font loading
-* Generate CSP for inlined [`amp-script`](https://amp.dev/documentation/components/amp-script/) code.
+- [Server-side render AMP layouts](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/).
+- **Automatically import all missing AMP component scripts**.
+- **Automatically add any missing mandatory AMP tags**.
+- Auto detects and preloads hero images from amp-img, amp-iframe, amp-video, or amp-video-iframe.
+- Remove the AMP boilerplate (when possible).
+- Remove not needed whitespace.
+- Extract and move CSS keyframe animations to the bottom of the page.
+- Optimize AMP framework and custom font loading
+- Generate CSP for inlined [`amp-script`](https://amp.dev/documentation/components/amp-script/) code.
 
 The performance optimizations can improve page rendering times by up to 50%. You can read more about the potential performance gains in this [blog post](https://blog.amp.dev/2018/10/08/how-to-make-amp-even-faster/). To give it a try, check out [the online playground](https://toolbox-optimizer.glitch.me/).
 
 **Good to know:**
 
-* AMP Optimizer will produce valid AMP.
-* AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
+- AMP Optimizer will produce valid AMP.
+- AMP Optimizer can be used in combination with [AMP Packager](https://github.com/ampproject/amppackager) to create SXGs.
 
 ## Usage
 
@@ -50,15 +51,15 @@ You can find a sample implementation [here](/packages/optimizer/demo/simple). If
 
 ### Incomplete markup
 
-It's possible to pass incomplete documents and AMP Optimizer will add any 
-missing tags and extension imports required by a valid AMP document. 
+It's possible to pass incomplete documents and AMP Optimizer will add any
+missing tags and extension imports required by a valid AMP document.
 
 ```
 const originalHtml = `
   <h1>Hello World!</h1>
-  <amp-twitter width="375" 
-               height="472" 
-               layout="responsive" 
+  <amp-twitter width="375"
+               height="472"
+               layout="responsive"
                data-tweetid="1182321926473162752">
   </amp-twitter>
 `;
@@ -111,15 +112,15 @@ const ampOptimizer = AmpOptimizer.create({
 const markdown = `
 # Markdown 🤯
 
-Here is an image declared in Markdown syntax: 
+Here is an image declared in Markdown syntax:
 
 ![A random image](https://unsplash.it/800/600).
 
 You can directly declare AMP components:
 
-<amp-twitter width="375" 
-             height="472" 
-             layout="responsive" 
+<amp-twitter width="375"
+             height="472"
+             layout="responsive"
              data-tweetid="1182321926473162752">
 </amp-twitter>
 
@@ -188,8 +189,8 @@ $ npx @ampproject/toolbox-cli optimize myFile.html
 
 The biggest performance gain results from [removing the AMP boilerplate code](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/server-side-rendering/#why-is-it-faster?). However, under some circumstances it's not possible to remove the boilerplate code:
 
-* if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
-* if an AMP component uses the `media`, `sizes` or `heights` attribute ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
+- if the`amp-experiment`, `amp-story` or `amp-dynamic-css-classes` components are used ([code](https://github.com/ampproject/amphtml/blob/62a9eab084ccd800d80a371e2cb29cd4f9e8576a/src/render-delaying-services.js#L39-L43)).
+- if an AMP component uses the `media`, `sizes` or `heights` attribute ([documentation](https://amp.dev/documentation/guides-and-tutorials/learn/common_attributes/?format=websites#heights)). A simple workaround is to replace the `media`, `sizes` or `heights` attributes with normal CSS media queries.
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
@@ -293,10 +294,10 @@ Add placeholders for `amp-img` and `amp-video` posters. The placeholders are blu
 
 This transformer supports the following options:
 
-* `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
-* `imageBasePath`: specifies a base path used to resolve an image during build.
-* `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
-* `blurredPlaceholdersCacheSize`: Specifies the max number of blurred images to be cached
+- `blurredPlaceholders`: Enables blurry image placeholder generation. Default is `false`.
+- `imageBasePath`: specifies a base path used to resolve an image during build.
+- `maxBlurredPlaceholders`: Specifies the max number of blurred images. Defaults to 5.
+- `blurredPlaceholdersCacheSize`: Specifies the max number of blurred images to be cached
   to avoid expensive recalculation. Set to 0 if caching should be disabled. Set to -1 if
   all placeholders should be cached (good for static sites). Defaults to 30.
 
@@ -316,6 +317,7 @@ const optimizer = AmpOptimizer.create({
 It's possible to rewrite the AMP framework and component imports to a different domain than `cdn.ampproject.org`.
 
 Example:
+
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
@@ -347,6 +349,7 @@ Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched
 where in this example, `de` is the ISO 3166-1 alpha-2 country code for Germany.
 
 Example:
+
 ```
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
@@ -383,13 +386,11 @@ Transformer tests are located in:
 ```
 
 The transformation input is defined in `input.html`, whereas `expected_output.html` contains the expected
-outcome of the transformation. Don't edit `expected_output.html` manually, instead, after changing 
-a transformer implementation, run: 
+outcome of the transformation. Don't edit `expected_output.html` manually, instead, after changing
+a transformer implementation, run:
 
 ```
 $ npm run test:optimizer:snapshot
 ```
 
-to store a new snapshot version in `expected_output.html`. 
-
-
+to store a new snapshot version in `expected_output.html`.
