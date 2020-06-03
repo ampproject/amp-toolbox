@@ -185,7 +185,7 @@ Minifies the generated HTML output and inlined CSS.
 
 #### `preloadHeroImage`
 
-Auto detect hero images for amp-img, amp-iframe, amp-video, or amp-video-iframe and injects a `link rel=preload`.
+Auto detect hero images for amp-img, amp-iframe, amp-video, or amp-video-iframe and injects a `link rel=preload`. Preloads will only be generated if there is no existing image preload.
 
 - name: `preloadHeroImage`
 - valid options: `[true|false]`
