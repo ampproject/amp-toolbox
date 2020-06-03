@@ -84,12 +84,7 @@ class PreloadHeroImage {
   }
 
   hasExistingImagePreload(head) {
-    for (const node of head.children) {
-      if (this.isImagePreload(node)) {
-        return true;
-      }
-    }
-    return false;
+    return head.children.some(this.isImagePreload);
   }
 
   isImagePreload(node) {
