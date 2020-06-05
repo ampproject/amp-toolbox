@@ -114,6 +114,14 @@ assertPass(
   )
 );
 
+assertPass(
+  `${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is present`,
+  runLocalTest(
+    MetadataIncludesOGImageSrc,
+    "local/MetadataIncludesOGImageSrc-3/source.html"
+  )
+);
+
 assertWarn(
   `${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is missing`,
   runLocalTest(
@@ -153,4 +161,4 @@ assertWarn(
 );
 
 console.log(`# ${basename(__filename)} - HTML-only tests`);
-console.log(`1..24`);
+console.log(`1..25`);
