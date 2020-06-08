@@ -69,17 +69,9 @@ class PreloadHeroImage {
       preload.attribs.media = heroImage.media;
     }
     if (heroImage.srcset) {
-      try {
-        parseSrcSet(heroImage.srcset);
-        preload.attribs.srcset = heroImage.srcset;
-      } catch (err) {
-        this.log.warn(
-          `Invalid srcset '${heroImage.srcset}' for amp-img src '${heroImage.src}'`,
-          err.message
-        );
-      }
+      this.log.debug("Could not preload hero image as it's using srcset", heroImage.src);
+      return;
     }
-    this.log.debug('Preloading hero image: ', heroImage.src);
     insertAfter(head, preload, referenceNode);
   }
 
