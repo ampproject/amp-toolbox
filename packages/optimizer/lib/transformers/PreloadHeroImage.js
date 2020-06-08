@@ -69,7 +69,10 @@ class PreloadHeroImage {
       preload.attribs.media = heroImage.media;
     }
     if (heroImage.srcset) {
-      this.log.debug("Could not preload hero image as it's using srcset", heroImage.src);
+      this.log.debug(
+        "Could not preload hero image as it's using srcset, which is currently only supported Chromium-based browsers (see https://web.dev/preload-responsive-images/).",
+        heroImage.src
+      );
       return;
     }
     insertAfter(head, preload, referenceNode);
