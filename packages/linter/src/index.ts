@@ -23,6 +23,7 @@ import { ImagesHaveAltText } from "./rules/ImagesHaveAltText";
 import { VideosHaveAltText } from "./rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "./rules/VideosAreSubtitled";
 import { IsValid } from "./rules/IsValid";
+import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -118,6 +119,7 @@ function testsForMode(type: LintMode) {
       ImagesHaveAltText,
       VideosHaveAltText,
       VideosAreSubtitled,
+      TitleMeetsLengthCriteria,
     ])
   );
   return tests.get(type) || [];
