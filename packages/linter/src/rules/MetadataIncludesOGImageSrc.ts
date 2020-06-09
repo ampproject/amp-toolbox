@@ -7,9 +7,12 @@ export class MetadataIncludesOGImageSrc extends Rule {
 
     $("meta").each(function (i, elem) {
       if (
-        elem.attribs.property &&
-        elem.attribs.property.includes("og:image", 0) &&
-        elem.attribs.content
+        (elem.attribs.property &&
+          elem.attribs.property.includes("og:image", 0) &&
+          elem.attribs.content) ||
+        (elem.attribs.name &&
+          elem.attribs.name.includes("og:image", 0) &&
+          elem.attribs.content)
       ) {
         hasOGImage = true;
         return false;
