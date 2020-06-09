@@ -163,12 +163,18 @@ assertWarn(
 
 assertPass(
   `${TitleMeetsLengthCriteria.name} - Title is 40 characters or less`,
-  runLocalTest(TitleMeetsLengthCriteria, "local/TitleMeetsLengthCriteria-1/source.html")
+  runLocalTest(
+    TitleMeetsLengthCriteria,
+    "local/TitleMeetsLengthCriteria-1/source.html"
+  )
 );
 
 assertWarn(
   `${TitleMeetsLengthCriteria.name} - Title is longer than 40 characters`,
-  runLocalTest(TitleMeetsLengthCriteria, "local/TitleMeetsLengthCriteria-2/source.html")
+  runLocalTest(
+    TitleMeetsLengthCriteria,
+    "local/TitleMeetsLengthCriteria-2/source.html"
+  )
 );
 
 console.log(`# ${basename(__filename)} - HTML-only tests`);

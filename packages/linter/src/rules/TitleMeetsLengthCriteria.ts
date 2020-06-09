@@ -4,12 +4,11 @@ import chalk from "chalk";
 
 export class TitleMeetsLengthCriteria extends Rule {
   run({ $ }: Context) {
-
     const e = $("amp-story[title]");
 
     return e[0].attribs.title.length > 40
-    ? this.warn("Title is too long")
-    : this.pass();
+      ? this.warn("Title is too long")
+      : this.pass();
   }
   meta() {
     return {
