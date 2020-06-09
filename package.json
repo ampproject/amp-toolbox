@@ -47,7 +47,7 @@
     "karma": "5.0.9",
     "karma-chrome-launcher": "3.1.0",
     "karma-jasmine": "3.3.1",
-    "lerna": "3.22.0",
+    "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
     "lighthouse": "6.0.0",
     "lru-cache": "5.1.1",
