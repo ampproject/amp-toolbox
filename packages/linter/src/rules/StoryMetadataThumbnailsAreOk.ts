@@ -71,7 +71,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       try {
         const info = await dimensions(context, url);
         const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
-  
+
         return failed.length === 0
           ? this.pass()
           : this.fail(formatForHumans(attr.toString(), url, failed.join()));
