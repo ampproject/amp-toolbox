@@ -20,7 +20,7 @@
 
 #### Committers: 2
 - Damani  ([@Dbrown910](https://github.com/Dbrown910))
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))t
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.0 (2020-05-29)
 
