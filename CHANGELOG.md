@@ -1,3 +1,27 @@
+## v2.5.1 (2020-06-09)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#826](https://github.com/ampproject/amp-toolbox/pull/826) Updated og image check to include name attr ([@Dbrown910](https://github.com/Dbrown910))
+* `cache-list`, `cli`, `core`, `cors`, `lighthouse-plugin-amp`, `linter`, `optimizer-express`, `optimizer`, `runtime-fetch`, `runtime-version`, `update-cache`
+  * [#814](https://github.com/ampproject/amp-toolbox/pull/814) Move hero image preload out of experimental ([@sebastianbenz](https://github.com/sebastianbenz))
+* `cli`, `linter`
+  * [#806](https://github.com/ampproject/amp-toolbox/pull/806) Sort linter output ([@Dbrown910](https://github.com/Dbrown910))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#828](https://github.com/ampproject/amp-oolbox/pull/828) Do not preload hero images using srcset ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+* Other
+  * [#829](https://github.com/ampproject/amp-toolbox/pull/829) Update dependency lerna to v3.22.1 ([@renovate-bot](https://github.com/renovate-bot))
+* `optimizer`
+  * [#812](https://github.com/ampproject/amp-toolbox/pull/812) Update dependency @ampproject/toolbox-optimizer to v2.5.0 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 2
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))t
+
 ## v2.5.0 (2020-05-29)
 
 #### :rocket: Enhancement
