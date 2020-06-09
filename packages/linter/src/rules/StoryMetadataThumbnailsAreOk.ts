@@ -21,41 +21,42 @@ const outputMessageMap: { [key: string]: string } = {
   isSquare: " a 1:1 aspect ratio",
   isRaster: " of type .jpeg, .gif, .png, or .webp",
   isLandscape: " a 4:3 aspect ratio",
-  isAtLeast96x96: " 96x96 or larger",
-  isAtLeast696x928: " 696x928px or larger",
-  isAtLeast928x696: " 928x696px or larger",
-  isAtLeast928x928: " 928x928px or larger",
+  isAtLeast80x80: " at least 80x80px [96px+ recommended]",
+  isAtLeast640x640: " 640x640px or larger",
+  isAtLeast480x640: " 480x640px or larger [640x853px+ recommended]",
+  isAtLeast640x480: " 640x480px or larger",
 };
 
 export class StoryMetadataThumbnailsAreOk extends Rule {
   async run(context: Context) {
     // Requirements are from
-    // https://github.com/ampproject/amphtml/blob/master/extensions/amp-story/amp-story.md#new-metadata-requirements.
+    // https://amp.dev/documentation/components/amp-story/#poster-guidelines-for-poster-portrait-src-poster-landscape-src-and-poster-square-src
+    // Last Updated: June 8th, 2020
     function isSquare({ width, height }: ImageSize) {
-      return width === height;
+      return width > 0.9 * height && width < 1.1 * height;
     }
     function isPortrait({ width, height }: ImageSize) {
-      return width > 0.74 * height && width < 0.76 * height;
+      return width > 0.65 * height && width < 0.85 * height;
     }
     function isLandscape({ width, height }: ImageSize) {
-      return height > 0.74 * width && height < 0.76 * width;
+      return height > 0.65 * width && height < 0.85 * width;
     }
     function isRaster({ mime }: ImageSize) {
       return ["image/jpeg", "image/gif", "image/png", "image/webp"].includes(
         mime
       );
     }
-    function isAtLeast96x96({ width, height }: ImageSize) {
-      return width >= 96 && height >= 96;
+    function isAtLeast80x80({ width, height }: ImageSize) {
+      return width >= 80 && height >= 80;
     }
-    function isAtLeast928x928({ width, height }: ImageSize) {
-      return width >= 928 && height >= 928;
+    function isAtLeast640x640({ width, height }: ImageSize) {
+      return width >= 640 && height >= 640;
     }
-    function isAtLeast696x928({ width, height }: ImageSize) {
-      return width >= 696 && height >= 928;
+    function isAtLeast480x640({ width, height }: ImageSize) {
+      return width >= 480 && height >= 640;
     }
-    function isAtLeast928x696({ width, height }: ImageSize) {
-      return width >= 928 && height >= 696;
+    function isAtLeast640x480({ width, height }: ImageSize) {
+      return width >= 640 && height >= 480;
     }
     const metadata = inlineMetadata(context.$);
     const assert = async (
@@ -70,6 +71,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       try {
         const info = await dimensions(context, url);
         const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
+  
         return failed.length === 0
           ? this.pass()
           : this.fail(formatForHumans(attr.toString(), url, failed.join()));
@@ -94,26 +96,27 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       failed.split(",").forEach(function (el) {
         m = m + outputMessageMap[el] + " and";
       });
+      console.log("here ", failed);
       //Remove the last ' and' + tack on the src
       m = m.slice(0, m.length - 4) + `\nsrc: ${url}`;
       return m;
     };
     const res = [
-      assert("publisher-logo-src", true, [isRaster, isSquare, isAtLeast96x96]),
+      assert("publisher-logo-src", true, [isRaster, isSquare, isAtLeast80x80]),
       assert("poster-portrait-src", true, [
         isRaster,
         isPortrait,
-        isAtLeast696x928,
+        isAtLeast480x640,
       ]),
       assert("poster-square-src", false, [
         isRaster,
         isSquare,
-        isAtLeast928x928,
+        isAtLeast640x640,
       ]),
       assert("poster-landscape-src", false, [
         isRaster,
         isLandscape,
-        isAtLeast928x696,
+        isAtLeast640x480,
       ]),
     ];
     return (await Promise.all(res)).filter(notPass);

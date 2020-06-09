@@ -28,7 +28,7 @@ withFixture("thumbnails1", () =>
       "https://ampbyexample.com/stories/introduction/amp_story_hello_world/preview/embed/"
     ),
     (actual: Result[]) => {
-      return actual.length === 2
+      return actual.length === 0
         ? ""
         : `expected no errors, got ${JSON.stringify(actual)}`;
     }
