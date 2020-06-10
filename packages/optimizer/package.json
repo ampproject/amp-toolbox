@@ -33,6 +33,7 @@
     "@ampproject/toolbox-runtime-version": "^2.5.1",
     "@ampproject/toolbox-script-csp": "^2.3.0",
     "@ampproject/toolbox-validator-rules": "^2.3.0",
+    "abort-controller": "3.0.0",
     "cross-fetch": "3.0.4",
     "cssnano": "4.1.10",
     "dom-serializer": "1.0.1",
