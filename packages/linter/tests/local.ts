@@ -10,6 +10,7 @@ import { VideosHaveAltText } from "../src/rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "../src/rules/VideosAreSubtitled";
 import { basename } from "path";
 import { BookendExists } from "../src/rules/BookendExists";
+import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
 
 assertWarn(
   `${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`,
@@ -160,5 +161,21 @@ assertWarn(
   runLocalTest(VideosAreSubtitled, "local/VideosAreSubtitled-2/source.html")
 );
 
+assertPass(
+  `${TitleMeetsLengthCriteria.name} - Title is 40 characters or less`,
+  runLocalTest(
+    TitleMeetsLengthCriteria,
+    "local/TitleMeetsLengthCriteria-1/source.html"
+  )
+);
+
+assertWarn(
+  `${TitleMeetsLengthCriteria.name} - Title is longer than 40 characters`,
+  runLocalTest(
+    TitleMeetsLengthCriteria,
+    "local/TitleMeetsLengthCriteria-2/source.html"
+  )
+);
+
 console.log(`# ${basename(__filename)} - HTML-only tests`);
-console.log(`1..25`);
+console.log(`1..27`);
