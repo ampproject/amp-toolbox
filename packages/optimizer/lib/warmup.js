@@ -14,15 +14,48 @@
  * limitations under the License.
  */
 
+const AbortController = require('abort-controller');
+const fetch = require('node-fetch');
+const log = require('@ampproject/toolbox-core').log.tag('AMP OPTIMIZER');
 const AmpOptimizer = require('../');
-const ampOptimizer = AmpOptimizer.create();
+
+const DOWNLOAD_TIMEOUT = 2000; // 2 seconds
+const controller = new AbortController();
+
+const fetchRuntimeParameters = require('./fetchRuntimeParameters');
+
+const fetchWithTimout = (url, opts = {}) => {
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, DOWNLOAD_TIMEOUT);
+  opts.signal = controller.signal;
+  return fetch(url, opts).finally(() => {
+    clearTimeout(timeout);
+  });
+};
+
+const ampOptimizer = AmpOptimizer.create({
+  fetch: fetchWithTimout,
+});
 
 async function warmupCaches() {
-  // run a dummy transformation to pre-fill the caches
-  await ampOptimizer.transformHtml('<h1>hello world</h1>', {
-    canonical: '.',
-  });
-  ampOptimizer.config.log.info('Downloading latest AMP runtime data');
+  let success = true;
+  // Hack to avoid error messages in the console during postinstall
+  log.error = (e) => {
+    success = false;
+  };
+  // Re-use config from AMP Optimizer
+  // TODO extract config into it's own class
+  const config = AmpOptimizer.create({log, fetch: fetchWithTimout}).config;
+  // Try to download all runtime data, this will fail if behind a proxy
+  await fetchRuntimeParameters(config);
+  if (success) {
+    log.info('Downloaded latest AMP runtime data.');
+  } else {
+    log.info(
+      'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer#fetch.'
+    );
+  }
 }
 
 warmupCaches();

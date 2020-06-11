@@ -108,6 +108,29 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 - default: `true`
 - used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
 
+#### `fetch`
+
+Provide a custom fetch handler. You can use this option to configure a custom proxy server. Example:
+
+```js
+const nodeFetch = require('node-fetch');
+
+const proxyHost = '...';
+const proxyPort = '...';
+
+const fetch = (url, opts={}) => {
+  opts.agent = new HttpsProxyAgent(`${proxyHost}:${proxyPort}');
+  return nodeFetch(url, opts)
+}
+const optimizer = AmpOptimizer.create({
+  fetch,
+});
+```
+
+- name: `fetch`
+- valid options: a [whatwg fetch](https://github.com/whatwg/fetch) compatible fetch implementation. 
+- default: [node-fetch](https://www.npmjs.com/package/node-fetch)
+
 #### `format`
 
 Specifies the AMP format of the input file. Defaults to `AMP`.

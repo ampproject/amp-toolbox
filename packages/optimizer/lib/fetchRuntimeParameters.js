@@ -17,7 +17,12 @@
 
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
-const {AMP_CACHE_HOST, AMP_RUNTIME_CSS_PATH, appendRuntimeVersion} = require('./AmpConstants.js');
+const {
+  AMP_CACHE_HOST,
+  AMP_RUNTIME_CSS_PATH,
+  AMP_VALIDATION_RULES_URL,
+  appendRuntimeVersion,
+} = require('./AmpConstants.js');
 
 const KEY_VALIDATOR_RULES = 'validator-rules';
 const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
@@ -35,7 +40,7 @@ const cache = require('./cache.js');
  * @param {Object} customRuntimeParameters - user defined runtime parameters
  * @returns {Promise<Object>} - the runtime parameters
  */
-async function fetchRuntimeParameters(config, customRuntimeParameters) {
+async function fetchRuntimeParameters(config, customRuntimeParameters = {}) {
   const runtimeParameters = Object.assign({}, customRuntimeParameters);
   // Configure the log level
   runtimeParameters.verbose = customRuntimeParameters.verbose || config.verbose || false;
@@ -63,7 +68,7 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
     runtimeParameters.validatorRules =
       customRuntimeParameters.validatorRules ||
       config.validatorRules ||
-      (await fetchValidatorRules_(config));
+      (await fetchValidatorRulesFromCache_(config));
   } catch (error) {
     config.log.error('Could not fetch validator rules', error);
   }
@@ -72,14 +77,14 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
 /**
  * @private
  */
-async function fetchValidatorRules_(config) {
+async function fetchValidatorRulesFromCache_(config) {
   if (config.cache === false) {
-    return validatorRulesProvider.fetch();
+    return fetchValidatorRules_(config);
   }
   let rawRules = await cache.get('validator-rules');
   let validatorRules;
   if (!rawRules) {
-    validatorRules = await validatorRulesProvider.fetch();
+    validatorRules = await fetchValidatorRules_(config);
     config.log.debug('Downloaded AMP validation rules');
     // We save the raw rules to make the validation rules JSON serializable
     cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
@@ -87,6 +92,14 @@ async function fetchValidatorRules_(config) {
     validatorRules = await validatorRulesProvider.fetch({rules: rawRules});
   }
   return validatorRules;
+}
+
+async function fetchValidatorRules_(config) {
+  const response = await config.fetch(AMP_VALIDATION_RULES_URL);
+  if (!response.ok) {
+    return null;
+  }
+  return validatorRulesProvider.fetch({rules: await response.json()});
 }
 
 /**
@@ -164,7 +177,10 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
     config.log.error(
       `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
     );
-    ampRuntimeData = await fetchLatestRuntimeData_({config, AMP_CACHE_HOST, lts}, versionKey);
+    ampRuntimeData = await fetchLatestRuntimeData_(
+      {config, ampUrlPrefix: AMP_CACHE_HOST, lts},
+      versionKey
+    );
   } else if (ampRuntimeData.version && versionKey) {
     cache.set(versionKey, ampRuntimeData);
   }
