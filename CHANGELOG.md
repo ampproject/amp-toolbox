@@ -1,3 +1,19 @@
+## v2.5.2 (2020-06-11)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#835](https://github.com/ampproject/amp-toolbox/pull/835) More robust cache warmup  ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+* `linter`
+  * [#831](https://github.com/ampproject/amp-toolbox/pull/831) Update dependency chalk to v4.1.0 ([@renovate-bot](https://github.com/renovate-bot))
+* `optimizer`
+  * [#830](https://github.com/ampproject/amp-toolbox/pull/830) Update dependency @ampproject/toolbox-optimizer to v2.5.1 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 2
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.1 (2020-06-09)
 
 #### :rocket: Enhancement
