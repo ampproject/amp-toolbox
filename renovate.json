@@ -1,4 +1,5 @@
 {
+  "branchName": "main",
   "extends": [
     "config:base"
   ],
