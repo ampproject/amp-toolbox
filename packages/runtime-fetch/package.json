@@ -3,15 +3,8 @@
   "version": "2.5.1",
   "description": "Download the AMP runtime",
   "main": "index.js",
-  "keywords": [
-    "amp",
-    "download",
-    "runtime"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp", "download", "runtime"],
+  "files": ["index.js", "lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -30,6 +23,6 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/runtime-fetch",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/runtime-fetch",
   "gitHead": "c26612cc3d7408fdc1451bcc8e0fecd67ac9661d"
 }

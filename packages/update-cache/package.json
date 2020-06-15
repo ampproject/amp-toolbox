@@ -8,22 +8,14 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/update-cache"
   },
-  "keywords": [
-    "amp",
-    "amp-toolbox",
-    "amp-cache",
-    "update-cache"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp", "amp-toolbox", "amp-cache", "update-cache"],
+  "files": ["index.js", "lib"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/update-cache",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/update-cache",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.5.1",
     "@ampproject/toolbox-cache-url": "^2.3.0",

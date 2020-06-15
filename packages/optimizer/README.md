@@ -128,7 +128,7 @@ const optimizer = AmpOptimizer.create({
 ```
 
 - name: `fetch`
-- valid options: a [whatwg fetch](https://github.com/whatwg/fetch) compatible fetch implementation. 
+- valid options: a [whatwg fetch](https://github.com/whatwg/fetch) compatible fetch implementation.
 - default: [node-fetch](https://www.npmjs.com/package/node-fetch)
 
 #### `format`
@@ -170,7 +170,7 @@ const ampOptimizer = AmpOptimizer.create({
 
 #### `lts`
 
-Use [long-term stable URLs](https://github.com/ampproject/amphtml/blob/master/contributing/lts-release.md) for downloading the AMP runtime and components.
+Use [long-term stable URLs](https://github.com/ampproject/amphtml/blob/main/contributing/lts-release.md) for downloading the AMP runtime and components.
 
 - name: `lts`
 - valid options: `[true|false]`
@@ -552,7 +552,7 @@ console.log(optimizedHtml);
 
 ### Fallback API for amp-geo
 
-Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched at delivery time to replace `{{AMP_ISO_COUNTRY_HOTPATCH}}` with the ISO 3166-1 alpha-2 country code where the request originated ([reference](https://github.com/ampproject/amphtml/blob/master/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem)). If your host does not have this capability, you can instead rely on a web API to return the country at runtime. The web API must be secure (HTTPS), adhere to [AMP CORS guidelines](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/), and return JSON in the following format:
+Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched at delivery time to replace `{{AMP_ISO_COUNTRY_HOTPATCH}}` with the ISO 3166-1 alpha-2 country code where the request originated ([reference](https://github.com/ampproject/amphtml/blob/main/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem)). If your host does not have this capability, you can instead rely on a web API to return the country at runtime. The web API must be secure (HTTPS), adhere to [AMP CORS guidelines](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/), and return JSON in the following format:
 
 ```
 {"country": "de"}

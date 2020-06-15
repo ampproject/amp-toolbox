@@ -3,13 +3,8 @@
   "version": "2.5.1",
   "description": "AMP Runtime versions",
   "main": "index.js",
-  "keywords": [
-    "amp"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp"],
+  "files": ["index.js", "lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -23,6 +18,6 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/runtime-version",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/runtime-version",
   "gitHead": "d5517559fb1c2e1be4d3c3e9df756cdce82a432a"
 }

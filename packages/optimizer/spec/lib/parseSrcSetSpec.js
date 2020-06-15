@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Credits: ported from https://github.com/ampproject/amphtml/blob/master/test/unit/test-srcset.js
+ * Credits: ported from https://github.com/ampproject/amphtml/blob/main/test/unit/test-srcset.js
  */
 
 const parseSrcset = require('../../lib/parseSrcSet');

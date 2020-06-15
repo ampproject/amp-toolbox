@@ -7,7 +7,7 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/linter"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/linter",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/linter",
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {

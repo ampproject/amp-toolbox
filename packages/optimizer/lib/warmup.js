@@ -53,7 +53,7 @@ async function warmupCaches() {
     log.info('Downloaded latest AMP runtime data.');
   } else {
     log.info(
-      'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer#fetch.'
+      'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#fetch.'
     );
   }
 }

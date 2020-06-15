@@ -26,7 +26,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
  * This transformer supports two parameters:
  *
  * * `ampRuntimeVersion`: specifies a
- *   [specific version](https://github.com/ampproject/amp-toolbox/tree/master/runtime-version)
+ *   [specific version](https://github.com/ampproject/amp-toolbox/tree/main/runtime-version)
  *   version</a> of the AMP runtime. For example: `ampRuntimeVersion:
  *   "001515617716922"` will result in AMP runtime URLs being re-written
  *   from `https://cdn.ampproject.org/v0.js` to

@@ -8,21 +8,14 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/optimizer-express"
   },
-  "keywords": [
-    "amp",
-    "amp-optimizer",
-    "amp-toolbox"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp", "amp-optimizer", "amp-toolbox"],
+  "files": ["index.js", "lib"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/optimizer-express",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer-express",
   "dependencies": {
     "@ampproject/toolbox-core": "^2.5.1",
     "@ampproject/toolbox-optimizer": "^2.5.3",

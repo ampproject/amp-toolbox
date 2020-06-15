@@ -11,21 +11,14 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/cli"
   },
-  "keywords": [
-    "amp-toolbox",
-    "cli"
-  ],
-  "files": [
-    "index.js",
-    "lib",
-    "bin"
-  ],
+  "keywords": ["amp-toolbox", "cli"],
+  "files": ["index.js", "lib", "bin"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "homepage": "https://github.com/ampproject/amp-toolbox/tree/master/packages/cli",
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/cli",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.5.1",
     "@ampproject/toolbox-cache-url": "^2.3.0",
