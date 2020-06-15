@@ -1,3 +1,12 @@
+## v2.5.3 (2020-06-15)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#838](https://github.com/ampproject/amp-toolbox/pull/838) fix(optimizer): add missing dependency node-fetch ([@merceyz](https://github.com/merceyz))
+
+#### Committers: 1
+- Kristoffer K. ([@merceyz](https://github.com/merceyz))
+
 ## v2.5.2 (2020-06-11)
 
 #### :bug: Bug Fix
