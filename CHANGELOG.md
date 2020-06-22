@@ -1,3 +1,14 @@
+## v2.5.4 (2020-06-22)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#846](https://github.com/ampproject/amp-toolbox/pull/846) Fix: MinifyHtml cannot be disabled ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.3 (2020-06-15)
 
 #### :bug: Bug Fix
