@@ -38,7 +38,7 @@ const COMMENT_DEFAULT_IGNORE = /^\s*__[a-bA-Z0-9_-]+__\s*$/;
 class MinifyHtml {
   constructor(config) {
     this.opts = {
-      minify: !!config.minify || true,
+      minify: config.minify !== false,
       minifyAmpScript: true,
       minifyJSON: true,
       collapseWhitespace: true,
