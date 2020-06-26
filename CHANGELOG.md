@@ -1,3 +1,12 @@
+## v2.5.5 (2020-06-22)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#850](https://github.com/ampproject/amp-toolbox/pull/850) Don't remove boilerplate for amp-stories ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.4 (2020-06-22)
 
 #### :bug: Bug Fix
