@@ -1,3 +1,12 @@
+## v2.5.6 (2020-07-07)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#852](https://github.com/ampproject/amp-toolbox/pull/852) Improve preload handling with runtime self hosting ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.5 (2020-06-22)
 
 #### :bug: Bug Fix
