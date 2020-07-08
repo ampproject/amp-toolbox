@@ -215,7 +215,6 @@ class OptimizeImages {
     // We add srcset only when the CSS dimensions correspond to 2 or more
     // unique legitimate physical dimensions.
     const srcsetWidth = new SrcsetWidth(width, this.maxImageWidth, this.maxSrcsetValues);
-    this.log.info('optimizating image', src, srcsetWidth.isValid());
     if (!srcsetWidth.isValid()) {
       return;
     }
