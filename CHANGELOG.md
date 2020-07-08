@@ -1,3 +1,12 @@
+## v2.5.7 (2020-07-08)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#854](https://github.com/ampproject/amp-toolbox/pull/854) Fix runtime-host meta tag when using relative URLs ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.6 (2020-07-07)
 
 #### :rocket: Enhancement
