@@ -57,6 +57,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
 class RewriteAmpUrls {
   constructor(config) {
     this.esmModulesEnabled = config.experimentEsm;
+    this.log = config.log;
   }
   transform(root, params) {
     const html = firstChildByTag(root, 'html');
@@ -109,13 +110,12 @@ class RewriteAmpUrls {
 
     // runtime-host and amp-geo-api meta tags should appear before the first script
     if (!this._usesAmpCacheUrl(host) && !params.lts) {
-      let versionlessHost;
-      if (this.isAbsoluteUrl_(params.ampUrlPrefix)) {
-        versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
-      } else {
-        versionlessHost = '.';
+      try {
+        const url = new URL(host);
+        this._addMeta(head, 'runtime-host', url.origin);
+      } catch (e) {
+        this.log.warn('ampUrlPrefix must be an absolute URL');
       }
-      this._addMeta(head, 'runtime-host', versionlessHost);
     }
     if (params.geoApiUrl && !params.lts) {
       this._addMeta(head, 'amp-geo-api', params.geoApiUrl);
