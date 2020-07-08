@@ -110,26 +110,11 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 
 #### `fetch`
 
-Provide a custom fetch handler. You can use this option to configure a custom proxy server. Example:
+Inside proxy, environment variable `https_proxy` is supported. Example:
 
-```js
-const nodeFetch = require('node-fetch');
-
-const proxyHost = '...';
-const proxyPort = '...';
-
-const fetch = (url, opts={}) => {
-  opts.agent = new HttpsProxyAgent(`${proxyHost}:${proxyPort}');
-  return nodeFetch(url, opts)
-}
-const optimizer = AmpOptimizer.create({
-  fetch,
-});
 ```
-
-- name: `fetch`
-- valid options: a [whatwg fetch](https://github.com/whatwg/fetch) compatible fetch implementation.
-- default: [node-fetch](https://www.npmjs.com/package/node-fetch)
+https_proxy=http://[proxy_host]:[port]
+```
 
 #### `format`
 
