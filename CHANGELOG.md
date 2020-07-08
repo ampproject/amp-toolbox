@@ -1,3 +1,12 @@
+## v2.5.9 (2020-07-08)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#856](https://github.com/ampproject/amp-toolbox/pull/856) Parallelize image optimization ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.8 (2020-07-08)
 
 #### :bug: Bug Fix
