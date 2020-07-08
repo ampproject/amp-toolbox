@@ -109,7 +109,12 @@ class RewriteAmpUrls {
 
     // runtime-host and amp-geo-api meta tags should appear before the first script
     if (!this._usesAmpCacheUrl(host) && !params.lts) {
-      const versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
+      let versionlessHost;
+      if (this.isAbsoluteUrl_(params.ampUrlPrefix)) {
+        versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
+      } else {
+        versionlessHost = '.';
+      }
       this._addMeta(head, 'runtime-host', versionlessHost);
     }
     if (params.geoApiUrl && !params.lts) {
@@ -173,6 +178,15 @@ class RewriteAmpUrls {
   _addMeta(head, name, content) {
     const meta = createElement('meta', {name, content});
     insertBefore(head, meta, firstChildByTag(head, 'script'));
+  }
+
+  isAbsoluteUrl_(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch (ex) {}
+
+    return false;
   }
 }
 
