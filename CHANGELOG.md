@@ -1,3 +1,12 @@
+## v2.5.8 (2020-07-08)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#855](https://github.com/ampproject/amp-toolbox/pull/855) Only inject runtime-host meta tag if host is given ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.7 (2020-07-08)
 
 #### :bug: Bug Fix
