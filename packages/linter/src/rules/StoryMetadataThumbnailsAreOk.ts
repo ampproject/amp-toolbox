@@ -66,9 +66,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     ): Promise<Result> => {
       const url = metadata[attr];
       if (!url) {
-        return isMandatory
-          ? this.fail(`${attr} is missing`)
-          : this.pass();
+        return isMandatory ? this.fail(`${attr} is missing`) : this.pass();
       }
       try {
         const info = await dimensions(context, url);
