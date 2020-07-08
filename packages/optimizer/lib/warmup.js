@@ -15,7 +15,7 @@
  */
 
 const AbortController = require('abort-controller');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch-with-proxy');
 const log = require('@ampproject/toolbox-core').log.tag('AMP OPTIMIZER');
 const AmpOptimizer = require('../');
 
