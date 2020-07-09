@@ -16,7 +16,13 @@
 
 'use strict';
 
-const {createElement, hasAttribute, insertAfter, firstChildByTag} = require('../NodeUtils');
+const {
+  appendChild,
+  createElement,
+  hasAttribute,
+  insertAfter,
+  firstChildByTag,
+} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
 const {isTemplate} = require('../AmpConstants');
@@ -38,6 +44,7 @@ class PreloadHeroImage {
   constructor(config) {
     this.log = config.log;
     this.enabled = config.preloadHeroImage !== false;
+    this.experimentImg = config.experimentImg;
   }
   async transform(root, params) {
     if (!this.enabled || params.preloadHeroImage === false) {
@@ -189,6 +196,9 @@ class PreloadHeroImage {
     if (this.isTinyNode(layout, width, height)) {
       return null;
     }
+    if (this.experimentImg) {
+      this.generateImg(ampImg);
+    }
     return {src, srcset, media};
   }
 
@@ -215,6 +225,32 @@ class PreloadHeroImage {
       return {width, height};
     }
     return {width: 0, height: 0};
+  }
+
+  generateImg(node) {
+    const imgNode = createElement('img', {
+      class: 'class=i-amphtml-fill-content i-amphtml-replaced-content',
+      decoding: 'async',
+      loading: 'lazy',
+    });
+    const attributesToCopy = [
+      'alt',
+      'attribution',
+      'object-fit',
+      'object-position',
+      'referrerpolicy',
+      'src',
+      'srcset',
+      'sizes',
+      'title',
+    ];
+    for (const attr of attributesToCopy) {
+      if (hasAttribute(node, attr)) {
+        imgNode.attribs[attr] = node.attribs[attr];
+      }
+    }
+    node.attribs['i-amphtml-ssr'] = '';
+    appendChild(node, imgNode);
   }
 }
 
