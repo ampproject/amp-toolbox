@@ -42,7 +42,6 @@
     "htmlparser2": "4.1.0",
     "lru-cache": "5.1.1",
     "node-fetch": "2.6.0",
-    "node-fetch-with-proxy": "0.1.2",
     "normalize-html-whitespace": "1.0.0",
     "postcss": "7.0.32",
     "postcss-safe-parser": "4.0.2",
