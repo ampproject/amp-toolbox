@@ -75,7 +75,7 @@ class RewriteAmpUrls {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
         if (esm) {
-          preloads.push(this._addEsm(node, this._shouldPreload(node.attribs.src)));
+          preloads.push(this._addEsm(node));
         } else {
           preloads.push(this._createPreload(node.attribs.src, 'script'));
         }
@@ -129,14 +129,14 @@ class RewriteAmpUrls {
     return url.startsWith(AMP_CACHE_HOST);
   }
 
-  _replaceUrl(url, ampUrlPrefix) {
-    return ampUrlPrefix + url.substring(AMP_CACHE_HOST.length);
+  _replaceUrl(url, host) {
+    return host + url.substring(AMP_CACHE_HOST.length);
   }
 
-  _addEsm(scriptNode, preload) {
+  _addEsm(scriptNode) {
     let result = null;
     const esmScriptUrl = scriptNode.attribs.src.replace(/\.js$/, '.mjs');
-    if (preload) {
+    if (this._shouldPreload(scriptNode.attribs.src)) {
       const preload = createElement('link', {
         as: 'script',
         crossorigin: 'anonymous',
@@ -161,7 +161,7 @@ class RewriteAmpUrls {
   }
 
   _createPreload(href, type) {
-    if (!href.endsWith('v0.js') && !href.endsWith('v0.css')) {
+    if (!this._shouldPreload(href)) {
       return null;
     }
     return createElement('link', {
@@ -171,8 +171,8 @@ class RewriteAmpUrls {
     });
   }
 
-  _shouldPreload(url) {
-    return url.endsWith('v0.js');
+  _shouldPreload(href) {
+    return href.endsWith('v0.js') || href.endsWith('v0.css');
   }
 
   _addMeta(head, name, content) {
