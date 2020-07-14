@@ -1,3 +1,12 @@
+## v2.5.11 (2020-07-14)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#863](https://github.com/ampproject/amp-toolbox/pull/863) fix esm support for auto component import ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.9 (2020-07-08)
 
 #### :bug: Bug Fix
