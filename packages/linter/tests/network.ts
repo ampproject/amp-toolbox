@@ -22,15 +22,15 @@ import { IsValid } from "../src/rules/IsValid";
 
 withFixture("thumbnails1", () =>
   assertFnList(
-    `${StoryMetadataThumbnailsAreOk.name} - too small`,
+    `${StoryMetadataThumbnailsAreOk.name} - poster-portrait-src is too small`,
     runNetworkTest(
       StoryMetadataThumbnailsAreOk,
       "https://ampbyexample.com/stories/introduction/amp_story_hello_world/preview/embed/"
     ),
     (actual: Result[]) => {
-      return actual.length === 0
+      return actual.length === 1
         ? ""
-        : `expected no errors, got ${JSON.stringify(actual)}`;
+        : `expected one error, got ${JSON.stringify(actual)}`;
     }
   )
 );
@@ -57,6 +57,21 @@ withFixture("thumbnails3", () =>
 withFixture("thumbnails4", () =>
   assertFnList(
     `${StoryMetadataThumbnailsAreOk.name} - publisher-logo-src is webp`,
+    runNetworkTest(
+      StoryMetadataThumbnailsAreOk,
+      "https://fantastic-lemon-asterisk.glitch.me/"
+    ),
+    (actual: Result[]) => {
+      return actual.length === 0
+        ? ""
+        : `expected no errors, got ${JSON.stringify(actual)}`;
+    }
+  )
+);
+
+withFixture("thumbnails5", () =>
+  assertFnList(
+    `${StoryMetadataThumbnailsAreOk.name} - poster-portrait-src is correct size`,
     runNetworkTest(
       StoryMetadataThumbnailsAreOk,
       "https://fantastic-lemon-asterisk.glitch.me/"
@@ -436,4 +451,4 @@ withFixture("sxgamppkg3", () => {
 });
 
 console.log(`# ${basename(__filename)} - tests with mocked HTTP responses`);
-console.log(`1..41`);
+console.log(`1..42`);

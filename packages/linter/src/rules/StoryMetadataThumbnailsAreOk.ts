@@ -24,7 +24,7 @@ const outputMessageMap: { [key: string]: string } = {
   isAtLeast80x80: " at least 96x96 or larger",
   isAtLeast640x640: " 640x640px or larger",
   isAtLeast640x853: " 640x853px or larger",
-  isAtLeast853x640: " 853x480px or larger",
+  isAtLeast853x640: " 853x640px or larger",
 };
 
 export class StoryMetadataThumbnailsAreOk extends Rule {
@@ -96,7 +96,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       failed.split(",").forEach(function (el) {
         m = m + outputMessageMap[el] + " and";
       });
-      console.log("here ", failed);
+
       //Remove the last ' and' + tack on the src
       m = m.slice(0, m.length - 4) + `\nsrc: ${url}`;
       return m;
