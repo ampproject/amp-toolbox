@@ -166,6 +166,7 @@ class PreloadHeroImage {
         hasAttribute(child, 'placeholder') &&
         isValidImageSrcURL(child.attribs.src)
       ) {
+        this.generateImg(child);
         return {src: child.attribs.src, media, srcset: child.attribs.srcset || ''};
       }
     }
@@ -196,9 +197,7 @@ class PreloadHeroImage {
     if (this.isTinyNode(layout, width, height)) {
       return null;
     }
-    if (this.experimentImg) {
-      this.generateImg(ampImg);
-    }
+    this.generateImg(ampImg);
     return {src, srcset, media};
   }
 
@@ -228,6 +227,9 @@ class PreloadHeroImage {
   }
 
   generateImg(node) {
+    if (!this.experimentImg) {
+      return;
+    }
     const imgNode = createElement('img', {
       class: 'class=i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
