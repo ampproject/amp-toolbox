@@ -110,7 +110,8 @@ function maybeAddSizerInto(node, layout, width, height) {
     sizer = createIntrinsicSizer(width, height);
   }
   if (sizer) {
-    appendChild(node, sizer);
+    const referenceNode = node.firstChild;
+    insertBefore(node, sizer, referenceNode);
   }
 }
 
