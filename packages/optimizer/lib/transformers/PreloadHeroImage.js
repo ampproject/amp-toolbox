@@ -65,7 +65,15 @@ class PreloadHeroImage {
 
     const heroImages = this.findHeroImages(body);
     let referenceNode = findMetaViewport(head);
-    for (let i = 0; i < Math.min(heroImages.length, DATA_HERO_MAX); i++) {
+
+    let heroImageCount = heroImages.length;
+    if (heroImageCount > DATA_HERO_MAX) {
+      this.log.warn(
+        `Found ${heroImageCount} hero elements on the page. AMP currently only supports a maximum of ${DATA_HERO_MAX} elements.`
+      );
+      heroImageCount = DATA_HERO_MAX;
+    }
+    for (let i = 0; i < heroImageCount; i++) {
       const heroImage = heroImages[i];
       this.generatePreload(heroImage, head, referenceNode);
       this.generateImg(heroImage.ampImg);
