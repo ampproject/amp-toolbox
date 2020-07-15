@@ -1,3 +1,15 @@
+## 2.5.12 (2020-07-15)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#859](https://github.com/ampproject/amp-toolbox/pull/859) add experimental amp-img -> img transformation ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`
+  * [#864](https://github.com/ampproject/amp-toolbox/pull/864) Story thumbnail dim req update ([@Dbrown910](https://github.com/Dbrown910))
+
+#### Committers: 2
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.11 (2020-07-14)
 
 #### :bug: Bug Fix
