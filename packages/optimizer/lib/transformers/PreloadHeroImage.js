@@ -21,22 +21,29 @@ const {
   createElement,
   hasAttribute,
   insertAfter,
+  nextNode,
   firstChildByTag,
 } = require('../NodeUtils');
-const {findMetaViewport} = require('../HtmlDomHelper');
+const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
 const {isTemplate} = require('../AmpConstants');
-const parseSrcSet = require('../parseSrcSet');
 
 // Images smaller than 150px are considered tiny
 const TINY_IMG_THRESHOLD = 150;
+// Maximum number of hero images defined via data-hero
+const DATA_HERO_MAX = 2;
 
 /**
- * PreloadHeroImage - This transformer identifies a hero image or
- * important images on the document and attaches <link rel="preload"> element. It
- * will only add a hero image if there is not already an existing image preload.
+ * PreloadHeroImage - this transformers optimizes image rendering times for hero images. For hero
+ * images it will:
  *
- * This transformer supports the following option:
+ * 1. Inject a preload hint (if possible)
+ * 2. Generate an img tag enabling the browser to render the image without the AMP runtime being loaded.
+ *
+ * Hero images are either identified automatically or can be explicitly defined by adding an `data-hero`
+ * attribute to the element.
+ *
+ * This transformer supports the following options:
  *
  * * `preloadHeroImage`: [true|false] - enables or disables hero image preloading. The default is `true`.
  */
@@ -46,6 +53,7 @@ class PreloadHeroImage {
     this.enabled = config.preloadHeroImage !== false;
     this.experimentImg = config.experimentImg;
   }
+
   async transform(root, params) {
     if (!this.enabled || params.preloadHeroImage === false) {
       return;
@@ -55,17 +63,26 @@ class PreloadHeroImage {
     const body = firstChildByTag(html, 'body');
     if (!body || !head) return;
 
-    if (this.hasExistingImagePreload(head)) {
-      return;
-    }
-
-    const heroImage = this.findHeroImage(body);
-
-    if (!heroImage) {
-      return;
-    }
+    const heroImages = this.findHeroImages(body);
     let referenceNode = findMetaViewport(head);
+    for (let i = 0; i < Math.min(heroImages.length, DATA_HERO_MAX); i++) {
+      const heroImage = heroImages[i];
+      this.generatePreload(heroImage, head, referenceNode);
+      this.generateImg(heroImage.ampImg);
+    }
+  }
 
+  generatePreload(heroImage, head, referenceNode) {
+    if (heroImage.srcset) {
+      this.log.debug(
+        "Could not preload hero image as it's using srcset, which is currently only supported Chromium-based browsers (see https://web.dev/preload-responsive-images/).",
+        heroImage.src
+      );
+      return;
+    }
+    if (this.hasExistingImagePreload(head, heroImage.src)) {
+      return;
+    }
     const preload = createElement('link', {
       'rel': 'preload',
       'href': heroImage.src,
@@ -75,63 +92,97 @@ class PreloadHeroImage {
     if (heroImage.media) {
       preload.attribs.media = heroImage.media;
     }
-    if (heroImage.srcset) {
-      this.log.debug(
-        "Could not preload hero image as it's using srcset, which is currently only supported Chromium-based browsers (see https://web.dev/preload-responsive-images/).",
-        heroImage.src
-      );
-      return;
-    }
     insertAfter(head, preload, referenceNode);
   }
 
-  hasExistingImagePreload(head) {
-    return head.children.some(this.isImagePreload);
+  hasExistingImagePreload(head, src) {
+    return head.children.some((node) => {
+      if (node.tagName !== 'link') {
+        return false;
+      }
+      if (!hasAttribute(node, 'rel')) {
+        return false;
+      }
+      if (node.attribs.rel !== 'preload') {
+        return false;
+      }
+      if (node.attribs.as !== 'image') {
+        return false;
+      }
+      return node.attribs.href === src;
+    });
   }
 
-  isImagePreload(node) {
-    if (node.tagName !== 'link') {
-      return false;
-    }
-    if (!hasAttribute(node, 'rel')) {
-      return false;
-    }
-    if (node.attribs.rel !== 'preload') {
-      return false;
-    }
-    return node.attribs.as === 'image';
-  }
-
-  findHeroImage(root) {
-    if (!root.tagName) {
-      return null;
-    }
-    // Ignore images inside templates
-    if (isTemplate(root)) {
-      return null;
-    }
-
-    const layout = root.attribs ? root.attribs.layout : '';
-    if (layout === 'nodisplay') return null;
-
-    if (root.tagName === 'amp-img') {
-      return this.isCandidateImageForPreloading(root);
-    }
-    if (root.tagName === 'amp-video') {
-      return this.isCandidateVideoPosterImage(root);
-    }
-    if (root.tagName === 'amp-iframe' || root.tagName === 'amp-video-iframe') {
-      return this.isCandidateIframePlaceholderImage(root);
-    }
-
-    let heroImage;
-    for (const child of root.children) {
-      const heroImage = this.findHeroImage(child);
-      if (heroImage) {
-        return heroImage;
+  findHeroImages(root) {
+    let heroImageCandidate = null;
+    let heroImages = [];
+    let node = root;
+    // Walk over all nodes in the body
+    while (node !== null) {
+      // Look for data-hero attribute
+      this.addImageWithDataHero(node, heroImages);
+      // Auto detect a hero image in case data-hero is not used
+      if (!heroImageCandidate && heroImages.length === 0) {
+        heroImageCandidate = this.isCandidateHeroImage(node);
+      }
+      if (isTemplate(root)) {
+        // Ignore images inside templates
+        node = skipNodeAndChildren(node);
+      } else {
+        node = nextNode(node);
       }
     }
+    // Optimize data-hero element if defined
+    if (heroImages.length > 0) {
+      return heroImages;
+    }
+    // Fallback to auto detected hero image if available
+    if (heroImageCandidate) {
+      return [heroImageCandidate];
+    }
+    // No hero images to optimize
+    return [];
+  }
+
+  addImageWithDataHero(node, heroImages) {
+    if (node.tagName === 'amp-img' && hasAttribute(node, 'data-hero')) {
+      const {src, media, srcset} = node.attribs;
+      heroImages.push({
+        ampImg: node,
+        src,
+        media,
+        srcset,
+      });
+    } else if (this.isAmpIframe(node) && hasAttribute(node, 'data-hero')) {
+      const placeholder = this.getPlaceholderImage(node);
+      if (placeholder) {
+        heroImages.push(placeholder);
+      }
+    }
+  }
+
+  isCandidateHeroImage(node) {
+    if (!node.tagName) {
+      return null;
+    }
+    const layout = node.attribs ? node.attribs.layout : '';
+    if (layout === 'nodisplay') {
+      return null;
+    }
+    if (node.tagName === 'amp-img') {
+      return this.isCandidateImageForPreloading(node);
+    }
+    if (node.tagName === 'amp-video') {
+      return this.isCandidateVideoPosterImage(node);
+    }
+    if (this.isAmpIframe(node)) {
+      return this.isCandidateIframePlaceholderImage(node);
+    }
     return null;
+  }
+
+  isAmpIframe(node) {
+    return node.tagName === 'amp-iframe' || node.tagName === 'amp-video-iframe';
   }
 
   // For a given <amp-video> node or any node that has poster attribute, and
@@ -156,18 +207,26 @@ class PreloadHeroImage {
       return null;
     }
 
-    const {layout, width, height, media} = ampIframe.attribs;
+    const {layout, width, height} = ampIframe.attribs;
 
     if (this.isTinyNode(layout, width, height)) return null;
 
+    return this.getPlaceholderImage(ampIframe);
+  }
+
+  getPlaceholderImage(ampIframe) {
     for (const child of ampIframe.children) {
       if (
         child.tagName === 'amp-img' &&
         hasAttribute(child, 'placeholder') &&
         isValidImageSrcURL(child.attribs.src)
       ) {
-        this.generateImg(child);
-        return {src: child.attribs.src, media, srcset: child.attribs.srcset || ''};
+        return {
+          ampImg: child,
+          src: child.attribs.src,
+          media: ampIframe.attribs.media,
+          srcset: child.attribs.srcset || '',
+        };
       }
     }
     return null;
@@ -197,8 +256,7 @@ class PreloadHeroImage {
     if (this.isTinyNode(layout, width, height)) {
       return null;
     }
-    this.generateImg(ampImg);
-    return {src, srcset, media};
+    return {ampImg, src, srcset, media};
   }
 
   // Any node with width or height less than 150 pixels and a non-responsive layout.
@@ -230,10 +288,13 @@ class PreloadHeroImage {
     if (!this.experimentImg) {
       return;
     }
+    if (!node) {
+      return;
+    }
     const imgNode = createElement('img', {
       class: 'class=i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
-      loading: 'lazy',
+      loading: 'eager',
     });
     const attributesToCopy = [
       'alt',
