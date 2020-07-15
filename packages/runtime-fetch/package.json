@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-runtime-fetch",
-  "version": "2.5.4",
+  "version": "2.5.13",
   "description": "Download the AMP runtime",
   "main": "index.js",
   "keywords": [
