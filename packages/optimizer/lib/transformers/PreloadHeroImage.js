@@ -302,7 +302,6 @@ class PreloadHeroImage {
     const imgNode = createElement('img', {
       class: 'i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
-      loading: 'eager',
     });
     const attributesToCopy = [
       'alt',
