@@ -168,7 +168,7 @@ class DownloadRuntime {
         });
 
       // Minimal sanity check that files listing includes itself
-      if (!files.some((file) => file.filepath === RUNTIME_FILES_TXT)) {
+      if (!files.some((file) => file.filepath === 'v0.js')) {
         throw new Error(`Expected ${RUNTIME_FILES_TXT} in file listing, but it was not found.`);
       }
     } catch (ex) {
