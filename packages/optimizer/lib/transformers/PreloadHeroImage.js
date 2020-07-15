@@ -292,7 +292,7 @@ class PreloadHeroImage {
       return;
     }
     const imgNode = createElement('img', {
-      class: 'class=i-amphtml-fill-content i-amphtml-replaced-content',
+      class: 'i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
       loading: 'eager',
     });
