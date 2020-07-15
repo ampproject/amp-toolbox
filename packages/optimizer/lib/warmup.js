@@ -16,6 +16,7 @@
 
 const AbortController = require('abort-controller');
 const fetch = require('node-fetch');
+const HttpsProxyAgent = require('https-proxy-agent');
 const log = require('@ampproject/toolbox-core').log.tag('AMP OPTIMIZER');
 const AmpOptimizer = require('../');
 
@@ -29,6 +30,10 @@ const fetchWithTimout = (url, opts = {}) => {
     controller.abort();
   }, DOWNLOAD_TIMEOUT);
   opts.signal = controller.signal;
+  const httpsProxy = process.env.https_proxy || process.env.HTTPS_PROXY;
+  if (httpsProxy) {
+    opts.agent = new HttpsProxyAgent(httpsProxy);
+  }
   return fetch(url, opts).finally(() => {
     clearTimeout(timeout);
   });
