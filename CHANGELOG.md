@@ -1,4 +1,13 @@
-## 2.5.12 (2020-07-15)
+## v2.5.13 (2020-07-15)
+
+#### :bug: Bug Fix
+* `runtime-fetch`
+  * [#865](https://github.com/ampproject/amp-toolbox/pull/865) Fix: runtime download check ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.12 (2020-07-15)
 
 #### :rocket: Enhancement
 * `optimizer`
