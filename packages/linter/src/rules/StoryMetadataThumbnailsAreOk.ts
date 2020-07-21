@@ -21,7 +21,7 @@ const outputMessageMap: { [key: string]: string } = {
   isSquare: " a 1:1 aspect ratio",
   isRaster: " of type .jpeg, .gif, .png, or .webp",
   isLandscape: " a 4:3 aspect ratio",
-  isAtLeast80x80: " at least 96x96 or larger",
+  isAtLeast96x96: " at least 96x96 or larger",
   isAtLeast640x640: " 640x640px or larger",
   isAtLeast640x853: " 640x853px or larger",
   isAtLeast853x640: " 853x640px or larger",
@@ -66,14 +66,16 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     ): Promise<Result> => {
       const url = metadata[attr];
       if (!url) {
-        return isMandatory ? this.fail(`${attr} is missing`) : this.pass();
+        return isMandatory
+          ? this.fail(`${attr} is missing`)
+          : this.info(`${attr} is not mandatory`);
       }
       try {
         const info = await dimensions(context, url);
         const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
 
         return failed.length === 0
-          ? this.pass()
+          ? this.pass(`> ${attr} = ${metadata[attr]}`)
           : this.fail(formatForHumans(attr.toString(), url, failed.join()));
       } catch (e) {
         const s = absoluteUrl(url, context.url);
