@@ -28,7 +28,14 @@ withFixture("thumbnails1", () =>
       "https://ampbyexample.com/stories/introduction/amp_story_hello_world/preview/embed/"
     ),
     (actual: Result[]) => {
-      return actual.length === 1
+      let fails = 0;
+      actual.forEach((result) => {
+        if (result.status === Status.FAIL) {
+          fails++;
+        }
+      });
+
+      return fails === 1
         ? ""
         : `expected one error, got ${JSON.stringify(actual)}`;
     }
@@ -62,7 +69,14 @@ withFixture("thumbnails4", () =>
       "https://fantastic-lemon-asterisk.glitch.me/"
     ),
     (actual: Result[]) => {
-      return actual.length === 0
+      let fails = 0;
+      actual.forEach((result) => {
+        if (result.status === Status.FAIL) {
+          fails++;
+        }
+      });
+
+      return fails === 0
         ? ""
         : `expected no errors, got ${JSON.stringify(actual)}`;
     }
@@ -77,7 +91,14 @@ withFixture("thumbnails5", () =>
       "https://fantastic-lemon-asterisk.glitch.me/"
     ),
     (actual: Result[]) => {
-      return actual.length === 0
+      let fails = 0;
+      actual.forEach((result) => {
+        if (result.status === Status.FAIL) {
+          fails++;
+        }
+      });
+
+      return fails === 0
         ? ""
         : `expected no errors, got ${JSON.stringify(actual)}`;
     }
