@@ -54,6 +54,11 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
       "googlebot_mobile"
     )
     .option(`-s, --show-passing`, "show passing tests in output", false)
+    .option(
+      `-r, --report-mode`,
+      "include metadata for passing tests in output",
+      false
+    )
     .on("--help", function () {
       logger.log("");
       logger.log("Examples:");
@@ -116,6 +121,7 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
       url: string;
       headers: { [k: string]: string };
       showPassing: boolean;
+      reportMode: boolean;
     }
   )
     .then(logger.info.bind(logger))
@@ -132,6 +138,7 @@ export async function easyLint({
   force,
   headers,
   showPassing,
+  reportMode,
 }: {
   url: string;
   userAgent: string;
@@ -139,6 +146,7 @@ export async function easyLint({
   force: LintMode | "auto";
   headers: { [k: string]: string };
   showPassing: boolean;
+  reportMode: boolean;
 }) {
   headers["user-agent"] = UA[userAgent as keyof typeof UA];
 
@@ -170,6 +178,7 @@ export async function easyLint({
   return printer(
     format,
     showPassing,
+    reportMode,
     await lint({
       raw,
       $,
@@ -189,6 +198,7 @@ function colorStatus(s: Status) {
     case Status.WARN:
       return chalk.yellow(s);
     case Status.INFO:
+      return chalk.blueBright(s);
     default:
       return s;
   }
@@ -197,6 +207,7 @@ function colorStatus(s: Status) {
 function printer(
   type: string,
   showPassing: boolean,
+  reportMode: boolean,
   data: { [key: string]: Result | Result[] }
 ): string {
   function flatten(data: { [k: string]: Result | Result[] }): string[][] {
@@ -249,8 +260,15 @@ function printer(
             StatusNumber[b[2] as keyof typeof StatusNumber]
         )
         .map((l) => {
-          return l[3] !== ""
+          // Check for a output message
+          // If FAIL/WARN return status and message
+          // If PASS
+          //  check whether to include in output w/ or w/o reporting
+          //  or return empty
+          return l[3] !== "" && (l[2] as Status) !== Status.PASS
             ? `${colorStatus(l[2] as Status)} ${l[1]}\n> ${l[3]}\n`
+            : showPassing && reportMode && l[3] !== ""
+            ? `${colorStatus(l[2] as Status)} ${l[1]}\n ${l[3]}\n`
             : showPassing
             ? `${colorStatus(l[2] as Status)} ${l[1]}\n`
             : "";
