@@ -23,7 +23,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
  *
- * This transformer supports two parameters:
+ * This transformer supports four parameters:
  *
  * * `ampRuntimeVersion`: specifies a
  *   [specific version](https://github.com/ampproject/amp-toolbox/tree/main/runtime-version)
