@@ -234,6 +234,11 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
       return null;
     }
     styles = await response.text();
+    // HACK: patch v0.css to support transforming amp-img -> img
+    // TODO remove once v0.css has been updated
+    if (!styles.includes('i-amphtml-ssr')) {
+      styles += `amp-img[i-amphtml-ssr]:not(.i-amphtml-element):not([layout=container])>*{display: block;}`;
+    }
     config.log.debug(`Downloaded AMP runtime styles from ${runtimeCssUrl}`);
     if (config.cache !== false) {
       cache.set(runtimeCssUrl, styles);
