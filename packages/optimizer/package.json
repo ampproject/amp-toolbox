@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.5.12",
+  "version": "2.5.14",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
