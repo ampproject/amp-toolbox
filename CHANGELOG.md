@@ -1,3 +1,19 @@
+## v2.5.14 (2020-07-24)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#871](https://github.com/ampproject/amp-toolbox/pull/871) Linter reporting ([@Dbrown910](https://github.com/Dbrown910))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#872](https://github.com/ampproject/amp-toolbox/pull/872) Fix: hero image not visible on load ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#870](https://github.com/ampproject/amp-toolbox/pull/870) Fix outdated parameter count ([@schlessera](https://github.com/schlessera))
+
+#### Committers: 3
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.13 (2020-07-15)
 
 #### :bug: Bug Fix
