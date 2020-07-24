@@ -44,7 +44,7 @@ const originalHtml = `
   ...
 </html>`;
 
-ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
+ampOptimizer.transformHtml(originalHtml).then(optimizedHtml => {
   console.log(optimizedHtml);
 });
 ```
@@ -139,6 +139,39 @@ Specifies the AMP format of the input file. Defaults to `AMP`.
 - valid options: `[AMP|AMP4EMAIL|AMP4ADS]`
 - default: `AMP`
 - used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+
+#### `experimentEsm`
+
+Enable [JavaScript Module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) support for AMP runtime and components. AMP Optimizer will generate module/nonmodule script imports for AMP runtime and components:
+
+```
+<script async nomodule src="https://cdn.ampproject.org/v0.js"></script>
+<script async src="https://cdn.ampproject.org/v0.mjs" type="module" crossorigin="anonymous"></script>
+```
+
+**Warning: this will result in invalid AMP pages.**
+
+- name: `experimentEsm`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
+
+#### `experimentImg`
+
+Server-side renders the `img` element inside an `amp-img` element for hero images. This greatly improves image rendering performance. Hero images will either be auto detected or you can explicitly mark these up by add the `data-hero` attribute:
+
+```
+<amp-img data-hero src="foo.jpg" ...>
+```
+
+The maximum number of hero images that can be marked up using `data-hero` is `2`.
+
+**Warning: this will result in invalid AMP pages.**
+
+- name: `experimentImg`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [PreloadHeroImages](lib/transformers/PreloadHeroImages.js)
 
 #### `imageBasePath`
 
