@@ -19,7 +19,7 @@ const {insertText, createElement, hasAttribute, firstChildByTag} = require('../N
 const safeParser = require('postcss-safe-parser');
 const postcss = require('postcss');
 
-const cssnano = require('cssnano');
+const cssnano = require('cssnano-simple');
 
 const allowedKeyframeProps = new Set([
   'animation-timing-function',

@@ -44,17 +44,21 @@ async function warmupCaches() {
   log.error = (e) => {
     success = false;
   };
-  // Re-use config from AMP Optimizer
-  // TODO extract config into it's own class
-  const config = AmpOptimizer.create({log, fetch: fetchWithTimout}).config;
-  // Try to download all runtime data, this will fail if behind a proxy
-  await fetchRuntimeParameters(config);
-  if (success) {
-    log.info('Downloaded latest AMP runtime data.');
-  } else {
-    log.info(
-      'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#fetch.'
-    );
+  try {
+    // Re-use config from AMP Optimizer
+    // TODO extract config into it's own class
+    const config = AmpOptimizer.create({log, fetch: fetchWithTimout}).config;
+    // Try to download all runtime data, this will fail if behind a proxy
+    await fetchRuntimeParameters(config);
+    if (success) {
+      log.info('Downloaded latest AMP runtime data.');
+    } else {
+      log.info(
+        'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#fetch.'
+      );
+    }
+  } catch (e) {
+    // ignore - environment has not been setup yet
   }
 }
 
