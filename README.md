@@ -90,6 +90,30 @@ npm run lint
 npm run lint:fix
 ```
 
+### Making a Release
+
+Before publishing a release, make sure to have the lates changes from master and the changelog is up-to-date:
+
+```
+$ npm run changelog
+```
+
+This will print all changes since the previous release. For this to work, all PRs need to be [correctly labeled](https://github.com/lerna/lerna-changelog#usage) as:
+
+- `breaking` (💥 Breaking Change)
+- `enhancement` (🚀 Enhancement)
+- `bug` (🐛 Bug Fix)
+- `documentation` (📝 Documentation)
+- `internal` (🏠 Internal)
+
+Copy and prepend the new changes to [CHANGELOG.md](/CHANGELOG.md) when you're about to make a release. Don't forget to update the version. Commit the updated changelog and run:
+
+```
+$ npm publish
+```
+
+to publish all changed packages to NPM. Pick the new version according to [SemVer](https://semver.org/).
+
 ## Contributing
 
 Please see [the CONTRIBUTING file](/CONTRIBUTING.md) for information on contributing to the AMP Project.
