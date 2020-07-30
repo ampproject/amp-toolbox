@@ -18,7 +18,7 @@
 const {nextNode, insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
-const {AMP_FORMATS} = require('../AmpConstants');
+const {AMP_FORMATS, AMP_CACHE_HOST} = require('../AmpConstants');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';
 const AMP_BIND_DATA_ATTRIBUTE_PREFIX = 'data-amp-bind-';
@@ -172,8 +172,8 @@ class AutoExtensionImporter {
     // We use this for adding new import elements to the header
     const referenceNode = findMetaViewport(head);
 
-    // Support custom runtime URLs
-    const host = calculateHost(params);
+    // Use cdn.ampproject.org as default, RewriteUrlTransformer will change this in case of self-hosting
+    const host = AMP_CACHE_HOST;
     for (const extensionName of extensionsToImport) {
       if (existingImports.has(extensionName)) {
         continue;

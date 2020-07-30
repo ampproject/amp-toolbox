@@ -23,7 +23,7 @@ $ node dist/cli.js https://amp.dev/
 Command-line (from npm):
 
 ```sh <!-- markdownlint-disable MD014 -->
-$ npx @ampproject/toolbox-linter https://amp.dev/
+$ npx @ampproject/toolbox-cli lint https://amp.dev/
 ```
 
 Node:

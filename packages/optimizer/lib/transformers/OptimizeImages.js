@@ -63,8 +63,9 @@ const MAX_SRCSET_VALUE_COUNT = 3;
  * Calculates the srcset width for a given image width.
  */
 class SrcsetWidth {
-  constructor() {
+  constructor(imgSrcWidth, maxImgWidth = -1, maxSrcsetValues = MAX_SRCSET_VALUE_COUNT) {
     this.widthList_ = [];
+    this.setBaseWidth(imgSrcWidth, maxImgWidth, maxSrcsetValues);
   }
 
   /**
@@ -145,7 +146,6 @@ class OptimizeImages {
   constructor(config) {
     this.log = config.log;
     this.imageOptimizer = config.imageOptimizer;
-    this.srcsetWidth = new SrcsetWidth();
     // TODO turn these into options https://github.com/ampproject/amp-toolbox/issues/804
     this.maxImageWidth = MAX_IMG_SIZE;
     this.maxSrcsetValues = MAX_SRCSET_VALUE_COUNT;
@@ -159,16 +159,18 @@ class OptimizeImages {
     const body = firstChildByTag(html, 'body');
 
     let node = body;
+    const imageOptimizationPromises = [];
     while (node !== null) {
       if (node.tagName === 'template') {
         node = skipNodeAndChildren(node);
       } else {
         if (node.tagName === 'amp-img') {
-          await this.optimizeImage(node);
+          imageOptimizationPromises.push(this.optimizeImage(node));
         }
         node = nextNode(node);
       }
     }
+    return Promise.all(imageOptimizationPromises);
   }
 
   async optimizeImage(imageNode) {
@@ -212,20 +214,20 @@ class OptimizeImages {
 
     // We add srcset only when the CSS dimensions correspond to 2 or more
     // unique legitimate physical dimensions.
-    this.srcsetWidth.setBaseWidth(width, this.maxImageWidth, this.maxSrcsetValues);
-    if (!this.srcsetWidth.isValid()) {
+    const srcsetWidth = new SrcsetWidth(width, this.maxImageWidth, this.maxSrcsetValues);
+    if (!srcsetWidth.isValid()) {
       return;
     }
     // Generate the srcset.
     let srcset = '';
-    while (this.srcsetWidth.moreWidth()) {
-      const nextWidth = this.srcsetWidth.nextWidth();
+    while (srcsetWidth.moreWidth()) {
+      const nextWidth = srcsetWidth.nextWidth();
       try {
         // Generate the width specific image URL using the default or custom srcset generator.
         const nextSrc = await this.imageOptimizer(src, nextWidth);
         // Add the width (if supported) to the srcset.
         if (nextSrc) {
-          srcset += `${nextSrc} ${nextWidth}w${this.srcsetWidth.moreWidth() ? ', ' : ''}`;
+          srcset += `${nextSrc} ${nextWidth}w${srcsetWidth.moreWidth() ? ', ' : ''}`;
         }
       } catch (e) {
         this.log.error('Exception when optimizing image', src, e);

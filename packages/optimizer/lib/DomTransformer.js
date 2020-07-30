@@ -34,7 +34,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'AutoExtensionImporter',
   // Applies image optimizations, must run before PreloadHeroImage
   'OptimizeImages',
-  // Detect hero image and preload link rel=preload
+  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',

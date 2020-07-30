@@ -1,3 +1,58 @@
+## v2.5.14 (2020-07-24)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#871](https://github.com/ampproject/amp-toolbox/pull/871) Linter reporting ([@Dbrown910](https://github.com/Dbrown910))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#872](https://github.com/ampproject/amp-toolbox/pull/872) Fix: hero image not visible on load ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#870](https://github.com/ampproject/amp-toolbox/pull/870) Fix outdated parameter count ([@schlessera](https://github.com/schlessera))
+
+#### Committers: 3
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.13 (2020-07-15)
+
+#### :bug: Bug Fix
+* `runtime-fetch`
+  * [#865](https://github.com/ampproject/amp-toolbox/pull/865) Fix: runtime download check ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.12 (2020-07-15)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#859](https://github.com/ampproject/amp-toolbox/pull/859) add experimental amp-img -> img transformation ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`
+  * [#864](https://github.com/ampproject/amp-toolbox/pull/864) Story thumbnail dim req update ([@Dbrown910](https://github.com/Dbrown910))
+
+#### Committers: 2
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.11 (2020-07-14)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#863](https://github.com/ampproject/amp-toolbox/pull/863) fix esm support for auto component import ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.9 (2020-07-08)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#856](https://github.com/ampproject/amp-toolbox/pull/856) Parallelize image optimization ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.8 (2020-07-08)
 
 #### :bug: Bug Fix
