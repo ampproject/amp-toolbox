@@ -103,7 +103,7 @@ class PreloadHeroImage {
   }
 
   hasExistingImagePreload(head, src) {
-    return head.children.some(node => {
+    return head.children.some((node) => {
       if (node.tagName !== 'link') {
         return false;
       }

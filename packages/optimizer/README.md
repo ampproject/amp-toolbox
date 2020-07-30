@@ -141,23 +141,6 @@ Enable [JavaScript Module](https://developer.mozilla.org/en-US/docs/Web/JavaScri
 - default: `false`
 - used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
 
-#### `experimentImg`
-
-Server-side renders the `img` element inside an `amp-img` element for hero images. This greatly improves image rendering performance. Hero images will either be auto detected or you can explicitly mark these up by add the `data-hero` attribute:
-
-```
-<amp-img data-hero src="foo.jpg" ...>
-```
-
-The maximum number of hero images that can be marked up using `data-hero` is `2`.
-
-**Warning: this will result in invalid AMP pages.**
-
-- name: `experimentImg`
-- valid options: `[true|false]`
-- default: `false`
-- used by: [PreloadHeroImages](lib/transformers/PreloadHeroImages.js)
-
 #### `imageBasePath`
 
 Specifies a base path used to resolve an image during build,
@@ -226,7 +209,15 @@ Minifies the generated HTML output and inlined CSS.
 
 #### `preloadHeroImage`
 
-Auto detect hero images for amp-img, amp-iframe, amp-video, or amp-video-iframe and injects a `link rel=preload`. Preloads will only be generated if there is no existing image preload.
+Enables hero image optimization. Hero images will either be auto detected or you can explicitly mark these by adding the `data-hero` attribute:
+
+```
+<amp-img data-hero src="foo.jpg" ...>
+```
+
+The maximum number of hero images that can be marked up using `data-hero` is `2`.
+
+If no `data-hero` attribute is present, AMP optimizer auto detects hero images for `amp-img`, `amp-iframe`, `amp-video`, or `amp-video-iframe` and injects a `link rel=preload`. Preloads will only be generated if there is no existing image preload. For `amp-img` elements, it will also server-side render the `img` element inside the `amp-img` element. This greatly improves image rendering performance.
 
 - name: `preloadHeroImage`
 - valid options: `[true|false]`
