@@ -41,7 +41,7 @@
     "domutils": "2.1.0",
     "htmlparser2": "4.1.0",
     "https-proxy-agent": "5.0.0",
-    "lru-cache": "5.1.1",
+    "lru-cache": "6.0.0",
     "node-fetch": "2.6.0",
     "normalize-html-whitespace": "1.0.0",
     "postcss": "7.0.32",

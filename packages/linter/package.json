@@ -16,9 +16,9 @@
     "amphtml-validator": "1.0.31",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
-    "commander": "5.1.0",
+    "commander": "6.0.0",
     "debug": "4.1.1",
-    "execa": "4.0.2",
+    "execa": "4.0.3",
     "node-fetch": "2.6.0",
     "probe-image-size": "5.0.0",
     "throat": "5.0.0"
@@ -44,7 +44,7 @@
   "gitHead": "c26612cc3d7408fdc1451bcc8e0fecd67ac9661d",
   "devDependencies": {
     "prettier": "2.0.5",
-    "tap-parser": "10.0.1",
-    "typescript": "3.9.6"
+    "tap-parser": "10.1.0",
+    "typescript": "3.9.7"
   }
 }
