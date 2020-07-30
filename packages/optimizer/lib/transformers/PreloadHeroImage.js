@@ -316,6 +316,7 @@ class PreloadHeroImage {
       }
     }
     node.attribs['i-amphtml-ssr'] = '';
+    node.attribs['data-hero'] = '';
     appendChild(node, imgNode);
   }
 }
