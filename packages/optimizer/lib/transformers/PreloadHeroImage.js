@@ -51,7 +51,6 @@ class PreloadHeroImage {
   constructor(config) {
     this.log = config.log;
     this.enabled = config.preloadHeroImage !== false;
-    this.experimentImg = config.experimentImg;
   }
 
   async transform(root, params) {
@@ -104,7 +103,7 @@ class PreloadHeroImage {
   }
 
   hasExistingImagePreload(head, src) {
-    return head.children.some((node) => {
+    return head.children.some(node => {
       if (node.tagName !== 'link') {
         return false;
       }
@@ -293,9 +292,6 @@ class PreloadHeroImage {
   }
 
   generateImg(node) {
-    if (!this.experimentImg) {
-      return;
-    }
     if (!node) {
       return;
     }
