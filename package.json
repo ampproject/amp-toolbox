@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.26.0",
-    "@babel/core": "7.10.5",
+    "@babel/core": "7.11.0",
     "@types/cheerio": "0.22.21",
     "@types/debug": "4.1.5",
     "@types/diff": "4.0.2",
@@ -41,7 +41,7 @@
     "fetch-mock": "9.10.5",
     "html-minifier": "4.0.0",
     "husky": "4.2.5",
-    "jest": "26.2.1",
+    "jest": "26.2.2",
     "jimp": "0.14.0",
     "js-beautify": "1.11.0",
     "karma": "5.1.1",

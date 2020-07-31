@@ -108,14 +108,6 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 - default: `true`
 - used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
 
-#### `fetch`
-
-Inside proxy, environment variable `https_proxy` is supported. Example:
-
-```
-https_proxy=http://[proxy_host]:[port]
-```
-
 #### `format`
 
 Specifies the AMP format of the input file. Defaults to `AMP`.

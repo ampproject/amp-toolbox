@@ -12,6 +12,6 @@
     "glob": "7.1.6"
   },
   "devDependencies": {
-    "@ampproject/toolbox-optimizer": "2.5.2"
+    "@ampproject/toolbox-optimizer": "2.5.14"
   }
 }
