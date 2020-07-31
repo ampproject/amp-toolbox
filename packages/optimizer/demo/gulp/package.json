@@ -1,0 +1,19 @@
+{
+  "name": "@ampproject/toolbox-optimizer-demo-gulp",
+  "version": "1.0.0",
+  "description": "A simple demo how to use the AMP Optimizer transformation API in Gulp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The AMPHTML Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "glob": "7.1.6"
+  },
+  "devDependencies": {
+    "@ampproject/toolbox-optimizer": "2.5.14",
+    "gulp": "^4.0.2",
+    "through2": "^4.0.2"
+  }
+}
