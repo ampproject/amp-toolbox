@@ -17,6 +17,7 @@ const {basename, join} = require('path');
 const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
 
 const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
+const validatorRules = require('@ampproject/toolbox-validator-rules').fetch();
 
 const BEAUTIFY_OPTIONS = {
   'indent_size': 2,
@@ -43,8 +44,8 @@ if (WRITE_SNAPSHOT) {
 
 module.exports = function (testConfig) {
   describe(testConfig.name, () => {
-    getDirectories(testConfig.testDir).forEach((testDir) => {
-      it(basename(testDir), async (done) => {
+    getDirectories(testConfig.testDir).forEach(testDir => {
+      it(basename(testDir), async done => {
         let params = TRANSFORMER_PARAMS;
 
         // parse input and extract params
@@ -77,7 +78,7 @@ module.exports = function (testConfig) {
           // that's ok as the test will fail by comparing to an empty string
         }
         params = testConfig.validAmp ? {} : params;
-        params.validatorRules = await require('@ampproject/toolbox-validator-rules').fetch();
+        params.validatorRules = await validatorRules;
         await testConfig.transformer.transform(tree, params);
         const actualOutput = serialize(tree, params.__format);
         if (WRITE_SNAPSHOT) {
