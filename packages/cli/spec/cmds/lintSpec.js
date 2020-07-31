@@ -27,7 +27,10 @@ describe('lint', () => {
   });
 
   it('runs at least one successful test', async () => {
-    await lintCmd(['lint', 'https://amp.dev'], mockLogger);
+    await lintCmd(
+      ['lint', 'https://preview.amp.dev/documentation/examples/introduction/hello_world'],
+      mockLogger
+    );
     const output = mockLogger.logs.join('\n');
     expect(output).toMatch(/PASS/m);
   });
