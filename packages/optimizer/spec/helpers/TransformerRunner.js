@@ -44,8 +44,8 @@ if (WRITE_SNAPSHOT) {
 
 module.exports = function (testConfig) {
   describe(testConfig.name, () => {
-    getDirectories(testConfig.testDir).forEach(testDir => {
-      it(basename(testDir), async done => {
+    getDirectories(testConfig.testDir).forEach((testDir) => {
+      it(basename(testDir), async (done) => {
         let params = TRANSFORMER_PARAMS;
 
         // parse input and extract params
