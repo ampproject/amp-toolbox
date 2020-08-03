@@ -217,7 +217,7 @@ Enables hero image optimization. Hero images will either be auto detected or you
 
 The maximum number of hero images that can be marked up using `data-hero` is `2`.
 
-If no `data-hero` attribute is present, AMP optimizer auto detects hero images for `amp-img`, `amp-iframe`, `amp-video`, or `amp-video-iframe` and injects a `link rel=preload`. Preloads will only be generated if there is no existing image preload. For `amp-img` elements, it will also server-side render the `img` element inside the `amp-img` element. This greatly improves image rendering performance.
+If no `data-hero` attribute is present, AMP optimizer auto-detects hero images for `amp-img`, `amp-iframe`, `amp-video`, or `amp-video-iframe` and injects a `link rel=preload`. Image preload links will only be generated if there is none already existing. For `amp-img` elements, it will also server-side render the `img` element inside the `amp-img` element. This greatly improves image rendering performance and reduces the [largest contentful paint](https://web.dev/lcp/) (LCP) metric from [Core Web Vitals](https://web.dev/vitals/).
 
 - name: `preloadHeroImage`
 - valid options: `[true|false]`
