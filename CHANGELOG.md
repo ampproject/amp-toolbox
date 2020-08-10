@@ -1,92 +1,141 @@
+## v2.6.0 (2020-08-10)
+
+#### :rocket: Enhancement
+
+- `optimizer`
+  - [#883](https://github.com/ampproject/amp-toolbox/pull/883) Keep nonces ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#880](https://github.com/ampproject/amp-toolbox/pull/880) Enable amp-img => img transformation for hero images ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#857](https://github.com/ampproject/amp-toolbox/pull/857) Proxy support for amp-optimizer ([@todoa2c](https://github.com/todoa2c))
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#887](https://github.com/ampproject/amp-toolbox/pull/887) Fix NPE during SSR when style block is empty ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :memo: Documentation
+
+- `optimizer`
+  - [#882](https://github.com/ampproject/amp-toolbox/pull/882) add express demo ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#881](https://github.com/ampproject/amp-toolbox/pull/881) add gulp demo ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+
+- `optimizer`
+  - [#877](https://github.com/ampproject/amp-toolbox/pull/877) Cssnano simple ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 2
+
+- Atsushi Kanaya ([@todoa2c](https://github.com/todoa2c))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.14 (2020-07-24)
 
 #### :rocket: Enhancement
-* `linter`
-  * [#871](https://github.com/ampproject/amp-toolbox/pull/871) Linter reporting ([@Dbrown910](https://github.com/Dbrown910))
+
+- `linter`
+  - [#871](https://github.com/ampproject/amp-toolbox/pull/871) Linter reporting ([@Dbrown910](https://github.com/Dbrown910))
 
 #### :bug: Bug Fix
-* `optimizer`
-  * [#872](https://github.com/ampproject/amp-toolbox/pull/872) Fix: hero image not visible on load ([@sebastianbenz](https://github.com/sebastianbenz))
-  * [#870](https://github.com/ampproject/amp-toolbox/pull/870) Fix outdated parameter count ([@schlessera](https://github.com/schlessera))
+
+- `optimizer`
+  - [#872](https://github.com/ampproject/amp-toolbox/pull/872) Fix: hero image not visible on load ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#870](https://github.com/ampproject/amp-toolbox/pull/870) Fix outdated parameter count ([@schlessera](https://github.com/schlessera))
 
 #### Committers: 3
+
 - Alain Schlesser ([@schlessera](https://github.com/schlessera))
-- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Damani ([@Dbrown910](https://github.com/Dbrown910))
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.13 (2020-07-15)
 
 #### :bug: Bug Fix
-* `runtime-fetch`
-  * [#865](https://github.com/ampproject/amp-toolbox/pull/865) Fix: runtime download check ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `runtime-fetch`
+  - [#865](https://github.com/ampproject/amp-toolbox/pull/865) Fix: runtime download check ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.12 (2020-07-15)
 
 #### :rocket: Enhancement
-* `optimizer`
-  * [#859](https://github.com/ampproject/amp-toolbox/pull/859) add experimental amp-img -> img transformation ([@sebastianbenz](https://github.com/sebastianbenz))
-* `linter`
-  * [#864](https://github.com/ampproject/amp-toolbox/pull/864) Story thumbnail dim req update ([@Dbrown910](https://github.com/Dbrown910))
+
+- `optimizer`
+  - [#859](https://github.com/ampproject/amp-toolbox/pull/859) add experimental amp-img -> img transformation ([@sebastianbenz](https://github.com/sebastianbenz))
+- `linter`
+  - [#864](https://github.com/ampproject/amp-toolbox/pull/864) Story thumbnail dim req update ([@Dbrown910](https://github.com/Dbrown910))
 
 #### Committers: 2
-- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+
+- Damani ([@Dbrown910](https://github.com/Dbrown910))
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.11 (2020-07-14)
 
 #### :bug: Bug Fix
-* `optimizer`
-  * [#863](https://github.com/ampproject/amp-toolbox/pull/863) fix esm support for auto component import ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `optimizer`
+  - [#863](https://github.com/ampproject/amp-toolbox/pull/863) fix esm support for auto component import ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.9 (2020-07-08)
 
 #### :bug: Bug Fix
-* `optimizer`
-  * [#856](https://github.com/ampproject/amp-toolbox/pull/856) Parallelize image optimization ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `optimizer`
+  - [#856](https://github.com/ampproject/amp-toolbox/pull/856) Parallelize image optimization ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.8 (2020-07-08)
 
 #### :bug: Bug Fix
-* `optimizer`
-  * [#855](https://github.com/ampproject/amp-toolbox/pull/855) Only inject runtime-host meta tag if host is given ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `optimizer`
+  - [#855](https://github.com/ampproject/amp-toolbox/pull/855) Only inject runtime-host meta tag if host is given ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.7 (2020-07-08)
 
 #### :bug: Bug Fix
-* `optimizer`
-  * [#854](https://github.com/ampproject/amp-toolbox/pull/854) Fix runtime-host meta tag when using relative URLs ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `optimizer`
+  - [#854](https://github.com/ampproject/amp-toolbox/pull/854) Fix runtime-host meta tag when using relative URLs ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.6 (2020-07-07)
 
 #### :rocket: Enhancement
-* `optimizer`
-  * [#852](https://github.com/ampproject/amp-toolbox/pull/852) Improve preload handling with runtime self hosting ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `optimizer`
+  - [#852](https://github.com/ampproject/amp-toolbox/pull/852) Improve preload handling with runtime self hosting ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.5 (2020-06-22)
 
 #### :bug: Bug Fix
-* `optimizer`
-  * [#850](https://github.com/ampproject/amp-toolbox/pull/850) Don't remove boilerplate for amp-stories ([@sebastianbenz](https://github.com/sebastianbenz))
+
+- `optimizer`
+  - [#850](https://github.com/ampproject/amp-toolbox/pull/850) Don't remove boilerplate for amp-stories ([@sebastianbenz](https://github.com/sebastianbenz))
 
 #### Committers: 1
+
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
 
 ## v2.5.4 (2020-06-22)
