@@ -70,7 +70,7 @@ $ npx @ampproject/toolbox-cli optimize myFile.html
 
 Options are passed when creating a new AMP Optimizer instance:
 
-```
+```js
 const ampOptimizer = AmpOptimizer.create({
   verbose: true
 });
@@ -151,7 +151,7 @@ Enable automated image `srcset` generation by providing a function for calculati
 
 Example:
 
-```
+```js
 const ampOptimizer = AmpOptimizer.create({
   imageOptimizer: (src, width) => `${src}?width=${width}`
 });
@@ -233,7 +233,7 @@ AMP Optimizer helps you serve optimized images. For this to work, you need to pr
 
 Here is an example implementation that appends the image width to the `src`:
 
-```
+```js
 const ampOptimizer = AmpOptimizer.create({
   // parameters are the amp-img `src` and the `width` of the to be generated srcset source value
   imageOptimizer: (src, width) => {
@@ -252,7 +252,7 @@ const ampOptimizer = AmpOptimizer.create({
 
 Using this implementation, AMP Optimizer will transform the following `amp-img` declarations:
 
-```
+```html
 <!-- Injects srcset for responsive layout -->
 <amp-img src="image1.png" width="400" height="800" layout="responsive"></amp-img>
 <!-- Ignores existing srcset -->
@@ -262,7 +262,7 @@ Using this implementation, AMP Optimizer will transform the following `amp-img` 
 
 into:
 
-```
+```html
 <!-- Injects srcset for responsive layout -->
 <amp-img src="image1.png" width="400" height="800" layout="responsive" srcset="image1.470w.png 470w, image1.820w.png 820w, image1.1440w.png 1440w"></amp-img>
 <!-- Ignores existing srcset -->
@@ -277,7 +277,7 @@ into:
 It's possible to pass incomplete documents and AMP Optimizer will add any
 missing tags and extension imports required by a valid AMP document.
 
-```
+```js
 const originalHtml = `
   <h1>Hello World!</h1>
   <amp-twitter width="375"
@@ -314,13 +314,13 @@ You can pass an additional option `imageBasePath` to specify a base path used to
 **Important:** for image size detection to work, an optional dependency
 `probe-image-size` needs to be installed via NPM.
 
-```
+```shell
 npm install probe-image-size --save-dev
 ```
 
 Example:
 
-```
+```js
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const md = require('markdown-it')({
   // don't sanitize html if you want to support AMP components in Markdown
@@ -363,7 +363,7 @@ You can find a working sample [here](/packages/optimizer/demo/markdown).
 
 AMP Optimizer supports custom HTML transformations:
 
-```
+```js
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {createElement, firstChildByTag, appendChild} = AmpOptimizer.NodeUtils;
 
@@ -410,7 +410,7 @@ The biggest performance gain results from [removing the AMP boilerplate code](ht
 
 To find out, why the AMP boilerplate could not be removed, enable `verbose` mode:
 
-```
+```js
 // globally
 const optimizer = ampOptimizer.create({
   verbose: true
@@ -419,7 +419,7 @@ const optimizer = ampOptimizer.create({
 
 ... or for individual pages:
 
-```
+```js
 // per transformation
 ampOptimizer.transformHtml(originalHtml, {
   verbose: true
@@ -448,7 +448,7 @@ When using experimental features resulting in invalid AMP it's best to setup pai
 
 Example:
 
-```
+```js
 const optimizer = AmpOptimizer.create({
   transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
 });
@@ -480,7 +480,7 @@ Versioning the AMP runtime URLs has one main benefit: versioned AMP runtime URLs
 
 You can use [@ampproject/toolbox-runtime-version](/packages/runtime-version) to retrieve the latest version of the AMP runtime. Here is a sample to apply the optimizations including versioning the URLs:
 
-```
+```js
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 const ampRuntimeVersion = await runtimeVersion.currentVersion();
 
@@ -517,7 +517,7 @@ This transformer supports the following options:
 
 Usage:
 
-```
+```js
 const optimizer = AmpOptimizer.create({
   // blurry image placeholders are currently not considered valid AMP
   // hence it's recommended to setup paired AMP mode when enabling this feature.
@@ -532,7 +532,7 @@ It's possible to rewrite the AMP framework and component imports to a different 
 
 Example:
 
-```
+```js
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
 // The input string
@@ -556,7 +556,7 @@ console.log(optimizedHtml);
 
 Ideally, when self-hosting the AMP framework, `amp-geo-0.1.js` should be patched at delivery time to replace `{{AMP_ISO_COUNTRY_HOTPATCH}}` with the ISO 3166-1 alpha-2 country code where the request originated ([reference](https://github.com/ampproject/amphtml/blob/main/spec/amp-cache-guidelines.md#guidelines-adding-a-new-cache-to-the-amp-ecosystem)). If your host does not have this capability, you can instead rely on a web API to return the country at runtime. The web API must be secure (HTTPS), adhere to [AMP CORS guidelines](https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/), and return JSON in the following format:
 
-```
+```js
 {"country": "de"}
 ```
 
@@ -564,7 +564,7 @@ where in this example, `de` is the ISO 3166-1 alpha-2 country code for Germany.
 
 Example:
 
-```
+```js
 const ampOptimizer = require('@ampproject/toolbox-optimizer');
 
 // The input string
@@ -587,7 +587,7 @@ console.log(optimizedHtml);
 
 AMP Optimizer uses a snapshot based testing approach. To execute the tests, run in the project root:
 
-```
+```shell
 $ npm run test:node
 ```
 
@@ -603,7 +603,7 @@ The transformation input is defined in `input.html`, whereas `expected_output.ht
 outcome of the transformation. Don't edit `expected_output.html` manually, instead, after changing
 a transformer implementation, run:
 
-```
+```shell
 $ npm run test:optimizer:snapshot
 ```
 
