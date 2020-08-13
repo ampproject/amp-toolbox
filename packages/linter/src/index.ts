@@ -32,6 +32,7 @@ export enum LintMode {
   AmpStory = "ampstory",
   Amp4Ads = "amp4ads",
   Amp4Email = "amp4email",
+  PageExperience = "pageexperience",
   Sxg = "sxg",
 }
 
@@ -120,6 +121,13 @@ function testsForMode(type: LintMode) {
       VideosHaveAltText,
       VideosAreSubtitled,
       TitleMeetsLengthCriteria,
+    ])
+  );
+  tests.set(
+    LintMode.PageExperience,
+    (tests.get(LintMode.PageExperience) || []).concat([
+      IsValid,
+      RuntimeIsPreloaded,
     ])
   );
   return tests.get(type) || [];

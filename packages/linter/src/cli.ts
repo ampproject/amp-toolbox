@@ -38,7 +38,7 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
     .option(
       `-f, --force <string>`,
       "override test type",
-      /^(auto|sxg|amp|ampstory)$/i, // needs to be of type LintMode | "auto"
+      /^(auto|sxg|amp|ampstory|pageexperience)$/i, // needs to be of type LintMode | "auto"
       "auto"
     )
     .option(
