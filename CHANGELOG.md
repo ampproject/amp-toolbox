@@ -1,3 +1,14 @@
+## v2.6.1 (2020-08-13)
+
+#### :rocket: Enhancement
+
+- `linter`
+  - [#890](https://github.com/ampproject/amp-toolbox/pull/890) introduce pageexperience mode ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.6.0 (2020-08-10)
 
 #### :rocket: Enhancement
