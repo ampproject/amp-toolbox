@@ -56,14 +56,14 @@ You can find a sample implementation [here](/packages/optimizer/demo/simple). If
 AMP Optimizer can be used via the [AMP Toolbox CLI](/packages/cli/README.md):
 
 ```shell
-$ npm install @ampproject/toolbox-cli -g
-$ amp optimize myFile.html
+npm install @ampproject/toolbox-cli -g
+amp optimize myFile.html
 ```
 
 or run without installation via `npx`:
 
 ```shell
-$ npx @ampproject/toolbox-cli optimize myFile.html
+npx @ampproject/toolbox-cli optimize myFile.html
 ```
 
 ### Options
@@ -588,7 +588,7 @@ console.log(optimizedHtml);
 AMP Optimizer uses a snapshot based testing approach. To execute the tests, run in the project root:
 
 ```shell
-$ npm run test:node
+npm run test:node
 ```
 
 Transformer tests are located in:
@@ -604,7 +604,7 @@ outcome of the transformation. Don't edit `expected_output.html` manually, inste
 a transformer implementation, run:
 
 ```shell
-$ npm run test:optimizer:snapshot
+npm run test:optimizer:snapshot
 ```
 
 to store a new snapshot version in `expected_output.html`.
