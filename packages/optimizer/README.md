@@ -79,8 +79,9 @@ const ampOptimizer = AmpOptimizer.create({
 
 Available options are:
 
-- [autoAddBoilerplate](#autoaddboilerplate)
+- [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
+- [fetch](#fetch)
 - [format](#format)
 - [imageBasePath](#imagebasePath)
 - [imageOptimizer](#imageoptimizer)
@@ -290,7 +291,7 @@ const originalHtml = `
 const opts = {
   canonical: '/example.html'
 }
-ampOptimizer.transformHtml(originalHtml, params).then((optimizedHtml) => {
+ampOptimizer.transformHtml(originalHtml, opts).then((optimizedHtml) => {
   // optimizedHtml will be a valid AMP document
   console.log(optimizedHtml);
 });
