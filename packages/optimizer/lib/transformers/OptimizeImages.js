@@ -19,6 +19,7 @@
 const {hasAttribute, nextNode, firstChildByTag} = require('../NodeUtils');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
+const {createCacheUrl} = require('@ampproject/toolbox-cache-url');
 
 // Don't generate srcset's for images with width smaller than MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT
 // this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
@@ -149,6 +150,7 @@ class OptimizeImages {
     // TODO turn these into options https://github.com/ampproject/amp-toolbox/issues/804
     this.maxImageWidth = MAX_IMG_SIZE;
     this.maxSrcsetValues = MAX_SRCSET_VALUE_COUNT;
+    this.rewriteUrlsToAmpCache = config.rewriteUrlsToAmpCache;
   }
 
   async transform(root) {
@@ -173,6 +175,10 @@ class OptimizeImages {
     return Promise.all(imageOptimizationPromises);
   }
 
+  _replaceUrl(url) {
+    return createCacheUrl(this.rewriteUrlsToAmpCache, url);
+  }
+
   async optimizeImage(imageNode) {
     // Don't change existing srcsets.
     if (hasAttribute(imageNode, 'srcset')) {
@@ -182,7 +188,7 @@ class OptimizeImages {
     if (!hasAttribute(imageNode, 'src')) {
       return;
     }
-    const src = imageNode.attribs.src;
+    let src = imageNode.attribs.src;
     // Check if it's a relative path or a valid http(s) URL.
     if (!isValidImageSrcURL(src)) {
       return;
@@ -192,6 +198,10 @@ class OptimizeImages {
     // http://b/127535381 for context.
     if (src.endsWith(',')) {
       return;
+    }
+
+    if (this.rewriteUrlsToAmpCache) {
+      src = this._replaceUrl(src);
     }
     const width = imageNode.attribs.width;
 
