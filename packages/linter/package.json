@@ -13,7 +13,7 @@
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.6.0",
     "@ampproject/toolbox-cache-url": "^2.5.4",
-    "amphtml-validator": "1.0.31",
+    "amphtml-validator": "1.0.32",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
     "commander": "6.0.0",

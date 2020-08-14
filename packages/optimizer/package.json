@@ -35,7 +35,7 @@
     "@ampproject/toolbox-validator-rules": "^2.5.4",
     "abort-controller": "3.0.0",
     "cross-fetch": "3.0.5",
-    "cssnano-simple": "1.0.5",
+    "cssnano-simple": "1.2.0",
     "dom-serializer": "1.0.1",
     "domhandler": "3.0.0",
     "domutils": "2.1.0",
@@ -46,7 +46,7 @@
     "normalize-html-whitespace": "1.0.0",
     "postcss": "7.0.32",
     "postcss-safe-parser": "4.0.2",
-    "terser": "4.8.0"
+    "terser": "5.1.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
