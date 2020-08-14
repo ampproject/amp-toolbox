@@ -156,8 +156,10 @@ class DomTransformer {
       // Re-use custom fetch implementation for runtime version provider
       this.config.runtimeVersion = new RuntimeVersion(this.config.fetch);
     }
-    if(this.config.rewriteUrlsToAmpCache && this.config.ampUrlPrefix){
-      log.warn('rewriteUrlsToAmpCache and ampUrlPrefix opts are both defined - ampUrlPrefix overrides rewriteUrlsToAmpCache')
+    if (this.config.rewriteUrlsToAmpCache && this.config.ampUrlPrefix) {
+      log.warn(
+        'rewriteUrlsToAmpCache and ampUrlPrefix opts are both defined - ampUrlPrefix overrides rewriteUrlsToAmpCache'
+      );
     }
     log.verbose(this.config.verbose);
     this.initTransformers_(this.config);
