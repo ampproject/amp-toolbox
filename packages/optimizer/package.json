@@ -11,13 +11,8 @@
   "scripts": {
     "postinstall": "node lib/warmup.js"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
-  "keywords": [
-    "amp"
-  ],
+  "files": ["index.js", "lib"],
+  "keywords": ["amp"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
@@ -46,7 +41,7 @@
     "normalize-html-whitespace": "1.0.0",
     "postcss": "7.0.32",
     "postcss-safe-parser": "4.0.2",
-    "terser": "4.8.0"
+    "terser": "5.1.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

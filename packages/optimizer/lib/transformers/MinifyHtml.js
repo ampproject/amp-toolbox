@@ -49,7 +49,7 @@ class MinifyHtml {
     };
     this.log = config.log.tag('MinifyHtml');
   }
-  transform(tree) {
+  async transform(tree) {
     if (!this.opts.minify) {
       return;
     }
@@ -57,19 +57,19 @@ class MinifyHtml {
     // while iterating the DOM
     const nodesToRemove = [];
     // recursively walk through all nodes and minify if possible
-    this.minifyNode(tree, this.opts, nodesToRemove);
+    await this.minifyNode(tree, this.opts, nodesToRemove);
     for (const node of nodesToRemove) {
       remove(node);
     }
   }
 
-  minifyNode(node, opts, nodesToRemove) {
+  async minifyNode(node, opts, nodesToRemove) {
     if (node.type === 'text') {
       this.minifyTextNode(node, opts, nodesToRemove);
     } else if (node.type === 'comment') {
       this.minifyCommentNode(node, opts, nodesToRemove);
     } else if (node.tagName === 'script') {
-      this.minifyScriptNode(node, opts);
+      await this.minifyScriptNode(node, opts);
     }
     // update options based on the current node
     const childOpts = Object.assign({}, opts);
@@ -82,9 +82,11 @@ class MinifyHtml {
       childOpts.inBody = true;
     }
     // minify all child nodes
+    const childPromises = [];
     for (const child of node.children || []) {
-      this.minifyNode(child, childOpts, nodesToRemove);
+      childPromises.push(this.minifyNode(child, childOpts, nodesToRemove));
     }
+    return Promise.all(childPromises);
   }
 
   minifyTextNode(node, opts, nodesToRemove) {
@@ -113,7 +115,7 @@ class MinifyHtml {
     nodesToRemove.push(node);
   }
 
-  minifyScriptNode(node, opts) {
+  async minifyScriptNode(node, opts) {
     const isJson = this.isJson(node);
     const isAmpScript = !isJson && this.isInlineAmpScript(node);
     for (const child of node.children || []) {
@@ -123,14 +125,14 @@ class MinifyHtml {
       if (isJson && opts.minifyJSON) {
         this.minifyJson(child);
       } else if (isAmpScript && opts.minifyAmpScript) {
-        this.minifyAmpScript(child);
+        await this.minifyAmpScript(child);
       }
     }
   }
 
-  minifyAmpScript(child) {
+  async minifyAmpScript(child) {
     try {
-      const result = minify(child.data, {});
+      const result = await minify(child.data, {});
       if (result.error) {
         this.log.warn(
           'Could not minify inline amp-script',
