@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const Terser = require('terser');
+const {minify} = require('terser');
 const {remove} = require('../NodeUtils');
 const normalizeWhitespace = require('normalize-html-whitespace');
 const htmlEscape = require('../htmlEscape');
@@ -129,16 +129,20 @@ class MinifyHtml {
   }
 
   minifyAmpScript(child) {
-    const result = Terser.minify(child.data);
-    if (result.error) {
-      this.log.warn(
-        'Could not minify inline amp-script',
-        child.data,
-        `${result.error.name}: ${result.error.message}`
-      );
-      return;
+    try {
+      const result = minify(child.data, {});
+      if (result.error) {
+        this.log.warn(
+          'Could not minify inline amp-script',
+          child.data,
+          `${result.error.name}: ${result.error.message}`
+        );
+        return;
+      }
+      child.data = result.code;
+    } catch (e) {
+      this.log.warn('Failed minifying inline amp-script', e);
     }
-    child.data = result.code;
   }
 
   minifyJson(child) {
