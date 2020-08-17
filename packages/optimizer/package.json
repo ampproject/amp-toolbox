@@ -11,13 +11,8 @@
   "scripts": {
     "postinstall": "node lib/warmup.js"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
-  "keywords": [
-    "amp"
-  ],
+  "files": ["index.js", "lib"],
+  "keywords": ["amp"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
