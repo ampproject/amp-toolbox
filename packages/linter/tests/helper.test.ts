@@ -1,6 +1,11 @@
+import { restore as nockRestore } from 'nock';
 import { withFixture, assertEqual, runCheerioFn } from "./lib";
 import { schemaMetadata, corsEndpoints } from "../src/helper";
 import { _inlineMetadata as inlineMetadata } from "../src/rules/StoryMetadataThumbnailsAreOk";
+
+afterEach(() => {
+  nockRestore();
+});
 
 describe(`helper ${schemaMetadata.name}`, () => {
   it(schemaMetadata.name, async () => {
