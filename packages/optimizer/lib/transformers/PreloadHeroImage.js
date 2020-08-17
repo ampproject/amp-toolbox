@@ -26,7 +26,7 @@ const {
 } = require('../NodeUtils');
 const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
-const {isTemplate} = require('../AmpConstants');
+const amphtml = require('../AmpConstants');
 
 // Images smaller than 150px are considered tiny
 const TINY_IMG_THRESHOLD = 150;
@@ -72,10 +72,15 @@ class PreloadHeroImage {
       );
       heroImageCount = DATA_HERO_MAX;
     }
+    const isAmpStory = amphtml.isAmpStory(head);
     for (let i = 0; i < heroImageCount; i++) {
       const heroImage = heroImages[i];
       this.generatePreload(heroImage, head, referenceNode);
-      this.generateImg(heroImage.ampImg);
+      // AMP Stories don't support ssr'd amp-img yet
+      // See https://github.com/ampproject/amphtml/issues/29850
+      if (!isAmpStory) {
+        this.generateImg(heroImage.ampImg);
+      }
     }
   }
 
@@ -132,7 +137,7 @@ class PreloadHeroImage {
       if (!heroImageCandidate && heroImages.length === 0) {
         heroImageCandidate = this.isCandidateHeroImage(node);
       }
-      if (isTemplate(root)) {
+      if (amphtml.isTemplate(root)) {
         // Ignore images inside templates
         node = skipNodeAndChildren(node);
       } else {

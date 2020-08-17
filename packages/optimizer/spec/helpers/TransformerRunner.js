@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const validator = require('amphtml-validator');
 const {basename, join} = require('path');
 const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
 
@@ -47,6 +48,7 @@ module.exports = function (testConfig) {
     getDirectories(testConfig.testDir).forEach((testDir) => {
       it(basename(testDir), async (done) => {
         let params = TRANSFORMER_PARAMS;
+        const validatorInstance = await validator.getInstance();
 
         // parse input and extract params
         let input = getFileContents(join(testDir, 'input.html'));
@@ -85,6 +87,12 @@ module.exports = function (testConfig) {
           writeFileContents(expectedOutputPath, actualOutput);
         } else {
           expect(actualOutput).toBe(expectedOutput);
+        }
+        if (testConfig.validAmp) {
+          const result = validatorInstance.validateString(actualOutput);
+          if (result.status !== 'PASS') {
+            fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
+          }
         }
         done();
       });
