@@ -1,3 +1,6 @@
+import { readFileSync } from "fs";
+import { restore as nockRestore } from "nock";
+jest.mock('../src/caches');
 import {
   withFixture,
   assertMatch,
@@ -18,6 +21,21 @@ import { SxgVaryOnAcceptAct } from "../src/rules/SxgVaryOnAcceptAct";
 import { SxgContentNegotiationIsOk } from "../src/rules/SxgContentNegotiationIsOk";
 import { SxgAmppkgIsForwarded } from "../src/rules/SxgAmppkgIsForwarded";
 import { IsValid } from "../src/rules/IsValid";
+import { caches } from "../src/caches";
+
+beforeAll(() => {
+  (caches as jest.Mock).mockReturnValue(
+    Promise.resolve(JSON.parse(readFileSync(`${__dirname}/caches.json`).toString()).caches)
+  );
+});
+
+afterEach(() => {
+  nockRestore();
+});
+
+afterAll(() => {
+  (caches as jest.Mock).mockRestore();
+});
 
 describe(StoryMetadataThumbnailsAreOk.name, () => {
   it(`${StoryMetadataThumbnailsAreOk.name} - poster-portrait-src is too small`, () => {
