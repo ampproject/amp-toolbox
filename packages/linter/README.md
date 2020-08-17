@@ -65,29 +65,29 @@ Populates the `dist` directory with the appropriate `*.js` and `*.d.ts` files.
 Note that tests are _not_ included. This script is intended to be used when
 building the npm package.
 
-#### `transpile`
-
-Transpiles `*.ts` into `*.js`. Unlike `build`, tests are included, and the
-`*.js` files are output into the same directory as the corresponding `*.ts`.
-This script is intended to be used during development.
-
-#### `test`
-
-Runs the tests. Automatically runs `transpile` first.
-
 #### `lint`
 
 Checks the code for lint errors using prettier.
+
+### Running tests
+
+The unit tests run in the context of toolbox project.
+```
+# Run all linter tests
+npm run test:node -- packages/linter
+
+# Run linter network tests
+npm run test:node -- packages/linter/tests/network.test.ts
+```
 
 ### Suggested Development Workflow
 
 1. Create stub rule in `rules/`, that always "fails". e.g. it always returns
    `qqqqqq`. It should extend the `Rule` class.
-1. Write tests in `tests/network.ts`. (If HTTP requests are required; if not
+1. Write tests in `tests/network.test.ts` (If HTTP requests are required). If not
    then create a directory in `tests/local/MyNewTest-1` that contains a
-   `source.html` (AMP HTML source) and `expected.json` (expected JSON output),
-   and `tests/local.js` will automatically execute your "test".)
-1. Run the test using `npm test`. If the fixtures can't be found, they will be
-   generated automatically (via real network requests). Hopefully your test will
-   fail.
+   `source.html` (AMP HTML source) and add your test in `tests/local.test.ts`. 
+1. Run the test using `npm run test:node -- packages/linter` in the toolbox root.
+   If the fixtures can't be found, they will be generated automatically
+   (via real network requests). Hopefully your test will fail.
 1. Fix the implementation, and re-run the test.

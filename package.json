@@ -11,7 +11,7 @@
     "publish": "lerna publish",
     "publish:alpha": "lerna publish --preid alpha --dist-tag alpha",
     "test": "npm-run-all build test:node test:browser lint",
-    "test:node": "jest && lerna run test",
+    "test:node": "jest",
     "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "eslint  -c .eslintrc.json . && lerna run lint",
@@ -67,6 +67,7 @@
     "tap-parser": "10.1.0",
     "tar": "6.0.2",
     "throat": "5.0.0",
+    "ts-jest": "^26.2.0",
     "typescript": "3.9.7"
   },
   "dependencies": {
