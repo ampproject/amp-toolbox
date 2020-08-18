@@ -26,6 +26,8 @@ import { IsValid } from "./rules/IsValid";
 import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
+import { IsTransformedAmp } from './rules/IsTransformedAmp';
+import { ModuleRuntimeUsed } from './rules/ModuleRuntimeUsed';
 
 export enum LintMode {
   Amp = "amp",
@@ -128,6 +130,8 @@ function testsForMode(type: LintMode) {
     (tests.get(LintMode.PageExperience) || []).concat([
       IsValid,
       RuntimeIsPreloaded,
+      IsTransformedAmp,
+      ModuleRuntimeUsed,
     ])
   );
   return tests.get(type) || [];

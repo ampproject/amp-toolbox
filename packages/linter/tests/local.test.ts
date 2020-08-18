@@ -10,6 +10,8 @@ import { VideosHaveAltText } from "../src/rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "../src/rules/VideosAreSubtitled";
 import { BookendExists } from "../src/rules/BookendExists";
 import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
+import { IsTransformedAmp } from '../src/rules/IsTransformedAmp';
+import { ModuleRuntimeUsed } from '../src/rules/ModuleRuntimeUsed';
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -58,6 +60,26 @@ describe(AmpImgAmpPixelPreferred.name, () => {
   });
 });
 
+describe(IsTransformedAmp.name, () => {
+  it(`${IsTransformedAmp.name} - Transformed AMP detected`, async () => {
+    return assertPass(
+      runLocalTest(
+        IsTransformedAmp,
+        `${__dirname}/local/IsTransformedAmp-1/source.html`
+      )
+    );
+  });
+
+  it(`${IsTransformedAmp.name} - No transformed AMP detected`, async () => {
+    return assertWarn(
+      runLocalTest(
+        IsTransformedAmp,
+        `${__dirname}/local/IsTransformedAmp-2/source.html`
+      )
+    );
+  });
+});
+
 describe(MetaCharsetIsFirst.name, () => {
   it(`${MetaCharsetIsFirst.name} - <meta charset> is first`, async () => {
     return assertPass(
@@ -73,6 +95,26 @@ describe(MetaCharsetIsFirst.name, () => {
       runLocalTest(
         MetaCharsetIsFirst,
         `${__dirname}/local/MetaCharsetIsFirst-2/source.html`
+      )
+    );
+  });
+});
+
+describe(ModuleRuntimeUsed.name, () => {
+  it(`${ModuleRuntimeUsed.name} - Module runtime script found`, async () => {
+    return assertPass(
+      runLocalTest(
+        ModuleRuntimeUsed,
+        `${__dirname}/local/ModuleRuntimeUsed-1/source.html`
+      )
+    );
+  });
+
+  it(`${ModuleRuntimeUsed.name} - Module runtime script not found`, async () => {
+    return assertWarn(
+      runLocalTest(
+        ModuleRuntimeUsed,
+        `${__dirname}/local/ModuleRuntimeUsed-2/source.html`
       )
     );
   });
