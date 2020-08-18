@@ -26,15 +26,11 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --strictNullChecks --declaration --outDir dist src/*.ts",
-    "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'",
-    "lint:fix": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'"
+    "build": "tsc"
   },
   "prettier": {
     "quoteProps": "consistent"

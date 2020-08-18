@@ -25,6 +25,7 @@
  *   dpr: (number|undefined)
  * }}
  */
+// eslint-disable-next-line
 let SrcsetSourceDef;
 
 /**
@@ -251,7 +252,7 @@ function sortByDpr(s1, s2) {
   return s1.dpr - s2.dpr;
 }
 
-function assert(shouldBeTrueish, opt_message, ...var_args) {
+function assert(shouldBeTrueish, opt_message) {
   let firstElement;
   if (!shouldBeTrueish) {
     const message = opt_message || 'Assertion failed';

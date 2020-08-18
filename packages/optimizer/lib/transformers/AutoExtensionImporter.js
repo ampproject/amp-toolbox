@@ -17,7 +17,6 @@
 
 const {nextNode, insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
-const {calculateHost} = require('../RuntimeHostHelper');
 const {AMP_FORMATS, AMP_CACHE_HOST} = require('../AmpConstants');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';

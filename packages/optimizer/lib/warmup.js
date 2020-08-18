@@ -39,14 +39,10 @@ const fetchWithTimout = (url, opts = {}) => {
   });
 };
 
-const ampOptimizer = AmpOptimizer.create({
-  fetch: fetchWithTimout,
-});
-
 async function warmupCaches() {
   let success = true;
   // Hack to avoid error messages in the console during postinstall
-  log.error = (e) => {
+  log.error = () => {
     success = false;
   };
   try {

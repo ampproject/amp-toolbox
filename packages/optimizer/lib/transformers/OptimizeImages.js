@@ -196,7 +196,7 @@ class OptimizeImages {
     const width = imageNode.attribs.width;
 
     // TODO(b/113271759): Handle width values that include 'px' (probably others).
-    if (Number.parseInt(width) === NaN) {
+    if (isNaN(Number.parseInt(width))) {
       // No width or invalid width.
       return;
     }

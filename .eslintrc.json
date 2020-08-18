@@ -1,15 +1,32 @@
 {
-  "extends": ["plugin:prettier/recommended"],
+  "root": true,
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
   "parserOptions": {
     "sourceType": "module"
   },
   "rules": {
-    "no-undef": "error"
+    "no-undef": "error",
+    "prettier/prettier": "error"
   },
   "env": {
     "node": true,
     "jasmine": true,
     "es2017": true,
     "jest": true
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    }
+  ]
 }

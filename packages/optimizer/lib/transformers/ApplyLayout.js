@@ -72,8 +72,8 @@ function apply(layout, width, height, node) {
       // Do nothing here, but emit <i-amphtml-sizer> later.
       break;
     case 'intrinsic':
-    // Do nothing here, but emit <i-amphtml-sizer> later.
-    // break;
+      // Do nothing here, but emit <i-amphtml-sizer> later.
+      break;
     case 'fill':
     case 'container':
       // Do nothing here.

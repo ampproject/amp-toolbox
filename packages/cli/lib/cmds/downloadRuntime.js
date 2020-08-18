@@ -16,11 +16,9 @@
 
 'use strict';
 
-const path = require('path');
-
 const downloadRuntimeProvider = require('@ampproject/toolbox-runtime-fetch');
 
-async function downloadRuntime(args, _) {
+async function downloadRuntime(args) {
   const {host, clear, dest, rtv} = args;
   const ret = await downloadRuntimeProvider.getRuntime({
     ampUrlPrefix: host,

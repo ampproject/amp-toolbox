@@ -60,14 +60,7 @@ module.exports = {
   // A set of global variables that need to be available in all test environments
   globals: {
     'ts-jest': {
-      tsConfig: {
-        target: 'es2018',
-        esModuleInterop: true,
-        noImplicitAny: true,
-        strictNullChecks: true,
-        resolveJsonModule: true,
-        module: 'commonjs',
-      },
+      tsConfig: './tsconfig.json',
     },
   },
 
@@ -129,7 +122,7 @@ module.exports = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['./jest.setup.js'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],

@@ -63,7 +63,9 @@ describe('AMP Cors', () => {
   describe('sends 400', () => {
     it('with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
       request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
-      cors(request, response, () => {}).then(() => {
+      cors(request, response, () => {
+        true;
+      }).then(() => {
         expect(response.status_).toEqual(400);
         done();
       });

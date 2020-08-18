@@ -82,7 +82,6 @@ export default [
   {
     input: 'index.js',
     output: {
-      name: 'amp-toolbox-cache-url',
       file: pkg.browser,
       format: 'umd',
       exports: 'named',
