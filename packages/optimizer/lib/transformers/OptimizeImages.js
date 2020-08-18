@@ -158,7 +158,7 @@ class OptimizeImages {
 
     let node = body;
     const imageOptimizationPromises = [];
-    while (node !== null) {
+    while (node) {
       if (node.tagName === 'template') {
         node = skipNodeAndChildren(node);
       } else {
