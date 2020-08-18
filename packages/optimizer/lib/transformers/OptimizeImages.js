@@ -135,7 +135,7 @@ class SrcsetWidth {
 }
 
 /**
- * ImageTransformer - generates srcset attribute for amp-img.
+ * ImageTransformer - generates srcset attribute for amp-img and rewrites urls to the amp cache.
  *
  * This transformer requires the following option:
  *
@@ -150,13 +150,9 @@ class OptimizeImages {
     // TODO turn these into options https://github.com/ampproject/amp-toolbox/issues/804
     this.maxImageWidth = MAX_IMG_SIZE;
     this.maxSrcsetValues = MAX_SRCSET_VALUE_COUNT;
-    this.rewriteUrlsToAmpCache = config.rewriteUrlsToAmpCache;
   }
 
-  async transform(root) {
-    if (!this.imageOptimizer) {
-      return;
-    }
+  async transform(root, runtimeParams) {
     const html = firstChildByTag(root, 'html');
     const body = firstChildByTag(html, 'body');
 
@@ -168,6 +164,16 @@ class OptimizeImages {
       } else {
         if (node.tagName === 'amp-img') {
           imageOptimizationPromises.push(this.optimizeImage(node));
+          if (this.imageOptimizer) {
+            await this.optimizeImage(node);
+          }
+          if (runtimeParams.rewriteUrlsToAmpCache) {
+            await this.rewriteHosts(
+              node,
+              runtimeParams.rewriteUrlsToAmpCache,
+              runtimeParams.baseDomain
+            );
+          }
         }
         node = nextNode(node);
       }
@@ -175,8 +181,20 @@ class OptimizeImages {
     return Promise.all(imageOptimizationPromises);
   }
 
-  _replaceUrl(url) {
-    return createCacheUrl(this.rewriteUrlsToAmpCache, url);
+  async _replaceUrl(url, host) {
+    return createCacheUrl(host, url);
+  }
+
+  async rewriteHosts(imageNode, host, baseDomain) {
+    let src = imageNode.attribs.src;
+    if (!src) {
+      return;
+    }
+    if (src.startsWith('/')) {
+      src = baseDomain + src;
+    }
+    src = await this._replaceUrl(src, host);
+    imageNode.attribs.src = src;
   }
 
   async optimizeImage(imageNode) {
@@ -200,9 +218,6 @@ class OptimizeImages {
       return;
     }
 
-    if (this.rewriteUrlsToAmpCache) {
-      src = this._replaceUrl(src);
-    }
     const width = imageNode.attribs.width;
 
     // TODO(b/113271759): Handle width values that include 'px' (probably others).
