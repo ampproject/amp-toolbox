@@ -12,7 +12,7 @@ export class ModuleRuntimeUsed extends Rule {
     return isModuleVersion
       ? this.pass()
       : this.warn(
-          "The Java Script module version of the AMP Runtime is not used"
+          "The JavaScript module version of the AMP Runtime is not used"
         );
   }
   meta() {
