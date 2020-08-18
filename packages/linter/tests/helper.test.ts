@@ -1,6 +1,7 @@
+import cheerio from "cheerio";
 import { restore as nockRestore } from "nock";
 import { withFixture, assertEqual, runCheerioFn } from "./lib";
-import { schemaMetadata, corsEndpoints } from "../src/helper";
+import { schemaMetadata, corsEndpoints, isTransformedAmp } from "../src/helper";
 import { _inlineMetadata as inlineMetadata } from "../src/rules/StoryMetadataThumbnailsAreOk";
 
 afterEach(() => {
@@ -88,5 +89,22 @@ describe("helper corsEndpoints", () => {
         ["https://ampbyexample.com/json/bookend.json"]
       )
     );
+  });
+});
+
+describe("helper isTransformedAmp", () => {
+  it("isTransformedAmp with current transform value", async () => {
+    const $ = cheerio.load("<html transformed='self;v=1'><body></body></html>");
+    expect(isTransformedAmp($)).toEqual(true);
+  });
+
+  it("isTransformedAmp with different transform value", async () => {
+    const $ = cheerio.load("<html transformed='self;v=2'><body></body></html>");
+    expect(isTransformedAmp($)).toEqual(true);
+  });
+
+  it("isTransformedAmp with current transform value", async () => {
+    const $ = cheerio.load("<html other='self;v=1'><body></body></html>");
+    expect(isTransformedAmp($)).toEqual(false);
   });
 });

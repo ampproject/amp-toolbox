@@ -1,8 +1,6 @@
 import { cli } from "./cli";
-import { SchemaMetadataIsNews } from "./rules/SchemaMetadataIsNews";
 import { LinkRelCanonicalIsOk } from "./rules/LinkRelCanonicalIsOk";
 import { AmpVideoIsSmall } from "./rules/AmpVideoIsSmall";
-import { BookendExists } from "./rules/BookendExists";
 import { AmpVideoIsSpecifiedByAttribute } from "./rules/AmpVideoIsSpecifiedByAttribute";
 import { StoryRuntimeIsV1 } from "./rules/StoryRuntimeIsV1";
 import { StoryMetadataIsV1 } from "./rules/StoryMetadataIsV1";
@@ -26,6 +24,8 @@ import { IsValid } from "./rules/IsValid";
 import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
+import { IsTransformedAmp } from "./rules/IsTransformedAmp";
+import { ModuleRuntimeUsed } from "./rules/ModuleRuntimeUsed";
 
 export enum LintMode {
   Amp = "amp",
@@ -128,6 +128,8 @@ function testsForMode(type: LintMode) {
     (tests.get(LintMode.PageExperience) || []).concat([
       IsValid,
       RuntimeIsPreloaded,
+      IsTransformedAmp,
+      ModuleRuntimeUsed,
     ])
   );
   return tests.get(type) || [];
