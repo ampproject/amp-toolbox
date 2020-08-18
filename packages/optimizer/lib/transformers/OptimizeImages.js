@@ -206,7 +206,7 @@ class OptimizeImages {
     if (!hasAttribute(imageNode, 'src')) {
       return;
     }
-    let src = imageNode.attribs.src;
+    const src = imageNode.attribs.src;
     // Check if it's a relative path or a valid http(s) URL.
     if (!isValidImageSrcURL(src)) {
       return;
