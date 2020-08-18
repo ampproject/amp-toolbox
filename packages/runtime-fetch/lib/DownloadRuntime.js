@@ -24,7 +24,6 @@ const os = require('os');
 const path = require('path');
 const runtimeVersionProvider = require('@ampproject/toolbox-runtime-version');
 const {URL} = require('url');
-const util = require('util');
 
 const RUNTIME_FILES_TXT = 'files.txt';
 const fetchOptions = {
@@ -254,9 +253,9 @@ class DownloadRuntime {
     try {
       new URL(url);
       return true;
-    } catch (ex) {}
-
-    return false;
+    } catch (ex) {
+      return false;
+    }
   }
 
   /**

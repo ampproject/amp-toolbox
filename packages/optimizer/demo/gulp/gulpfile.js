@@ -4,7 +4,7 @@ const through2 = require('through2');
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const ampOptimizer = AmpOptimizer.create();
 
-function optimizeAmp(cb) {
+function optimizeAmp() {
   return src('src/*.html')
     .pipe(
       through2.obj(async (file, _, cb) => {

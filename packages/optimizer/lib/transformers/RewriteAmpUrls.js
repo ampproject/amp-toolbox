@@ -184,9 +184,9 @@ class RewriteAmpUrls {
     try {
       new URL(url);
       return true;
-    } catch (ex) {}
-
-    return false;
+    } catch (ex) {
+      return false;
+    }
   }
 }
 

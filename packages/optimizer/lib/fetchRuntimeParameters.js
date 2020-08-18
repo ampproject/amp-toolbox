@@ -254,9 +254,9 @@ function isAbsoluteUrl_(url) {
   try {
     new URL(url);
     return true;
-  } catch (ex) {}
-
-  return false;
+  } catch (ex) {
+    return false;
+  }
 }
 
 module.exports = fetchRuntimeParameters;

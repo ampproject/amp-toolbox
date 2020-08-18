@@ -1,14 +1,11 @@
 import { readFileSync } from "fs";
 import { isArray } from "util";
-
 import program from "commander";
 import fetch from "node-fetch";
 import cheerio from "cheerio";
 import chalk from "chalk";
-
 import { lint, Result, LintMode, guessMode, Status, StatusNumber } from ".";
 import { fetchToCurl } from "./helper";
-
 // import { version } from "../package.json";
 
 const UA = {
