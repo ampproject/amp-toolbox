@@ -10,8 +10,8 @@ import { VideosHaveAltText } from "../src/rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "../src/rules/VideosAreSubtitled";
 import { BookendExists } from "../src/rules/BookendExists";
 import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
-import { IsTransformedAmp } from '../src/rules/IsTransformedAmp';
-import { ModuleRuntimeUsed } from '../src/rules/ModuleRuntimeUsed';
+import { IsTransformedAmp } from "../src/rules/IsTransformedAmp";
+import { ModuleRuntimeUsed } from "../src/rules/ModuleRuntimeUsed";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
