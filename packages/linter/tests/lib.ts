@@ -46,21 +46,15 @@ export const withFixture = throat(
   }
 ) as <T>(fixtureName: string, fn: () => Promise<T>) => Promise<T>;
 
-export async function assertPass(
-  actual: Promise<Result | Result[]>
-) {
+export async function assertPass(actual: Promise<Result | Result[]>) {
   return assertStatus(Status.PASS, actual);
 }
 
-export async function assertWarn(
-  actual: Promise<Result | Result[]>
-) {
+export async function assertWarn(actual: Promise<Result | Result[]>) {
   return assertStatus(Status.WARN, actual);
 }
 
-export async function assertFail(
-  actual: Promise<Result | Result[]>
-) {
+export async function assertFail(actual: Promise<Result | Result[]>) {
   return assertStatus(Status.FAIL, actual);
 }
 
@@ -73,11 +67,11 @@ export async function assertStatus(
     if (expectedStatus === Status.PASS) {
       return;
     } else {
-      throw new Error('no results returned');
+      throw new Error("no results returned");
     }
   }
   if (actual.length > 1) {
-    throw new Error('multiple results returned');
+    throw new Error("multiple results returned");
   }
   const actualStatus = actual[0].status;
   if (actualStatus === expectedStatus) {
@@ -129,7 +123,9 @@ export async function assertMatch<T extends object>(
 ) {
   const s = JSON.stringify(await Promise.resolve(actual));
   if (!s.match(expected)) {
-    throw new Error(`actual: ${s}, expected regexp match: ${expected.toString()}`);
+    throw new Error(
+      `actual: ${s}, expected regexp match: ${expected.toString()}`
+    );
   }
 }
 

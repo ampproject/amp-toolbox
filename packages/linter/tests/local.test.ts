@@ -11,7 +11,7 @@ import { VideosAreSubtitled } from "../src/rules/VideosAreSubtitled";
 import { BookendExists } from "../src/rules/BookendExists";
 import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
 
-describe(AmpImgAmpPixelPreferred.name, ()=> {
+describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
     return assertWarn(
       runLocalTest(
@@ -58,83 +58,116 @@ describe(AmpImgAmpPixelPreferred.name, ()=> {
   });
 });
 
-describe(MetaCharsetIsFirst.name, ()=> {
+describe(MetaCharsetIsFirst.name, () => {
   it(`${MetaCharsetIsFirst.name} - <meta charset> is first`, async () => {
     return assertPass(
-      runLocalTest(MetaCharsetIsFirst, `${__dirname}/local/MetaCharsetIsFirst-1/source.html`)
+      runLocalTest(
+        MetaCharsetIsFirst,
+        `${__dirname}/local/MetaCharsetIsFirst-1/source.html`
+      )
     );
   });
 
   it(`${MetaCharsetIsFirst.name} - <meta charset> missing`, async () => {
     return assertFail(
-      runLocalTest(MetaCharsetIsFirst, `${__dirname}/local/MetaCharsetIsFirst-2/source.html`)
+      runLocalTest(
+        MetaCharsetIsFirst,
+        `${__dirname}/local/MetaCharsetIsFirst-2/source.html`
+      )
     );
   });
 });
 
-describe(RuntimeIsPreloaded.name, ()=> {
+describe(RuntimeIsPreloaded.name, () => {
   it(`${RuntimeIsPreloaded.name} - <link rel="preload"> is absent`, async () => {
     return assertWarn(
-      runLocalTest(RuntimeIsPreloaded, `${__dirname}/local/RuntimeIsPreloaded-1/source.html`)
+      runLocalTest(
+        RuntimeIsPreloaded,
+        `${__dirname}/local/RuntimeIsPreloaded-1/source.html`
+      )
     );
   });
 
   it(`${RuntimeIsPreloaded.name} - <link rel="preload"> is present`, async () => {
     return assertPass(
-      runLocalTest(RuntimeIsPreloaded, `${__dirname}/local/RuntimeIsPreloaded-2/source.html`)
+      runLocalTest(
+        RuntimeIsPreloaded,
+        `${__dirname}/local/RuntimeIsPreloaded-2/source.html`
+      )
     );
   });
 });
 
-describe(SchemaMetadataIsNews.name, ()=> {
+describe(SchemaMetadataIsNews.name, () => {
   it(`${SchemaMetadataIsNews.name} - schema type is NewsArticle`, async () => {
     return assertPass(
-      runLocalTest(SchemaMetadataIsNews, `${__dirname}/local/SchemaMetadataIsNews-1/source.html`)
+      runLocalTest(
+        SchemaMetadataIsNews,
+        `${__dirname}/local/SchemaMetadataIsNews-1/source.html`
+      )
     );
   });
 
   it(`${SchemaMetadataIsNews.name} - schema type is not NewsArticle`, async () => {
     return assertWarn(
-      runLocalTest(SchemaMetadataIsNews, `${__dirname}/local/SchemaMetadataIsNews-2/source.html`)
+      runLocalTest(
+        SchemaMetadataIsNews,
+        `${__dirname}/local/SchemaMetadataIsNews-2/source.html`
+      )
     );
   });
 });
 
-describe(StoryRuntimeIsV1.name, ()=> {
+describe(StoryRuntimeIsV1.name, () => {
   it(`${StoryRuntimeIsV1.name} - runtime is v1`, async () => {
     return assertPass(
-      runLocalTest(StoryRuntimeIsV1, `${__dirname}/local/StoryRuntimeIsV1-1/source.html`)
+      runLocalTest(
+        StoryRuntimeIsV1,
+        `${__dirname}/local/StoryRuntimeIsV1-1/source.html`
+      )
     );
   });
 
   it(`${StoryRuntimeIsV1.name} - runtime is not v1`, async () => {
     return assertFail(
-      runLocalTest(StoryRuntimeIsV1, `${__dirname}/local/StoryRuntimeIsV1-2/source.html`)
+      runLocalTest(
+        StoryRuntimeIsV1,
+        `${__dirname}/local/StoryRuntimeIsV1-2/source.html`
+      )
     );
   });
 });
 
-describe(BookendExists.name, ()=> {
+describe(BookendExists.name, () => {
   it(`${BookendExists.name} - external bookend data`, async () => {
     return assertPass(
-      runLocalTest(BookendExists, `${__dirname}/local/BookendExists-1/source.html`)
+      runLocalTest(
+        BookendExists,
+        `${__dirname}/local/BookendExists-1/source.html`
+      )
     );
   });
 
   it(`${BookendExists.name} - inline bookend data`, async () => {
     return assertPass(
-      runLocalTest(BookendExists, `${__dirname}/local/BookendExists-2/source.html`)
+      runLocalTest(
+        BookendExists,
+        `${__dirname}/local/BookendExists-2/source.html`
+      )
     );
   });
 
   it(`${BookendExists.name} - no bookend`, async () => {
     return assertWarn(
-      runLocalTest(BookendExists, `${__dirname}/local/BookendExists-3/source.html`)
+      runLocalTest(
+        BookendExists,
+        `${__dirname}/local/BookendExists-3/source.html`
+      )
     );
   });
 });
 
-describe(MetadataIncludesOGImageSrc.name, ()=> {
+describe(MetadataIncludesOGImageSrc.name, () => {
   it(`${MetadataIncludesOGImageSrc.name} - <meta property="og:image"> is present`, async () => {
     return assertPass(
       runLocalTest(
@@ -163,49 +196,67 @@ describe(MetadataIncludesOGImageSrc.name, ()=> {
   });
 });
 
-describe(ImagesHaveAltText.name, ()=> {
+describe(ImagesHaveAltText.name, () => {
   it(`${ImagesHaveAltText.name} - All <amp-img> have alt text`, async () => {
     return assertPass(
-      runLocalTest(ImagesHaveAltText, `${__dirname}/local/ImagesHaveAltText-1/source.html`)
+      runLocalTest(
+        ImagesHaveAltText,
+        `${__dirname}/local/ImagesHaveAltText-1/source.html`
+      )
     );
   });
 
   it(`${ImagesHaveAltText.name} - At least one <amp-img> is missing alt text`, async () => {
     return assertWarn(
-      runLocalTest(ImagesHaveAltText, `${__dirname}/local/ImagesHaveAltText-2/source.html`)
+      runLocalTest(
+        ImagesHaveAltText,
+        `${__dirname}/local/ImagesHaveAltText-2/source.html`
+      )
     );
   });
 });
 
-describe(VideosHaveAltText.name, ()=> {
+describe(VideosHaveAltText.name, () => {
   it(`${VideosHaveAltText.name} - All <amp-video> have alt text`, async () => {
     return assertPass(
-      runLocalTest(VideosHaveAltText, `${__dirname}/local/VideosHaveAltText-1/source.html`)
+      runLocalTest(
+        VideosHaveAltText,
+        `${__dirname}/local/VideosHaveAltText-1/source.html`
+      )
     );
   });
 
   it(`${VideosHaveAltText.name} - At least one <amp-video> is missing alt text`, async () => {
     return assertWarn(
-      runLocalTest(VideosHaveAltText, `${__dirname}/local/VideosHaveAltText-2/source.html`)
+      runLocalTest(
+        VideosHaveAltText,
+        `${__dirname}/local/VideosHaveAltText-2/source.html`
+      )
     );
   });
 });
 
-describe(VideosAreSubtitled.name, ()=> {
+describe(VideosAreSubtitled.name, () => {
   it(`${VideosAreSubtitled.name} - All <amp-video> have subtitles`, async () => {
     return assertPass(
-      runLocalTest(VideosAreSubtitled, `${__dirname}/local/VideosAreSubtitled-1/source.html`)
+      runLocalTest(
+        VideosAreSubtitled,
+        `${__dirname}/local/VideosAreSubtitled-1/source.html`
+      )
     );
   });
 
   it(`${VideosAreSubtitled.name} - One or more <amp-video> are missing subtitles`, async () => {
     return assertWarn(
-      runLocalTest(VideosAreSubtitled, `${__dirname}/local/VideosAreSubtitled-2/source.html`)
+      runLocalTest(
+        VideosAreSubtitled,
+        `${__dirname}/local/VideosAreSubtitled-2/source.html`
+      )
     );
   });
 });
 
-describe(TitleMeetsLengthCriteria.name, ()=> {
+describe(TitleMeetsLengthCriteria.name, () => {
   it(`${TitleMeetsLengthCriteria.name} - Title is 40 characters or less`, async () => {
     return assertPass(
       runLocalTest(

@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { restore as nockRestore } from "nock";
-jest.mock('../src/caches');
+jest.mock("../src/caches");
 import {
   withFixture,
   assertMatch,
@@ -25,7 +25,9 @@ import { caches } from "../src/caches";
 
 beforeAll(() => {
   (caches as jest.Mock).mockReturnValue(
-    Promise.resolve(JSON.parse(readFileSync(`${__dirname}/caches.json`).toString()).caches)
+    Promise.resolve(
+      JSON.parse(readFileSync(`${__dirname}/caches.json`).toString()).caches
+    )
   );
 });
 
@@ -132,9 +134,7 @@ describe(StoryMetadataThumbnailsAreOk.name, () => {
 describe(IsValid.name, () => {
   it(`${IsValid.name} - valid`, () => {
     return withFixture("testvalidity1", () =>
-      assertPass(
-        runNetworkTest(IsValid, "https://www.ampproject.org/")
-      )
+      assertPass(runNetworkTest(IsValid, "https://www.ampproject.org/"))
     );
   });
 
@@ -148,9 +148,7 @@ describe(IsValid.name, () => {
 
   it(`${IsValid.name} - valid with svg`, () => {
     return withFixture("testvalidity3", () =>
-      assertPass(
-        runNetworkTest(IsValid, "https://amp.dev/index.amp.html")
-      )
+      assertPass(runNetworkTest(IsValid, "https://amp.dev/index.amp.html"))
     );
   });
 });
@@ -159,7 +157,10 @@ describe(LinkRelCanonicalIsOk.name, () => {
   it(`${LinkRelCanonicalIsOk.name} - canonical`, () => {
     return withFixture("testcanonical1", () =>
       assertPass(
-        runNetworkTest(LinkRelCanonicalIsOk, "https://regular-biology.glitch.me/")
+        runNetworkTest(
+          LinkRelCanonicalIsOk,
+          "https://regular-biology.glitch.me/"
+        )
       )
     );
   });
@@ -167,7 +168,10 @@ describe(LinkRelCanonicalIsOk.name, () => {
   it(`${LinkRelCanonicalIsOk.name} - not canonical`, () => {
     return withFixture("testcanonical2", () =>
       assertFail(
-        runNetworkTest(LinkRelCanonicalIsOk, "https://copper-cupboard.glitch.me/")
+        runNetworkTest(
+          LinkRelCanonicalIsOk,
+          "https://copper-cupboard.glitch.me/"
+        )
       )
     );
   });
@@ -175,7 +179,10 @@ describe(LinkRelCanonicalIsOk.name, () => {
   it(`${LinkRelCanonicalIsOk.name} - relative`, () => {
     return withFixture("testcanonical3", () =>
       assertPass(
-        runNetworkTest(LinkRelCanonicalIsOk, "https://regular-biology.glitch.me/")
+        runNetworkTest(
+          LinkRelCanonicalIsOk,
+          "https://regular-biology.glitch.me/"
+        )
       )
     );
   });
@@ -360,7 +367,10 @@ describe(AmpImgHeightWidthIsOk.name, () => {
             return "amp-story-tag-hierarchy.png is wrong ratio";
           }
           const message2 = res[5].message;
-          if (typeof message2 !== "string" || !message2.match("layers-layer-3")) {
+          if (
+            typeof message2 !== "string" ||
+            !message2.match("layers-layer-3")
+          ) {
             return "layers-layer-3.jpg is too big";
           }
           return "";
@@ -401,7 +411,10 @@ describe(AmpImgHeightWidthIsOk.name, () => {
   it(`${AmpImgHeightWidthIsOk.name} - height/width are correct`, () => {
     return withFixture("ampimg5", () =>
       assertFnList(
-        runNetworkTest(AmpImgHeightWidthIsOk, "https://charming-pirate.glitch.me/"),
+        runNetworkTest(
+          AmpImgHeightWidthIsOk,
+          "https://charming-pirate.glitch.me/"
+        ),
         (res) => {
           return res.length === 0
             ? ""
@@ -412,7 +425,7 @@ describe(AmpImgHeightWidthIsOk.name, () => {
   });
 });
 
-describe('CORS', () => {
+describe("CORS", () => {
   describe(EndpointsAreAccessibleFromOrigin.name, () => {
     it(`${EndpointsAreAccessibleFromOrigin.name} - all headers correct`, () => {
       return withFixture("cors1", () =>
@@ -473,7 +486,10 @@ describe(SxgVaryOnAcceptAct.name, () => {
   it(`${SxgVaryOnAcceptAct.name} - vary header not returned`, () => {
     return withFixture("sxgvary1", () => {
       return assertFail(
-        runNetworkTest(SxgVaryOnAcceptAct, "https://boundless-stealer.glitch.me/")
+        runNetworkTest(
+          SxgVaryOnAcceptAct,
+          "https://boundless-stealer.glitch.me/"
+        )
       );
     });
   });
@@ -481,7 +497,10 @@ describe(SxgVaryOnAcceptAct.name, () => {
   it(`${SxgVaryOnAcceptAct.name} - no vary on amp-cache-transform`, () => {
     return withFixture("sxgvary2", () => {
       return assertFail(
-        runNetworkTest(SxgVaryOnAcceptAct, "https://boundless-stealer.glitch.me/")
+        runNetworkTest(
+          SxgVaryOnAcceptAct,
+          "https://boundless-stealer.glitch.me/"
+        )
       );
     });
   });
@@ -489,7 +508,10 @@ describe(SxgVaryOnAcceptAct.name, () => {
   it(`${SxgVaryOnAcceptAct.name} - no vary on accept`, () => {
     return withFixture("sxgvary3", () => {
       return assertFail(
-        runNetworkTest(SxgVaryOnAcceptAct, "https://boundless-stealer.glitch.me/")
+        runNetworkTest(
+          SxgVaryOnAcceptAct,
+          "https://boundless-stealer.glitch.me/"
+        )
       );
     });
   });
@@ -497,7 +519,10 @@ describe(SxgVaryOnAcceptAct.name, () => {
   it(`${SxgVaryOnAcceptAct.name} - vary on accept and amp-cache-transform`, () => {
     return withFixture("sxgvary4", () => {
       return assertPass(
-        runNetworkTest(SxgVaryOnAcceptAct, "https://boundless-stealer.glitch.me/")
+        runNetworkTest(
+          SxgVaryOnAcceptAct,
+          "https://boundless-stealer.glitch.me/"
+        )
       );
     });
   });
@@ -507,7 +532,10 @@ describe(SxgContentNegotiationIsOk.name, () => {
   it(`${SxgContentNegotiationIsOk.name} - application/signed-exchange supported`, () => {
     return withFixture("sxgconneg1", () => {
       return assertPass(
-        runNetworkTest(SxgContentNegotiationIsOk, "https://azei-package-test.com/")
+        runNetworkTest(
+          SxgContentNegotiationIsOk,
+          "https://azei-package-test.com/"
+        )
       );
     });
   });
@@ -526,7 +554,10 @@ describe(SxgContentNegotiationIsOk.name, () => {
   it(`${SxgContentNegotiationIsOk.name} - application/signed-exchange incorrectly supported`, () => {
     return withFixture("sxgconneg3", () => {
       return assertFail(
-        runNetworkTest(SxgContentNegotiationIsOk, "https://azei-package-test.com/")
+        runNetworkTest(
+          SxgContentNegotiationIsOk,
+          "https://azei-package-test.com/"
+        )
       );
     });
   });
@@ -544,7 +575,10 @@ describe(SxgAmppkgIsForwarded.name, () => {
   it(`${SxgAmppkgIsForwarded.name} - /amppkg/ not forwarded (404)`, () => {
     return withFixture("sxgamppkg1", () => {
       return assertFail(
-        runNetworkTest(SxgAmppkgIsForwarded, "https://boundless-stealer.glitch.me/")
+        runNetworkTest(
+          SxgAmppkgIsForwarded,
+          "https://boundless-stealer.glitch.me/"
+        )
       );
     });
   });

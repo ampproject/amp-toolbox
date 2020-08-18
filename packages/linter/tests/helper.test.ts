@@ -1,4 +1,4 @@
-import { restore as nockRestore } from 'nock';
+import { restore as nockRestore } from "nock";
 import { withFixture, assertEqual, runCheerioFn } from "./lib";
 import { schemaMetadata, corsEndpoints } from "../src/helper";
 import { _inlineMetadata as inlineMetadata } from "../src/rules/StoryMetadataThumbnailsAreOk";
@@ -22,7 +22,8 @@ describe(`helper ${schemaMetadata.name}`, () => {
             {
               "@type": "ListItem",
               "item": {
-                "@id": "https://ampbyexample.com/#/stories#stories/introduction",
+                "@id":
+                  "https://ampbyexample.com/#/stories#stories/introduction",
                 "name": "Introduction",
               },
               "position": 1,
@@ -45,7 +46,7 @@ describe(`helper ${schemaMetadata.name}`, () => {
 
 describe(`helper ${inlineMetadata.name}`, () => {
   it(inlineMetadata.name, async () => {
-    withFixture("getinlinemetadata", () =>
+    return withFixture("getinlinemetadata", () =>
       assertEqual(
         runCheerioFn(
           inlineMetadata,
@@ -67,7 +68,7 @@ describe(`helper ${inlineMetadata.name}`, () => {
   });
 });
 
-describe('helper corsEndpoints', () => {
+describe("helper corsEndpoints", () => {
   it(`${corsEndpoints.name} - AMP`, async () => {
     return withFixture("corsendpoints1", () =>
       assertEqual(
