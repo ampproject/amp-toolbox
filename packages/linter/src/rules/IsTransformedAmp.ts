@@ -1,10 +1,12 @@
 import { Context } from "../index";
 import { Rule } from "../rule";
+import { isTransformedAmp } from "../helper";
 
 export class IsTransformedAmp extends Rule {
   run({ $ }: Context) {
-    const isTransformed = $("html[transformed='self;v=1']").length > 0;
-    return isTransformed ? this.pass() : this.warn("No transformed AMP found");
+    return isTransformedAmp($)
+      ? this.pass()
+      : this.warn("No transformed AMP found");
   }
   meta() {
     return {
