@@ -78,6 +78,15 @@ npm run test:node
 npm run test:browser
 ```
 
+Using additional arguments the node tests can generate a coverage report or run only for a specific package.
+```
+# generate a coverage report
+npm run test:node -- --collectCoverage
+
+# run only tests for AMP Optimizer
+npm run test:node -- packages/optimizer
+```
+
 ### Style & Linting
 
 This codebase adheres to the [Google Javascript Styleguide](https://google.github.io/styleguide/jsguide.html) and is enforced using ESLint. ESLint is run as part of the test suite, but you can also explicity run it via:
