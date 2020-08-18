@@ -198,7 +198,7 @@ Minifies the generated HTML output and inlined CSS.
 - name: `minify`
 - valid options: `[true|false]`
 - default: `true`
-- used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes[(lib/transformers/SeparateKeyframes.js)
+- used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
 
 #### `preloadHeroImage`
 
