@@ -1,13 +1,34 @@
-## v2.7.0 (2020-08-13)
+## v2.7.0 (2020-08-19)
 
 #### :rocket: Enhancement
 
 - `linter`
   - [#890](https://github.com/ampproject/amp-toolbox/pull/890) introduce pageexperience mode ([@sebastianbenz](https://github.com/sebastianbenz))
 
-#### Committers: 1
+#### :rocket: Enhancement
+
+- `linter`
+  - [#901](https://github.com/ampproject/amp-toolbox/pull/901) Feature/linter optimizer checks ([@tharders](https://github.com/tharders))
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#896](https://github.com/ampproject/amp-toolbox/pull/896) Don't ssr amp-img in stories ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+
+- `cache-url`, `cli`, `cors`, `linter`, `optimizer`, `runtime-fetch`, `runtime-version`
+  - [#899](https://github.com/ampproject/amp-toolbox/pull/899) Make AMP Toolbox build on windows ([@sebastianbenz](https://github.com/sebastianbenz))
+- `linter`
+  - [#895](https://github.com/ampproject/amp-toolbox/pull/895) Using jest for linter ([@tharders](https://github.com/tharders))
+- `lighthouse-plugin-amp`, `linter`, `optimizer`, `update-cache`
+  - [#893](https://github.com/ampproject/amp-toolbox/pull/893) update dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 3
 
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Shotaro Watanabe ([@sangotaro](https://github.com/sangotaro))
+- Thorsten Harders ([@tharders](https://github.com/tharders))
 
 ## v2.6.0 (2020-08-10)
 
