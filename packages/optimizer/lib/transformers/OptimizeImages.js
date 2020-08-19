@@ -163,17 +163,14 @@ class OptimizeImages {
         node = skipNodeAndChildren(node);
       } else {
         if (node.tagName === 'amp-img') {
-          imageOptimizationPromises.push(this.optimizeImage(node));
           if (this.imageOptimizer) {
-            await this.optimizeImage(node);
+            imageOptimizationPromises.push(this.optimizeImage(node));
           }
         }
-        if (['amp-img', 'img', 'amp-anim'].contains(node.tagName)) {
+        if (['amp-img', 'img', 'amp-anim'].includes(node.tagName)) {
           if (runtimeParams.rewriteUrlsToAmpCache) {
-            await this.rewriteHosts(
-              node,
-              runtimeParams.rewriteUrlsToAmpCache,
-              runtimeParams.baseDomain
+            imageOptimizationPromises.push(
+              this.rewriteHosts(node, runtimeParams.rewriteUrlsToAmpCache, runtimeParams.baseDomain)
             );
           }
         }
