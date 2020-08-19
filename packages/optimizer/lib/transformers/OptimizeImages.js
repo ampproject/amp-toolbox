@@ -167,6 +167,8 @@ class OptimizeImages {
           if (this.imageOptimizer) {
             await this.optimizeImage(node);
           }
+        }
+        if (['amp-img', 'img', 'amp-anim'].contains(node.tagName)) {
           if (runtimeParams.rewriteUrlsToAmpCache) {
             await this.rewriteHosts(
               node,
@@ -185,16 +187,41 @@ class OptimizeImages {
     return createCacheUrl(host, url);
   }
 
-  async rewriteHosts(imageNode, host, baseDomain) {
-    let src = imageNode.attribs.src;
+  async rewriteSrc(src, host, baseDomain) {
     if (!src) {
       return;
     }
     if (src.startsWith('/')) {
       src = baseDomain + src;
     }
-    src = await this._replaceUrl(src, host);
-    imageNode.attribs.src = src;
+    return await this._replaceUrl(src, host);
+  }
+
+  async rewriteHosts(imageNode, host, baseDomain) {
+    let src = imageNode.attribs.src;
+    if (!src) {
+      return;
+    }
+    if (hasAttribute(imageNode, 'src')) {
+      imageNode.attribs.src = await this.rewriteSrc(imageNode.attribs.src, host, baseDomain);
+    }
+
+    if (hasAttribute(imageNode, 'srcset')) {
+      const srcset = imageNode.attribs.srcset;
+      let newSrcSet = '';
+      for (const source of srcset.split(',')) {
+        const srcsetIndivImage = (source || '').trim().split(/\s+/);
+        if (srcsetIndivImage.length !== 2) {
+          this.log.warn('Error parsing img srcset - individual img src incorrect', srcset);
+        }
+        const originalPath = srcsetIndivImage[0];
+        const ampCachePath = await this.rewriteSrc(originalPath, host, baseDomain);
+        newSrcSet += `${ampCachePath} ${srcsetIndivImage[1]}, `;
+      }
+      // Drop ending comma
+      newSrcSet = newSrcSet.slice(0, -2);
+      imageNode.attribs.srcset = newSrcSet;
+    }
   }
 
   async optimizeImage(imageNode) {
