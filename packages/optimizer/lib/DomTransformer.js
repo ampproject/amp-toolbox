@@ -32,8 +32,8 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'Markdown',
   // Adds missing AMP extensions
   'AutoExtensionImporter',
-  // Applies image optimizations, must run before PreloadHeroImage
-  'OptimizeImages',
+  // Applies image and asset optimizations, must run before PreloadHeroImage
+  'OptimizeAssets',
   // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
@@ -68,8 +68,8 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AutoExtensionImporter',
   // Adds a link to the valid AMP version
   'AddAmpLink',
-  // Applies image optimizations, must run before PreloadHeroImage
-  'OptimizeImages',
+  // Applies image and asset optimizations, must run before PreloadHeroImage
+  'OptimizeAssets',
   // Detect hero image and preload link rel=preload
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
