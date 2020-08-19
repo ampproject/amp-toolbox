@@ -20,7 +20,7 @@ const {hasAttribute, nextNode, firstChildByTag} = require('../NodeUtils');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
 const {createCacheUrl} = require('@ampproject/toolbox-cache-url');
-
+const parseSrcSet = require('../../lib/parseSrcSet');
 // Don't generate srcset's for images with width smaller than MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT
 // this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
 const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 100;
@@ -204,20 +204,12 @@ class OptimizeImages {
     }
 
     if (hasAttribute(imageNode, 'srcset')) {
-      const srcset = imageNode.attribs.srcset;
-      let newSrcSet = '';
-      for (const source of srcset.split(',')) {
-        const srcsetIndivImage = (source || '').trim().split(/\s+/);
-        if (srcsetIndivImage.length !== 2) {
-          this.log.warn('Error parsing img srcset - individual img src incorrect', srcset);
-        }
-        const originalPath = srcsetIndivImage[0];
-        const ampCachePath = await this.rewriteSrc(originalPath, host, baseDomain);
-        newSrcSet += `${ampCachePath} ${srcsetIndivImage[1]}, `;
+      const srcset = parseSrcSet(imageNode.attribs.srcset);
+      for (const source of srcset.sources_) {
+        source.url = await this.rewriteSrc(source.url, host, baseDomain);
       }
       // Drop ending comma
-      newSrcSet = newSrcSet.slice(0, -2);
-      imageNode.attribs.srcset = newSrcSet;
+      imageNode.attribs.srcset = srcset.stringify();
     }
   }
 
