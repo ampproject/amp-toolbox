@@ -15,14 +15,7 @@
  */
 'use strict';
 
-const {
-  insertText,
-  createElement,
-  insertBefore,
-  hasAttribute,
-  firstChildByTag,
-} = require('../NodeUtils');
-const {AMP_CACHE_HOST, V0_CSS_PATH, appendRuntimeVersion} = require('../AmpConstants.js');
+const {insertText, hasAttribute, firstChildByTag} = require('../NodeUtils');
 
 /**
  * AmpBoilerplateTransformer - This DOM transformer adds

@@ -1,8 +1,6 @@
 import { cli } from "./cli";
-import { SchemaMetadataIsNews } from "./rules/SchemaMetadataIsNews";
 import { LinkRelCanonicalIsOk } from "./rules/LinkRelCanonicalIsOk";
 import { AmpVideoIsSmall } from "./rules/AmpVideoIsSmall";
-import { BookendExists } from "./rules/BookendExists";
 import { AmpVideoIsSpecifiedByAttribute } from "./rules/AmpVideoIsSpecifiedByAttribute";
 import { StoryRuntimeIsV1 } from "./rules/StoryRuntimeIsV1";
 import { StoryMetadataIsV1 } from "./rules/StoryMetadataIsV1";
@@ -24,6 +22,9 @@ import { VideosHaveAltText } from "./rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "./rules/VideosAreSubtitled";
 import { IsValid } from "./rules/IsValid";
 import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
+import { IsTransformedAmp } from "./rules/IsTransformedAmp";
+import { ModuleRuntimeUsed } from "./rules/ModuleRuntimeUsed";
+import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -32,6 +33,7 @@ export enum LintMode {
   AmpStory = "ampstory",
   Amp4Ads = "amp4ads",
   Amp4Email = "amp4email",
+  PageExperience = "pageexperience",
   Sxg = "sxg",
 }
 
@@ -120,6 +122,16 @@ function testsForMode(type: LintMode) {
       VideosHaveAltText,
       VideosAreSubtitled,
       TitleMeetsLengthCriteria,
+    ])
+  );
+  tests.set(
+    LintMode.PageExperience,
+    (tests.get(LintMode.PageExperience) || []).concat([
+      IsValid,
+      RuntimeIsPreloaded,
+      BlockingExtensionsPreloaded,
+      IsTransformedAmp,
+      ModuleRuntimeUsed,
     ])
   );
   return tests.get(type) || [];

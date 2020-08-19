@@ -54,7 +54,7 @@ describe('update-cache', () => {
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message).toBe(
-          'Error generating cache invalidation URL: init failed:not supported argument'
+          'Error generating cache invalidation URL with init failed:Error: not supported argument'
         );
         done();
       });

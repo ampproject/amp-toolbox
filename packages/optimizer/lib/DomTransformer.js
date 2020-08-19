@@ -34,7 +34,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'AutoExtensionImporter',
   // Applies image optimizations, must run before PreloadHeroImage
   'OptimizeImages',
-  // Detect hero image and preload link rel=preload
+  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
@@ -51,8 +51,6 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
   'AddTransformedFlag',
-  // Removes unsupported nonce attribute from scripts
-  'RemoveCspNonce',
   // Minifies HTML, JSON, inline amp-script
   'MinifyHtml',
   // Inject CSP script has required for inline amp-script

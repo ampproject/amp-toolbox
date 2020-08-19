@@ -22,6 +22,7 @@
  *   defaultValue: string
  * }}
  */
+// eslint-disable-next-line
 let Sizes;
 
 /**
@@ -31,6 +32,7 @@ let Sizes;
  *   size: string
  * }}
  */
+// eslint-disable-next-line
 let Size;
 
 /**

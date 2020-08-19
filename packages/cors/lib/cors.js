@@ -114,9 +114,7 @@ module.exports = (options, caches = new Caches()) => {
     const normalizedHeaders = {};
 
     for (const key in headers) {
-      if (headers.hasOwnProperty(key)) {
-        normalizedHeaders[key.toLowerCase()] = headers[key];
-      }
+      normalizedHeaders[key.toLowerCase()] = headers[key];
     }
 
     // for same-origin requests AMP sets the amp-same-origin header

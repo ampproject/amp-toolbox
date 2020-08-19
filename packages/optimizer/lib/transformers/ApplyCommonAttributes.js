@@ -256,6 +256,8 @@ class ApplyCommonAttributes {
         'amp-custom': '',
       });
       appendChild(head, customStyles);
+    }
+    if (customStyles.children.length === 0) {
       insertText(customStyles, '');
     }
     customStyles.children[0].data += styles;

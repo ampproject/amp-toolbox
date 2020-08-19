@@ -21,7 +21,7 @@ export class LinkRelCanonicalIsOk extends Rule {
     try {
       const s2 = await redirectUrl(context, url);
       if (s2 === url) {
-        return this.pass();
+        return this.pass(`actual: ${s2}, expected: ${url}`);
       } else {
         return this.fail(`actual: ${s2}, expected: ${url}`);
       }

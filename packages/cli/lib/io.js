@@ -28,8 +28,8 @@ async function loadUrlOrFile(urlOrPath) {
   }
   let isFile = true;
   try {
-    new URL(urlOrPath);
-    isFile = false;
+    const url = new URL(urlOrPath);
+    isFile = !url.protocol.startsWith('http');
   } catch (err) {
     // not a valid URL
   }

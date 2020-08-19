@@ -11,3 +11,5 @@ node_modules/
 .npm
 .eslintcache
 .vscode
+.idea/
+/__coverage/

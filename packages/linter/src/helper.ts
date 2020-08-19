@@ -50,6 +50,10 @@ export function corsEndpoints($: CheerioStatic) {
   return (result as String[]).concat(ampListSrc);
 }
 
+export const isTransformedAmp = ($: CheerioStatic): boolean => {
+  return $("html[transformed]").length > 0;
+};
+
 export const absoluteUrl = (
   s: string | undefined,
   base: string | undefined

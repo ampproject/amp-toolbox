@@ -29,6 +29,7 @@ const defaultHost = 'https://cdn.ampproject.org';
 // AMP runtime files with sample string contents
 const fakeFiles = {
   'files.txt': '',
+  'v0.js': '',
   'version.txt': defaultVersion,
   'v0/amp-geo-0.1.js': 'd=/^(\\w{2})?\\s*/.exec("                            ")',
   'v0/amp-geo-0.1.mjs': 'd=/^(\\w{2})?\\s*/.exec("us                          ")',

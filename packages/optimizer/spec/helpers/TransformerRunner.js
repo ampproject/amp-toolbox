@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+const validator = require('amphtml-validator');
 const {basename, join} = require('path');
 const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
 
 const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
+const validatorRules = require('@ampproject/toolbox-validator-rules').fetch();
 
 const BEAUTIFY_OPTIONS = {
   'indent_size': 2,
@@ -46,6 +48,7 @@ module.exports = function (testConfig) {
     getDirectories(testConfig.testDir).forEach((testDir) => {
       it(basename(testDir), async (done) => {
         let params = TRANSFORMER_PARAMS;
+        const validatorInstance = await validator.getInstance();
 
         // parse input and extract params
         let input = getFileContents(join(testDir, 'input.html'));
@@ -77,13 +80,19 @@ module.exports = function (testConfig) {
           // that's ok as the test will fail by comparing to an empty string
         }
         params = testConfig.validAmp ? {} : params;
-        params.validatorRules = await require('@ampproject/toolbox-validator-rules').fetch();
+        params.validatorRules = await validatorRules;
         await testConfig.transformer.transform(tree, params);
         const actualOutput = serialize(tree, params.__format);
         if (WRITE_SNAPSHOT) {
           writeFileContents(expectedOutputPath, actualOutput);
         } else {
           expect(actualOutput).toBe(expectedOutput);
+        }
+        if (testConfig.validAmp) {
+          const result = validatorInstance.validateString(actualOutput);
+          if (result.status !== 'PASS') {
+            fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
+          }
         }
         done();
       });

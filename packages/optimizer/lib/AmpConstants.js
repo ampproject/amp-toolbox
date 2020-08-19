@@ -37,4 +37,27 @@ module.exports = {
     }
     return false;
   },
+  isAmpStory: (head) => {
+    for (const node of head.children) {
+      if (isAmpScriptImport(node) && node.attribs['custom-element'] === 'amp-story') {
+        return true;
+      }
+    }
+    return false;
+  },
 };
+
+function isAmpScriptImport(scriptNode) {
+  if (scriptNode.tagName !== 'script') {
+    return false;
+  }
+  if (!scriptNode.attribs) {
+    return false;
+  }
+  const customElement =
+    scriptNode.attribs['custom-element'] || scriptNode.attribs['custom-template'] || '';
+  if (!customElement.startsWith('amp-')) {
+    return false;
+  }
+  return true;
+}
