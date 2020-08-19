@@ -12,6 +12,7 @@ import { BookendExists } from "../src/rules/BookendExists";
 import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
 import { IsTransformedAmp } from "../src/rules/IsTransformedAmp";
 import { ModuleRuntimeUsed } from "../src/rules/ModuleRuntimeUsed";
+import { BlockingExtensionsPreloaded } from '../src/rules/BlockingExtensionsPreloaded';
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -57,6 +58,38 @@ describe(AmpImgAmpPixelPreferred.name, () => {
         `${__dirname}/local/AmpImgAmpPixelPreferred-5/source.html`
       )
     );
+  });
+});
+
+
+describe(BlockingExtensionsPreloaded.name, () => {
+  it(`${BlockingExtensionsPreloaded.name} - preload for js and mjs present`, async () => {
+    return assertPass(
+      runLocalTest(
+        BlockingExtensionsPreloaded,
+        `${__dirname}/local/BlockingExtensionsPreloaded-1/source.html`
+      )
+    );
+  });
+
+  it(`${BlockingExtensionsPreloaded.name} - No blocking extensions present`, async () => {
+    return assertPass(
+      runLocalTest(
+        BlockingExtensionsPreloaded,
+        `${__dirname}/local/BlockingExtensionsPreloaded-2/source.html`
+      )
+    );
+  });
+
+  it(`${BlockingExtensionsPreloaded.name} - preload for js and mjs is missing`, async () => {
+    const results = await runLocalTest(
+      BlockingExtensionsPreloaded,
+      `${__dirname}/local/BlockingExtensionsPreloaded-3/source.html`
+    );
+    expect(results).toHaveLength(3);
+    await assertWarn(results[0]);
+    await assertWarn(results[1]);
+    await assertWarn(results[2]);
   });
 });
 
@@ -135,6 +168,15 @@ describe(RuntimeIsPreloaded.name, () => {
       runLocalTest(
         RuntimeIsPreloaded,
         `${__dirname}/local/RuntimeIsPreloaded-2/source.html`
+      )
+    );
+  });
+
+  it(`${RuntimeIsPreloaded.name} - <link rel="modulepreload"> is present`, async () => {
+    return assertPass(
+      runLocalTest(
+        RuntimeIsPreloaded,
+        `${__dirname}/local/RuntimeIsPreloaded-3/source.html`
       )
     );
   });
