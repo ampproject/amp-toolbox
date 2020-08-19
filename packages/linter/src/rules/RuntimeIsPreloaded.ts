@@ -3,14 +3,13 @@ import { Rule } from "../rule";
 
 export class RuntimeIsPreloaded extends Rule {
   run({ $ }: Context) {
-    const attr = [
-      "href='https://cdn.ampproject.org/v0.js'",
-      "rel='preload'",
-      "as='script'",
-    ]
+    const jsAttr = ["href$='/v0.js'", "rel='preload'", "as='script'"]
       .map((s) => `[${s}]`)
       .join("");
-    const isPreloaded = $(`link${attr}`).length > 0;
+    const mjsAttr = ["href$='/v0.mjs'", "rel='modulepreload'"]
+      .map((s) => `[${s}]`)
+      .join("");
+    const isPreloaded = $(`link${jsAttr}, link${mjsAttr}`).length > 0;
     return isPreloaded
       ? this.pass()
       : this.warn(

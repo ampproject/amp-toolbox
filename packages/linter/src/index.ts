@@ -22,10 +22,11 @@ import { VideosHaveAltText } from "./rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "./rules/VideosAreSubtitled";
 import { IsValid } from "./rules/IsValid";
 import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
-import { RuleConstructor } from "./rule";
-import { isArray } from "util";
 import { IsTransformedAmp } from "./rules/IsTransformedAmp";
 import { ModuleRuntimeUsed } from "./rules/ModuleRuntimeUsed";
+import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded";
+import { RuleConstructor } from "./rule";
+import { isArray } from "util";
 
 export enum LintMode {
   Amp = "amp",
@@ -128,6 +129,7 @@ function testsForMode(type: LintMode) {
     (tests.get(LintMode.PageExperience) || []).concat([
       IsValid,
       RuntimeIsPreloaded,
+      BlockingExtensionsPreloaded,
       IsTransformedAmp,
       ModuleRuntimeUsed,
     ])
