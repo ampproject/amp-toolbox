@@ -6,7 +6,7 @@ export class RuntimeIsPreloaded extends Rule {
     const jsAttr = ["href$='/v0.js'", "rel='preload'", "as='script'"]
       .map((s) => `[${s}]`)
       .join("");
-    const mjsAttr = ["href$='/v0.mjs'", "rel='modulepreload'"]
+    const mjsAttr = ["href$='/v0.mjs'", "rel$='preload'"] // preload or modulepreload
       .map((s) => `[${s}]`)
       .join("");
     const isPreloaded = $(`link${jsAttr}, link${mjsAttr}`).length > 0;
