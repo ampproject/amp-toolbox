@@ -86,9 +86,10 @@ describe(BlockingExtensionsPreloaded.name, () => {
       BlockingExtensionsPreloaded,
       `${__dirname}/local/BlockingExtensionsPreloaded-3/source.html`
     );
-    expect(results).toHaveLength(2);
+    expect(results).toHaveLength(3);
     await assertWarn(results[0]);
     await assertWarn(results[1]);
+    await assertWarn(results[2]);
   });
 });
 

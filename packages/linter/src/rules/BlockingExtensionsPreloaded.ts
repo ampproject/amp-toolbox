@@ -1,7 +1,11 @@
 import { Context } from "../index";
 import { Rule } from "../rule";
 
-const blockingExtension = ["amp-experiment", "amp-dynamic-css-classes"];
+const blockingExtension = [
+  "amp-dynamic-css-classes",
+  "amp-experiment",
+  "amp-story",
+];
 
 export class BlockingExtensionsPreloaded extends Rule {
   run({ $ }: Context) {
