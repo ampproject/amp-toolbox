@@ -1,4 +1,10 @@
-import { assertPass, runLocalTest, assertWarn, assertFail } from "./lib";
+import {
+  assertPass,
+  runLocalTest,
+  assertWarn,
+  assertFail,
+  assertInfo,
+} from "./lib";
 import { AmpImgAmpPixelPreferred } from "../src/rules/AmpImgAmpPixelPreferred";
 import { MetaCharsetIsFirst } from "../src/rules/MetaCharsetIsFirst";
 import { RuntimeIsPreloaded } from "../src/rules/RuntimeIsPreloaded";
@@ -12,7 +18,8 @@ import { BookendExists } from "../src/rules/BookendExists";
 import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
 import { IsTransformedAmp } from "../src/rules/IsTransformedAmp";
 import { ModuleRuntimeUsed } from "../src/rules/ModuleRuntimeUsed";
-import { BlockingExtensionsPreloaded } from '../src/rules/BlockingExtensionsPreloaded';
+import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPreloaded";
+import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -61,7 +68,6 @@ describe(AmpImgAmpPixelPreferred.name, () => {
   });
 });
 
-
 describe(BlockingExtensionsPreloaded.name, () => {
   it(`${BlockingExtensionsPreloaded.name} - preload for js and mjs present`, async () => {
     return assertPass(
@@ -90,6 +96,33 @@ describe(BlockingExtensionsPreloaded.name, () => {
     await assertWarn(results[0]);
     await assertWarn(results[1]);
     await assertWarn(results[2]);
+  });
+});
+
+describe(FontsArePreloaded.name, () => {
+  it(`${FontsArePreloaded.name} - preload for font exists`, async () => {
+    return assertPass(
+      runLocalTest(
+        FontsArePreloaded,
+        `${__dirname}/local/FontsArePreloaded-1/source.html`
+      )
+    );
+  });
+  it(`${FontsArePreloaded.name} - preload for font missing`, async () => {
+    return assertInfo(
+      runLocalTest(
+        FontsArePreloaded,
+        `${__dirname}/local/FontsArePreloaded-2/source.html`
+      )
+    );
+  });
+  it(`${FontsArePreloaded.name} - all fonts have font-display set`, async () => {
+    return assertPass(
+      runLocalTest(
+        FontsArePreloaded,
+        `${__dirname}/local/FontsArePreloaded-3/source.html`
+      )
+    );
   });
 });
 
