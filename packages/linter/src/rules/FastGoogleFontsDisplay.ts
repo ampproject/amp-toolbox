@@ -23,7 +23,7 @@ export class FastGoogleFontsDisplay extends Rule {
       if (match) {
         results.push(
           this.warn(
-            `Use &display=swap|fallback|optional in font stylesheet url: ${href}`
+            `Use &display=swap|fallback|optional in Google Font stylesheet URL: ${href}`
           )
         );
       }
@@ -33,7 +33,7 @@ export class FastGoogleFontsDisplay extends Rule {
   meta() {
     return {
       url: "https://web.dev/font-display/",
-      title: "Use fast font display for Google Fonts",
+      title: "Use fast font-display for Google Fonts",
       info: "",
     };
   }
