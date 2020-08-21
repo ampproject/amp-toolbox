@@ -27,6 +27,7 @@ import { ModuleRuntimeUsed } from "./rules/ModuleRuntimeUsed";
 import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded";
 import { FontsArePreloaded } from "./rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "./rules/HeroImageIsDefined";
+import { FastGoogleFontsDisplay } from "./rules/FastGoogleFontsDisplay";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -133,6 +134,7 @@ function testsForMode(type: LintMode) {
       RuntimeIsPreloaded,
       BlockingExtensionsPreloaded,
       FontsArePreloaded,
+      FastGoogleFontsDisplay,
       IsTransformedAmp,
       ModuleRuntimeUsed,
       HeroImageIsDefined,
