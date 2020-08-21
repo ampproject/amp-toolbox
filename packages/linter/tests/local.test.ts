@@ -20,7 +20,8 @@ import { IsTransformedAmp } from "../src/rules/IsTransformedAmp";
 import { ModuleRuntimeUsed } from "../src/rules/ModuleRuntimeUsed";
 import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPreloaded";
 import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
-import { HeroImageIsDefined } from '../src/rules/HeroImageIsDefined';
+import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
+import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -97,6 +98,28 @@ describe(BlockingExtensionsPreloaded.name, () => {
     await assertWarn(results[0]);
     await assertWarn(results[1]);
     await assertWarn(results[2]);
+  });
+});
+
+describe(FastGoogleFontsDisplay.name, () => {
+  it(`${FastGoogleFontsDisplay.name} - all fonts have display param`, async () => {
+    return assertPass(
+      runLocalTest(
+        FastGoogleFontsDisplay,
+        `${__dirname}/local/FastGoogleFontsDisplay-1/source.html`
+      )
+    );
+  });
+  it(`${FastGoogleFontsDisplay.name} - no or wrong display param`, async () => {
+    const results = await runLocalTest(
+      FastGoogleFontsDisplay,
+      `${__dirname}/local/FastGoogleFontsDisplay-2/source.html`
+    );
+    expect(results).toHaveLength(4);
+    await assertWarn(results[0]);
+    await assertWarn(results[1]);
+    await assertWarn(results[2]);
+    await assertWarn(results[3]);
   });
 });
 
