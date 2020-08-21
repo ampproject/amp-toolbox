@@ -22,7 +22,7 @@ export class HeroImageIsDefined extends Rule {
     if (heroCandidates.find((heroImage) => heroImage.ampImg)) {
       // The PreloadHeroImage transformer will also return amp-video posters
       // but they cannot be marked as 'data-hero' and will not have the 'ampImg'
-      return this.warn("Use data-hero to identify hero images");
+      return this.warn("Use data-hero to mark hero images");
     }
     return this.pass();
   }
