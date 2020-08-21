@@ -25,6 +25,7 @@ import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
 import { IsTransformedAmp } from "./rules/IsTransformedAmp";
 import { ModuleRuntimeUsed } from "./rules/ModuleRuntimeUsed";
 import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded";
+import { FontsArePreloaded } from './rules/FontsArePreloaded';
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -130,6 +131,7 @@ function testsForMode(type: LintMode) {
       IsValid,
       RuntimeIsPreloaded,
       BlockingExtensionsPreloaded,
+      FontsArePreloaded,
       IsTransformedAmp,
       ModuleRuntimeUsed,
     ])

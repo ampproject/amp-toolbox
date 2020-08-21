@@ -50,6 +50,10 @@ export async function assertPass(actual: Promise<Result | Result[]>) {
   return assertStatus(Status.PASS, actual);
 }
 
+export async function assertInfo(actual: Promise<Result | Result[]>) {
+  return assertStatus(Status.INFO, actual);
+}
+
 export async function assertWarn(actual: Promise<Result | Result[]>) {
   return assertStatus(Status.WARN, actual);
 }
