@@ -20,6 +20,7 @@ import { IsTransformedAmp } from "../src/rules/IsTransformedAmp";
 import { ModuleRuntimeUsed } from "../src/rules/ModuleRuntimeUsed";
 import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPreloaded";
 import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
+import { HeroImageIsDefined } from '../src/rules/HeroImageIsDefined';
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -121,6 +122,33 @@ describe(FontsArePreloaded.name, () => {
       runLocalTest(
         FontsArePreloaded,
         `${__dirname}/local/FontsArePreloaded-3/source.html`
+      )
+    );
+  });
+});
+
+describe(HeroImageIsDefined.name, () => {
+  it(`${HeroImageIsDefined.name} - data-hero exists`, async () => {
+    return assertPass(
+      runLocalTest(
+        HeroImageIsDefined,
+        `${__dirname}/local/HeroImageIsDefined-1/source.html`
+      )
+    );
+  });
+  it(`${HeroImageIsDefined.name} - no relevant hero images`, async () => {
+    return assertPass(
+      runLocalTest(
+        HeroImageIsDefined,
+        `${__dirname}/local/HeroImageIsDefined-2/source.html`
+      )
+    );
+  });
+  it(`${HeroImageIsDefined.name} - data-hero missing`, async () => {
+    return assertWarn(
+      runLocalTest(
+        HeroImageIsDefined,
+        `${__dirname}/local/HeroImageIsDefined-3/source.html`
       )
     );
   });

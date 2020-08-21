@@ -11,15 +11,14 @@ const FONT_FACE_URL_PATTERN = /@font-face\s*\{(?![^}]*font-display)[^}]*\burl\s*
 export class FontsArePreloaded extends Rule {
   run({ $ }: Context) {
     const css = $("style[amp-custom]").html();
-    if (css) {
-      if (FONT_FACE_URL_PATTERN.test(css)) {
-        const preloadedFonts = $("link[rel='preload'],[as='font']").length;
-        if (preloadedFonts === 0) {
-          return this.info(
-            "Web fonts are used without preloading. Preload them if they are used in the first viewport."
-          );
-        }
-      }
+    if (!css || !FONT_FACE_URL_PATTERN.test(css)) {
+      return this.pass();
+    }
+    const preloadedFonts = $("link[rel='preload'],[as='font']").length;
+    if (preloadedFonts === 0) {
+      return this.info(
+        "Web fonts are used without preloading. Preload them if they are used in the first viewport."
+      );
     }
     return this.pass();
   }
