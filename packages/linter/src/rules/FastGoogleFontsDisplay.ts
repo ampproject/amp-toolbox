@@ -4,9 +4,8 @@ import { Rule } from "../rule";
 const GOOGLE_FONT_URL_PATTERN = /https?:\/\/fonts.googleapis.com\/css\?(?!(?:[\s\S]+&)?display=(?:swap|fallback|optional)(?:&|$))/i;
 
 /**
- * This test will return an info when font-face definitions with a url
- * but no fonts are preloaded.
- * Font definitions with url but an additional font-display setting are ignored.
+ * Checks if Google Font stylesheets are loaded with the display parameter
+ * value of 'swap', 'fallback', or 'optional'
  */
 export class FastGoogleFontsDisplay extends Rule {
   run({ $ }: Context) {

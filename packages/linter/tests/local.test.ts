@@ -22,6 +22,7 @@ import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPrel
 import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
+import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -145,6 +146,33 @@ describe(FontsArePreloaded.name, () => {
       runLocalTest(
         FontsArePreloaded,
         `${__dirname}/local/FontsArePreloaded-3/source.html`
+      )
+    );
+  });
+});
+
+describe(GoogleFontPreconnect.name, () => {
+  it(`${GoogleFontPreconnect.name} - dns-prefetch preconnect exists`, async () => {
+    return assertPass(
+      runLocalTest(
+        GoogleFontPreconnect,
+        `${__dirname}/local/GoogleFontPreconnect-1/source.html`
+      )
+    );
+  });
+  it(`${GoogleFontPreconnect.name} - preconnect missing`, async () => {
+    return assertWarn(
+      runLocalTest(
+        GoogleFontPreconnect,
+        `${__dirname}/local/GoogleFontPreconnect-2/source.html`
+      )
+    );
+  });
+  it(`${GoogleFontPreconnect.name} - dns-prefetch missing`, async () => {
+    return assertWarn(
+      runLocalTest(
+        GoogleFontPreconnect,
+        `${__dirname}/local/GoogleFontPreconnect-3/source.html`
       )
     );
   });

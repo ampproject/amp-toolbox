@@ -28,6 +28,7 @@ import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded
 import { FontsArePreloaded } from "./rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "./rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "./rules/FastGoogleFontsDisplay";
+import { GoogleFontPreconnect } from "./rules/GoogleFontPreconnect";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -135,6 +136,7 @@ function testsForMode(type: LintMode) {
       BlockingExtensionsPreloaded,
       FontsArePreloaded,
       FastGoogleFontsDisplay,
+      GoogleFontPreconnect,
       IsTransformedAmp,
       ModuleRuntimeUsed,
       HeroImageIsDefined,
