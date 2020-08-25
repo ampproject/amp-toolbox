@@ -1,3 +1,15 @@
+## v2.7.0-alpha.3 (2020-08-25)
+
+#### :rocket: Enhancement
+
+- `linter`
+  - [#908](https://github.com/ampproject/amp-toolbox/pull/908) Linter rule for AMP Boilerplate removal ([@tharders](https://github.com/tharders))
+  - [#907](https://github.com/ampproject/amp-toolbox/pull/907) Linter rule for Google Font preconnect ([@tharders](https://github.com/tharders))
+
+#### Committers: 1
+
+- Thorsten Harders ([@tharders](https://github.com/tharders))
+
 ## v2.7.0-alpha.2 (2020-08-21)
 
 #### :rocket: Enhancement
