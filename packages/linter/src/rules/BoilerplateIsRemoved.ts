@@ -32,7 +32,7 @@ export class BoilerplateIsRemoved extends Rule {
       );
     }
     return this.warn(
-      "AMP Boilerplate not removed. Check for AMP Optimizer updates"
+      "AMP Boilerplate not removed. Please upgrade to the latest AMP Optimizer version"
     );
   }
   meta() {
