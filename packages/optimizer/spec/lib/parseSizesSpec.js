@@ -46,9 +46,14 @@ describe('parseSizes', () => {
       defaultValue: '50vw',
     });
   });
-  it('invalid value', () => {
+  it('invalid value 1', () => {
     expect(() => {
       parseSizes('600px, 480w');
+    }).toThrow(/Invalid sizes definition/);
+  });
+  it('invalid value 2', () => {
+    expect(() => {
+      parseSizes('(min-width: 320px), 100vw');
     }).toThrow(/Invalid sizes definition/);
   });
   it('whitespace', () => {
