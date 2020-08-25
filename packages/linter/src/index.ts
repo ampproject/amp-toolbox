@@ -29,6 +29,7 @@ import { FontsArePreloaded } from "./rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "./rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "./rules/FastGoogleFontsDisplay";
 import { GoogleFontPreconnect } from "./rules/GoogleFontPreconnect";
+import { BoilerplateIsRemoved } from "./rules/BoilerplateIsRemoved";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -138,6 +139,7 @@ function testsForMode(type: LintMode) {
       FastGoogleFontsDisplay,
       GoogleFontPreconnect,
       IsTransformedAmp,
+      BoilerplateIsRemoved,
       ModuleRuntimeUsed,
       HeroImageIsDefined,
     ])
