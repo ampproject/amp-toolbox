@@ -23,6 +23,7 @@ import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
 import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
+import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -66,6 +67,53 @@ describe(AmpImgAmpPixelPreferred.name, () => {
       runLocalTest(
         AmpImgAmpPixelPreferred,
         `${__dirname}/local/AmpImgAmpPixelPreferred-5/source.html`
+      )
+    );
+  });
+});
+
+describe(BoilerplateIsRemoved.name, () => {
+  it(`${BoilerplateIsRemoved.name} - boilerplate removed`, async () => {
+    return assertPass(
+      runLocalTest(
+        BoilerplateIsRemoved,
+        `${__dirname}/local/BoilerplateIsRemoved-1/source.html`
+      )
+    );
+  });
+
+  it(`${BoilerplateIsRemoved.name} - amp-story boilerplate cannot be removed`, async () => {
+    return assertPass(
+      runLocalTest(
+        BoilerplateIsRemoved,
+        `${__dirname}/local/BoilerplateIsRemoved-2/source.html`
+      )
+    );
+  });
+
+  it(`${BoilerplateIsRemoved.name} - amp-experiment boilerplate avoidable`, async () => {
+    return assertInfo(
+      runLocalTest(
+        BoilerplateIsRemoved,
+        `${__dirname}/local/BoilerplateIsRemoved-3/source.html`
+      )
+    );
+  });
+
+  it(`${BoilerplateIsRemoved.name} - boilerplate was not removed`, async () => {
+    return assertWarn(
+      runLocalTest(
+        BoilerplateIsRemoved,
+        `${__dirname}/local/BoilerplateIsRemoved-4/source.html`
+      )
+    );
+  });
+
+  it(`${BoilerplateIsRemoved.name} - not transformed amp`, async () => {
+    return assertPass(
+      runLocalTest(
+        BoilerplateIsRemoved,
+        `${__dirname}/local/BoilerplateIsRemoved-5/source.html`
       )
     );
   });
