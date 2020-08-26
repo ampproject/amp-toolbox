@@ -32,8 +32,8 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'Markdown',
   // Adds missing AMP extensions
   'AutoExtensionImporter',
-  // Applies image optimizations, must run before PreloadHeroImage
-  'OptimizeImages',
+  // Applies image and asset optimizations, must run before PreloadHeroImage
+  'OptimizeAssets',
   // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
@@ -68,8 +68,8 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AutoExtensionImporter',
   // Adds a link to the valid AMP version
   'AddAmpLink',
-  // Applies image optimizations, must run before PreloadHeroImage
-  'OptimizeImages',
+  // Applies image and asset optimizations, must run before PreloadHeroImage
+  'OptimizeAssets',
   // Detect hero image and preload link rel=preload
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
@@ -155,6 +155,11 @@ class DomTransformer {
     if (!this.config.runtimeVersion) {
       // Re-use custom fetch implementation for runtime version provider
       this.config.runtimeVersion = new RuntimeVersion(this.config.fetch);
+    }
+    if (this.config.rewriteUrlsToAmpCache && this.config.ampUrlPrefix) {
+      log.warn(
+        'rewriteUrlsToAmpCache and ampUrlPrefix opts are both defined - ampUrlPrefix overrides rewriteUrlsToAmpCache'
+      );
     }
     log.verbose(this.config.verbose);
     this.initTransformers_(this.config);

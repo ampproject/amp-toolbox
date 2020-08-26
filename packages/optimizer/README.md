@@ -81,6 +81,7 @@ Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
+- [baseDomain](#baseDomain)
 - [fetch](#fetch)
 - [format](#format)
 - [imageBasePath](#imagebasePath)
@@ -89,6 +90,7 @@ Available options are:
 - [markdown](#markdown)
 - [minify](#minify)
 - [preloadHeroImage](#preloadheroimage)
+- [sxgHost](#sxgHost)
 - [verbose](#verbose)
 
 #### `autoAddMandatoryTags`
@@ -108,6 +110,44 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 - valid options: `[true|false]`
 - default: `true`
 - used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
+
+#### `baseDomain`
+
+Used during the image optimization step, in signed exchange (`sxgHost`) mode only. 
+
+The base domain for assets that are passed in with a relative url.
+For example, passing in `baseDomain: 'https://example.com'` for:
+
+```html
+<img src="/static/img.jpg"/>
+```
+would turn it into
+```html
+<img src="https://example.com/static/img.jpg"/>
+```
+
+#### `fetch`
+
+Provide a custom fetch handler. You can use this option to configure a custom proxy server. Example:
+
+```js
+const nodeFetch = require('node-fetch');
+
+const proxyHost = '...';
+const proxyPort = '...';
+
+const fetch = (url, opts={}) => {
+  opts.agent = new HttpsProxyAgent(`${proxyHost}:${proxyPort}');
+  return nodeFetch(url, opts)
+}
+const optimizer = AmpOptimizer.create({
+  fetch,
+});
+```
+
+- name: `fetch`
+- valid options: a [whatwg fetch](https://github.com/whatwg/fetch) compatible fetch implementation.
+- default: [node-fetch](https://www.npmjs.com/package/node-fetch)
 
 #### `format`
 
@@ -216,6 +256,21 @@ If no `data-hero` attribute is present, AMP optimizer auto-detects hero images f
 - valid options: `[true|false]`
 - default: `true`
 - used by: [PreloadHeroImage](lib/transformers/PreloadHeroImage.js)
+
+#### `sxgHost`
+
+AMP Cache url used for signed exchanges.
+
+For example, passing in `baseDomain: 'https://example.com', sxgHost: 'https://cdn.ampprojectcdn.org'` for:
+
+```html
+<img src="/static/img.jpg"/>
+```
+
+would turn it into
+```html
+<img src="https://example--com.cdn.ampproject.org/i/s/example.com/static/img.jpg"/>
+```
 
 #### `verbose`
 

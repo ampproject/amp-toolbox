@@ -26,10 +26,12 @@ class OptimizeCmd {
   }
   async run(args, logger) {
     const urlOrPath = args._[1];
-    const {host, rtv, lts, geoapi} = args;
+    const {host, rtv, lts, geoapi, sxgHost, baseDomain} = args;
     const html = await this.load_(urlOrPath);
     const optimized = await this.optimizer_.transformHtml(html, {
       ampUrlPrefix: host,
+      baseDomain: baseDomain,
+      rewriteUrlsToAmpCache: sxgHost,
       ampRuntimeVersion: rtv,
       lts,
       geoApiUrl: geoapi,

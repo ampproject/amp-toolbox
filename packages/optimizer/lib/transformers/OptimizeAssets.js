@@ -19,7 +19,8 @@
 const {hasAttribute, nextNode, firstChildByTag} = require('../NodeUtils');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
-
+const {createCacheUrl} = require('@ampproject/toolbox-cache-url');
+const parseSrcSet = require('../../lib/parseSrcSet');
 // Don't generate srcset's for images with width smaller than MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT
 // this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
 const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 100;
@@ -134,7 +135,7 @@ class SrcsetWidth {
 }
 
 /**
- * ImageTransformer - generates srcset attribute for amp-img.
+ * ImageTransformer - generates srcset attribute for amp-img and rewrites urls to the amp cache.
  *
  * This transformer requires the following option:
  *
@@ -142,7 +143,7 @@ class SrcsetWidth {
  *    pointing to a version of the `src` image with the given `width`. If no image is available, it should
  *    return a falsy value. For example: (src, width) => `${src}?width=${width}`.
  */
-class OptimizeImages {
+class OptimizeAssets {
   constructor(config) {
     this.log = config.log;
     this.imageOptimizer = config.imageOptimizer;
@@ -151,26 +152,82 @@ class OptimizeImages {
     this.maxSrcsetValues = MAX_SRCSET_VALUE_COUNT;
   }
 
-  async transform(root) {
-    if (!this.imageOptimizer) {
-      return;
-    }
+  async transform(root, runtimeParams) {
     const html = firstChildByTag(root, 'html');
     const body = firstChildByTag(html, 'body');
+    const {baseDomain, rewriteUrlsToAmpCache} = runtimeParams;
 
     let node = body;
     const imageOptimizationPromises = [];
-    while (node !== null) {
+    while (node) {
       if (node.tagName === 'template') {
         node = skipNodeAndChildren(node);
       } else {
-        if (node.tagName === 'amp-img') {
+        if (node.tagName === 'amp-img' && this.imageOptimizer) {
           imageOptimizationPromises.push(this.optimizeImage(node));
         }
+        if (rewriteUrlsToAmpCache) {
+          imageOptimizationPromises.push(
+            this.rewriteHosts(node, rewriteUrlsToAmpCache, baseDomain)
+          );
+        }
+
         node = nextNode(node);
       }
     }
     return Promise.all(imageOptimizationPromises);
+  }
+
+  async _replaceUrl(url, host) {
+    return createCacheUrl(host, url);
+  }
+
+  async rewriteHost(src, host, baseDomain) {
+    if (!src) {
+      return;
+    }
+    if (src.startsWith('/')) {
+      src = baseDomain + src;
+    }
+    return await this._replaceUrl(src, host);
+  }
+
+  async rewriteHosts(node, host, baseDomain) {
+    const tag = node.tagName;
+
+    if (['amp-img', 'img', 'amp-anim'].includes(tag)) {
+      if (hasAttribute(node, 'src')) {
+        node.attribs.src = await this.rewriteHost(node.attribs.src, host, baseDomain);
+      }
+
+      if (hasAttribute(node, 'srcset')) {
+        const srcset = parseSrcSet(node.attribs.srcset);
+        for (const source of srcset.sources_) {
+          source.url = await this.rewriteHost(source.url, host, baseDomain);
+        }
+        // Drop ending comma
+        node.attribs.srcset = srcset.stringify();
+      }
+    } else if (['video', 'amp-video'].includes(tag)) {
+      if (hasAttribute(node, 'poster')) {
+        node.attribs.poster = await this.rewriteHost(node.attribs.poster, host, baseDomain);
+      }
+    } else if (['link'].includes(tag) && node.attribs.rel === 'icon' && node.attribs.href) {
+      node.attribs.href = await this.rewriteHost(node.attribs.href, host, baseDomain);
+    } else if (['image'].includes(tag)) {
+      node.attribs.href = await this.rewriteHost(node.attribs.href, host, baseDomain);
+      node.attribs['xlink:href'] = await this.rewriteHost(
+        node.attribs['xlink:href'],
+        host,
+        baseDomain
+      );
+    } else if (['use'].includes(tag)) {
+      node.attribs['xlink:href'] = await this.rewriteHost(
+        node.attribs['xlink:href'],
+        host,
+        baseDomain
+      );
+    }
   }
 
   async optimizeImage(imageNode) {
@@ -193,6 +250,7 @@ class OptimizeImages {
     if (src.endsWith(',')) {
       return;
     }
+
     const width = imageNode.attribs.width;
 
     // TODO(b/113271759): Handle width values that include 'px' (probably others).
@@ -240,4 +298,4 @@ class OptimizeImages {
   }
 }
 
-module.exports = OptimizeImages;
+module.exports = OptimizeAssets;
