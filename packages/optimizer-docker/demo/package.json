@@ -1,0 +1,16 @@
+{
+  "name": "docker-optimizer-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build-docker": "docker build . -t 'docker-optimizer-demo'"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "^4.17.1",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}

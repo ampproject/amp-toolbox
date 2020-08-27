@@ -1,0 +1,12 @@
+version: '3.0'
+services:
+  web:
+    image: docker-optimizer-demo
+    ports:
+    - "3001:3001"
+  optimizer:
+    image: amp-toolbox-docker-optimizer
+    ports:
+      - "3000:3000"
+    environment:
+      - VERBOSE=true
