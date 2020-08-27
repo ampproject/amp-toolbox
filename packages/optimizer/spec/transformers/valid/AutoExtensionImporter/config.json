@@ -1,3 +1,6 @@
 {
-  "experimentBindAttribute": true
+  "experimentBindAttribute": true,
+  "extensionVersions": {
+    "amp-sticky-ad": "0.1"
+  }
 }
