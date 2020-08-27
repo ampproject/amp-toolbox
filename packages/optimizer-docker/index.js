@@ -1,32 +1,25 @@
-import http from 'http';
-import url from 'url';
-import AmpOptimizer from '@ampproject/toolbox-optimizer';
+const http = require('http');
+const url = require('url');
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const ampOptimizer = AmpOptimizer.create(getStaticOptions());
 
-const port = 3000;
-
-async function parseRequest(req) {
-  return new Promise((resolve, reject) => {
-    let data = [];
-
-    req.on('data', (chunk) => {
-      data.push(chunk);
-    });
-    req.on('error', (err) => reject(err));
-    req.on('end', () =>
-      resolve({
-        body: data.Body.toString(),
-        query: url.parse(req.url, true).query,
-      })
-    );
-  });
-}
+process.on('SIGINT', function () {
+  process.exit();
+});
 
 const server = http.createServer(async (req, res) => {
+  const isRootRequest = url.parse(req.url).pathname === '/';
+  const isPost = req.method === 'POST';
+  if (!isRootRequest || !isPost) {
+    res.writeHead(400);
+    res.end("Error: Invalid request. This server only accepts POST requests made to '/'.");
+    return;
+  }
+
   const {body: originalHtml, query: opts} = await parseRequest(req);
   if (!originalHtml) {
     res.writeHead(400);
-    res.end('Error: please provide html in the body of your post request.');
+    res.end('Error: Invalid request. This server requires HTML in the request body.');
     return;
   }
 
@@ -44,13 +37,15 @@ const server = http.createServer(async (req, res) => {
     });
 });
 
+const port = 3000;
 server.listen(port);
 console.log(`AMP Optimizer listening at http://localhost:${port}`);
 
-function snakeToCamel(str) {
-  return str.toLowerCase().replace(/_[a-z]/g, (letter) => `_${letter.toUpperCase()}`);
-}
-
+/*
+ * Get the static options to pass AMP Optimizer on initialization.
+ * All received environment variables prefixed with `AMP_OPTIMIZER_`
+ * are transformed and returned.
+ */
 function getStaticOptions() {
   const optionEntries = Object.keys(process.env)
     .filter((envVar) => envVar.startsWith('AMP_OPTIMIZER_'))
@@ -61,6 +56,33 @@ function getStaticOptions() {
   return Object.fromEntries(optionEntries);
 }
 
-process.on('SIGINT', function () {
-  process.exit();
-});
+/**
+ * Convert snake case string to camel case.
+ *
+ * @example
+ * in: PRELOAD_HERO_IMAGE
+ * out: preloadHeroImage
+ */
+function snakeToCamel(str) {
+  return str.toLowerCase().replace(/_[a-z]/g, (letter) => `${letter.slice(1).toUpperCase()}`);
+}
+
+/*
+ * Parse an incoming request into a text body and query params.
+ */
+async function parseRequest(req) {
+  return new Promise((resolve, reject) => {
+    let data = [];
+
+    req.on('data', (chunk) => {
+      data.push(chunk);
+    });
+    req.on('error', (err) => reject(err));
+    req.on('end', () =>
+      resolve({
+        body: data.join(''),
+        query: url.parse(req.url, true).query,
+      })
+    );
+  });
+}

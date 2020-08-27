@@ -2,7 +2,7 @@
  * My App
  */
 const fs = require('fs');
-var http = require('http');
+const http = require('http');
 const express = require('express');
 const app = express();
 
@@ -10,7 +10,6 @@ const port = 3001;
 
 const indexHtml = fs.readFileSync('./index.html', 'utf8');
 app.get('/', (req, res) => {
-  console.error('why many');
   optimize(indexHtml)
     .then((transformed) => {
       res.set('Content-Type', 'text/html');
@@ -25,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`My demo app is running at http://localhost:${port}`);
+  console.log(`Demo Webapp is running at http://localhost:${port}`);
 });
 
 process.on('SIGINT', function () {
@@ -41,7 +40,7 @@ function optimize(html) {
       method: 'POST',
       hostname: process.env.LOCAL ? 'localhost' : 'optimizer',
       port: '3000',
-      path: '/',
+      path: '/?canonical=http://example.com',
       headers: {
         'Content-Type': 'text/plain',
       },

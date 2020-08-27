@@ -6,7 +6,7 @@
   "scripts": {
     "build-docker": "docker build . -t 'amp-toolbox-docker-optimizer'",
     "run-docker": "docker run -p 3000:3000 -it amp-toolbox-docker-optimizer",
-    "demo": "yarn build-docker && cd demo && yarn && yarn run build-docker && docker-compose up && cd ../",
+    "demo": "npm run build-docker && cd demo && npm i && npm run build-docker && docker-compose up && cd ../",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

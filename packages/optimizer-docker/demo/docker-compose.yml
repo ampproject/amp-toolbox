@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   web:
-    image: docker-optimizer-demo
+    image: amp-toolbox-docker-optimizer-demo
     ports:
     - "3001:3001"
   optimizer:
