@@ -38,7 +38,7 @@
     "cssnano-simple": "1.2.0",
     "dom-serializer": "1.0.1",
     "domhandler": "3.0.0",
-    "domutils": "2.1.0",
+    "domutils": "2.2.0",
     "htmlparser2": "4.1.0",
     "https-proxy-agent": "5.0.0",
     "lru-cache": "6.0.0",
@@ -46,7 +46,7 @@
     "normalize-html-whitespace": "1.0.0",
     "postcss": "7.0.32",
     "postcss-safe-parser": "4.0.2",
-    "terser": "5.1.0"
+    "terser": "5.2.1"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

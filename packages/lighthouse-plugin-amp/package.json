@@ -7,13 +7,13 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/lighthouse-plugin-amp",
   "dependencies": {
-    "amphtml-validator": "1.0.32",
+    "amphtml-validator": "1.0.33",
     "node-fetch": "2.6.0"
   },
   "version": "2.7.0-alpha.1",
   "main": "./plugin.js",
   "peerDependencies": {
-    "lighthouse": ">=6.2.0"
+    "lighthouse": ">=6.3.0"
   },
   "gitHead": "7a674fec36dd663876907c0c9ebd332ad3fe7967"
 }
