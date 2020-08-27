@@ -60,6 +60,7 @@ class AutoExtensionImporter {
     this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AutoExtensionImporter');
     this.experimentBindAttributeEnabled = config.experimentBindAttribute === true;
+    this.extensionVersions = config.extensionVersions || {};
   }
 
   /**
@@ -180,7 +181,11 @@ class AutoExtensionImporter {
       const extension = this.extensionSpec_.extensionsMap.get(extensionName.trim());
       this.log_.debug('auto importing', extensionName);
       // Use the latest version by default
-      const version = extension.version[extension.version.length - 1];
+      let version = extension.version[extension.version.length - 1];
+      // Let user override default
+      if (this.extensionVersions[extensionName]) {
+        version = this.extensionVersions[extensionName];
+      }
       const extensionImportAttribs = {
         async: '',
         src: `${host}/v0/${extensionName}-${version}.js`,
