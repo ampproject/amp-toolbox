@@ -1,5 +1,5 @@
 import http from 'http';
-import url from 'url'
+import url from 'url';
 import AmpOptimizer from '@ampproject/toolbox-optimizer';
 const ampOptimizer = AmpOptimizer.create(getStaticOptions());
 
@@ -16,15 +16,15 @@ async function parseRequest(req) {
     req.on('end', () =>
       resolve({
         body: data.Body.toString(),
-        query: url.parse(req.url,true).query,
+        query: url.parse(req.url, true).query,
       })
     );
   });
 }
 
 const server = http.createServer(async (req, res) => {
-  const {body} = await parseRequest(req);
-  if (!body) {
+  const {body: originalHtml, query: opts} = await parseRequest(req);
+  if (!originalHtml) {
     res.writeHead(400);
     res.end('Error: please provide html in the body of your post request.');
     return;
@@ -40,8 +40,7 @@ const server = http.createServer(async (req, res) => {
       console.error(err);
 
       res.writeHead(500, {'Content-Type': 'text/plain'});
-      res.end(optimizedHtml);
-      res.send('500: Internal Service Error.');
+      res.end('500: Internal Service Error.');
     });
 });
 
