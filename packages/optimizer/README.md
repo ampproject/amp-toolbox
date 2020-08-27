@@ -81,6 +81,7 @@ Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
+- [extensionVersions](#extensionversions)
 - [fetch](#fetch)
 - [format](#format)
 - [imageBasePath](#imagebasePath)
@@ -107,7 +108,26 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 - name: `autoExtensionImport`
 - valid options: `[true|false]`
 - default: `true`
-- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
+- used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
+
+#### `extensionVersions`
+
+Specify version numbers to use for automatically imported Extensions. If not defined, default to latest.
+
+Example:
+
+```js
+const ampOptimizer = AmpOptimizer.create({
+  extensionVersions: {
+    "amp-twitter": "0.1"
+  }
+});
+```
+
+- name: `extensionVersions`
+- valid options: `OBJECT`
+- default: `{}`
+- used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
 
 #### `format`
 
@@ -116,7 +136,7 @@ Specifies the AMP format of the input file. Defaults to `AMP`.
 - name: `format`
 - valid options: `[AMP|AMP4EMAIL|AMP4ADS]`
 - default: `AMP`
-- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+- used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
 
 #### `experimentEsm`
 
