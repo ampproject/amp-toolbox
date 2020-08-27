@@ -1,86 +1,35 @@
 ## Introduction
 
-[![npm version](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer-express.svg)](https://badge.fury.io/js/%40ampproject%2Ftoolbox-optimizer-express)
-
-amp-optimizer-express is an [express](http://expressjs.com/) middleware that optimizes page load
-times for websites using AMP for their canonical pages. The middleware uses the same
-server-side-rendering optimizations as the Google AMP Cache.
-
-The middleware uses the [amp-optimizer](/packages/optimizer) component to apply server-side-rendering on the fly.
+amp-optimizer-docker is a [Docker](https://www.docker.com/) container that exposes an [AMP Optimizer](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer) server for optimizing your amphtml using the same server-side-rendering optimizations as the [Google AMP Cache](https://developers.google.com/amp/cache).
 
 ## How it works
 
-amp-optimizer-express intercepts the responses and replaces their content with a version that has been
-transformed by [amp-optimizer](/packages/optimizer).
+The AMP Optimizer server accepts `POST` requests at port `3000` and requires an HTML body. It then runs the HTML through the [optimizer](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer) package, and returns the result as the response.
 
-As the server-side-rendered version of the content is not valid AMP, the component also
-provides the original content on an alternative URL. Server-side-rendering
-transformations are not applied to this URL, and the original valid AMP is served.
+## Configuration
 
-An AMPHTML link tag is added to the server-side-rendered version, linking it to the original valid
-AMP version hosted on the alternative URL.
-
-Example:
-
-A valid AMP page is served on `https://example.com/index.html`.
-
-When the amp-optimizer-express middleware is used, that URL will serve the server-side-rendered version
-of the content.
-
-The original, valid AMP will then become available at `https://example.com/index.html?amp`.
-
-An amphtml link will be added to the server-side-rendered version:
-
-```html
-<link rel="amphtml" href="https://example.com/index.html?amp">
-```
+There are two different kinds of configuration you can supply to the container:
+1. Static configuration via environment variables: On startup, the container will search for environment variables prefixed with `AMP_OPTIMIZER_` and pass the values as configuration options when initializing the underlying optimizer library. The full list of options are available [here](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#options). Options should be specified in SCREAMING_SNAKE_CASE as opposed to camelCase. For example, in order to configure the `preloadHeroImage` option, you would declare the environment variable named: `AMP_OPTIMIZER_PRELOAD_HERO_IMAGE`.
+2. Per-request configuration: there are some options that can only be set on a per-request basis. For example, the `canonical` flag for specifying an AMP page's canonical link. These can be specified via query params, e.g. `/?canonical=http://example.com`.
 
 ## Usage
 
-Install via:
+### Running a basic optimizer server
+
+ via:
 
 ```
-$ npm install @ampproject/toolbox-optimizer-express
+$ docker pull amp-toolbox-docker-optimizer
+$ docker run -it amp-toolbox-docker-optimizer
 ```
 
-The AMP Optimizer Middleware can be used like any other express middleware.
+### More complex configurations
 
-It is important that the middleware is used *before* the middleware or route that renders the page.
-
-The example bellow will transform HTML being loaded by express-static:
-
-```javascript
-const express = require('express');
-const path = require('path');
-const app = express();
-const AmpOptimizerMiddleware = require('@ampproject/toolbox-optimizer-express');
-
-// It's important that the AmpOptimizerMiddleware is added *before* the static middleware.
-// This allows us to replace the parts needed before static handles the request.
-app.use(AmpOptimizerMiddleware.create());
-
-const staticMiddleware = express.static(path.join(__dirname, '/public'));
-app.use(staticMiddleware);
-```
-
-## Options
-
-The following options are supported:
-
-   * `runtimeVersion`: true if the optimizer should use versioned runtime imports (default is false).
-   * `ampOnly`: true if the optimizer should only be applied to AMP files (indicated by the lightning bolt in the header).
-
-Example:
-
-```
-app.use(AmpOptimizerMiddleware.create({
-  runtimeVersion: true
-});
-```
+The `amp-toolbox-docker-optimizer` image can be layerd and composed using any of the usual container orchestration tools, like [Docker Compose](https://docs.docker.com/compose/) or [Kubernetes](https://kubernetes.io/). An example of using Docker Compose is provided under the `demo` directory.
 
 ## Best Practice: Cache server-side-rendered AMPs
 
-To achieve best performance, those transformations shouldn't be applied for
+To achieve best performance, transformations shouldn't be applied for
 every request. Instead, transformations should only be applied the *first time*
 a page is requested, and the results then cached. Caching can happen on the CDN
 level, on the site's internal infrastructure (e.g.: Memcached), or even on the
