@@ -137,7 +137,7 @@ class PreloadHeroImage {
       if (!heroImageCandidate && heroImages.length === 0) {
         heroImageCandidate = this.isCandidateHeroImage(node);
       }
-      if (amphtml.isTemplate(root)) {
+      if (amphtml.isTemplate(node)) {
         // Ignore images inside templates
         node = skipNodeAndChildren(node);
       } else {
