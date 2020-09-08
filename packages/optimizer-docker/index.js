@@ -1,6 +1,8 @@
 const http = require('http');
 const url = require('url');
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+const {parseRequest, getStaticOptions} = require('./utils');
+
 const ampOptimizer = AmpOptimizer.create(getStaticOptions());
 
 process.on('SIGINT', function () {
@@ -10,9 +12,14 @@ process.on('SIGINT', function () {
 const server = http.createServer(async (req, res) => {
   const isRootRequest = url.parse(req.url).pathname === '/';
   const isPost = req.method === 'POST';
-  if (!isRootRequest || !isPost) {
+  if (!isPost) {
     res.writeHead(400);
-    res.end("Error: Invalid request. This server only accepts POST requests made to '/'.");
+    res.end('Error: Invalid request. This server only accepts POST requests.');
+    return;
+  }
+  if (!isRootRequest) {
+    res.writeHead(400);
+    res.end("Error: Invalid request. This server only accepts requests made to '/'.");
     return;
   }
 
@@ -38,51 +45,16 @@ const server = http.createServer(async (req, res) => {
 });
 
 const port = 3000;
-server.listen(port);
-console.log(`AMP Optimizer listening at http://localhost:${port}`);
-
-/*
- * Get the static options to pass AMP Optimizer on initialization.
- * All received environment variables prefixed with `AMP_OPTIMIZER_`
- * are transformed and returned.
- */
-function getStaticOptions() {
-  const optionEntries = Object.keys(process.env)
-    .filter((envVar) => envVar.startsWith('AMP_OPTIMIZER_'))
-    .map((envVar) => {
-      const optimizerFlag = snakeToCamel(envVar.substring('AMP_OPTIMIZER'.length));
-      return [optimizerFlag, process.env[envVar]];
-    });
-  return Object.fromEntries(optionEntries);
+function start() {
+  server.listen(port);
+}
+function stop() {
+  server.close();
 }
 
-/**
- * Convert snake case string to camel case.
- *
- * @example
- * in: PRELOAD_HERO_IMAGE
- * out: preloadHeroImage
- */
-function snakeToCamel(str) {
-  return str.toLowerCase().replace(/_[a-z]/g, (letter) => `${letter.slice(1).toUpperCase()}`);
-}
-
-/*
- * Parse an incoming request into a text body and query params.
- */
-async function parseRequest(req) {
-  return new Promise((resolve, reject) => {
-    let data = [];
-
-    req.on('data', (chunk) => {
-      data.push(chunk);
-    });
-    req.on('error', (err) => reject(err));
-    req.on('end', () =>
-      resolve({
-        body: data.join(''),
-        query: url.parse(req.url, true).query,
-      })
-    );
-  });
+if (process.env.NODE_ENV !== 'test') {
+  start();
+  console.log(`AMP Optimizer listening at http://localhost:${port}`);
+} else {
+  module.exports = {start, stop};
 }
