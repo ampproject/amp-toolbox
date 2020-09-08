@@ -14,7 +14,11 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/optimizer-docker"
   },
-  "keywords": ["amp", "optimizer", "docker"],
+  "keywords": [
+    "amp",
+    "optimizer",
+    "docker"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
