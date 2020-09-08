@@ -33,13 +33,6 @@ describe('Optimizer server tests', () => {
     });
   });
 
-  // it('should reject request when optimizer fails', () => {
-  //   const req = request({body: '{}{}', query: {canonical: 'http://example.com'}});
-  //   return expect(req).rejects.toMatchObject({
-  //     body: expect.stringMatching(/Internal Service Error./),
-  //   });
-  // });
-
   it('should run the provided HTML throught the optimizer', () => {
     const req = request({body: VALID_REQUEST, query: {canonical: 'http://example.com'}});
     return expect(req).resolves.toMatchObject({
