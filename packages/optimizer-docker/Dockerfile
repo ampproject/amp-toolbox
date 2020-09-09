@@ -5,7 +5,8 @@ RUN echo "Building amp-optimizer-docker"
 ADD package.json .
 RUN yarn
 
-# Layer 2: add index.js
+# Layer 2: add src files
 ADD index.js .
+ADD utils.js .
 
 CMD node ./index.js
