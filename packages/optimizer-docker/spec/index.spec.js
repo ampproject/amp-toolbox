@@ -33,11 +33,10 @@ describe('server tests', () => {
     });
   });
 
-  it('should run the provided HTML throught the optimizer', () => {
-    const req = request({body: VALID_REQUEST, query: {canonical: 'http://example.com'}});
-    return expect(req).resolves.toMatchObject({
-      body: expect.stringMatching('<!doctype html>'),
-    });
+  it('should run the provided HTML throught the optimizer', async () => {
+    const {body} = await request({body: VALID_REQUEST, query: {canonical: 'http://example.com'}});
+    expect(body).toMatch('<!doctype html>');
+    expect(body).toMatch('<link data-auto rel="canonical" href="http://example.com">');
   });
 });
 
