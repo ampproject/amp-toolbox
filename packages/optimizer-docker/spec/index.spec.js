@@ -74,7 +74,7 @@ async function request({path = '/', method = 'POST', body, query} = {}) {
       });
       res.on('end', () => {
         const body = data.join('');
-        if (res.statusCode === 400 || res.statusCode === 500) {
+        if (res.statusCode >= 400) {
           reject({statusCode: res.statusCode, body});
         }
         resolve({statusCode: res.statusCode, body});

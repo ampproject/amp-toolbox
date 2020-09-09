@@ -18,43 +18,36 @@ const server = http.createServer(async (req, res) => {
     return;
   }
   if (!isRootRequest) {
-    res.writeHead(400);
+    res.writeHead(400, {'Content-Type': 'text/plain'});
     res.end("Error: Invalid request. This server only accepts requests made to '/'.");
     return;
   }
 
   const {body: originalHtml, query: opts} = await parseRequest(req);
   if (!originalHtml) {
-    res.writeHead(400);
+    res.writeHead(400, {'Content-Type': 'text/plain'});
     res.end('Error: Invalid request. This server requires HTML in the request body.');
     return;
   }
 
-  ampOptimizer
-    .transformHtml(originalHtml, opts)
-    .then((optimizedHtml) => {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end(optimizedHtml);
-    })
-    .catch((err) => {
-      console.error(err);
-
-      res.writeHead(500, {'Content-Type': 'text/plain'});
-      res.end('500: Internal Service Error.');
-    });
+  try {
+    const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, opts);
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(optimizedHtml);
+  } catch (err) {
+    console.error(err);
+    res.writeHead(500, {'Content-Type': 'text/plain'});
+    res.end('500: Internal Service Error.');
+  }
 });
 
 const port = 3000;
-function start() {
-  server.listen(port);
-}
-function stop() {
-  server.close();
-}
-
 if (process.env.NODE_ENV !== 'test') {
-  start();
+  server.listen(port);
   console.log(`AMP Optimizer listening at http://localhost:${port}`);
 } else {
-  module.exports = {start, stop};
+  module.exports = {
+    start: () => server.listen(port),
+    stop: () => server.close(),
+  };
 }
