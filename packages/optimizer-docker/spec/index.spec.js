@@ -3,7 +3,7 @@ const qs = require('querystring');
 const {start, stop} = require('../index');
 const {getStaticOptions} = require('../utils');
 
-describe('server tests', () => {
+describe('Server integration tests', () => {
   beforeEach(() => start());
   afterEach(() => stop());
 
