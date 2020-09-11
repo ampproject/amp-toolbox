@@ -79,7 +79,7 @@ describe(StoryMetadataThumbnailsAreOk.name, () => {
     return withFixture("thumbnails3", () =>
       assertMatch(
         runNetworkTest(StoryMetadataThumbnailsAreOk, "http://localhost:5000/"),
-        "file not found"
+        "FAIL"
       )
     );
   });

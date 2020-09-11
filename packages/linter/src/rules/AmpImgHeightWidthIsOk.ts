@@ -17,11 +17,11 @@ export class AmpImgHeightWidthIsOk extends Rule {
         height,
         width,
       }: {
-        height: number;
-        width: number;
+        height: number | undefined;
+        width: number | undefined;
       }): Promise<Result> => {
-        const actualHeight = height;
-        const actualWidth = width;
+        const actualHeight = height ?? 0;
+        const actualWidth = width ?? 0;
         const actualRatio =
           Math.floor((actualWidth * 100) / actualHeight) / 100;
         const expectedRatio =

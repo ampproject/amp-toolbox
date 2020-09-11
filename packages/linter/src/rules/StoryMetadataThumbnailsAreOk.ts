@@ -1,4 +1,4 @@
-import { ImageSize } from "probe-image-size";
+import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { absoluteUrl, dimensions } from "../helper";
 import { Context, Result, Metadata } from "../index";
 import { Rule } from "../rule";
@@ -32,37 +32,49 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
     // Requirements are from
     // https://amp.dev/documentation/components/amp-story/#poster-guidelines-for-poster-portrait-src-poster-landscape-src-and-poster-square-src
     // Last Updated: July 8th, 2020
-    function isSquare({ width, height }: ImageSize) {
+    function isSquare({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return width > 0.9 * height && width < 1.1 * height;
     }
-    function isPortrait({ width, height }: ImageSize) {
+    function isPortrait({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return width > 0.65 * height && width < 0.85 * height;
     }
-    function isLandscape({ width, height }: ImageSize) {
+    function isLandscape({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return height > 0.65 * width && height < 0.85 * width;
     }
-    function isRaster({ mime }: ImageSize) {
-      return ["image/jpeg", "image/gif", "image/png", "image/webp"].includes(
-        mime
-      );
+    function isRaster({ type }: ISizeCalculationResult) {
+      return ["jpeg", "jpg", "gif", "png", "webp"].includes(type ?? "");
     }
-    function isAtLeast96x96({ width, height }: ImageSize) {
+    function isAtLeast96x96({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return width >= 96 && height >= 96;
     }
-    function isAtLeast640x640({ width, height }: ImageSize) {
+    function isAtLeast640x640({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return width >= 640 && height >= 640;
     }
-    function isAtLeast640x853({ width, height }: ImageSize) {
+    function isAtLeast640x853({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return width >= 640 && height >= 853;
     }
-    function isAtLeast853x640({ width, height }: ImageSize) {
+    function isAtLeast853x640({ width, height }: ISizeCalculationResult) {
+      width = width ?? 0;
+      height = height ?? 0;
       return width >= 853 && height >= 640;
     }
     const metadata = inlineMetadata(context.$);
     const assert = async (
       attr: keyof Metadata,
       isMandatory: boolean,
-      expected: Array<(info: ImageSize) => boolean>
+      expected: Array<(info: ISizeCalculationResult) => boolean>
     ): Promise<Result> => {
       const url = metadata[attr];
       if (!url) {

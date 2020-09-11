@@ -5,7 +5,8 @@ import { stringify } from "querystring";
 
 import throat from "throat";
 import fetch, { Request } from "node-fetch";
-import probe from "probe-image-size";
+import { ISizeCalculationResult } from "image-size/dist/types/interface";
+import { probe } from "./image";
 
 import { Context } from "./";
 
@@ -46,8 +47,8 @@ export function corsEndpoints($: CheerioStatic) {
   }
   const ampListSrc = $("amp-list[src]")
     .map((_, e) => $(e).attr("src"))
-    .get() as String[];
-  return (result as String[]).concat(ampListSrc);
+    .get() as string[];
+  return (result as string[]).concat(ampListSrc);
 }
 
 export const isTransformedAmp = ($: CheerioStatic): boolean => {
@@ -90,7 +91,7 @@ export const redirectUrl = throat(
 export function dimensions(
   context: Context,
   url: string
-): Promise<{ width: number; height: number; mime: string; [k: string]: any }> {
+): Promise<ISizeCalculationResult> {
   // Try to prevent server from sending us encoded/compressed streams, since
   // probe-image-size can't handle them:
   // https://github.com/nodeca/probe-image-size/issues/28
