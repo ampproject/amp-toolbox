@@ -8,7 +8,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/lighthouse-plugin-amp",
   "dependencies": {
     "amphtml-validator": "1.0.33",
-    "node-fetch": "2.6.0"
+    "node-fetch": "^2.6.1"
   },
   "version": "2.7.0-alpha.1",
   "main": "./plugin.js",
