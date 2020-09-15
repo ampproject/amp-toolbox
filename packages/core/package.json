@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-core",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Commonly used functionality for amp-toolbox",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/core",
   "dependencies": {
-    "cross-fetch": "3.0.5",
+    "cross-fetch": "3.0.6",
     "lru-cache": "6.0.0"
   },
   "gitHead": "7a674fec36dd663876907c0c9ebd332ad3fe7967"
