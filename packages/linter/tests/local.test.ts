@@ -24,6 +24,7 @@ import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
 import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
+import { AmpImgUsesSrcSet } from '../src/rules/AmpImgUsesSrcSet';
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -67,6 +68,53 @@ describe(AmpImgAmpPixelPreferred.name, () => {
       runLocalTest(
         AmpImgAmpPixelPreferred,
         `${__dirname}/local/AmpImgAmpPixelPreferred-5/source.html`
+      )
+    );
+  });
+});
+
+describe(AmpImgUsesSrcSet.name, () => {
+  it(`${AmpImgUsesSrcSet.name} - responsive - no srcset`, async () => {
+    return assertWarn(
+      runLocalTest(
+        AmpImgUsesSrcSet,
+        `${__dirname}/local/AmpImgUsesSrcSet-1/source.html`
+      )
+    );
+  });
+
+  it(`${AmpImgUsesSrcSet.name} - svg`, async () => {
+    return assertPass(
+      runLocalTest(
+        AmpImgUsesSrcSet,
+        `${__dirname}/local/AmpImgUsesSrcSet-2/source.html`
+      )
+    );
+  });
+
+  it(`${AmpImgUsesSrcSet.name} - fixed`, async () => {
+    return assertPass(
+      runLocalTest(
+        AmpImgUsesSrcSet,
+        `${__dirname}/local/AmpImgUsesSrcSet-3/source.html`
+      )
+    );
+  });
+
+  it(`${AmpImgUsesSrcSet.name} - fixed-height`, async () => {
+    return assertPass(
+      runLocalTest(
+        AmpImgUsesSrcSet,
+        `${__dirname}/local/AmpImgUsesSrcSet-4/source.html`
+      )
+    );
+  });
+
+  it(`${AmpImgUsesSrcSet.name} - srcset`, async () => {
+    return assertPass(
+      runLocalTest(
+        AmpImgUsesSrcSet,
+        `${__dirname}/local/AmpImgUsesSrcSet-5/source.html`
       )
     );
   });
