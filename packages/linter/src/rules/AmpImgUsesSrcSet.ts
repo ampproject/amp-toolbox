@@ -1,9 +1,9 @@
 import { Context } from "../index";
 import { Rule } from "../rule";
 
-const SVG_URL_PATTERN = /^[^?]+\.svg(\?.*)?$/i
-
 const CHECKED_IMG_LAYOUTS = ["fill", "flex-item", "intrinsic", "responsive"];
+
+const SVG_URL_PATTERN = /^[^?]+\.svg(\?.*)?$/i
 
 export class AmpImgUsesSrcSet extends Rule {
   async run(context: Context) {
@@ -12,8 +12,15 @@ export class AmpImgUsesSrcSet extends Rule {
     const incorrectImages = $("amp-img")
         .filter((_, e) => {
           const src = $(e).attr("src");
-          const layout = $(e).attr("layout");
+          let layout = $(e).attr("layout");
           const srcset = $(e).attr("srcset");
+          const parent = $(e).parent();
+          if (parent.prop("tagName").startsWith('AMP-')) {
+            const parentLayout = $(parent).attr("layout");
+            if (parentLayout) {
+              layout = parentLayout;
+            }
+          }
           return (
             !SVG_URL_PATTERN.exec(src)
             && layout && CHECKED_IMG_LAYOUTS.includes(layout)

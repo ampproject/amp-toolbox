@@ -118,6 +118,15 @@ describe(AmpImgUsesSrcSet.name, () => {
       )
     );
   });
+
+  it(`${AmpImgUsesSrcSet.name} - parent is fixed`, async () => {
+    return assertPass(
+      runLocalTest(
+        AmpImgUsesSrcSet,
+        `${__dirname}/local/AmpImgUsesSrcSet-6/source.html`
+      )
+    );
+  });
 });
 
 describe(BoilerplateIsRemoved.name, () => {
