@@ -77,6 +77,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       expected: Array<(info: ISizeCalculationResult) => boolean>
     ): Promise<Result> => {
       const url = metadata[attr];
+      console.log(attr + "=" + url);
       if (!url) {
         return isMandatory
           ? this.fail(`${attr} is missing`)
@@ -85,6 +86,8 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       try {
         const info = await dimensions(context, url);
         const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
+
+        console.log(failed);
 
         return failed.length === 0
           ? this.pass(`> ${attr} = ${metadata[attr]}`)
@@ -101,7 +104,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
         }
       }
     };
-    let formatForHumans: (
+    const formatForHumans: (
       attr: string,
       url: any,
       failed: string
