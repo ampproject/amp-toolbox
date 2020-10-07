@@ -237,8 +237,8 @@ class AddBlurryImagePlaceholders {
     image.resize(imgDimension.width, imgDimension.height, this.jimp.RESIZE_BEZIER);
     const result = {
       src: await image.getBase64Async('image/png'),
-      width: image.bitmap.width,
-      height: image.bitmap.height,
+      width: imgDimension.width,
+      height: imgDimension.height,
     };
     return result;
   }
