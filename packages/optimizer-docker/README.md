@@ -25,7 +25,7 @@ $ docker run -it amp-toolbox-docker-optimizer
 
 ### More complex configurations
 
-The `amp-toolbox-docker-optimizer` image can be layerd and composed using any of the usual container orchestration tools, like [Docker Compose](https://docs.docker.com/compose/) or [Kubernetes](https://kubernetes.io/). An example of using Docker Compose is provided under the `demo` directory.
+The `amp-toolbox-docker-optimizer` image can be layered and composed using any of the usual container orchestration tools, like [Docker Compose](https://docs.docker.com/compose/) or [Kubernetes](https://kubernetes.io/). An example of using Docker Compose is provided under the `demo` directory.
 
 ## Best Practice: Cache server-side-rendered AMPs
 
