@@ -1,5 +1,6 @@
-import { Context } from "../index";
+import { Context, Result } from "../index";
 import { Rule } from "../rule";
+import { notPass } from '../filter';
 
 const CHECKED_IMG_LAYOUTS = ["fill", "flex-item", "intrinsic", "responsive"];
 
@@ -27,12 +28,16 @@ export class AmpImgUsesSrcSet extends Rule {
             && !srcset
           )
         });
-    if (incorrectImages.length > 0) {
-      return this.warn(
-        "Not all <amp-img> with non-fixed layout define a srcset. Using AMP Optimizer might help."
-      );
-    }
-    return this.pass();
+    return (
+      await Promise.all(
+        incorrectImages.map((_, e) => {
+          const s = $(e).toString();
+          return this.warn(
+            `[${s}] should define a srcset. Using AMP Optimizer might help.`
+          );
+        }).get() as Array<Promise<Result>>
+      )
+    ).filter(notPass);
   }
   meta() {
     return {
