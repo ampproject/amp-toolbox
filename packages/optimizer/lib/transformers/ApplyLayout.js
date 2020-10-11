@@ -118,7 +118,7 @@ function maybeAddSizerInto(node, layout, width, height) {
 function createResponsiveSizer(width, height) {
   const padding = (height.numeral / width.numeral) * 100;
   const sizer = createElement('i-amphtml-sizer', {
-    style: `display:block;padding-top:${padding.toFixed(4)}%;`,
+    style: `display:block;padding-top:${parseFloat(padding.toFixed(4))}%`,
   });
   return sizer;
 }

@@ -277,7 +277,7 @@ class PreloadHeroImage {
     if (layout === 'intrinsic' || layout === 'responsive') {
       return false;
     }
-    return (width > 0 && width < TINY_IMG_THRESHOLD) || (height > 0 && height < TINY_IMG_THRESHOLD);
+    return width < TINY_IMG_THRESHOLD || height < TINY_IMG_THRESHOLD;
   }
 
   nodeDimensionsFromParent(node) {
