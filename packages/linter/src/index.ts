@@ -30,6 +30,7 @@ import { HeroImageIsDefined } from "./rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "./rules/FastGoogleFontsDisplay";
 import { GoogleFontPreconnect } from "./rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "./rules/BoilerplateIsRemoved";
+import { AmpImgUsesSrcSet } from './rules/AmpImgUsesSrcSet';
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 
@@ -142,6 +143,7 @@ function testsForMode(type: LintMode) {
       BoilerplateIsRemoved,
       ModuleRuntimeUsed,
       HeroImageIsDefined,
+      AmpImgUsesSrcSet,
     ])
   );
   return tests.get(type) || [];
