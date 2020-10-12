@@ -18,7 +18,7 @@ $ npm install @ampproject/toolbox-cache-url
 #### ES Module (Browser)
 
 ```javascript
-import {ampToolboxCacheUrl} from 'toolbox-cache-url';
+import {ampToolboxCacheUrl} from '@ampproject/toolbox-cache-url';
 ```
 
 #### CommonJs (Node)

@@ -137,7 +137,7 @@ class PreloadHeroImage {
       if (!heroImageCandidate && heroImages.length === 0) {
         heroImageCandidate = this.isCandidateHeroImage(node);
       }
-      if (amphtml.isTemplate(root)) {
+      if (amphtml.isTemplate(node)) {
         // Ignore images inside templates
         node = skipNodeAndChildren(node);
       } else {
@@ -277,7 +277,7 @@ class PreloadHeroImage {
     if (layout === 'intrinsic' || layout === 'responsive') {
       return false;
     }
-    return (width > 0 && width < TINY_IMG_THRESHOLD) || (height > 0 && height < TINY_IMG_THRESHOLD);
+    return width < TINY_IMG_THRESHOLD || height < TINY_IMG_THRESHOLD;
   }
 
   nodeDimensionsFromParent(node) {

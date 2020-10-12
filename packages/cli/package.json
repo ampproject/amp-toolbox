@@ -37,7 +37,7 @@
     "@ampproject/toolbox-update-cache": "^2.7.0-alpha.1",
     "minimist": "1.2.5",
     "minimist-options": "4.1.0",
-    "node-fetch": "2.6.0"
+    "node-fetch": "^2.6.1"
   },
   "gitHead": "da4cca026111b917cd3901b4666a5997ef45a606"
 }
