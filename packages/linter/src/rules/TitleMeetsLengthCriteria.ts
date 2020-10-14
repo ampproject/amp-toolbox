@@ -13,7 +13,7 @@ export class TitleMeetsLengthCriteria extends Rule {
   }
   meta() {
     return {
-      url: "https://blog.amp.dev/2020/02/12/seo-for-amp-stories/",
+      url: "https://developers.google.com/search/docs/guides/web-stories-creation-best-practices#seo",
       title: "Title is ninety characters or less",
       info: "",
     };
