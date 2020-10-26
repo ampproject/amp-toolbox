@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "2.7.0-alpha.3",
+  "version": "2.7.0-alpha.4",
   "description": "A linter for AMP documents",
   "repository": {
     "type": "git",
