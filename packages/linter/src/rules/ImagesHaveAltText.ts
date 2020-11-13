@@ -23,7 +23,7 @@ export class ImagesHaveAltText extends Rule {
 
     for (let key in imgsWithoutAlt) {
       imgsWithoutAlt[key] > 1
-        ? (output += key + color(" [used " + imgsWithoutAlt[key] + " times]\n"))
+        ? (output += key + " [used " + imgsWithoutAlt[key] + " times]\n")
         : (output += key + "\n");
     }
 
