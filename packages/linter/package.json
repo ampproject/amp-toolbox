@@ -21,7 +21,7 @@
     "debug": "4.1.1",
     "execa": "4.0.3",
     "node-fetch": "^2.6.1",
-    "probe-image-size": "5.0.0",
+    "probe-image-size": "6.0.0",
     "throat": "5.0.0"
   },
   "bugs": {
@@ -42,6 +42,7 @@
   "devDependencies": {
     "prettier": "2.1.1",
     "tap-parser": "10.1.0",
-    "typescript": "4.0.2"
+    "typescript": "4.0.2",
+    "@types/cheerio": "0.22.21"
   }
 }
