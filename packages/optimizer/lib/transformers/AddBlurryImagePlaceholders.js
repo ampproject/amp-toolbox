@@ -233,7 +233,12 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   async getDataURI_(src) {
-    const image = await this.jimp.read(src);
+    const image = await this.jimp.read({
+      headers: {
+        'User-Agent': 'AMP Optimizer',
+      },
+      url: src,
+    });
     const imgDimension = this.getBitmapDimensions_(image.bitmap.width, image.bitmap.height);
     image.resize(imgDimension.width, imgDimension.height, this.jimp.RESIZE_BEZIER);
     const result = {
