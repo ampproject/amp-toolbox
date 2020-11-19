@@ -48,6 +48,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
+  'AddBlurryImagePlaceholders',
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
   'AddTransformedFlag',

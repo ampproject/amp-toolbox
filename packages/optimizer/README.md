@@ -539,9 +539,6 @@ Usage:
 
 ```js
 const optimizer = AmpOptimizer.create({
-  // blurry image placeholders are currently not considered valid AMP
-  // hence it's recommended to setup paired AMP mode when enabling this feature.
-  transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
   blurredPlaceholders: true,
 });
 ```
