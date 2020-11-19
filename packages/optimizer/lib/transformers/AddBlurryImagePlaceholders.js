@@ -139,6 +139,7 @@ class AddBlurryImagePlaceholders {
 
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
+        node.attribs['i-amphtml-ssr'] = '';
         const promise = this.addBlurryPlaceholder_(src, params).then((img) => {
           node.attribs.noloading = '';
           appendChild(node, img);
