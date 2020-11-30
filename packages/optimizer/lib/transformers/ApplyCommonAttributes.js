@@ -83,14 +83,7 @@ class SizesTransformer {
       // @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes
       return false;
     }
-    let sizes;
-    try {
-      sizes = parseSizes(node.attribs.sizes);
-    } catch (error) {
-      this.log.error(error.message);
-      // remove the sizes attribute as it's invalid anyway
-      return false;
-    }
+    const sizes = parseSizes(node.attribs.sizes);
     if (!sizes.defaultValue) {
       // remove the sizes attribute as it's invalid anyway
       return false;
@@ -131,14 +124,7 @@ class HeightsTransformer {
   }
 
   transform(node, id) {
-    let heights;
-    try {
-      heights = parseSizes(node.attribs.heights);
-    } catch (error) {
-      this.log.error(error.message);
-      // remove the heights attribute as it's invalid anyway
-      return false;
-    }
+    const heights = parseSizes(node.attribs.heights);
     if (!heights.defaultValue) {
       // remove the sizes attribute as it's invalid anyway
       return false;
