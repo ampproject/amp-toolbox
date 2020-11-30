@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer",
   "dependencies": {
-    "@ampproject/toolbox-optimizer": "^2.5.14"
+    "@ampproject/toolbox-optimizer": "^2.6.0"
   }
 }
