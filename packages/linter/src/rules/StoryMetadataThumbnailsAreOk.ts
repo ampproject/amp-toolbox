@@ -1,10 +1,11 @@
 import { ImageSize } from "probe-image-size";
+import * as cheerio from "cheerio";
 import { absoluteUrl, dimensions } from "../helper";
 import { Context, Result, Metadata } from "../index";
 import { Rule } from "../rule";
 import { notPass } from "../filter";
 
-function inlineMetadata($: CheerioStatic) {
+function inlineMetadata($: cheerio.Root) {
   const e = $("amp-story");
   const metadata: Metadata = {
     "poster-landscape-src": e.attr("poster-landscape-src"), // optional
@@ -12,7 +13,7 @@ function inlineMetadata($: CheerioStatic) {
     "poster-square-src": e.attr("poster-square-src"), // optional
     "publisher": e.attr("publisher"),
     "publisher-logo-src": e.attr("publisher-logo-src"),
-    "title": e.attr("title"),
+    "title": e.attr("title")
   };
   return metadata;
 }
@@ -24,7 +25,7 @@ const outputMessageMap: { [key: string]: string } = {
   isAtLeast96x96: " at least 96x96 or larger",
   isAtLeast640x640: " 640x640px or larger",
   isAtLeast640x853: " 640x853px or larger",
-  isAtLeast853x640: " 853x640px or larger",
+  isAtLeast853x640: " 853x640px or larger"
 };
 
 export class StoryMetadataThumbnailsAreOk extends Rule {
@@ -72,7 +73,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       }
       try {
         const info = await dimensions(context, url);
-        const failed = expected.filter((fn) => !fn(info)).map((fn) => fn.name);
+        const failed = expected.filter(fn => !fn(info)).map(fn => fn.name);
 
         return failed.length === 0
           ? this.pass(`> ${attr} = ${metadata[attr]}`)
@@ -108,18 +109,18 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       assert("poster-portrait-src", true, [
         isRaster,
         isPortrait,
-        isAtLeast640x853,
+        isAtLeast640x853
       ]),
       assert("poster-square-src", false, [
         isRaster,
         isSquare,
-        isAtLeast640x640,
+        isAtLeast640x640
       ]),
       assert("poster-landscape-src", false, [
         isRaster,
         isLandscape,
-        isAtLeast853x640,
-      ]),
+        isAtLeast853x640
+      ])
     ];
     return (await Promise.all(res)).filter(notPass);
   }
@@ -128,7 +129,7 @@ export class StoryMetadataThumbnailsAreOk extends Rule {
       url:
         "https://amp.dev/documentation/components/amp-story/#new-metadata-requirements",
       title: "AMP Story preview metadata is correct size and aspect ratio",
-      info: "",
+      info: ""
     };
   }
 }
