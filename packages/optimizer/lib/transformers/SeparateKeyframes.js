@@ -99,8 +99,9 @@ class SeparateKeyframes {
       return invalidProperty;
     };
 
-    const keyframesPlugin = postcss.plugin('postcss-amp-keyframes-mover', () => {
-      return (root) => {
+    const keyframesPlugin = {
+      postcssPlugin: 'postcss-amp-keyframes-mover',
+      Once: (root) => {
         root.nodes = root.nodes.filter((rule) => {
           if (rule.name === 'keyframes') {
             // We can't move a keyframe with an invalid property
@@ -134,8 +135,8 @@ class SeparateKeyframes {
           }
           return true;
         });
-      };
-    });
+      },
+    };
 
     const {css: cssResult} = await postcss([...extraPlugins, keyframesPlugin])
       .process(stylesText, {
