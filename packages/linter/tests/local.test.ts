@@ -6,6 +6,7 @@ import {
   assertInfo,
 } from "./lib";
 import { AmpImgAmpPixelPreferred } from "../src/rules/AmpImgAmpPixelPreferred";
+import { AmpImgPlaceholderIsDataUri } from "../src/rules/AmpImgPlaceholderIsDataUri";
 import { MetaCharsetIsFirst } from "../src/rules/MetaCharsetIsFirst";
 import { RuntimeIsPreloaded } from "../src/rules/RuntimeIsPreloaded";
 import { SchemaMetadataIsNews } from "../src/rules/SchemaMetadataIsNews";
@@ -68,6 +69,26 @@ describe(AmpImgAmpPixelPreferred.name, () => {
       runLocalTest(
         AmpImgAmpPixelPreferred,
         `${__dirname}/local/AmpImgAmpPixelPreferred-5/source.html`
+      )
+    );
+  });
+});
+
+describe(AmpImgPlaceholderIsDataUri, () => {
+  it(`${AmpImgPlaceholderIsDataUri.name} - placeholder uses data URI`, async () => {
+    return assertPass(
+      runLocalTest(
+        AmpImgPlaceholderIsDataUri,
+        `${__dirname}/local/AmpImgPlaceholderIsDataUri-1/source.html`
+      )
+    );
+  });
+
+  it(`${AmpImgPlaceholderIsDataUri.name} - placeholder does not make network request`, async () => {
+    return assertWarn(
+      runLocalTest(
+        AmpImgPlaceholderIsDataUri,
+        `${__dirname}/local/AmpImgPlaceholderIsDataUri-2/source.html`
       )
     );
   });
