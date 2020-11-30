@@ -16,7 +16,6 @@
 'use strict';
 
 const {Element, DataNode} = require('domhandler');
-const domUtils = require('domutils');
 const {removeElement, append, prepend} = require('domutils');
 
 /**
