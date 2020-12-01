@@ -102,6 +102,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts}": "eslint  -c .eslintrc.json --cache --fix"
+    "*.{js,ts}": ["eslint  -c .eslintrc.json --cache --fix", "prettier --write"]
   }
 }
