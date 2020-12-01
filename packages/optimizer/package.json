@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.7.0-alpha.4",
+  "version": "2.7.1-alpha.0",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -11,8 +11,13 @@
   "scripts": {
     "postinstall": "node lib/warmup.js"
   },
-  "files": ["index.js", "lib"],
-  "keywords": ["amp"],
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "keywords": [
+    "amp"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
@@ -24,10 +29,10 @@
     }
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.6.1",
-    "@ampproject/toolbox-runtime-version": "^2.7.0-alpha.1",
+    "@ampproject/toolbox-core": "^2.7.1-alpha.0",
+    "@ampproject/toolbox-runtime-version": "^2.7.1-alpha.0",
     "@ampproject/toolbox-script-csp": "^2.5.4",
-    "@ampproject/toolbox-validator-rules": "^2.5.4",
+    "@ampproject/toolbox-validator-rules": "^2.7.1-alpha.0",
     "abort-controller": "3.0.0",
     "cross-fetch": "3.0.6",
     "cssnano-simple": "1.2.1",
