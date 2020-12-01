@@ -1,5 +1,9 @@
 const url = require('url');
 
+function objectFromEntries(arr) {
+  return Object.assign({}, ...Array.from(arr, ([k, v]) => ({[k]: v})));
+}
+
 /*
  * Get the static options to pass AMP Optimizer on initialization.
  * All received environment variables prefixed with `AMP_OPTIMIZER_`
@@ -12,7 +16,7 @@ function getStaticOptions(env = process.env) {
       const optimizerFlag = snakeToCamel(envVar.substring('AMP_OPTIMIZER_'.length));
       return [optimizerFlag, env[envVar]];
     });
-  return Object.fromEntries(optionEntries);
+  return objectFromEntries(optionEntries);
 }
 
 /**

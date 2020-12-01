@@ -34,7 +34,7 @@ export const withFixture = throat(
       nockBack.setMode("record");
       const { nockDone } = await nockBack(fixturePath);
       const res = await fn();
-      return new Promise<T>((resolve) => {
+      return new Promise<T>(resolve => {
         setTimeout(() => {
           // wait for probe-image-size's aborts to settle
           nockDone();
@@ -163,7 +163,7 @@ export async function runLocalTest(ctor: RuleConstructor, fixture: string) {
     headers: {},
     url: "",
     raw: { body, headers: {} },
-    mode: guessMode($),
+    mode: guessMode($)
   };
   const rule = new ctor();
   return Promise.resolve(rule.run(context));
@@ -178,14 +178,14 @@ export async function runNetworkTest(ctor: RuleConstructor, url: string) {
     headers: {},
     url,
     raw: { body, headers: {} },
-    mode: guessMode($),
+    mode: guessMode($)
   };
   const rule = new ctor();
   return Promise.resolve(rule.run(context));
 }
 
 export async function runCheerioFn<T>(
-  fn: ($: CheerioStatic, url?: string) => T | Promise<T>,
+  fn: ($: cheerio.Root, url?: string) => T | Promise<T>,
   url: string
 ) {
   const res = await fetch(url);

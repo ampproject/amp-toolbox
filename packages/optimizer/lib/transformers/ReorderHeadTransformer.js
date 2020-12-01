@@ -51,10 +51,10 @@ class HeadNodes {
 
   _removeDuplicateCustomExtensions(extensions) {
     const nodesByName = new Map();
-    extensions.forEach((node) => {
+    for (const node of extensions) {
       const name = this._getName(node);
       nodesByName.set(name, node);
-    });
+    }
     return Array.from(nodesByName.values());
   }
 
@@ -197,6 +197,9 @@ class ReorderHeadTransformer {
     }
     const head = firstChildByTag(html, 'head');
     if (!head) {
+      return;
+    }
+    if (!head.children) {
       return;
     }
     const headNodes = new HeadNodes();
