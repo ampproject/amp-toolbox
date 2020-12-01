@@ -1,3 +1,32 @@
+## v2.7.0-alpha.4 (2020-10-26)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#926](https://github.com/ampproject/amp-toolbox/pull/926) Add amp-img srcset linter check ([@tharders](https://github.com/tharders))
+* `optimizer`
+  * [#911](https://github.com/ampproject/amp-toolbox/pull/911) Allow users to specify version numbers for auto imported extensions ([@digijin](https://github.com/digijin))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#913](https://github.com/ampproject/amp-toolbox/pull/913) Use node instead of root for checking templates in PreloadHeroImages ([@schlessera](https://github.com/schlessera))
+  * [#918](https://github.com/ampproject/amp-toolbox/pull/918) Add missing closing tags to <amp-img> elements ([@schlessera](https://github.com/schlessera))
+  * [#914](https://github.com/ampproject/amp-toolbox/pull/914) Remove unneeded width & height checks ([@schlessera](https://github.com/schlessera))
+  * [#930](https://github.com/ampproject/amp-toolbox/pull/930) Avoid trailing zeros and semicolons in sizer's padding ([@schlessera](https://github.com/schlessera))
+  * [#909](https://github.com/ampproject/amp-toolbox/pull/909) Fix handling of malformed `sizes` and `heights` strings ([@chasefinch](https://github.com/chasefinch))
+
+#### Committers: 11
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Arnav Jindal ([@Daggy1234](https://github.com/Daggy1234))
+- Chase Finch ([@chasefinch](https://github.com/chasefinch))
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Filip Stanis ([@fstanis](https://github.com/fstanis))
+- Grace Tree ([@TheTreeofGrace](https://github.com/TheTreeofGrace))
+- Jake Fried ([@samouri](https://github.com/samouri))
+- James ([@digijin](https://github.com/digijin))
+- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
+- Matthias Rohmer ([@matthiasrohmer](https://github.com/matthiasrohmer))
+- Thorsten Harders ([@tharders](https://github.com/tharders))
+
 ## v2.7.0-alpha.3 (2020-08-25)
 
 #### :rocket: Enhancement
@@ -18,22 +47,7 @@
   - [#906](https://github.com/ampproject/amp-toolbox/pull/906) Add linter check for fast google fonts ([@tharders](https://github.com/tharders))
   - [#904](https://github.com/ampproject/amp-toolbox/pull/904) Add linter check for preloading web fonts ([@tharders](https://github.com/tharders))
   - [#902](https://github.com/ampproject/amp-toolbox/pull/902) Preload checks for blocking extensions ([@tharders](https://github.com/tharders))
-
-#### Committers: 2
-
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- Thorsten Harders ([@tharders](https://github.com/tharders))
-
-## v2.7.0 (2020-08-19)
-
-#### :rocket: Enhancement
-
-- `linter`
   - [#890](https://github.com/ampproject/amp-toolbox/pull/890) introduce pageexperience mode ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :rocket: Enhancement
-
-- `linter`
   - [#901](https://github.com/ampproject/amp-toolbox/pull/901) Feature/linter optimizer checks ([@tharders](https://github.com/tharders))
 
 #### :bug: Bug Fix

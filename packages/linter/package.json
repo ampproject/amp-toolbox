@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "2.7.0-alpha.3",
+  "version": "2.7.1-alpha.0",
   "description": "A linter for AMP documents",
   "repository": {
     "type": "git",
@@ -11,16 +11,16 @@
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^2.6.0",
-    "@ampproject/toolbox-cache-url": "^2.7.0-alpha.1",
-    "@ampproject/toolbox-optimizer": "^2.7.0-alpha.1",
+    "@ampproject/toolbox-cache-list": "^2.7.1-alpha.0",
+    "@ampproject/toolbox-cache-url": "^2.7.1-alpha.0",
+    "@ampproject/toolbox-optimizer": "^2.7.1-alpha.0",
     "amphtml-validator": "1.0.33",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
-    "commander": "6.0.0",
-    "debug": "4.1.1",
-    "execa": "4.0.3",
-    "node-fetch": "^2.6.1",
+    "commander": "6.2.0",
+    "debug": "4.3.1",
+    "execa": "4.1.0",
+    "node-fetch": "2.6.1",
     "probe-image-size": "6.0.0",
     "throat": "5.0.0"
   },
@@ -40,9 +40,8 @@
   },
   "gitHead": "c26612cc3d7408fdc1451bcc8e0fecd67ac9661d",
   "devDependencies": {
-    "prettier": "2.1.1",
+    "prettier": "2.2.1",
     "tap-parser": "10.1.0",
-    "typescript": "4.0.2",
-    "@types/cheerio": "0.22.21"
+    "typescript": "4.1.2"
   }
 }
