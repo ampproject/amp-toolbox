@@ -47,22 +47,7 @@
   - [#906](https://github.com/ampproject/amp-toolbox/pull/906) Add linter check for fast google fonts ([@tharders](https://github.com/tharders))
   - [#904](https://github.com/ampproject/amp-toolbox/pull/904) Add linter check for preloading web fonts ([@tharders](https://github.com/tharders))
   - [#902](https://github.com/ampproject/amp-toolbox/pull/902) Preload checks for blocking extensions ([@tharders](https://github.com/tharders))
-
-#### Committers: 2
-
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- Thorsten Harders ([@tharders](https://github.com/tharders))
-
-## v2.7.0 (2020-08-19)
-
-#### :rocket: Enhancement
-
-- `linter`
   - [#890](https://github.com/ampproject/amp-toolbox/pull/890) introduce pageexperience mode ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :rocket: Enhancement
-
-- `linter`
   - [#901](https://github.com/ampproject/amp-toolbox/pull/901) Feature/linter optimizer checks ([@tharders](https://github.com/tharders))
 
 #### :bug: Bug Fix
