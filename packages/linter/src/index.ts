@@ -10,6 +10,7 @@ import { StoryIsMostlyText } from "./rules/StoryIsMostlyText";
 import { StoryMetadataThumbnailsAreOk } from "./rules/StoryMetadataThumbnailsAreOk";
 import { AmpImgHeightWidthIsOk } from "./rules/AmpImgHeightWidthIsOk";
 import { AmpImgAmpPixelPreferred } from "./rules/AmpImgAmpPixelPreferred";
+import { AmpImgPlaceholderIsDataUri } from "./rules/AmpImgPlaceholderIsDataUri";
 import { EndpointsAreAccessibleFromOrigin } from "./rules/EndpointsAreAccessibleFromOrigin";
 import { EndpointsAreAccessibleFromCache } from "./rules/EndpointsAreAccessibleFromCache";
 import { SxgVaryOnAcceptAct } from "./rules/SxgVaryOnAcceptAct";
@@ -144,7 +145,8 @@ function testsForMode(type: LintMode) {
       BoilerplateIsRemoved,
       ModuleRuntimeUsed,
       HeroImageIsDefined,
-      AmpImgUsesSrcSet
+      AmpImgUsesSrcSet,
+      AmpImgPlaceholderIsDataUri,
     ])
   );
   return tests.get(type) || [];
