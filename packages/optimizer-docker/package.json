@@ -1,6 +1,6 @@
 {
   "name": "toolbox-optimizer-docker",
-  "version": "2.7.1-alpha.0",
+  "version": "2.7.1",
   "description": "Thin wrapper around the amp-optimizer",
   "main": "index.js",
   "scripts": {

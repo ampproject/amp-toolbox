@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.7.1-alpha.0",
+  "version": "2.7.1",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -29,10 +29,10 @@
     }
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.7.1-alpha.0",
-    "@ampproject/toolbox-runtime-version": "^2.7.1-alpha.0",
+    "@ampproject/toolbox-core": "^2.7.1",
+    "@ampproject/toolbox-runtime-version": "^2.7.1",
     "@ampproject/toolbox-script-csp": "^2.5.4",
-    "@ampproject/toolbox-validator-rules": "^2.7.1-alpha.0",
+    "@ampproject/toolbox-validator-rules": "^2.7.1",
     "abort-controller": "3.0.0",
     "cross-fetch": "3.0.6",
     "cssnano-simple": "1.2.1",

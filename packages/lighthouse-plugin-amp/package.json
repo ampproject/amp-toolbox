@@ -10,7 +10,7 @@
     "amphtml-validator": "1.0.33",
     "node-fetch": "^2.6.1"
   },
-  "version": "2.7.1-alpha.0",
+  "version": "2.7.1",
   "main": "./plugin.js",
   "peerDependencies": {
     "lighthouse": ">=6.4.1"
