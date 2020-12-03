@@ -300,15 +300,17 @@ class PreloadHeroImage {
     if (!node) {
       return;
     }
+    node.attribs['i-amphtml-ssr'] = '';
+    node.attribs['data-hero'] = '';
+    // Create img node
     const imgNode = createElement('img', {
       class: 'i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
     });
+    // Copy attributes
     const attributesToCopy = [
       'alt',
       'attribution',
-      'object-fit',
-      'object-position',
       'referrerpolicy',
       'src',
       'srcset',
@@ -320,8 +322,19 @@ class PreloadHeroImage {
         imgNode.attribs[attr] = node.attribs[attr];
       }
     }
-    node.attribs['i-amphtml-ssr'] = '';
-    node.attribs['data-hero'] = '';
+    // Generate styles for object-fit and object-position
+    const styles = [];
+    const objectFit = node.attribs['object-fit'];
+    if (objectFit) {
+      styles.push(`object-fit:${objectFit}`);
+    }
+    const objectPosition = node.attribs['object-position'];
+    if (objectPosition) {
+      styles.push(`object-position:${objectPosition}`);
+    }
+    if (styles.length > 0) {
+      imgNode.attribs.style = styles.join(';');
+    }
     appendChild(node, imgNode);
   }
 }
