@@ -182,9 +182,11 @@ class AutoExtensionImporter {
       this.log_.debug('auto importing', extensionName);
       // Use the latest version by default
       let version = extension.version[extension.version.length - 1];
+      const customVersion = this.extensionVersions[extensionName];
       // Let user override default
-      if (this.extensionVersions[extensionName]) {
-        version = this.extensionVersions[extensionName];
+      if (customVersion) {
+        this.log_.debug('using custom version for', extensionName, customVersion);
+        version = customVersion;
       }
       const extensionImportAttribs = {
         async: '',
