@@ -1,0 +1,12 @@
+<html>
+<head>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <link rel="preload" href="https://amp.dev/static/img/icons/icon-512x512.png" as="image" data-hero>
+</head>
+<body>
+  <!-- object-fit and object-position should be rewritten to inline styles -->
+  <amp-img src="https://amp.dev/static/img/icons/icon-512x512.png" width="512" height="250" object-fit="cover" object-position="right top" data-hero style="background: red" i-amphtml-ssr><img class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" src="https://amp.dev/static/img/icons/icon-512x512.png" style="object-fit:cover;object-position:right top"></amp-img>
+  <!-- single attribute -->
+  <amp-img src="https://amp.dev/static/img/icons/icon-512x512.png" width="512" height="250" object-fit="cover" data-hero i-amphtml-ssr><img class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" src="https://amp.dev/static/img/icons/icon-512x512.png" style="object-fit:cover"></amp-img>
+</body>
+</html>
