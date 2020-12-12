@@ -25,7 +25,8 @@ import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
 import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
-import { AmpImgUsesSrcSet } from '../src/rules/AmpImgUsesSrcSet';
+import { AmpImgUsesSrcSet } from "../src/rules/AmpImgUsesSrcSet";
+import { ViewportDisablesTapDelay } from "../src/rules/ViewportDisablesTapDelay";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -593,6 +594,35 @@ describe(TitleMeetsLengthCriteria.name, () => {
       runLocalTest(
         TitleMeetsLengthCriteria,
         `${__dirname}/local/TitleMeetsLengthCriteria-2/source.html`
+      )
+    );
+  });
+});
+
+describe(ViewportDisablesTapDelay.name, () => {
+  it(`${ViewportDisablesTapDelay.name} - Viewport Disables Tap Delay`, async () => {
+    return assertPass(
+      runLocalTest(
+        ViewportDisablesTapDelay,
+        `${__dirname}/local/ViewportDisablesTapDelay-1/source.html`
+      )
+    );
+  });
+
+  it(`${ViewportDisablesTapDelay.name} - Viewport causes Tap Delay`, async () => {
+    return assertFail(
+      runLocalTest(
+        ViewportDisablesTapDelay,
+        `${__dirname}/local/ViewportDisablesTapDelay-2/source.html`
+      )
+    );
+  });
+
+  it(`${ViewportDisablesTapDelay.name} - no viewport`, async () => {
+    return assertPass(
+      runLocalTest(
+        ViewportDisablesTapDelay,
+        `${__dirname}/local/ViewportDisablesTapDelay-3/source.html`
       )
     );
   });
