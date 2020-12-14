@@ -135,7 +135,11 @@ function createIntrinsicSizer(width, height) {
     'aria-hidden': 'true',
     'class': 'i-amphtml-intrinsic-sizer',
     'role': 'presentation',
-    'src': `data:image/svg+xml;charset=utf-8,<svg height="${height.numeral}" width="${width.numeral}" xmlns="http://www.w3.org/2000/svg" version="1.1"/>`,
+    'src':
+      'data:image/svg+xml;base64,' +
+      Buffer.from(
+        `<svg height="${height.numeral}" width="${width.numeral}" xmlns="http://www.w3.org/2000/svg" version="1.1"/>`
+      ).toString('base64'),
   });
   appendChild(sizer, sizerImg);
   return sizer;
