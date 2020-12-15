@@ -15,9 +15,8 @@
  */
 
 const DownloadRuntime = require('../../lib/DownloadRuntime.js');
-const fetchMock = require('fetch-mock').sandbox();
 const Readable = require('stream').Readable;
-const nodeFetch = require('node-fetch');
+const fetchMock = require('fetch-mock').sandbox();
 const fse = require('fs-extra');
 const os = require('os');
 const path = require('path');
@@ -68,7 +67,7 @@ describe('DownloadRuntime', () => {
       readable.push(fakeFiles[filename]);
       readable.push(null);
 
-      mockResponses[filename] = new nodeFetch.Response(readable);
+      mockResponses[filename] = new fetchMock.Response(readable);
     });
   });
 
