@@ -65,7 +65,7 @@ class GoogleFontsPreconnect {
         this.log_.debug(
           'adding <link rel="preconnect" href="' + linkPreconnect.attribs.href + '" crossorigin>'
         );
-        insertAfter(head, linkDnsPrefetch, referenceNode);
+        insertAfter(head, linkDnsPrefetch, linkPreconnect);
         this.log_.debug(
           'adding <link rel="dns-prefetch" href="' + linkDnsPrefetch.attribs.href + '">'
         );
