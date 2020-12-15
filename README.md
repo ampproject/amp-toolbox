@@ -16,8 +16,6 @@ limitations under the License.
 
 # AMP Toolbox
 
-[![Build Status](https://travis-ci.org/ampproject/amp-toolbox.svg?branch=main)](https://travis-ci.org/ampproject/amp-toolbox)
-
 A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
 - **[amp-cache-url](/packages/cache-url):** a javascript library for translating origin URLs to the [AMP Cache URL format](https://developers.google.com/amp/cache/overview).
