@@ -1,4 +1,32 @@
-## v2.7.0-alpha.4 (2020-10-26)
+## v2.7.2 (2020-12-15)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#981](https://github.com/ampproject/amp-toolbox/pull/981) Encode SVG sizer with base64 ([@schlessera](https://github.com/schlessera))
+* `linter`
+  * [#980](https://github.com/ampproject/amp-toolbox/pull/980) Add check for disabled tap delay ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#962](https://github.com/ampproject/amp-toolbox/pull/962) Add check for amp-img placeholder does not make additional request ([@kevinkimball](https://github.com/kevinkimball))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1065](https://github.com/ampproject/amp-toolbox/pull/1065) Split preconnect and dns-prefetch into two separate links ([@schlessera](https://github.com/schlessera))
+  * [#974](https://github.com/ampproject/amp-toolbox/pull/974) Generate styles for amp-img object-fit / object-contain ([@sebastianbenz](https://github.com/sebastianbenz))
+* `cache-url`
+  * [#979](https://github.com/ampproject/amp-toolbox/pull/979) Check if "." before extension in font URL ([@processprocess](https://github.com/processprocess))
+  * [#976](https://github.com/ampproject/amp-toolbox/pull/976) Check if "." before extension in image URL ([@processprocess](https://github.com/processprocess))
+
+#### :house: Internal
+* `linter`, `optimizer`
+  * [#975](https://github.com/ampproject/amp-toolbox/pull/975) Update dependency @ampproject/toolbox-optimizer ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 5
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Kevin Kimball ([@kevinkimball](https://github.com/kevinkimball))
+- Philip Bell ([@processprocess](https://github.com/processprocess))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- patrick kettner ([@patrickkettner](https://github.com/patrickkettner))
+
+## v2.7.1 (2020-10-26)
 
 #### :rocket: Enhancement
 * `linter`
