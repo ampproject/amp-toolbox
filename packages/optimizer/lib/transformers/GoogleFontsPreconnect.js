@@ -52,14 +52,22 @@ class GoogleFontsPreconnect {
       if (this.isGoogleFontsLinkNode_(node)) {
         // Preconnect to fonts.gstatic.com, where the final fonts are downloaded.
         const linkPreconnect = createElement('link', {
-          rel: 'dns-prefetch preconnect',
+          rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
           crossorigin: '',
+        });
+        const linkDnsPrefetch = createElement('link', {
+          rel: 'dns-prefetch',
+          href: 'https://fonts.gstatic.com',
         });
         const referenceNode = findMetaViewport(head);
         insertAfter(head, linkPreconnect, referenceNode);
         this.log_.debug(
-          'adding <link rel="dns=prefetch preconnect" href="' + linkPreconnect.attribs.href + '">'
+          'adding <link rel="preconnect" href="' + linkPreconnect.attribs.href + '" crossorigin>'
+        );
+        insertAfter(head, linkDnsPrefetch, linkPreconnect);
+        this.log_.debug(
+          'adding <link rel="dns-prefetch" href="' + linkDnsPrefetch.attribs.href + '">'
         );
 
         // We only need 1 preconnect, so we can skip the remaining elements and return.
