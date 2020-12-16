@@ -184,7 +184,6 @@ module.exports = {
     // Transformed AMP validation requires layout attribute to be set
     // See https://github.com/ampproject/amp-toolbox/issues/959
     if (layout && layout === 'responsive') {
-      console.log('XXX setting custom layout ', layout);
       customElement.attribs.layout = layout;
     }
 
