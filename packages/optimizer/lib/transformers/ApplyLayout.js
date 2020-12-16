@@ -181,6 +181,12 @@ module.exports = {
       log.debug('cannot perform SSR: unsupported layout', layout);
       return false;
     }
+    // Transformed AMP validation requires layout attribute to be set
+    // See https://github.com/ampproject/amp-toolbox/issues/959
+    if (layout && layout === 'responsive') {
+      console.log('XXX setting custom layout ', layout);
+      customElement.attribs.layout = layout;
+    }
 
     apply(layout, width, height, customElement);
     maybeAddSizerInto(customElement, layout, width, height);

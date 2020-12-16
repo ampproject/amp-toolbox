@@ -1,6 +1,39 @@
 <html ⚡>
   <head></head>
   <body>
+    <!-- Default case -->
     <amp-img height=100 width=300 layout=responsive></amp-img>
+    <!-- Auto adds responsive attribute if height, width and sizes -->
+    <amp-ad
+      class=""
+      type=taboola
+      data-block-on-consent=_till_responded
+      width=300
+      height=250
+      sizes = "(min-width: 1600px) 1200px, 
+               (min-width: 1400px) 1100px, 
+               (min-width:1000px) 900px,   
+               100vw"       
+      data-publisher=...
+      data-mode=thumbnails-a-amp
+      data-placement="Mobile Below Article Thumbnails AMP"
+      data-article=auto
+      data-target_type=mix
+    >
+    <!-- Auto adds responsive attribute if height, width and heights -->
+    <amp-ad
+      class=""
+      type=taboola
+      data-block-on-consent=_till_responded
+      width=300
+      height=250
+      heights="(min-width:616px) 370%, (min-width:472px) 386%, (min-width:375px) 411%, 438%"
+      data-publisher=...
+      data-mode=thumbnails-a-amp
+      data-placement="Mobile Below Article Thumbnails AMP"
+      data-article=auto
+      data-target_type=mix
+    >
+</amp-ad>
   </body>
 </html>
