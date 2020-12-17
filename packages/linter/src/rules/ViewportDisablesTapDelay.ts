@@ -8,7 +8,7 @@ export class ViewportDisablesTapDelay extends Rule {
       return this.pass();
     }
     return viewport.attribs.content !== "width=device-width"
-      ? this.fail(`Viewport width not set to device width`)
+      ? this.warn(`Viewport width not set to device width`)
       : this.pass();
   }
   meta() {
