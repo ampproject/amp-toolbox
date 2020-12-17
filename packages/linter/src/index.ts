@@ -116,6 +116,7 @@ function testsForMode(type: LintMode) {
     AmpImgAmpPixelPreferred,
     EndpointsAreAccessibleFromOrigin,
     EndpointsAreAccessibleFromCache,
+    ViewportDisablesTapDelay,
   ]);
   tests.set(
     LintMode.AmpStory,
@@ -131,6 +132,7 @@ function testsForMode(type: LintMode) {
       VideosHaveAltText,
       VideosAreSubtitled,
       TitleMeetsLengthCriteria,
+      ViewportDisablesTapDelay,
     ])
   );
   tests.set(
