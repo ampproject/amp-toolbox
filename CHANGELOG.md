@@ -1,3 +1,16 @@
+## v2.7.3 (2020-12-17)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#1116](https://github.com/ampproject/amp-toolbox/pull/1116) Improve viewport check ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1115](https://github.com/ampproject/amp-toolbox/pull/1115) Auto add layout=responsive if missing ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.7.2 (2020-12-15)
 
 #### :rocket: Enhancement
