@@ -8,7 +8,9 @@ export class ViewportDisablesTapDelay extends Rule {
       return this.pass();
     }
     return viewport.attribs.content !== "width=device-width"
-      ? this.fail(`Viewport width not set to device width`)
+      ? this.warn(
+          `Viewport width is not set to device width: '<meta name="viewport" content="width=device-width">'`
+        )
       : this.pass();
   }
   meta() {
@@ -16,7 +18,7 @@ export class ViewportDisablesTapDelay extends Rule {
       url:
         "https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away",
       title:
-        "Set viewport width to the same as the device to disable touch delay causing FID.",
+        "Set viewport width to match the device to disable touch delay causing FID.",
       info: "",
     };
   }

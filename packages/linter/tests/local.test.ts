@@ -610,7 +610,7 @@ describe(ViewportDisablesTapDelay.name, () => {
   });
 
   it(`${ViewportDisablesTapDelay.name} - Viewport causes Tap Delay`, async () => {
-    return assertFail(
+    return assertWarn(
       runLocalTest(
         ViewportDisablesTapDelay,
         `${__dirname}/local/ViewportDisablesTapDelay-2/source.html`
