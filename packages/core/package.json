@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/core",
   "dependencies": {
-    "lru-cache": "6.0.0",
-    "node-fetch": "2.6.1"
+    "cross-fetch": "3.0.6",
+    "lru-cache": "6.0.0"
   },
   "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }

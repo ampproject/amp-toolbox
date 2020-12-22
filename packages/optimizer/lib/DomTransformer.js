@@ -17,7 +17,7 @@
 
 const treeParser = require('./TreeParser');
 const log = require('./log');
-let fetch = require('node-fetch');
+let fetch = require('cross-fetch');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetchRuntimeParameters = require('./fetchRuntimeParameters');
 

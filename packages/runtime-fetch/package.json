@@ -24,8 +24,8 @@
     "@ampproject/toolbox-core": "^2.7.2",
     "@ampproject/toolbox-runtime-version": "^2.7.2",
     "at-least-node": "1.0.0",
-    "fs-extra": "9.0.1",
-    "node-fetch": "2.6.1"
+    "cross-fetch": "3.0.6",
+    "fs-extra": "9.0.1"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

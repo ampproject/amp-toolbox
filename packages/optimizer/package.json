@@ -34,6 +34,7 @@
     "@ampproject/toolbox-script-csp": "^2.5.4",
     "@ampproject/toolbox-validator-rules": "^2.7.2",
     "abort-controller": "3.0.0",
+    "cross-fetch": "3.0.6",
     "cssnano-simple": "1.2.1",
     "dom-serializer": "1.1.0",
     "domhandler": "3.3.0",
