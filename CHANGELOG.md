@@ -1,3 +1,12 @@
+## v2.7.4 (2020-12-23)
+
+#### :bug: Bug Fix
+* `cli`, `core`, `linter`, `optimizer`, `runtime-fetch`, `validator-rules`
+  * [#1118](https://github.com/ampproject/amp-toolbox/pull/1118) Readd cross fetch ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.7.3 (2020-12-17)
 
 #### :rocket: Enhancement
