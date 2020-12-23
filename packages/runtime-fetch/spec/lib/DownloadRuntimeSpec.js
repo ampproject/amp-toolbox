@@ -15,8 +15,8 @@
  */
 
 const DownloadRuntime = require('../../lib/DownloadRuntime.js');
-const Readable = require('stream').Readable;
 const fetchMock = require('fetch-mock').sandbox();
+const Readable = require('stream').Readable;
 const fse = require('fs-extra');
 const os = require('os');
 const path = require('path');
