@@ -11,13 +11,8 @@
   "scripts": {
     "postinstall": "node lib/warmup.js"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
-  "keywords": [
-    "amp"
-  ],
+  "files": ["index.js", "lib"],
+  "keywords": ["amp"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
@@ -42,7 +37,6 @@
     "htmlparser2": "5.0.1",
     "https-proxy-agent": "5.0.0",
     "lru-cache": "6.0.0",
-    "node-fetch": "2.6.1",
     "normalize-html-whitespace": "1.0.0",
     "postcss": "7.0.32",
     "postcss-safe-parser": "4.0.2",

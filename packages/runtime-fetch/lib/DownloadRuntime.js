@@ -16,7 +16,7 @@
 'use strict';
 
 const cacheListProvider = require('@ampproject/toolbox-cache-list');
-const crossFetch = require('cross-fetch');
+const nodeFetch = require('node-fetch');
 const fse = require('fs-extra');
 const https = require('https');
 const log = require('@ampproject/toolbox-core').log.tag('Runtime Download');
@@ -36,7 +36,7 @@ const fetchOptions = {
 
 class DownloadRuntime {
   constructor(fetch, cacheList, runtimeVersion) {
-    this.fetch_ = fetch || crossFetch;
+    this.fetch_ = fetch || nodeFetch;
     this.cacheList_ = cacheList || cacheListProvider;
     this.runtimeVersion_ = runtimeVersion || runtimeVersionProvider;
   }
