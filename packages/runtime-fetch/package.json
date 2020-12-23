@@ -1,10 +1,17 @@
 {
   "name": "@ampproject/toolbox-runtime-fetch",
-  "version": "2.5.1",
+  "version": "2.7.2",
   "description": "Download the AMP runtime",
   "main": "index.js",
-  "keywords": ["amp", "download", "runtime"],
-  "files": ["index.js", "lib"],
+  "keywords": [
+    "amp",
+    "download",
+    "runtime"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -13,16 +20,16 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^2.5.1",
-    "@ampproject/toolbox-core": "^2.5.1",
-    "@ampproject/toolbox-runtime-version": "^2.5.1",
+    "@ampproject/toolbox-cache-list": "^2.7.2",
+    "@ampproject/toolbox-core": "^2.7.2",
+    "@ampproject/toolbox-runtime-version": "^2.7.2",
     "at-least-node": "1.0.0",
-    "cross-fetch": "3.0.5",
-    "fs-extra": "9.0.1"
+    "fs-extra": "9.0.1",
+    "node-fetch": "2.6.1"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/runtime-fetch",
-  "gitHead": "c26612cc3d7408fdc1451bcc8e0fecd67ac9661d"
+  "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }

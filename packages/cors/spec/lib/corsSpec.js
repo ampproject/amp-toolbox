@@ -63,7 +63,9 @@ describe('AMP Cors', () => {
   describe('sends 400', () => {
     it('with __amp_source_origin but without Origin or AMP-SAME-ORIGIN', (done) => {
       request.url = '/sample?__amp_source_origin=https://ampbyexample.com';
-      cors(request, response, () => {}).then(() => {
+      cors(request, response, () => {
+        true;
+      }).then(() => {
         expect(response.status_).toEqual(400);
         done();
       });
@@ -92,11 +94,10 @@ describe('AMP Cors', () => {
   describe('options', () => {
     describe('email', () => {
       it('adds cors headers required by gmail', (done) => {
-        options = {
-          email: true,
-        };
         request.headers['Origin'] = 'https://mail.google.com';
         request.url = '/sample?__amp_source_origin=sender@example.com';
+        options.email = true;
+        cors = ampCors(options, caches);
         cors(request, response, () => {
           expect(response.headers['Access-Control-Allow-Origin']).toBe('https://mail.google.com');
           expect(response.headers['Access-Control-Expose-Headers']).toContain(
@@ -105,6 +106,17 @@ describe('AMP Cors', () => {
           expect(response.headers['AMP-Access-Control-Allow-Source-Origin']).toBe(
             'sender@example.com'
           );
+        }).then(() => done());
+      });
+      it('uses new version of spec when possible', (done) => {
+        request.headers['AMP-Email-Sender'] = 'sender@example.com';
+        request.url = '/sample?__amp_source_origin=sender@example.com';
+        options.email = true;
+        cors = ampCors(options, caches);
+        cors(request, response, () => {
+          expect(response.headers['Access-Control-Allow-Origin']).toBe(undefined);
+          expect(response.headers['Access-Control-Expose-Headers']).toBe(undefined);
+          expect(response.headers['AMP-Email-Allow-Sender']).toBe('sender@example.com');
         }).then(() => done());
       });
     });

@@ -17,6 +17,7 @@
 'use strict';
 
 const {loadUrlOrFile} = require('../lib/io');
+const path = require('path');
 
 test('loads url', async () => {
   expect(await loadUrlOrFile('https://amp.dev/documentation/examples/api/echo?hello=world')).toBe(
@@ -24,7 +25,7 @@ test('loads url', async () => {
   );
 });
 test('loads file', async () => {
-  expect(await loadUrlOrFile(__dirname + '/test-data/hello.txt')).toBe('hello\n');
+  expect(await loadUrlOrFile(path.join(__dirname, 'test-data/hello.txt'))).toBe('hello\n');
 });
 test('fails if url is missing', async () => {
   let error;

@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const {createElement, firstChildByTag, insertAfter, insertBefore} = require('../NodeUtils');
+const {createElement, firstChildByTag, insertAfter, insertBefore, remove} = require('../NodeUtils');
 const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
@@ -23,7 +23,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
 /**
  * RewriteAmpUrls - rewrites AMP runtime URLs.
  *
- * This transformer supports two parameters:
+ * This transformer supports four parameters:
  *
  * * `ampRuntimeVersion`: specifies a
  *   [specific version](https://github.com/ampproject/amp-toolbox/tree/main/runtime-version)
@@ -57,6 +57,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
 class RewriteAmpUrls {
   constructor(config) {
     this.esmModulesEnabled = config.experimentEsm;
+    this.log = config.log;
   }
   transform(root, params) {
     const html = firstChildByTag(root, 'html');
@@ -67,29 +68,54 @@ class RewriteAmpUrls {
 
     let node = head.firstChild;
     let referenceNode = findMetaViewport(head);
+    const esm = this.esmModulesEnabled || params.experimentEsm;
+    const preloads = [];
 
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
-        if (this.esmModulesEnabled || params.experimentEsm) {
-          this._addEsm(node, node.attribs.src.endsWith('v0.js'));
+        if (esm) {
+          preloads.push(this._addEsm(node));
+        } else {
+          preloads.push(this._createPreload(node.attribs.src, 'script'));
         }
-        referenceNode = this._addPreload(head, referenceNode, node.attribs.src, 'script');
       } else if (
         node.tagName === 'link' &&
         node.attribs.rel === 'stylesheet' &&
         this._usesAmpCacheUrl(node.attribs.href)
       ) {
         node.attribs.href = this._replaceUrl(node.attribs.href, host);
-        referenceNode = this._addPreload(head, referenceNode, node.attribs.href, 'style');
+        preloads.push(this._createPreload(node.attribs.href, 'style'));
+      } else if (
+        node.tagName === 'link' &&
+        node.attribs.rel === 'preload' &&
+        this._usesAmpCacheUrl(node.attribs.href)
+      ) {
+        if (esm && this._shouldPreload(node.attribs.href)) {
+          // only preload mjs runtime in esm mode
+          remove(node);
+        } else {
+          node.attribs.href = this._replaceUrl(node.attribs.href, host);
+        }
       }
       node = node.nextSibling;
     }
 
+    // process preloads later to avoid accidently rewriting the URL
+    for (const preload of preloads) {
+      if (preload) {
+        insertAfter(head, preload, referenceNode);
+      }
+    }
+
     // runtime-host and amp-geo-api meta tags should appear before the first script
     if (!this._usesAmpCacheUrl(host) && !params.lts) {
-      const versionlessHost = calculateHost({ampUrlPrefix: params.ampUrlPrefix});
-      this._addMeta(head, 'runtime-host', versionlessHost);
+      try {
+        const url = new URL(host);
+        this._addMeta(head, 'runtime-host', url.origin);
+      } catch (e) {
+        this.log.warn('ampUrlPrefix must be an absolute URL');
+      }
     }
     if (params.geoApiUrl && !params.lts) {
       this._addMeta(head, 'amp-geo-api', params.geoApiUrl);
@@ -103,20 +129,21 @@ class RewriteAmpUrls {
     return url.startsWith(AMP_CACHE_HOST);
   }
 
-  _replaceUrl(url, ampUrlPrefix) {
-    return ampUrlPrefix + url.substring(AMP_CACHE_HOST.length);
+  _replaceUrl(url, host) {
+    return host + url.substring(AMP_CACHE_HOST.length);
   }
 
-  _addEsm(scriptNode, preload) {
+  _addEsm(scriptNode) {
+    let result = null;
     const esmScriptUrl = scriptNode.attribs.src.replace(/\.js$/, '.mjs');
-    if (preload) {
+    if (this._shouldPreload(scriptNode.attribs.src)) {
       const preload = createElement('link', {
         as: 'script',
         crossorigin: 'anonymous',
         href: esmScriptUrl,
         rel: 'preload',
       });
-      insertBefore(scriptNode.parent, preload, scriptNode);
+      result = preload;
     }
     const nomoduleNode = createElement('script', {
       async: '',
@@ -130,24 +157,36 @@ class RewriteAmpUrls {
     // of preload.
     scriptNode.attribs.crossorigin = 'anonymous';
     scriptNode.attribs.src = esmScriptUrl;
+    return result;
   }
 
-  _addPreload(parent, node, href, type) {
-    if (!href.endsWith('v0.js') && !href.endsWith('v0.css')) {
-      return node;
+  _createPreload(href, type) {
+    if (!this._shouldPreload(href)) {
+      return null;
     }
-    const preload = createElement('link', {
+    return createElement('link', {
       rel: 'preload',
       href: href,
       as: type,
     });
-    insertAfter(parent, preload, node);
-    return preload;
+  }
+
+  _shouldPreload(href) {
+    return href.endsWith('v0.js') || href.endsWith('v0.css');
   }
 
   _addMeta(head, name, content) {
     const meta = createElement('meta', {name, content});
     insertBefore(head, meta, firstChildByTag(head, 'script'));
+  }
+
+  isAbsoluteUrl_(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch (ex) {
+      return false;
+    }
   }
 }
 

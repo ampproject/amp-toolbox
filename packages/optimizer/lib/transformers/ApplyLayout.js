@@ -72,8 +72,8 @@ function apply(layout, width, height, node) {
       // Do nothing here, but emit <i-amphtml-sizer> later.
       break;
     case 'intrinsic':
-    // Do nothing here, but emit <i-amphtml-sizer> later.
-    // break;
+      // Do nothing here, but emit <i-amphtml-sizer> later.
+      break;
     case 'fill':
     case 'container':
       // Do nothing here.
@@ -118,7 +118,7 @@ function maybeAddSizerInto(node, layout, width, height) {
 function createResponsiveSizer(width, height) {
   const padding = (height.numeral / width.numeral) * 100;
   const sizer = createElement('i-amphtml-sizer', {
-    style: `display:block;padding-top:${padding.toFixed(4)}%;`,
+    style: `display:block;padding-top:${parseFloat(padding.toFixed(4))}%`,
   });
   return sizer;
 }
@@ -135,7 +135,11 @@ function createIntrinsicSizer(width, height) {
     'aria-hidden': 'true',
     'class': 'i-amphtml-intrinsic-sizer',
     'role': 'presentation',
-    'src': `data:image/svg+xml;charset=utf-8,<svg height="${height.numeral}" width="${width.numeral}" xmlns="http://www.w3.org/2000/svg" version="1.1"/>`,
+    'src':
+      'data:image/svg+xml;base64,' +
+      Buffer.from(
+        `<svg height="${height.numeral}" width="${width.numeral}" xmlns="http://www.w3.org/2000/svg" version="1.1"/>`
+      ).toString('base64'),
   });
   appendChild(sizer, sizerImg);
   return sizer;
@@ -176,6 +180,11 @@ module.exports = {
     if (!isSupportedLayout(layout)) {
       log.debug('cannot perform SSR: unsupported layout', layout);
       return false;
+    }
+    // Transformed AMP validation requires layout attribute to be set
+    // See https://github.com/ampproject/amp-toolbox/issues/959
+    if (layout && layout === 'responsive') {
+      customElement.attribs.layout = layout;
     }
 
     apply(layout, width, height, customElement);

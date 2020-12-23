@@ -16,7 +16,6 @@
 'use strict';
 
 const {Element, DataNode} = require('domhandler');
-const domUtils = require('domutils');
 const {removeElement, append, prepend} = require('domutils');
 
 /**
@@ -58,11 +57,18 @@ const remove = function (node) {
  * @param {Node} parent
  * @param {Node} node
  */
-const appendChild = function (parent, node) {
-  if (!node) {
+const appendChild = function (elem, child) {
+  if (!child) {
     return;
   }
-  domUtils.appendChild(parent, node);
+  child.parent = elem;
+
+  if (elem.children.push(child) !== 1) {
+    const sibling = elem.children[elem.children.length - 2];
+    sibling.next = child;
+    child.prev = sibling;
+    child.next = null;
+  }
 };
 
 /**

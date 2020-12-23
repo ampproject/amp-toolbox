@@ -22,6 +22,7 @@
  *   defaultValue: string
  * }}
  */
+// eslint-disable-next-line
 let Sizes;
 
 /**
@@ -31,6 +32,7 @@ let Sizes;
  *   size: string
  * }}
  */
+// eslint-disable-next-line
 let Size;
 
 /**
@@ -56,13 +58,13 @@ const parseSizes = (string) => {
     if (i === sizes.length - 1) {
       result.defaultValue = sizeString.trim();
     } else {
-      const size = sizeString.split(/\s+/);
-      if (size.length <= 1) {
+      const size = sizeString.split(/\)\s+/);
+      if (size.length !== 2) {
         throw new Error(`Invalid sizes definition '${string}'`);
       }
       result.values.push({
-        media: size.slice(0, size.length - 1).join(' '),
-        size: size[size.length - 1],
+        media: `${size[0]})`,
+        size: size[1],
       });
     }
   }

@@ -19,7 +19,6 @@
 const buildOptions = require('minimist-options');
 const minimist = require('minimist');
 const {log} = require('@ampproject/toolbox-core');
-
 class Cli {
   constructor(logger = log) {
     this.logger_ = logger;
@@ -59,6 +58,7 @@ class Cli {
             },
           })
         );
+        break;
       case 'runtime-version':
         Object.assign(
           minimistOptions,
@@ -92,6 +92,7 @@ class Cli {
       case 'lint':
         return require('./cmds/lint')(argv, this.logger_);
       case 'optimize':
+        // eslint-disable-next-line
         const OptimizeCmd = require('./cmds/optimize.js');
         return new OptimizeCmd().run(args, this.logger_);
       case 'runtime-version':

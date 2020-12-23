@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer-express",
-  "version": "2.5.3",
+  "version": "2.7.3",
   "description": "Express middleware for @ampproject/toolbox-optimizer",
   "main": "index.js",
   "repository": {
@@ -8,8 +8,15 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/optimizer-express"
   },
-  "keywords": ["amp", "amp-optimizer", "amp-toolbox"],
-  "files": ["index.js", "lib"],
+  "keywords": [
+    "amp",
+    "amp-optimizer",
+    "amp-toolbox"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -17,11 +24,11 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer-express",
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.5.1",
-    "@ampproject/toolbox-optimizer": "^2.5.3",
-    "@ampproject/toolbox-runtime-version": "^2.5.1",
+    "@ampproject/toolbox-core": "^2.7.2",
+    "@ampproject/toolbox-optimizer": "^2.7.3",
+    "@ampproject/toolbox-runtime-version": "^2.7.2",
     "mime-types": "2.1.27",
-    "whatwg-url": "8.1.0"
+    "whatwg-url": "8.4.0"
   },
-  "gitHead": "da4cca026111b917cd3901b4666a5997ef45a606"
+  "gitHead": "b0efede4ff9a6baa8173016f7c630d406e26d5e3"
 }

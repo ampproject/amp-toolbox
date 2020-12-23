@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "2.5.2",
+  "version": "2.7.3",
   "description": "A linter for AMP documents",
   "repository": {
     "type": "git",
@@ -11,16 +11,17 @@
   "license": "Apache-2.0",
   "author": "AMPHTML Team",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "^2.5.1",
-    "@ampproject/toolbox-cache-url": "^2.3.0",
-    "amphtml-validator": "1.0.31",
+    "@ampproject/toolbox-cache-list": "^2.7.2",
+    "@ampproject/toolbox-cache-url": "^2.7.2",
+    "@ampproject/toolbox-optimizer": "^2.7.3",
+    "amphtml-validator": "1.0.33",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
-    "commander": "5.1.0",
-    "debug": "4.1.1",
-    "execa": "4.0.2",
-    "node-fetch": "2.6.0",
-    "probe-image-size": "5.0.0",
+    "commander": "6.2.0",
+    "debug": "4.3.1",
+    "execa": "4.1.0",
+    "node-fetch": "2.6.1",
+    "probe-image-size": "6.0.0",
     "throat": "5.0.0"
   },
   "bugs": {
@@ -32,19 +33,15 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --strictNullChecks --declaration --outDir dist src/*.ts",
-    "transpile": "tsc --resolveJsonModule --module commonjs --target es2018 --esModuleInterop --noImplicitAny --strictNullChecks src/*.ts tests/*.ts",
-    "test": "$npm_execpath run transpile && cd tests && for t in helper.js local.js network.js ; do ( test -e $t || $npm_execpath run build ) && ( node $t | tap-parser -t ) || exit 1 ; done ; exit 0",
-    "lint": "prettier --check 'src/**/*.ts' 'tests/**/*.ts'",
-    "lint:fix": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'"
+    "build": "tsc"
   },
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "c26612cc3d7408fdc1451bcc8e0fecd67ac9661d",
+  "gitHead": "b0efede4ff9a6baa8173016f7c630d406e26d5e3",
   "devDependencies": {
-    "prettier": "2.0.5",
-    "tap-parser": "10.0.1",
-    "typescript": "3.9.5"
+    "prettier": "2.2.1",
+    "tap-parser": "10.1.0",
+    "typescript": "4.1.2"
   }
 }

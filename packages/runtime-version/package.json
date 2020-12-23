@@ -1,10 +1,15 @@
 {
   "name": "@ampproject/toolbox-runtime-version",
-  "version": "2.5.1",
+  "version": "2.7.2",
   "description": "AMP Runtime versions",
   "main": "index.js",
-  "keywords": ["amp"],
-  "files": ["index.js", "lib"],
+  "keywords": [
+    "amp"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -13,11 +18,11 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.5.1"
+    "@ampproject/toolbox-core": "^2.7.2"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/runtime-version",
-  "gitHead": "d5517559fb1c2e1be4d3c3e9df756cdce82a432a"
+  "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }

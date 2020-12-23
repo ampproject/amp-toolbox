@@ -30,7 +30,7 @@ function updateCaches_(privateKey, url, logger) {
       return;
     });
   } catch (e) {
-    return Promise.reject(new Error(`Error generating cache invalidation URL: ${e}`));
+    return Promise.reject(new Error(`Error generating cache invalidation URL with ${e}`));
   }
 }
 

@@ -16,6 +16,7 @@
 
 const AbortController = require('abort-controller');
 const fetch = require('node-fetch');
+const HttpsProxyAgent = require('https-proxy-agent');
 const log = require('@ampproject/toolbox-core').log.tag('AMP OPTIMIZER');
 const AmpOptimizer = require('../');
 
@@ -29,32 +30,36 @@ const fetchWithTimout = (url, opts = {}) => {
     controller.abort();
   }, DOWNLOAD_TIMEOUT);
   opts.signal = controller.signal;
+  const httpsProxy = process.env.https_proxy || process.env.HTTPS_PROXY;
+  if (httpsProxy) {
+    opts.agent = new HttpsProxyAgent(httpsProxy);
+  }
   return fetch(url, opts).finally(() => {
     clearTimeout(timeout);
   });
 };
 
-const ampOptimizer = AmpOptimizer.create({
-  fetch: fetchWithTimout,
-});
-
 async function warmupCaches() {
   let success = true;
   // Hack to avoid error messages in the console during postinstall
-  log.error = (e) => {
+  log.error = () => {
     success = false;
   };
-  // Re-use config from AMP Optimizer
-  // TODO extract config into it's own class
-  const config = AmpOptimizer.create({log, fetch: fetchWithTimout}).config;
-  // Try to download all runtime data, this will fail if behind a proxy
-  await fetchRuntimeParameters(config);
-  if (success) {
-    log.info('Downloaded latest AMP runtime data.');
-  } else {
-    log.info(
-      'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#fetch.'
-    );
+  try {
+    // Re-use config from AMP Optimizer
+    // TODO extract config into it's own class
+    const config = AmpOptimizer.create({log, fetch: fetchWithTimout}).config;
+    // Try to download all runtime data, this will fail if behind a proxy
+    await fetchRuntimeParameters(config);
+    if (success) {
+      log.info('Downloaded latest AMP runtime data.');
+    } else {
+      log.info(
+        'Failed downloading latest AMP runtime data. Proxies need to be configured manually, see https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#fetch.'
+      );
+    }
+  } catch (e) {
+    // ignore - environment has not been setup yet
   }
 }
 

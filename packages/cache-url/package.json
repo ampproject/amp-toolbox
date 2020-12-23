@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cache-url",
-  "version": "2.3.0",
+  "version": "2.7.2",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "dist/amp-toolbox-cache-url.cjs.js",
   "types": "index.d.ts",
@@ -16,8 +16,17 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/cache-url"
   },
-  "keywords": ["amp", "amp-toolbox", "amp-url-api"],
-  "files": ["dist", "package.json", "../LICENSE", "README.md"],
+  "keywords": [
+    "amp",
+    "amp-toolbox",
+    "amp-url-api"
+  ],
+  "files": [
+    "dist",
+    "package.json",
+    "../LICENSE",
+    "README.md"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -28,5 +37,5 @@
     "punycode": "2.1.1",
     "url-parse": "1.4.7"
   },
-  "gitHead": "e2bea7ac7d4cb6a57d196e124ee8a5f818123a02"
+  "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }

@@ -145,7 +145,7 @@ const imageExtensions = [
 const exports = {
   isPathNameAnImage: (filePath) => {
     return imageExtensions.some((extension) => {
-      if (filePath.endsWith(extension)) {
+      if (filePath.endsWith(`.${extension}`)) {
         return true;
       }
       return false;

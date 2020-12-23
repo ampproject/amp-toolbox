@@ -44,7 +44,7 @@ const originalHtml = `
   ...
 </html>`;
 
-ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
+ampOptimizer.transformHtml(originalHtml).then(optimizedHtml => {
   console.log(optimizedHtml);
 });
 ```
@@ -56,14 +56,14 @@ You can find a sample implementation [here](/packages/optimizer/demo/simple). If
 AMP Optimizer can be used via the [AMP Toolbox CLI](/packages/cli/README.md):
 
 ```shell
-$ npm install @ampproject/toolbox-cli -g
-$ amp optimize myFile.html
+npm install @ampproject/toolbox-cli -g
+amp optimize myFile.html
 ```
 
 or run without installation via `npx`:
 
 ```shell
-$ npx @ampproject/toolbox-cli optimize myFile.html
+npx @ampproject/toolbox-cli optimize myFile.html
 ```
 
 ### Options
@@ -81,6 +81,7 @@ Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
+- [extensionVersions](#extensionversions)
 - [fetch](#fetch)
 - [format](#format)
 - [imageBasePath](#imagebasePath)
@@ -107,30 +108,26 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 - name: `autoExtensionImport`
 - valid options: `[true|false]`
 - default: `true`
-- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js)
+- used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
 
-#### `fetch`
+#### `extensionVersions`
 
-Provide a custom fetch handler. You can use this option to configure a custom proxy server. Example:
+Specify version numbers to use for automatically imported Extensions. If not defined, default to latest.
+
+Example:
 
 ```js
-const nodeFetch = require('node-fetch');
-
-const proxyHost = '...';
-const proxyPort = '...';
-
-const fetch = (url, opts={}) => {
-  opts.agent = new HttpsProxyAgent(`${proxyHost}:${proxyPort}');
-  return nodeFetch(url, opts)
-}
-const optimizer = AmpOptimizer.create({
-  fetch,
+const ampOptimizer = AmpOptimizer.create({
+  extensionVersions: {
+    "amp-twitter": "0.1"
+  }
 });
 ```
 
-- name: `fetch`
-- valid options: a [whatwg fetch](https://github.com/whatwg/fetch) compatible fetch implementation.
-- default: [node-fetch](https://www.npmjs.com/package/node-fetch)
+- name: `extensionVersions`
+- valid options: `OBJECT`
+- default: `{}`
+- used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
 
 #### `format`
 
@@ -139,7 +136,23 @@ Specifies the AMP format of the input file. Defaults to `AMP`.
 - name: `format`
 - valid options: `[AMP|AMP4EMAIL|AMP4ADS]`
 - default: `AMP`
-- used by: [AutoExtensionImport](lib/transformers/AddMandatoryTags.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+- used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
+
+#### `experimentEsm`
+
+Enable [JavaScript Module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) support for AMP runtime and components. AMP Optimizer will generate module/nonmodule script imports for AMP runtime and components:
+
+```
+<script async nomodule src="https://cdn.ampproject.org/v0.js"></script>
+<script async src="https://cdn.ampproject.org/v0.mjs" type="module" crossorigin="anonymous"></script>
+```
+
+**Warning: this will result in invalid AMP pages.**
+
+- name: `experimentEsm`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
 
 #### `imageBasePath`
 
@@ -205,11 +218,19 @@ Minifies the generated HTML output and inlined CSS.
 - name: `minify`
 - valid options: `[true|false]`
 - default: `true`
-- used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes[(lib/transformers/SeparateKeyframes.js)
+- used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
 
 #### `preloadHeroImage`
 
-Auto detect hero images for amp-img, amp-iframe, amp-video, or amp-video-iframe and injects a `link rel=preload`. Preloads will only be generated if there is no existing image preload.
+Enables hero image optimization. Hero images will either be auto detected or you can explicitly mark these by adding the `data-hero` attribute:
+
+```
+<amp-img data-hero src="foo.jpg" ...>
+```
+
+The maximum number of hero images that can be marked up using `data-hero` is `2`.
+
+If no `data-hero` attribute is present, AMP optimizer auto-detects hero images for `amp-img`, `amp-iframe`, `amp-video`, or `amp-video-iframe` and injects a `link rel=preload`. Image preload links will only be generated if there is none already existing. For `amp-img` elements, it will also server-side render the `img` element inside the `amp-img` element. This greatly improves image rendering performance and reduces the [largest contentful paint](https://web.dev/lcp/) (LCP) metric from [Core Web Vitals](https://web.dev/vitals/).
 
 - name: `preloadHeroImage`
 - valid options: `[true|false]`
@@ -518,9 +539,6 @@ Usage:
 
 ```js
 const optimizer = AmpOptimizer.create({
-  // blurry image placeholders are currently not considered valid AMP
-  // hence it's recommended to setup paired AMP mode when enabling this feature.
-  transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
   blurredPlaceholders: true,
 });
 ```
@@ -587,7 +605,7 @@ console.log(optimizedHtml);
 AMP Optimizer uses a snapshot based testing approach. To execute the tests, run in the project root:
 
 ```shell
-$ npm run test:node
+npm run test:node
 ```
 
 Transformer tests are located in:
@@ -603,7 +621,7 @@ outcome of the transformation. Don't edit `expected_output.html` manually, inste
 a transformer implementation, run:
 
 ```shell
-$ npm run test:optimizer:snapshot
+npm run test:optimizer:snapshot
 ```
 
 to store a new snapshot version in `expected_output.html`.

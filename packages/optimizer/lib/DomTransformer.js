@@ -17,7 +17,7 @@
 
 const treeParser = require('./TreeParser');
 const log = require('./log');
-let fetch = require('cross-fetch');
+let fetch = require('node-fetch');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetchRuntimeParameters = require('./fetchRuntimeParameters');
 
@@ -34,7 +34,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'AutoExtensionImporter',
   // Applies image optimizations, must run before PreloadHeroImage
   'OptimizeImages',
-  // Detect hero image and preload link rel=preload
+  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'PreloadHeroImage',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
@@ -48,11 +48,10 @@ const TRANSFORMATIONS_AMP_FIRST = [
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
+  'AddBlurryImagePlaceholders',
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
   'AddTransformedFlag',
-  // Removes unsupported nonce attribute from scripts
-  'RemoveCspNonce',
   // Minifies HTML, JSON, inline amp-script
   'MinifyHtml',
   // Inject CSP script has required for inline amp-script

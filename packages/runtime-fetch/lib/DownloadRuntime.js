@@ -16,7 +16,7 @@
 'use strict';
 
 const cacheListProvider = require('@ampproject/toolbox-cache-list');
-const crossFetch = require('cross-fetch');
+const nodeFetch = require('node-fetch');
 const fse = require('fs-extra');
 const https = require('https');
 const log = require('@ampproject/toolbox-core').log.tag('Runtime Download');
@@ -24,7 +24,6 @@ const os = require('os');
 const path = require('path');
 const runtimeVersionProvider = require('@ampproject/toolbox-runtime-version');
 const {URL} = require('url');
-const util = require('util');
 
 const RUNTIME_FILES_TXT = 'files.txt';
 const fetchOptions = {
@@ -37,7 +36,7 @@ const fetchOptions = {
 
 class DownloadRuntime {
   constructor(fetch, cacheList, runtimeVersion) {
-    this.fetch_ = fetch || crossFetch;
+    this.fetch_ = fetch || nodeFetch;
     this.cacheList_ = cacheList || cacheListProvider;
     this.runtimeVersion_ = runtimeVersion || runtimeVersionProvider;
   }
@@ -168,7 +167,7 @@ class DownloadRuntime {
         });
 
       // Minimal sanity check that files listing includes itself
-      if (!files.some((file) => file.filepath === RUNTIME_FILES_TXT)) {
+      if (!files.some((file) => file.filepath === 'v0.js')) {
         throw new Error(`Expected ${RUNTIME_FILES_TXT} in file listing, but it was not found.`);
       }
     } catch (ex) {
@@ -254,9 +253,9 @@ class DownloadRuntime {
     try {
       new URL(url);
       return true;
-    } catch (ex) {}
-
-    return false;
+    } catch (ex) {
+      return false;
+    }
   }
 
   /**

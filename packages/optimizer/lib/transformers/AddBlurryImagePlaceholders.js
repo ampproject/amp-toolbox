@@ -140,6 +140,7 @@ class AddBlurryImagePlaceholders {
       if (this.shouldAddBlurryPlaceholder_(node, src, tagName)) {
         placeholders++;
         const promise = this.addBlurryPlaceholder_(src, params).then((img) => {
+          node.attribs['i-amphtml-ssr'] = '';
           node.attribs.noloading = '';
           appendChild(node, img);
         });
@@ -232,13 +233,21 @@ class AddBlurryImagePlaceholders {
    * @private
    */
   async getDataURI_(src) {
-    const image = await this.jimp.read(src);
+    const read = /^https?:\/\//.test(src)
+      ? {
+          headers: {
+            'User-Agent': 'AMP Optimizer',
+          },
+          url: src,
+        }
+      : src;
+    const image = await this.jimp.read(read);
     const imgDimension = this.getBitmapDimensions_(image.bitmap.width, image.bitmap.height);
     image.resize(imgDimension.width, imgDimension.height, this.jimp.RESIZE_BEZIER);
     const result = {
       src: await image.getBase64Async('image/png'),
-      width: image.bitmap.width,
-      height: image.bitmap.height,
+      width: imgDimension.width,
+      height: imgDimension.height,
     };
     return result;
   }

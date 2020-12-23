@@ -128,7 +128,10 @@ class ServerSideRendering {
         continue;
       }
       if (isRenderDelayingExtension(node)) {
-        this.log_.debug('cannot remove boilerplate: amp-dynamic-css-classes');
+        this.log_.debug(
+          'cannot remove boilerplate because of a render delaying extension: ',
+          node.tagName
+        );
         canRemoveBoilerplate = false;
       }
       if (hasAttribute(node, 'amp-custom')) {

@@ -16,8 +16,6 @@ limitations under the License.
 
 # AMP Toolbox
 
-[![Build Status](https://travis-ci.org/ampproject/amp-toolbox.svg?branch=main)](https://travis-ci.org/ampproject/amp-toolbox)
-
 A collection of AMP tools making it easier to publish and host AMP pages. The following tools are part of this project:
 
 - **[amp-cache-url](/packages/cache-url):** a javascript library for translating origin URLs to the [AMP Cache URL format](https://developers.google.com/amp/cache/overview).
@@ -78,6 +76,15 @@ npm run test:node
 npm run test:browser
 ```
 
+Using additional arguments the node tests can generate a coverage report or run only for a specific package.
+```
+# generate a coverage report
+npm run test:node -- --collectCoverage
+
+# run only tests for AMP Optimizer
+npm run test:node -- packages/optimizer
+```
+
 ### Style & Linting
 
 This codebase adheres to the [Google Javascript Styleguide](https://google.github.io/styleguide/jsguide.html) and is enforced using ESLint. ESLint is run as part of the test suite, but you can also explicity run it via:
@@ -89,6 +96,30 @@ npm run lint
 # run ESLint with `--fix` option to automatically fix errors (if possible)
 npm run lint:fix
 ```
+
+### Making a Release
+
+Before publishing a release, make sure to have the lates changes from master and the changelog is up-to-date:
+
+```
+$ npm run changelog
+```
+
+This will print all changes since the previous release. For this to work, all PRs need to be [correctly labeled](https://github.com/lerna/lerna-changelog#usage) as:
+
+- `breaking` (💥 Breaking Change)
+- `enhancement` (🚀 Enhancement)
+- `bug` (🐛 Bug Fix)
+- `documentation` (📝 Documentation)
+- `internal` (🏠 Internal)
+
+Copy and prepend the new changes to [CHANGELOG.md](/CHANGELOG.md) when you're about to make a release. Don't forget to update the version. Commit the updated changelog and run:
+
+```
+$ npm publish
+```
+
+to publish all changed packages to NPM. Pick the new version according to [SemVer](https://semver.org/).
 
 ## Contributing
 

@@ -41,11 +41,7 @@ async function fetchImageDimensionsFromFile(path) {
     throw new Error('Could not resolve file: ' + path);
   }
   const stream = fs.createReadStream(path);
-  try {
-    return await probe(stream);
-  } finally {
-    stream.destroy();
-  }
+  return probe(stream);
 }
 
 function probe(input) {

@@ -1,8 +1,6 @@
 import { cli } from "./cli";
-import { SchemaMetadataIsNews } from "./rules/SchemaMetadataIsNews";
 import { LinkRelCanonicalIsOk } from "./rules/LinkRelCanonicalIsOk";
 import { AmpVideoIsSmall } from "./rules/AmpVideoIsSmall";
-import { BookendExists } from "./rules/BookendExists";
 import { AmpVideoIsSpecifiedByAttribute } from "./rules/AmpVideoIsSpecifiedByAttribute";
 import { StoryRuntimeIsV1 } from "./rules/StoryRuntimeIsV1";
 import { StoryMetadataIsV1 } from "./rules/StoryMetadataIsV1";
@@ -12,6 +10,7 @@ import { StoryIsMostlyText } from "./rules/StoryIsMostlyText";
 import { StoryMetadataThumbnailsAreOk } from "./rules/StoryMetadataThumbnailsAreOk";
 import { AmpImgHeightWidthIsOk } from "./rules/AmpImgHeightWidthIsOk";
 import { AmpImgAmpPixelPreferred } from "./rules/AmpImgAmpPixelPreferred";
+import { AmpImgPlaceholderIsDataUri } from "./rules/AmpImgPlaceholderIsDataUri";
 import { EndpointsAreAccessibleFromOrigin } from "./rules/EndpointsAreAccessibleFromOrigin";
 import { EndpointsAreAccessibleFromCache } from "./rules/EndpointsAreAccessibleFromCache";
 import { SxgVaryOnAcceptAct } from "./rules/SxgVaryOnAcceptAct";
@@ -24,14 +23,26 @@ import { VideosHaveAltText } from "./rules/VideosHaveAltText";
 import { VideosAreSubtitled } from "./rules/VideosAreSubtitled";
 import { IsValid } from "./rules/IsValid";
 import { TitleMeetsLengthCriteria } from "./rules/TitleMeetsLengthCriteria";
+import { IsTransformedAmp } from "./rules/IsTransformedAmp";
+import { ModuleRuntimeUsed } from "./rules/ModuleRuntimeUsed";
+import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded";
+import { FontsArePreloaded } from "./rules/FontsArePreloaded";
+import { HeroImageIsDefined } from "./rules/HeroImageIsDefined";
+import { FastGoogleFontsDisplay } from "./rules/FastGoogleFontsDisplay";
+import { GoogleFontPreconnect } from "./rules/GoogleFontPreconnect";
+import { BoilerplateIsRemoved } from "./rules/BoilerplateIsRemoved";
+import { AmpImgUsesSrcSet } from "./rules/AmpImgUsesSrcSet";
+import { ViewportDisablesTapDelay } from "./rules/ViewportDisablesTapDelay";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
+import * as cheerio from "cheerio";
 
 export enum LintMode {
   Amp = "amp",
   AmpStory = "ampstory",
   Amp4Ads = "amp4ads",
   Amp4Email = "amp4email",
+  PageExperience = "pageexperience",
   Sxg = "sxg",
 }
 
@@ -61,7 +72,7 @@ export interface Result {
 
 export interface Context {
   readonly url: string;
-  readonly $: CheerioStatic;
+  readonly $: cheerio.Root;
   readonly raw: { headers: { [key: string]: string }; body: string };
   readonly headers: {
     [key: string]: string;
@@ -78,7 +89,7 @@ export interface Metadata {
   "poster-landscape-src"?: string;
 }
 
-export function guessMode($: CheerioStatic): LintMode {
+export function guessMode($: cheerio.Root): LintMode {
   if ($("body amp-story[standalone]").length === 1) {
     return LintMode.AmpStory;
   }
@@ -105,6 +116,7 @@ function testsForMode(type: LintMode) {
     AmpImgAmpPixelPreferred,
     EndpointsAreAccessibleFromOrigin,
     EndpointsAreAccessibleFromCache,
+    ViewportDisablesTapDelay,
   ]);
   tests.set(
     LintMode.AmpStory,
@@ -120,6 +132,25 @@ function testsForMode(type: LintMode) {
       VideosHaveAltText,
       VideosAreSubtitled,
       TitleMeetsLengthCriteria,
+      ViewportDisablesTapDelay,
+    ])
+  );
+  tests.set(
+    LintMode.PageExperience,
+    (tests.get(LintMode.PageExperience) || []).concat([
+      IsValid,
+      RuntimeIsPreloaded,
+      BlockingExtensionsPreloaded,
+      FontsArePreloaded,
+      FastGoogleFontsDisplay,
+      GoogleFontPreconnect,
+      IsTransformedAmp,
+      BoilerplateIsRemoved,
+      ModuleRuntimeUsed,
+      HeroImageIsDefined,
+      AmpImgUsesSrcSet,
+      AmpImgPlaceholderIsDataUri,
+      ViewportDisablesTapDelay,
     ])
   );
   return tests.get(type) || [];

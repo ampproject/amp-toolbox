@@ -21,21 +21,21 @@ const log = require('@ampproject/toolbox-core').log.tag('AMP CORS');
 const url = require('url');
 
 // the default options
-const DEFAULT_OPTIONS = {
-  email: false,
+const DEFAULT_OPTIONS = Object.freeze({
   allowCredentials: true,
+  email: false,
   enableAmpRedirectTo: true,
   sourceOriginPattern: false,
   verbose: false,
   verifyOrigin: true,
-};
+});
 
 /**
  * Creates a middleware automatically adding AMP CORS headers to requests initiated by the AMP
  * runtime. See also https://amp.dev/documentation/guides-and-tutorials/learn/amp-caches-and-cors/amp-cors-requests/.
  *
  * @param {Object} options
- * @param {RegExp} [options.sourceOriginPattern=false] regex matching allowed source origins
+ * @param {RegExp} [options.sourceOriginPattern=false] regex matching allowed source origins or sender emails
  * @param {boolean} [options.verbose=false] verbose logging output
  * @param {boolean} [options.email=false] add additional CORS headers for AMP for Email
  * @param {boolean} [options.verifyOrigin=true] verify origins to match official AMP caches.
@@ -43,7 +43,7 @@ const DEFAULT_OPTIONS = {
  * @return {Function} next middleware function
  */
 module.exports = (options, caches = new Caches()) => {
-  options = Object.assign(DEFAULT_OPTIONS, options);
+  options = Object.assign({}, DEFAULT_OPTIONS, options);
   log.verbose(options.verbose);
   if (options.email === true) {
     // email origins cannot be verified
@@ -52,6 +52,21 @@ module.exports = (options, caches = new Caches()) => {
     options.enableAmpRedirectTo = false;
   }
   return async (request, response, next) => {
+    const originHeaders = extractOriginHeaders_(request.headers);
+
+    // Handle email case immediately, if detected
+    if (options.email === true && originHeaders && originHeaders.emailSender) {
+      const sender = originHeaders.emailSender;
+      if (options.sourceOriginPattern && !options.sourceOriginPattern.test(sender)) {
+        response.status(403).end(); // forbidden
+        log.debug('email sender does not match pattern', options.sourceOriginPattern, sender);
+        return;
+      }
+      response.setHeader('AMP-Email-Allow-Sender', sender);
+      next();
+      return;
+    }
+
     // Get source origin from query
     const sourceOrigin = url.parse(request.url, true).query.__amp_source_origin;
     if (!sourceOrigin) {
@@ -69,7 +84,6 @@ module.exports = (options, caches = new Caches()) => {
     }
 
     // If neither AMP-SAME-ORIGIN nor Origin set are set, don't add any headers
-    const originHeaders = extractOriginHeaders_(request.headers);
     if (!originHeaders) {
       log.warn('AMP-SAME-ORIGIN and Origin header missing');
       response.status(400).end(); // bad request
@@ -114,13 +128,16 @@ module.exports = (options, caches = new Caches()) => {
     const normalizedHeaders = {};
 
     for (const key in headers) {
-      if (headers.hasOwnProperty(key)) {
-        normalizedHeaders[key.toLowerCase()] = headers[key];
-      }
+      normalizedHeaders[key.toLowerCase()] = headers[key];
     }
 
-    // for same-origin requests AMP sets the amp-same-origin header
-    if ('amp-same-origin' in normalizedHeaders) {
+    if ('amp-email-sender' in normalizedHeaders) {
+      // CORS for email (new version)
+      return {
+        emailSender: normalizedHeaders['amp-email-sender'],
+      };
+    } else if ('amp-same-origin' in normalizedHeaders) {
+      // for same-origin requests AMP sets the amp-same-origin header
       return {
         isSameOrigin: true,
       };

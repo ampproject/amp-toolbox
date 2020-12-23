@@ -17,8 +17,7 @@
 
 const {nextNode, insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
-const {calculateHost} = require('../RuntimeHostHelper');
-const {AMP_FORMATS} = require('../AmpConstants');
+const {AMP_FORMATS, AMP_CACHE_HOST} = require('../AmpConstants');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';
 const AMP_BIND_DATA_ATTRIBUTE_PREFIX = 'data-amp-bind-';
@@ -61,6 +60,7 @@ class AutoExtensionImporter {
     this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AutoExtensionImporter');
     this.experimentBindAttributeEnabled = config.experimentBindAttribute === true;
+    this.extensionVersions = config.extensionVersions || {};
   }
 
   /**
@@ -172,8 +172,8 @@ class AutoExtensionImporter {
     // We use this for adding new import elements to the header
     const referenceNode = findMetaViewport(head);
 
-    // Support custom runtime URLs
-    const host = calculateHost(params);
+    // Use cdn.ampproject.org as default, RewriteUrlTransformer will change this in case of self-hosting
+    const host = AMP_CACHE_HOST;
     for (const extensionName of extensionsToImport) {
       if (existingImports.has(extensionName)) {
         continue;
@@ -181,7 +181,13 @@ class AutoExtensionImporter {
       const extension = this.extensionSpec_.extensionsMap.get(extensionName.trim());
       this.log_.debug('auto importing', extensionName);
       // Use the latest version by default
-      const version = extension.version[extension.version.length - 1];
+      let version = extension.version[extension.version.length - 1];
+      const customVersion = this.extensionVersions[extensionName];
+      // Let user override default
+      if (customVersion) {
+        this.log_.debug('using custom version for', extensionName, customVersion);
+        version = customVersion;
+      }
       const extensionImportAttribs = {
         async: '',
         src: `${host}/v0/${extensionName}-${version}.js`,

@@ -1,3 +1,267 @@
+## v2.7.3 (2020-12-17)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#1116](https://github.com/ampproject/amp-toolbox/pull/1116) Improve viewport check ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1115](https://github.com/ampproject/amp-toolbox/pull/1115) Auto add layout=responsive if missing ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.7.2 (2020-12-15)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#981](https://github.com/ampproject/amp-toolbox/pull/981) Encode SVG sizer with base64 ([@schlessera](https://github.com/schlessera))
+* `linter`
+  * [#980](https://github.com/ampproject/amp-toolbox/pull/980) Add check for disabled tap delay ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#962](https://github.com/ampproject/amp-toolbox/pull/962) Add check for amp-img placeholder does not make additional request ([@kevinkimball](https://github.com/kevinkimball))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1065](https://github.com/ampproject/amp-toolbox/pull/1065) Split preconnect and dns-prefetch into two separate links ([@schlessera](https://github.com/schlessera))
+  * [#974](https://github.com/ampproject/amp-toolbox/pull/974) Generate styles for amp-img object-fit / object-contain ([@sebastianbenz](https://github.com/sebastianbenz))
+* `cache-url`
+  * [#979](https://github.com/ampproject/amp-toolbox/pull/979) Check if "." before extension in font URL ([@processprocess](https://github.com/processprocess))
+  * [#976](https://github.com/ampproject/amp-toolbox/pull/976) Check if "." before extension in image URL ([@processprocess](https://github.com/processprocess))
+
+#### :house: Internal
+* `linter`, `optimizer`
+  * [#975](https://github.com/ampproject/amp-toolbox/pull/975) Update dependency @ampproject/toolbox-optimizer ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Committers: 5
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Kevin Kimball ([@kevinkimball](https://github.com/kevinkimball))
+- Philip Bell ([@processprocess](https://github.com/processprocess))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- patrick kettner ([@patrickkettner](https://github.com/patrickkettner))
+
+## v2.7.1 (2020-10-26)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#926](https://github.com/ampproject/amp-toolbox/pull/926) Add amp-img srcset linter check ([@tharders](https://github.com/tharders))
+* `optimizer`
+  * [#911](https://github.com/ampproject/amp-toolbox/pull/911) Allow users to specify version numbers for auto imported extensions ([@digijin](https://github.com/digijin))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#913](https://github.com/ampproject/amp-toolbox/pull/913) Use node instead of root for checking templates in PreloadHeroImages ([@schlessera](https://github.com/schlessera))
+  * [#918](https://github.com/ampproject/amp-toolbox/pull/918) Add missing closing tags to <amp-img> elements ([@schlessera](https://github.com/schlessera))
+  * [#914](https://github.com/ampproject/amp-toolbox/pull/914) Remove unneeded width & height checks ([@schlessera](https://github.com/schlessera))
+  * [#930](https://github.com/ampproject/amp-toolbox/pull/930) Avoid trailing zeros and semicolons in sizer's padding ([@schlessera](https://github.com/schlessera))
+  * [#909](https://github.com/ampproject/amp-toolbox/pull/909) Fix handling of malformed `sizes` and `heights` strings ([@chasefinch](https://github.com/chasefinch))
+
+#### Committers: 11
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Arnav Jindal ([@Daggy1234](https://github.com/Daggy1234))
+- Chase Finch ([@chasefinch](https://github.com/chasefinch))
+- Damani  ([@Dbrown910](https://github.com/Dbrown910))
+- Filip Stanis ([@fstanis](https://github.com/fstanis))
+- Grace Tree ([@TheTreeofGrace](https://github.com/TheTreeofGrace))
+- Jake Fried ([@samouri](https://github.com/samouri))
+- James ([@digijin](https://github.com/digijin))
+- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
+- Matthias Rohmer ([@matthiasrohmer](https://github.com/matthiasrohmer))
+- Thorsten Harders ([@tharders](https://github.com/tharders))
+
+## v2.7.0-alpha.3 (2020-08-25)
+
+#### :rocket: Enhancement
+
+- `linter`
+  - [#908](https://github.com/ampproject/amp-toolbox/pull/908) Linter rule for AMP Boilerplate removal ([@tharders](https://github.com/tharders))
+  - [#907](https://github.com/ampproject/amp-toolbox/pull/907) Linter rule for Google Font preconnect ([@tharders](https://github.com/tharders))
+
+#### Committers: 1
+
+- Thorsten Harders ([@tharders](https://github.com/tharders))
+
+## v2.7.0-alpha.2 (2020-08-21)
+
+#### :rocket: Enhancement
+
+- `linter`
+  - [#906](https://github.com/ampproject/amp-toolbox/pull/906) Add linter check for fast google fonts ([@tharders](https://github.com/tharders))
+  - [#904](https://github.com/ampproject/amp-toolbox/pull/904) Add linter check for preloading web fonts ([@tharders](https://github.com/tharders))
+  - [#902](https://github.com/ampproject/amp-toolbox/pull/902) Preload checks for blocking extensions ([@tharders](https://github.com/tharders))
+  - [#890](https://github.com/ampproject/amp-toolbox/pull/890) introduce pageexperience mode ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#901](https://github.com/ampproject/amp-toolbox/pull/901) Feature/linter optimizer checks ([@tharders](https://github.com/tharders))
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#896](https://github.com/ampproject/amp-toolbox/pull/896) Don't ssr amp-img in stories ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+
+- `cache-url`, `cli`, `cors`, `linter`, `optimizer`, `runtime-fetch`, `runtime-version`
+  - [#899](https://github.com/ampproject/amp-toolbox/pull/899) Make AMP Toolbox build on windows ([@sebastianbenz](https://github.com/sebastianbenz))
+- `linter`
+  - [#895](https://github.com/ampproject/amp-toolbox/pull/895) Using jest for linter ([@tharders](https://github.com/tharders))
+- `lighthouse-plugin-amp`, `linter`, `optimizer`, `update-cache`
+  - [#893](https://github.com/ampproject/amp-toolbox/pull/893) update dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 3
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Shotaro Watanabe ([@sangotaro](https://github.com/sangotaro))
+- Thorsten Harders ([@tharders](https://github.com/tharders))
+
+## v2.6.0 (2020-08-10)
+
+#### :rocket: Enhancement
+
+- `optimizer`
+  - [#883](https://github.com/ampproject/amp-toolbox/pull/883) Keep nonces ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#880](https://github.com/ampproject/amp-toolbox/pull/880) Enable amp-img => img transformation for hero images ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#857](https://github.com/ampproject/amp-toolbox/pull/857) Proxy support for amp-optimizer ([@todoa2c](https://github.com/todoa2c))
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#887](https://github.com/ampproject/amp-toolbox/pull/887) Fix NPE during SSR when style block is empty ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :memo: Documentation
+
+- `optimizer`
+  - [#882](https://github.com/ampproject/amp-toolbox/pull/882) add express demo ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#881](https://github.com/ampproject/amp-toolbox/pull/881) add gulp demo ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :house: Internal
+
+- `optimizer`
+  - [#877](https://github.com/ampproject/amp-toolbox/pull/877) Cssnano simple ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 2
+
+- Atsushi Kanaya ([@todoa2c](https://github.com/todoa2c))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.14 (2020-07-24)
+
+#### :rocket: Enhancement
+
+- `linter`
+  - [#871](https://github.com/ampproject/amp-toolbox/pull/871) Linter reporting ([@Dbrown910](https://github.com/Dbrown910))
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#872](https://github.com/ampproject/amp-toolbox/pull/872) Fix: hero image not visible on load ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#870](https://github.com/ampproject/amp-toolbox/pull/870) Fix outdated parameter count ([@schlessera](https://github.com/schlessera))
+
+#### Committers: 3
+
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Damani ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.13 (2020-07-15)
+
+#### :bug: Bug Fix
+
+- `runtime-fetch`
+  - [#865](https://github.com/ampproject/amp-toolbox/pull/865) Fix: runtime download check ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.12 (2020-07-15)
+
+#### :rocket: Enhancement
+
+- `optimizer`
+  - [#859](https://github.com/ampproject/amp-toolbox/pull/859) add experimental amp-img -> img transformation ([@sebastianbenz](https://github.com/sebastianbenz))
+- `linter`
+  - [#864](https://github.com/ampproject/amp-toolbox/pull/864) Story thumbnail dim req update ([@Dbrown910](https://github.com/Dbrown910))
+
+#### Committers: 2
+
+- Damani ([@Dbrown910](https://github.com/Dbrown910))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.11 (2020-07-14)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#863](https://github.com/ampproject/amp-toolbox/pull/863) fix esm support for auto component import ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.9 (2020-07-08)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#856](https://github.com/ampproject/amp-toolbox/pull/856) Parallelize image optimization ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.8 (2020-07-08)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#855](https://github.com/ampproject/amp-toolbox/pull/855) Only inject runtime-host meta tag if host is given ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.7 (2020-07-08)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#854](https://github.com/ampproject/amp-toolbox/pull/854) Fix runtime-host meta tag when using relative URLs ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.6 (2020-07-07)
+
+#### :rocket: Enhancement
+
+- `optimizer`
+  - [#852](https://github.com/ampproject/amp-toolbox/pull/852) Improve preload handling with runtime self hosting ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.5 (2020-06-22)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#850](https://github.com/ampproject/amp-toolbox/pull/850) Don't remove boilerplate for amp-stories ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.5.4 (2020-06-22)
+
+#### :bug: Bug Fix
+
+- `optimizer`
+  - [#846](https://github.com/ampproject/amp-toolbox/pull/846) Fix: MinifyHtml cannot be disabled ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.5.3 (2020-06-15)
 
 #### :bug: Bug Fix

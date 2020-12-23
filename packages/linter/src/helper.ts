@@ -2,6 +2,7 @@ const CONCURRENCY = 8;
 
 import { parse, format, resolve } from "url";
 import { stringify } from "querystring";
+import * as cheerio from "cheerio";
 
 import throat from "throat";
 import fetch, { Request } from "node-fetch";
@@ -9,7 +10,7 @@ import probe from "probe-image-size";
 
 import { Context } from "./";
 
-export function schemaMetadata($: CheerioStatic) {
+export function schemaMetadata($: cheerio.Root) {
   const metadata = JSON.parse(
     $('script[type="application/ld+json"]').html() as string
   );
@@ -34,7 +35,7 @@ export function buildSourceOrigin(url: string) {
   return `${obj.protocol}//${obj.host}`;
 }
 
-export function corsEndpoints($: CheerioStatic) {
+export function corsEndpoints($: cheerio.Root) {
   const result: string[] = [];
   const storyBookendSrc = $("amp-story amp-story-bookend").attr("src");
   if (storyBookendSrc) {
@@ -49,6 +50,10 @@ export function corsEndpoints($: CheerioStatic) {
     .get() as String[];
   return (result as String[]).concat(ampListSrc);
 }
+
+export const isTransformedAmp = ($: cheerio.Root): boolean => {
+  return $("html[transformed]").length > 0;
+};
 
 export const absoluteUrl = (
   s: string | undefined,
@@ -69,7 +74,7 @@ export function fetchToCurl(
   const headers = init.headers || {};
 
   const h = Object.keys(headers)
-    .map((k) => `-H '${k}: ${headers[k]}'`)
+    .map(k => `-H '${k}: ${headers[k]}'`)
     .join(" ");
 
   return `curl -sS ${includeHeaders ? " -i " : ""}${h} '${url}'`;

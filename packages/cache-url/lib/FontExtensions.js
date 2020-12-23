@@ -219,7 +219,7 @@ const fontExtensions = [
 const exports = {
   isPathNameAFont: (filePath) => {
     return fontExtensions.some((extension) => {
-      if (filePath.endsWith(extension)) {
+      if (filePath.endsWith(`.${extension}`)) {
         return true;
       }
       return false;

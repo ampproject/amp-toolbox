@@ -1,13 +1,18 @@
 {
   "name": "@ampproject/toolbox-validator-rules",
-  "version": "2.3.0",
+  "version": "2.7.2",
   "description": "A library that helps query AMP Validator rules",
   "main": "index.js",
-  "keywords": ["amp"],
+  "keywords": [
+    "amp"
+  ],
   "scripts": {
     "fetchRules": "curl https://cdn.ampproject.org/v0/validator.json --output validator.json"
   },
-  "files": ["index.js", "lib"],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -19,11 +24,11 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "dependencies": {
-    "cross-fetch": "3.0.5"
+    "node-fetch": "2.6.1"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/validator-rules",
   "directories": {
     "lib": "lib"
   },
-  "gitHead": "e2bea7ac7d4cb6a57d196e124ee8a5f818123a02"
+  "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }
