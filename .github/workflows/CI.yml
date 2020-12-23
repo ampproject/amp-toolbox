@@ -27,10 +27,8 @@ jobs:
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: clean
-        run: rm -rf node_modules
       - name: install
-        run: npm install
+        run: npx lerna bootstrap --hoist
       - name: build
         run: npm run build
       - name: test
