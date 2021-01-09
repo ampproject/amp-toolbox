@@ -48,7 +48,8 @@ function getAttributeOrNull(element, name) {
 }
 
 function addClass(node, value) {
-  node.attribs.class = hasAttribute(node, 'class') ? node.attribs.class + ' ' + value : value;
+  const existingClass = hasAttribute(node, 'class') ? node.attribs.class.trim() : '';
+  node.attribs.class = existingClass.length > 0 ? existingClass + ' ' + value : value;
 }
 
 function apply(layout, width, height, node) {
