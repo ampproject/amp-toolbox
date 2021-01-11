@@ -19,6 +19,7 @@
 const {hasAttribute, nextNode, firstChildByTag} = require('../NodeUtils');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isValidImageSrcURL} = require('../URLUtils');
+const {isTemplate} = require('../AmpConstants');
 
 // Don't generate srcset's for images with width smaller than MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT
 // this avoids generating srcsets for images with a responsive layout where width/height define the aspect ration.
@@ -161,7 +162,7 @@ class OptimizeImages {
     let node = body;
     const imageOptimizationPromises = [];
     while (node !== null) {
-      if (node.tagName === 'template') {
+      if (isTemplate(node)) {
         node = skipNodeAndChildren(node);
       } else {
         if (node.tagName === 'amp-img') {

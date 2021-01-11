@@ -30,6 +30,7 @@ const UA = {
 
 export function cli(argv: string[], logger = console, cmd = "amplint") {
   program
+    .storeOptionsAsProperties()
     // .version(version)
     .usage(`${cmd} [options] URL|copy_as_cURL`)
     .option(
@@ -101,26 +102,27 @@ export function cli(argv: string[], logger = console, cmd = "amplint") {
 
   program.parse(options);
 
+  // Add your custom types to commander
+  const customProgram = (program as unknown) as {
+    userAgent: string;
+    format: string;
+    force: LintMode | "auto";
+    url: string;
+    headers: { [k: string]: string };
+    showPassing: boolean;
+    reportMode: boolean;
+  };
+
   const url = program.args[0];
   if (!url) {
     program.help();
   } else {
-    program.url = url;
+    customProgram.url = url;
   }
 
-  program.headers = headers;
+  customProgram.headers = headers;
 
-  return easyLint(
-    (program as unknown) as {
-      userAgent: string;
-      format: string;
-      force: LintMode | "auto";
-      url: string;
-      headers: { [k: string]: string };
-      showPassing: boolean;
-      reportMode: boolean;
-    }
-  )
+  return easyLint(customProgram)
     .then(logger.info.bind(logger))
     .catch((e) => {
       logger.error(e.stack || e.message || e);

@@ -15,7 +15,13 @@
  */
 'use strict';
 
-const {nextNode, insertAfter, createElement, firstChildByTag} = require('../NodeUtils');
+const {
+  nextNode,
+  insertAfter,
+  createElement,
+  firstChildByTag,
+  hasAttribute,
+} = require('../NodeUtils');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {AMP_FORMATS, AMP_CACHE_HOST} = require('../AmpConstants');
 
@@ -274,6 +280,8 @@ class AutoExtensionImporter {
     // Add custom templates (e.g. amp-mustache)
     if (node.tagName === 'template' && node.attribs.type) {
       allRequiredExtensions.add(node.attribs.type);
+    } else if (node.tagName === 'script' && hasAttribute(node, 'template')) {
+      allRequiredExtensions.add(node.attribs.template);
     }
   }
 

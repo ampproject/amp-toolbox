@@ -25,6 +25,9 @@ module.exports = {
   AMP_RUNTIME_CSS_PATH: '/v0.css',
   appendRuntimeVersion: (prefix, version) => prefix + '/rtv/' + version,
   isTemplate: (node) => {
+    if (!node) {
+      return false;
+    }
     if (node.tagName === 'template') {
       return true;
     }
