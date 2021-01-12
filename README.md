@@ -25,6 +25,7 @@ A collection of AMP tools making it easier to publish and host AMP pages. The fo
 - **[amp-linter](/packages/linter):** a javascript library for linting AMP documents (includes CLI mode).
 - **[amp-optimizer](/packages/optimizer):** a javascript library implementing server-side-rendering for AMP pages.
 - **[amp-optimizer-express](/packages/optimizer-express)** an [express](http://expressjs.com/) middleware that applies AMP server-side-rendering on the fly.
+- **[amp-optimizer-docker](/packages/optimizer-docker)** an [Docker](http://docker.com) container that exposes an API for AMP server-side-rendering on the fly.
 - **[amp-runtime-fetch](/packages/runtime-fetch):** a javascript library for downloading the AMP runtime.
 - **[amp-runtime-version](/packages/runtime-version):** a javascript library for querying the current AMP runtime version.
 - **[amp-script-csp](/packages/script-csp):** a javascript library for calculating [`amp-script`](https://amp.dev/documentation/components/amp-script/) compatible CSP hashes.

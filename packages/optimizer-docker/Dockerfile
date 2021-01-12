@@ -1,7 +1,7 @@
 from node:lts-alpine3.12
 
 # Layer 1, add package.json and install deps.
-RUN echo "Building amp-optimizer-docker" 
+RUN echo "Building ampproject/toolbox-optimizer"
 COPY package.json .
 RUN yarn
 

@@ -1,6 +1,6 @@
 ## Introduction
 
-amp-optimizer-docker is a [Docker](https://www.docker.com/) container that exposes an [AMP Optimizer](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer) server for optimizing your amphtml using the same server-side-rendering optimizations as the [Google AMP Cache](https://developers.google.com/amp/cache).
+[ampproject/toolbox-optimizer](https://hub.docker.com/r/ampproject/toolbox-optimizer) is a [Docker](https://www.docker.com/) container that exposes an [AMP Optimizer](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer) server for optimizing your amphtml using the same server-side-rendering optimizations as the [Google AMP Cache](https://developers.google.com/amp/cache).
 
 ## How it works
 
@@ -16,11 +16,9 @@ There are two different kinds of configuration you can supply to the container:
 
 ### Running a basic optimizer server
 
- via:
-
 ```
-$ docker pull amp-toolbox-docker-optimizer
-$ docker run -it amp-toolbox-docker-optimizer
+$ docker pull ampproject/toolbox-optimizer
+$ docker run -it ampproject/toolbox-optimizer
 ```
 
 ### More complex configurations
