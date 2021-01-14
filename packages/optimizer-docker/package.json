@@ -4,9 +4,10 @@
   "description": "Thin wrapper around the amp-optimizer",
   "main": "index.js",
   "scripts": {
-    "build-docker": "docker build . -t 'amp-toolbox-docker-optimizer'",
-    "run-docker": "docker run -p 3000:3000 -it amp-toolbox-docker-optimizer",
+    "build-docker": "docker build . -t 'ampproject/toolbox-optimizer'",
+    "run-docker": "docker run -p 3000:3000 -it ampproject/toolbox-optimizer",
     "demo": "npm run build-docker && cd demo && npm i && npm run build-docker && docker-compose up && cd ../",
+    "release": "docker push ampproject/toolbox-optimizer",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

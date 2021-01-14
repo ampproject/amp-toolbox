@@ -5,7 +5,7 @@ services:
     ports:
     - "3001:3001"
   optimizer:
-    image: amp-toolbox-docker-optimizer
+    image: ampproject/toolbox-optimizer
     ports:
       - "3000:3000"
     environment:
