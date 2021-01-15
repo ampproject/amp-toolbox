@@ -26,6 +26,7 @@ const PIXEL_TARGET = 60;
 const MAX_BLURRED_PLACEHOLDERS = 100;
 const DEFAULT_CACHED_PLACEHOLDERS = 30;
 const CACHE_ALL_PLACEHOLDERS = -1;
+const {isTemplate} = require('../AmpConstants');
 
 const ESCAPE_TABLE = {
   '#': '%23',
@@ -126,7 +127,7 @@ class AddBlurryImagePlaceholders {
     for (let node = body; node !== null; node = nextNode(node)) {
       const {tagName} = node;
       let src;
-      if (tagName === 'template') {
+      if (isTemplate(node)) {
         node = skipNodeAndChildren(node);
         continue;
       }

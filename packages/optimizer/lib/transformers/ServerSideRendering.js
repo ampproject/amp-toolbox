@@ -23,8 +23,10 @@ const {
   nextNode,
   firstChildByTag,
 } = require('../NodeUtils');
+const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isRenderDelayingExtension, isCustomElement} = require('../Extensions.js');
 const {applyLayout} = require('./ApplyLayout.js');
+const {isTemplate} = require('../AmpConstants');
 const ApplyCommonAttributes = require('./ApplyCommonAttributes');
 
 class ServerSideRendering {
@@ -64,15 +66,10 @@ class ServerSideRendering {
     // where possible, but while we're at this we also look for reasons
     // not to remove the boilerplate.
     let canRemoveBoilerplate = true;
-    for (let node = body; node; node = nextNode(node)) {
+    for (let node = body; node; node = this.nextNonTemplateNode(node)) {
       applyCommonAttributes.addNode(node);
       // Skip tags that are not AMP custom elements.
       if (!isCustomElement(node)) {
-        continue;
-      }
-
-      // Skip tags inside a template tag.
-      if (this._hasAncestorWithTag(node, 'template')) {
         continue;
       }
 
@@ -204,6 +201,14 @@ class ServerSideRendering {
     } catch (e) {
       // invalid JSON
       return false;
+    }
+  }
+
+  nextNonTemplateNode(node) {
+    if (isTemplate(node)) {
+      return skipNodeAndChildren(node);
+    } else {
+      return nextNode(node);
     }
   }
 }
