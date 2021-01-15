@@ -3,7 +3,7 @@ import { Rule } from "../rule";
 
 export class ViewportDisablesTapDelay extends Rule {
   run({ $ }: Context) {
-    const viewport = $("meta[name=viewport]")[0];
+    const viewport = $("meta[name=viewport]")[0] as cheerio.TagElement;
     if (!viewport) {
       return this.pass();
     }

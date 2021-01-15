@@ -27,7 +27,7 @@
     "@ampproject/toolbox-core": "2.7.4",
     "@ampproject/toolbox-optimizer": "2.7.4",
     "@ampproject/toolbox-runtime-version": "2.7.4",
-    "mime-types": "2.1.27",
+    "mime-types": "2.1.28",
     "whatwg-url": "8.4.0"
   },
   "gitHead": "b0efede4ff9a6baa8173016f7c630d406e26d5e3"

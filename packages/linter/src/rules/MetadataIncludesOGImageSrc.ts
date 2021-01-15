@@ -5,7 +5,7 @@ export class MetadataIncludesOGImageSrc extends Rule {
   run({ $ }: Context) {
     let hasOGImage = false;
 
-    $("meta").each(function (i, elem) {
+    $("meta").each(function (i, elem: cheerio.TagElement) {
       if (
         (elem.attribs.property &&
           elem.attribs.property.includes("og:image", 0) &&

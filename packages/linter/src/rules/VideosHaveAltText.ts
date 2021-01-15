@@ -5,7 +5,7 @@ export class VideosHaveAltText extends Rule {
   run({ $ }: Context) {
     let vidsWithoutAlt = 0;
 
-    $("amp-video").each(function (i, elem) {
+    $("amp-video").each(function (i, elem: cheerio.TagElement) {
       if (!elem.attribs.title) {
         vidsWithoutAlt += 1;
       }

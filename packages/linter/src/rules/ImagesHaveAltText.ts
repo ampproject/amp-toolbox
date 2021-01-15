@@ -11,7 +11,7 @@ export class ImagesHaveAltText extends Rule {
       return chalk.yellow(s);
     };
 
-    $("amp-img").each(function (i, elem) {
+    $("amp-img").each(function (_, elem: cheerio.TagElement) {
       if (!elem.attribs.alt) {
         if (typeof imgsWithoutAlt[elem.attribs.src] == "undefined") {
           imgsWithoutAlt[elem.attribs.src] = 1;
