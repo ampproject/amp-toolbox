@@ -12,7 +12,7 @@
   "author": "AMPHTML Team",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "2.7.4",
-    "@ampproject/toolbox-cache-url": "^2.7.2",
+    "@ampproject/toolbox-cache-url": "2.7.2",
     "@ampproject/toolbox-optimizer": "2.7.4",
     "amphtml-validator": "1.0.34",
     "chalk": "4.1.0",
@@ -27,9 +27,7 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
