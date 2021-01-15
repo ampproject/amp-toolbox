@@ -26,6 +26,8 @@ jobs:
           path: |
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: clean
+        run: npx lerna clean --yes
       - name: install
         run: npx lerna bootstrap --hoist
       - name: build
