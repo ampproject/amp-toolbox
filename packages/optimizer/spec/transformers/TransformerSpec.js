@@ -15,7 +15,7 @@
  */
 
 const fetchMock = require('fetch-mock');
-const {basename, join, resolve} = require('path');
+const {basename, join} = require('path');
 const log = require('../../lib/log.js').tag('TransformerSpec');
 log.verbose();
 const {getDirectories} = require('../helpers/Utils.js');

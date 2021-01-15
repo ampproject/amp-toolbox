@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 const validator = require('amphtml-validator');
-const mockRequire = require('mock-require');
 const {basename, join} = require('path');
 const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
 
@@ -46,81 +45,56 @@ if (WRITE_SNAPSHOT) {
 
 module.exports = function (testConfig) {
   describe(testConfig.name, () => {
-    const runTests = async (testDir, done) => {
-      let params = TRANSFORMER_PARAMS;
-      const validatorInstance = await validator.getInstance();
-
-      // parse input and extract params
-      let input = getFileContents(join(testDir, 'input.html'));
-      if (input.startsWith(CONFIG_START_TOKEN)) {
-        const indexStartConfig = CONFIG_START_TOKEN.length;
-        const indexEndConfig = input.indexOf(CONFIG_END_TOKEN);
-        const paramsString = input.substring(indexStartConfig, indexEndConfig);
-        try {
-          params = JSON.parse(paramsString);
-        } catch (e) {
-          // no config
-        }
-        // trim params from input string
-        input = input.substring(indexEndConfig + CONFIG_END_TOKEN.length);
-      }
-
-      const tree = await treeParser.parse(input);
-
-      // parse expected output
-      const expectedOutputPath = join(
-        testDir,
-        testConfig.tag ? `expected_output.${testConfig.tag}.html` : 'expected_output.html'
-      );
-      let expectedOutput = '';
-      try {
-        expectedOutput = getFileContents(expectedOutputPath);
-      } catch (e) {
-        // file doesn't exist if no snapshot has been written yet
-        // that's ok as the test will fail by comparing to an empty string
-      }
-      params = testConfig.validAmp ? {} : params;
-      params.validatorRules = await validatorRules;
-      await testConfig.transformer.transform(tree, params);
-      const actualOutput = serialize(tree, params.__format);
-      if (WRITE_SNAPSHOT) {
-        writeFileContents(expectedOutputPath, actualOutput);
-      } else {
-        expect(actualOutput).toBe(expectedOutput);
-      }
-      if (testConfig.validAmp) {
-        const result = validatorInstance.validateString(actualOutput);
-        if (result.status !== 'PASS') {
-          fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
-        }
-      }
-      done();
-    };
-
     getDirectories(testConfig.testDir).forEach((testDir) => {
-      it(basename(testDir), (done) => runTests(testDir, done));
+      it(basename(testDir), async (done) => {
+        let params = TRANSFORMER_PARAMS;
+        const validatorInstance = await validator.getInstance();
 
-      it('works when skipNodeAndChildren returns null', function (done) {
-        const domHelperPath = join('../../lib/HtmlDomHelper.js');
+        // parse input and extract params
+        let input = getFileContents(join(testDir, 'input.html'));
+        if (input.startsWith(CONFIG_START_TOKEN)) {
+          const indexStartConfig = CONFIG_START_TOKEN.length;
+          const indexEndConfig = input.indexOf(CONFIG_END_TOKEN);
+          const paramsString = input.substring(indexStartConfig, indexEndConfig);
+          try {
+            params = JSON.parse(paramsString);
+          } catch (e) {
+            // no config
+          }
+          // trim params from input string
+          input = input.substring(indexEndConfig + CONFIG_END_TOKEN.length);
+        }
 
-        const cachedDomHelper = require(domHelperPath);
-        const mockedDomHelper = Object.assign(cachedDomHelper, {
-          skipNodeAndChildren: () => null,
-        });
+        const tree = await treeParser.parse(input);
 
-        delete require.cache[testConfig.path];
-        delete require.cache[domHelperPath];
-
-        const mock = mockRequire(domHelperPath, mockedDomHelper);
-
-        const Transformer = require(testConfig.path);
-
-        testConfig.transformer = new Transformer(testConfig._config);
-
-        runTests(testDir, (result) => {
-          mockRequire.stop(domHelperPath);
-          done(result);
-        });
+        // parse expected output
+        const expectedOutputPath = join(
+          testDir,
+          testConfig.tag ? `expected_output.${testConfig.tag}.html` : 'expected_output.html'
+        );
+        let expectedOutput = '';
+        try {
+          expectedOutput = getFileContents(expectedOutputPath);
+        } catch (e) {
+          // file doesn't exist if no snapshot has been written yet
+          // that's ok as the test will fail by comparing to an empty string
+        }
+        params = testConfig.validAmp ? {} : params;
+        params.validatorRules = await validatorRules;
+        await testConfig.transformer.transform(tree, params);
+        const actualOutput = serialize(tree, params.__format);
+        if (WRITE_SNAPSHOT) {
+          writeFileContents(expectedOutputPath, actualOutput);
+        } else {
+          expect(actualOutput).toBe(expectedOutput);
+        }
+        if (testConfig.validAmp) {
+          const result = validatorInstance.validateString(actualOutput);
+          if (result.status !== 'PASS') {
+            fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
+          }
+        }
+        done();
       });
     });
   });
