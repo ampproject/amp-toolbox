@@ -38,7 +38,9 @@ function findMetaViewport(head) {
  * subtree.
  */
 function skipNodeAndChildren(node) {
-  if (node.nextSibling) {
+  if (!node) {
+    return null;
+  } else if (node.nextSibling) {
     return node.nextSibling;
   }
   return skipNodeAndChildren(node.parent);

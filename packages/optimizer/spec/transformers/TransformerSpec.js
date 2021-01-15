@@ -31,6 +31,7 @@ function loadTestConfigs(subDir) {
   const transfomerTestDirs = getDirectories(join(__dirname, subDir));
   return transfomerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
+    const transformerPath = join('../../lib/transformers', transformerName + '.js');
 
     const fetch = fetchMock
       .sandbox()
@@ -40,7 +41,7 @@ function loadTestConfigs(subDir) {
       .mock('https://cdn.ampproject.org/rtv/012345678900000/v0.css', '/* v0-prod.css */')
       .mock('https://cdn.ampproject.org/rtv/012345678911111/v0.css', '/* v0-lts.css */')
       .mock('https://example.com/amp/rtv/012345678922222/v0.css', '/* v0-host.css */');
-    const Transformer = require(join('../../lib/transformers', transformerName + '.js'));
+    const Transformer = require(transformerPath);
     const config = {
       fetch,
       log,
@@ -67,6 +68,8 @@ function loadTestConfigs(subDir) {
       name: transformerName,
       testDir: testDir,
       transformer: new Transformer(config),
+      path: transformerPath,
+      _config: config,
     };
   });
 }

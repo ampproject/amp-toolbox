@@ -28,6 +28,21 @@ test('findMetaViewport returns null if tag is not present', async () => {
   expect(result).toBeNull();
 });
 
+test('works even when template is the final node', async () => {
+  let err = null;
+
+  try {
+    await treeParser.parse(`<!doctype html>
+          <html ⚡>
+            <head></head>
+              <body>
+            <template></template>`);
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeNull();
+});
+
 test('findMetaViewport returns the correct tag', async () => {
   const root = await treeParser.parse(`<html><head>
             <meta charset="utf-8">
