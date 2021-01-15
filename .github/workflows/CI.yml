@@ -20,13 +20,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           registry-url: https://registry.npmjs.org
-      - name: restore lerna
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      - name: clean
+        run: npx lerna clean --yes
       - name: install
         run: npx lerna bootstrap --hoist
       - name: build

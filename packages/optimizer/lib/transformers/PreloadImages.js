@@ -18,6 +18,7 @@
 
 const {createElement, nextNode, insertAfter, firstChildByTag} = require('../NodeUtils');
 const {findMetaViewport, skipNodeAndChildren} = require('../HtmlDomHelper');
+const {isTemplate} = require('../AmpConstants');
 
 // Maximum number of images that will be preloaded.
 const MAX_PRELOADED_IMAGES = 5;
@@ -50,7 +51,7 @@ class PreloadImages {
       if (preloadImageMap.size >= imagePreloadCount) {
         break;
       }
-      if (node.tagName === 'template') {
+      if (isTemplate(node)) {
         node = skipNodeAndChildren(node);
       } else {
         this.addImage(preloadImageMap, node);
