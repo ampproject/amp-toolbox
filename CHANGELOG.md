@@ -1,3 +1,18 @@
+## v2.7.5 (2021-01-18)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1128](https://github.com/ampproject/amp-toolbox/pull/1128) account for cases when parentNode and nextNode are undefined ([@patrickkettner](https://github.com/patrickkettner))
+  * [#1124](https://github.com/ampproject/amp-toolbox/pull/1124) Only add space between classes if preexisting class is present ([@schlessera](https://github.com/schlessera))
+* `cli`, `linter`, `optimizer`, `update-cache`
+  * [#1125](https://github.com/ampproject/amp-toolbox/pull/1125) Support script based templates ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Jake Fried ([@samouri](https://github.com/samouri))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- patrick kettner ([@patrickkettner](https://github.com/patrickkettner))
+
 ## v2.7.4 (2020-12-23)
 
 #### :bug: Bug Fix
