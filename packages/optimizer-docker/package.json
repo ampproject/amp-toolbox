@@ -3,6 +3,7 @@
   "version": "2.7.5",
   "description": "Thin wrapper around the amp-optimizer",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "build-docker": "docker build . -t 'ampproject/toolbox-optimizer'",
     "run-docker": "docker run -p 3000:3000 -it ampproject/toolbox-optimizer",
@@ -29,5 +30,5 @@
   "dependencies": {
     "@ampproject/toolbox-optimizer": "^2.7.5"
   },
-  "gitHead": "b0efede4ff9a6baa8173016f7c630d406e26d5e3"
+  "gitHead": "b86ff10f2a20a9e5f810f31a694c7f020eb291ae"
 }
