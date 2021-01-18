@@ -1,6 +1,6 @@
 {
   "name": "toolbox-optimizer-docker",
-  "version": "2.7.4",
+  "version": "2.7.5",
   "description": "Thin wrapper around the amp-optimizer",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer",
   "dependencies": {
-    "@ampproject/toolbox-optimizer": "2.7.4"
+    "@ampproject/toolbox-optimizer": "^2.7.5"
   },
   "gitHead": "b0efede4ff9a6baa8173016f7c630d406e26d5e3"
 }

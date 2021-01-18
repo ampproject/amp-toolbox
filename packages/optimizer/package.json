@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.7.4",
+  "version": "2.7.5",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
@@ -11,8 +11,13 @@
   "scripts": {
     "postinstall": "node lib/warmup.js"
   },
-  "files": ["index.js", "lib"],
-  "keywords": ["amp"],
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "keywords": [
+    "amp"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
