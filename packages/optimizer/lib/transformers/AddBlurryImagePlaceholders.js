@@ -70,10 +70,10 @@ class AddBlurryImagePlaceholders {
     this.blurredPlaceholders_ = !!config.blurredPlaceholders;
     if (!this.blurredPlaceholders_) {
       this.log_.debug('disabled');
-      return;
     }
 
     // check whether all required dependencies are installed
+    this.missingDependencies_ = false;
     if (!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
       this.log_.warn(
         'jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
@@ -81,6 +81,7 @@ class AddBlurryImagePlaceholders {
       );
       // we can't generate placeholders
       this.blurredPlaceholders_ = false;
+      this.missingDependencies_ = true;
       return;
     }
     this.jimp = require('jimp');
@@ -117,7 +118,7 @@ class AddBlurryImagePlaceholders {
    */
   transform(root, params) {
     // Check if placeholders should be generated
-    if (!this.blurredPlaceholders_) {
+    if ((!params.blurredPlaceholders && !this.blurredPlaceholders_) || this.missingDependencies_) {
       return;
     }
     const html = firstChildByTag(root, 'html');
