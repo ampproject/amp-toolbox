@@ -101,9 +101,12 @@ class PreloadHeroImage {
       'as': 'image',
       'data-hero': '',
     });
-    if (heroImage.media) {
-      preload.attribs.media = heroImage.media;
+    if (!heroImage.media) {
+      // We can only safely preload a hero image if there's a media attribute
+      // as we can't detect whether it's hidden on certain viewport sizes otherwise.
+      return;
     }
+    preload.attribs.media = heroImage.media;
     insertAfter(head, preload, referenceNode);
   }
 
