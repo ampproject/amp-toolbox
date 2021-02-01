@@ -35,7 +35,7 @@
     "@ampproject/toolbox-validator-rules": "2.7.4",
     "abort-controller": "3.0.0",
     "cross-fetch": "3.0.6",
-    "cssnano-simple": "1.2.1",
+    "cssnano-simple": "1.2.2",
     "dom-serializer": "1.2.0",
     "domhandler": "4.0.0",
     "domutils": "2.4.4",

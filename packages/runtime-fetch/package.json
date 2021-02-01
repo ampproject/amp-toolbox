@@ -24,7 +24,7 @@
     "@ampproject/toolbox-core": "2.7.4",
     "@ampproject/toolbox-runtime-version": "2.7.4",
     "at-least-node": "1.0.0",
-    "fs-extra": "9.0.1",
+    "fs-extra": "9.1.0",
     "node-fetch": "2.6.1"
   },
   "bugs": {
