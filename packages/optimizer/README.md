@@ -89,6 +89,7 @@ Available options are:
 - [lts](#lts)
 - [markdown](#markdown)
 - [minify](#minify)
+- [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
 - [verbose](#verbose)
 
@@ -222,7 +223,7 @@ Minifies the generated HTML output and inlined CSS.
 
 **Warning:** this setting is not recommended when running AMP Optimizer in your backend on every request as execution time can increase by up to 7x.
 
-#### `preloadHeroImage`
+#### `optimizeHeroImages`
 
 Enables hero image optimization. Hero images will either be auto detected or you can explicitly mark these by adding the `data-hero` attribute:
 
@@ -230,14 +231,18 @@ Enables hero image optimization. Hero images will either be auto detected or you
 <amp-img data-hero src="foo.jpg" ...>
 ```
 
-The maximum number of hero images that can be marked up using `data-hero` is `2`.
+The maximum number of hero images that can be marked up using `data-hero` is `2`. This number can be increased using the `maxHeroImageCount` parameter.
 
-If no `data-hero` attribute is present, AMP optimizer auto-detects hero images for `amp-img`, `amp-iframe`, `amp-video`, or `amp-video-iframe` and injects a `link rel=preload`. Image preload links will only be generated if there is none already existing. For `amp-img` elements, it will also server-side render the `img` element inside the `amp-img` element. This greatly improves image rendering performance and reduces the [largest contentful paint](https://web.dev/lcp/) (LCP) metric from [Core Web Vitals](https://web.dev/vitals/).
+Hero images are optimized by server-side rendering the `img` element inside the `amp-img` element. This can siginificantly improve image rendering performance and reduce the [largest contentful paint](https://web.dev/lcp/) (LCP) metric from [Core Web Vitals](https://web.dev/vitals/).
 
-- name: `preloadHeroImage`
+- name: `optimizeHeroImages`
 - valid options: `[true|false]`
 - default: `true`
-- used by: [PreloadHeroImage](lib/transformers/PreloadHeroImage.js)
+- used by: [OptimizeHeroImages](lib/transformers/OptimizeHeroImages.js)
+
+#### `preloadHeroImage`
+
+Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead. 
 
 #### `verbose`
 

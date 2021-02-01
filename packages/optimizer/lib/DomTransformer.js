@@ -35,7 +35,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Applies image optimizations, must run before PreloadHeroImage
   'OptimizeImages',
   // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
-  'PreloadHeroImage',
+  'OptimizeHeroImages',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes the boilerplate
@@ -72,7 +72,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Applies image optimizations, must run before PreloadHeroImage
   'OptimizeImages',
   // Detect hero image and preload link rel=preload
-  'PreloadHeroImage',
+  'OptimizeHeroImages',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes ⚡ or 'amp' from the html tag
