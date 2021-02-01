@@ -72,7 +72,9 @@ class AddBlurryImagePlaceholders {
       this.log_.debug('disabled');
     }
 
-    // check whether all required dependencies are installed
+    // check whether all required dependencies for blurry image placeholder generation
+    // are installed. We need to keep track of this to be able to enable blurry placeholder
+    // generation at runtime
     this.missingDependencies_ = false;
     if (!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
       this.log_.warn(
