@@ -1,3 +1,18 @@
+## v2.7.6 (2021-02-01)
+
+#### :rocket: Enhancement
+* `optimizer-docker`, `optimizer`
+  * [#1133](https://github.com/ampproject/amp-toolbox/pull/1133) More flexible hero images and blurry placeholders ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer`
+  * [#1130](https://github.com/ampproject/amp-toolbox/pull/1130) add warning about minification ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1132](https://github.com/ampproject/amp-toolbox/pull/1132) Don't preload hero images ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.7.5 (2021-01-18)
 
 #### :bug: Bug Fix
