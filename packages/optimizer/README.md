@@ -44,7 +44,7 @@ const originalHtml = `
   ...
 </html>`;
 
-ampOptimizer.transformHtml(originalHtml).then(optimizedHtml => {
+ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
   console.log(optimizedHtml);
 });
 ```
@@ -119,8 +119,8 @@ Example:
 ```js
 const ampOptimizer = AmpOptimizer.create({
   extensionVersions: {
-    "amp-twitter": "0.1"
-  }
+    'amp-twitter': '0.1',
+  },
 });
 ```
 
@@ -173,7 +173,7 @@ Example:
 
 ```js
 const ampOptimizer = AmpOptimizer.create({
-  imageOptimizer: (src, width) => `${src}?width=${width}`
+  imageOptimizer: (src, width) => `${src}?width=${width}`,
 });
 ```
 
@@ -219,6 +219,8 @@ Minifies the generated HTML output and inlined CSS.
 - valid options: `[true|false]`
 - default: `true`
 - used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
+
+**Warning:** this setting is not recommended when running AMP Optimizer in your backend on every request as execution time can increase by up to 7x.
 
 #### `preloadHeroImage`
 
@@ -276,18 +278,30 @@ Using this implementation, AMP Optimizer will transform the following `amp-img` 
 <!-- Injects srcset for responsive layout -->
 <amp-img src="image1.png" width="400" height="800" layout="responsive"></amp-img>
 <!-- Ignores existing srcset -->
-<amp-img layout=fill srcset="image-1x.png 1x,
-                             image-2x.png 2x"></amp-img>
+<amp-img
+  layout="fill"
+  srcset="image-1x.png 1x,
+                             image-2x.png 2x"
+></amp-img>
 ```
 
 into:
 
 ```html
 <!-- Injects srcset for responsive layout -->
-<amp-img src="image1.png" width="400" height="800" layout="responsive" srcset="image1.470w.png 470w, image1.820w.png 820w, image1.1440w.png 1440w"></amp-img>
+<amp-img
+  src="image1.png"
+  width="400"
+  height="800"
+  layout="responsive"
+  srcset="image1.470w.png 470w, image1.820w.png 820w, image1.1440w.png 1440w"
+></amp-img>
 <!-- Ignores existing srcset -->
-<amp-img layout="fill" srcset="image-1x.png 1x,
-                               image-2x.png 2x"></amp-img>
+<amp-img
+  layout="fill"
+  srcset="image-1x.png 1x,
+                               image-2x.png 2x"
+></amp-img>
 ```
 
 **Important** when using `layout=responsive` use the `width` and `height` attribute to specify the minimum image dimensions. For example, for a full-bleed hero image on mobile, specify the width as`width=320`.
@@ -309,8 +323,8 @@ const originalHtml = `
 
 // you can pass the canonical URL, default is `.`
 const opts = {
-  canonical: '/example.html'
-}
+  canonical: '/example.html',
+};
 ampOptimizer.transformHtml(originalHtml, opts).then((optimizedHtml) => {
   // optimizedHtml will be a valid AMP document
   console.log(optimizedHtml);
@@ -433,8 +447,8 @@ To find out, why the AMP boilerplate could not be removed, enable `verbose` mode
 ```js
 // globally
 const optimizer = ampOptimizer.create({
-  verbose: true
-} );
+  verbose: true,
+});
 ```
 
 ... or for individual pages:
@@ -442,8 +456,8 @@ const optimizer = ampOptimizer.create({
 ```js
 // per transformation
 ampOptimizer.transformHtml(originalHtml, {
-  verbose: true
-})
+  verbose: true,
+});
 ```
 
 ### Transform AMP pages at build time if possible
@@ -472,8 +486,7 @@ Example:
 const optimizer = AmpOptimizer.create({
   transformations: AmpOptimizer.TRANSFORMATIONS_PAIRED_AMP,
 });
-const ampFilePath = filePath.substring(1, filePath.length)
-    .replace('.html', '.amp.html');
+const ampFilePath = filePath.substring(1, filePath.length).replace('.html', '.amp.html');
 const transformedHtml = await optimizer.transformHtml(html, {
   // needed to calculate the `<link rel=amphtml href=${ampUrl}>`
   ampUrl: ampFilePath,
@@ -509,12 +522,12 @@ const originalHtml = `
 <!doctype html>
 <html ⚡>
 ...
-`
+`;
 
 // Additional options can be passed as the second argument
 const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html',
-  ampRuntimeVersion: ampRuntimeVersion
+  ampRuntimeVersion: ampRuntimeVersion,
 });
 
 console.log(optimizedHtml);
@@ -557,13 +570,13 @@ const originalHtml = `
 <!doctype html>
 <html ⚡>
 ...
-`
+`;
 
 // Additional options can be passed as the second argument
 const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
   ampUrl: 'canonical.amp.html',
   // this will rewrite https://cdn.ampproject.org/v0.js to /amp/v0.js
-  ampUrlPrefix: '/amp'
+  ampUrlPrefix: '/amp',
 });
 
 console.log(optimizedHtml);
@@ -594,7 +607,7 @@ const originalHtml = `
 const optimizedHtml = await ampOptimizer.transformHtml(originalHtml, {
   // this will instruct amp-geo to fetch the user's country from an API
   // which returns JSON in format: {"country": "de"}
-  geoApiUrl: 'https://example.com/geo'
+  geoApiUrl: 'https://example.com/geo',
 });
 
 console.log(optimizedHtml);
