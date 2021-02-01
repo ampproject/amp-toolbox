@@ -53,9 +53,19 @@ class OptimizeHeroImage {
     this.log = config.log;
     this.enabled = config.optimizeHeroImages !== false || config.preloadHeroImage !== false;
     this.maxHeroImageCount = config.maxHeroImageCount || DATA_HERO_MAX;
+    if (config.preloadHeroImage) {
+      this.log.info(
+        '`preloadHeroImage` option has been deprecated. Use `optimizeHeroImages` instead'
+      );
+    }
   }
 
   async transform(root, params) {
+    if (params.preloadHeroImage) {
+      this.log.info(
+        '`preloadHeroImage` option has been deprecated. Use `optimizeHeroImages` instead'
+      );
+    }
     if (!this.enabled || params.optimizeHeroImages === false || params.preloadHeroImage === false) {
       return;
     }

@@ -242,7 +242,7 @@ Hero images are optimized by server-side rendering the `img` element inside the 
 
 #### `preloadHeroImage`
 
-Deprecated, use `optimizeHeroImages` instead. 
+Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead. 
 
 #### `verbose`
 
