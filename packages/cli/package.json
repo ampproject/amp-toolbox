@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cli",
-  "version": "2.7.5",
+  "version": "2.7.6",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
@@ -30,11 +30,11 @@
     "@ampproject/toolbox-cache-list": "2.7.4",
     "@ampproject/toolbox-cache-url": "2.7.2",
     "@ampproject/toolbox-core": "2.7.4",
-    "@ampproject/toolbox-linter": "^2.7.5",
-    "@ampproject/toolbox-optimizer": "^2.7.5",
-    "@ampproject/toolbox-runtime-fetch": "2.7.4",
+    "@ampproject/toolbox-linter": "^2.7.6",
+    "@ampproject/toolbox-optimizer": "^2.7.6",
+    "@ampproject/toolbox-runtime-fetch": "^2.7.6",
     "@ampproject/toolbox-runtime-version": "2.7.4",
-    "@ampproject/toolbox-update-cache": "^2.7.5",
+    "@ampproject/toolbox-update-cache": "^2.7.6",
     "minimist": "1.2.5",
     "minimist-options": "4.1.0",
     "node-fetch": "2.6.1"
