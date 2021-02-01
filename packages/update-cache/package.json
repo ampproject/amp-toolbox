@@ -27,7 +27,7 @@
   "dependencies": {
     "@ampproject/toolbox-cache-list": "2.7.4",
     "@ampproject/toolbox-cache-url": "2.7.2",
-    "jsrsasign": "10.1.4"
+    "jsrsasign": "10.1.5"
   },
   "gitHead": "b86ff10f2a20a9e5f810f31a694c7f020eb291ae"
 }

@@ -13,7 +13,7 @@
   "version": "2.7.5",
   "main": "./plugin.js",
   "peerDependencies": {
-    "lighthouse": ">=7.0.0"
+    "lighthouse": ">=7.0.1"
   },
   "gitHead": "b86ff10f2a20a9e5f810f31a694c7f020eb291ae"
 }
