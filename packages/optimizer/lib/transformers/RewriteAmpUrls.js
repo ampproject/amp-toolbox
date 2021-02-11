@@ -150,6 +150,14 @@ class RewriteAmpUrls {
       nomodule: '',
       src: scriptNode.attribs.src,
     });
+    const customElement = scriptNode.attribs['custom-element'];
+    if (customElement) {
+      nomoduleNode.attribs['custom-element'] = customElement;
+    }
+    const customTemplate = scriptNode.attribs['custom-template'];
+    if (customTemplate) {
+      nomoduleNode.attribs['custom-template'] = customTemplate;
+    }
     insertBefore(scriptNode.parent, nomoduleNode, scriptNode);
 
     scriptNode.attribs.type = 'module';
