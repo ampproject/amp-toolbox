@@ -231,7 +231,7 @@ class OptimizeImages {
           if (!srcsetWidth.moreWidth()) {
             // The last value should be specified without a width descriptor
             // https://github.com/kristoferbaxter/srcset-broken
-            srcset += `${nextSrc}`;
+            srcset += nextSrc;
           } else {
             srcset += `${nextSrc} ${nextWidth}w, `;
           }
