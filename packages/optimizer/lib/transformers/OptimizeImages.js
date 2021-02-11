@@ -228,7 +228,13 @@ class OptimizeImages {
         const nextSrc = await this.imageOptimizer(src, nextWidth);
         // Add the width (if supported) to the srcset.
         if (nextSrc) {
-          srcset += `${nextSrc} ${nextWidth}w${srcsetWidth.moreWidth() ? ', ' : ''}`;
+          if (!srcsetWidth.moreWidth()) {
+            // The last value should be specified without a width descriptor
+            // https://github.com/kristoferbaxter/srcset-broken
+            srcset += `${nextSrc}`;
+          } else {
+            srcset += `${nextSrc} ${nextWidth}w, `;
+          }
         }
       } catch (e) {
         this.log.error('Exception when optimizing image', src, e);
