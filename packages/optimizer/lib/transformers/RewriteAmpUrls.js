@@ -56,7 +56,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
  */
 class RewriteAmpUrls {
   constructor(config) {
-    this.esmModulesEnabled = config.experimentEsm;
+    this.esmModulesEnabled = config.esmModulesEnabled;
     this.log = config.log;
   }
   transform(root, params) {
@@ -68,7 +68,7 @@ class RewriteAmpUrls {
 
     let node = head.firstChild;
     let referenceNode = findMetaViewport(head);
-    const esm = this.esmModulesEnabled || params.experimentEsm;
+    const esm = this.esmModulesEnabled || params.esmModulesEnabled;
     const preloads = [];
 
     while (node) {
