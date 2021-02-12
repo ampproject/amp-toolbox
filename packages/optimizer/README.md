@@ -81,6 +81,7 @@ Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
+- [esmModulesEnabled](#esmmodulesenabled)
 - [extensionVersions](#extensionversions)
 - [fetch](#fetch)
 - [format](#format)
@@ -110,6 +111,20 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel).
 - valid options: `[true|false]`
 - default: `true`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
+
+#### `esmModulesEnabled`
+
+Enables the smaller ESM module version of AMP runtime and components:
+
+```
+<script async nomodule src="https://cdn.ampproject.org/v0.js"></script>
+<script async src="https://cdn.ampproject.org/v0.mjs" type="module" crossorigin="anonymous"></script>
+```
+
+- name: `esmModulesEnabled`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
 
 #### `extensionVersions`
 
