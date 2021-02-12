@@ -56,7 +56,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
  */
 class RewriteAmpUrls {
   constructor(config) {
-    this.esmModulesEnabled = config.esmModulesEnabled;
+    this.esmModulesEnabled = config.esmModulesEnabled !== false;
     this.log = config.log;
   }
   transform(root, params) {
