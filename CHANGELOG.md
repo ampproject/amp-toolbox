@@ -1,3 +1,24 @@
+## v2.8.0-canary.0 (2021-02-12)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1140](https://github.com/ampproject/amp-toolbox/pull/1140) Enable ESM module version of AMP Runtime and Components by default ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1137](https://github.com/ampproject/amp-toolbox/pull/1137) Drop the final width descriptor in a generated srcset. ([@kristoferbaxter](https://github.com/kristoferbaxter))
+  * [#1139](https://github.com/ampproject/amp-toolbox/pull/1139) fix missing custom-element attribute from nomodule import ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1135](https://github.com/ampproject/amp-toolbox/pull/1135) Add missing amp-ad ending tag ([@schlessera](https://github.com/schlessera))
+
+#### :house: Internal
+* `linter`, `optimizer`, `update-cache`
+  * [#1141](https://github.com/ampproject/amp-toolbox/pull/1141) Update dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 3
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Kristofer Baxter ([@kristoferbaxter](https://github.com/kristoferbaxter))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.7.6 (2021-02-01)
 
 #### :rocket: Enhancement

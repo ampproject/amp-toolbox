@@ -10,7 +10,7 @@
     "generate:changelog": "lerna-changelog",
     "prepublishOnly": "npm run build",
     "publish": "lerna publish",
-    "publish:alpha": "lerna publish --preid alpha --dist-tag alpha",
+    "publish:canary": "lerna publish --preid canary --dist-tag canary",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jest",
     "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
