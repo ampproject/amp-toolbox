@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer",
-  "version": "2.8.0-canary.1",
+  "version": "2.8.0-canary.2",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
   "repository": {
