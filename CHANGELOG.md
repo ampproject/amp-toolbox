@@ -1,3 +1,12 @@
+## v2.8.0-canary.1 (2021-02-12)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1142](https://github.com/ampproject/amp-toolbox/pull/1142) Don't remove sizes for hero images ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.0 (2021-02-12)
 
 #### :rocket: Enhancement
