@@ -316,11 +316,6 @@ class OptimizeHeroImage {
     if (!node) {
       return;
     }
-    // Generate a default sizes element to avoid that the runtime generate it
-    // See https://github.com/ampproject/amphtml/issues/32644
-    if (hasAttribute(node, 'srcset') && !hasAttribute(node, 'sizes')) {
-      node.attribs.sizes = '100vw';
-    }
     node.attribs['i-amphtml-ssr'] = '';
     node.attribs['data-hero'] = '';
     // Create img node

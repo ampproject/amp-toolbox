@@ -249,15 +249,6 @@ class ApplyCommonAttributes {
     customStyles.children[0].data += styles;
     for (const node of this.transformedNodes) {
       for (const attribute of Object.keys(this.attributeTransformations)) {
-        // Don't remove sizes from amp-img
-        // workaround for https://github.com/ampproject/amphtml/issues/32644
-        if (
-          node.tagName === 'amp-img' &&
-          attribute === 'sizes' &&
-          hasAttribute(node, 'data-hero')
-        ) {
-          continue;
-        }
         delete node.attribs[attribute];
       }
     }
