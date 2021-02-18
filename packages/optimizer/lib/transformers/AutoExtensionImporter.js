@@ -176,7 +176,7 @@ class AutoExtensionImporter {
     }
 
     // We use this for adding new import elements to the header
-    const referenceNode = findMetaViewport(head);
+    let referenceNode = findMetaViewport(head);
 
     // Use cdn.ampproject.org as default, RewriteUrlTransformer will change this in case of self-hosting
     const host = AMP_CACHE_HOST;
@@ -201,6 +201,7 @@ class AutoExtensionImporter {
       extensionImportAttribs[extension.type] = extensionName;
       const extensionImport = createElement('script', extensionImportAttribs);
       insertAfter(head, extensionImport, referenceNode);
+      referenceNode = extensionImport;
     }
   }
 
