@@ -23,7 +23,7 @@ import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPrel
 import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
-import { IconFontIsUsed } from "../src/rules/IconFontIsUsed";
+import { NoIconFontIsUsed } from "../src/rules/NoIconFontIsUsed";
 import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
 import { AmpImgUsesSrcSet } from "../src/rules/AmpImgUsesSrcSet";
@@ -252,36 +252,36 @@ describe(FastGoogleFontsDisplay.name, () => {
   });
 });
 
-describe(IconFontIsUsed.name, () => {
-  it(`${IconFontIsUsed.name} - icon font usage detected`, async () => {
+describe(NoIconFontIsUsed.name, () => {
+  it(`${NoIconFontIsUsed.name} - icon font usage detected`, async () => {
     return assertFail(
       runLocalTest(
-        IconFontIsUsed,
-        `${__dirname}/local/IconFontIsUsed-1/source.html`
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-1/source.html`
       )
     );
   });
-  it(`${IconFontIsUsed.name} - no icon font usage detected`, async () => {
+  it(`${NoIconFontIsUsed.name} - no icon font usage detected`, async () => {
     return assertPass(
       runLocalTest(
-        IconFontIsUsed,
-        `${__dirname}/local/IconFontIsUsed-2/source.html`
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-2/source.html`
       )
     );
   });
-  it(`${IconFontIsUsed.name} - possible usage of icon font detected`, async () => {
+  it(`${NoIconFontIsUsed.name} - possible usage of icon font detected`, async () => {
     return assertWarn(
       runLocalTest(
-        IconFontIsUsed,
-        `${__dirname}/local/IconFontIsUsed-3/source.html`
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-3/source.html`
       )
     );
   });
-  it(`${IconFontIsUsed.name} - possible usage of icon font detected`, async () => {
+  it(`${NoIconFontIsUsed.name} - possible usage of icon font detected`, async () => {
     return assertWarn(
       runLocalTest(
-        IconFontIsUsed,
-        `${__dirname}/local/IconFontIsUsed-4/source.html`
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-4/source.html`
       )
     );
   });

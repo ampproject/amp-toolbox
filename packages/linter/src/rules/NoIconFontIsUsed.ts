@@ -30,7 +30,7 @@ const ICON_FONT_IDENTIFIERS = [
 /**
  * Checks if icon fonts are being used
  */
-export class IconFontIsUsed extends Rule {
+export class NoIconFontIsUsed extends Rule {
   async run({ $ }: Context) {
     // grab all elements responding to classnames from ICON_FONT_IDENTIFIERS list
     const iconFontCandidates = ICON_FONT_IDENTIFIERS.filter((identifier) => {
