@@ -31,16 +31,13 @@ const ICON_FONT_IDENTIFIERS = [
  * Checks if icon fonts are being used
  */
 export class NoIconFontIsUsed extends Rule {
-  async run({ $ }: Context) {
+  run({ $ }: Context) {
     // grab all elements responding to classnames from ICON_FONT_IDENTIFIERS list
     const iconFontCandidates = ICON_FONT_IDENTIFIERS.filter((identifier) => {
       return $(`[class*=${identifier.className}]`).length > 0;
     });
 
-    // grab the amp-custom css
-    const stylesText = $("style[amp-custom]").html();
-
-    if (iconFontCandidates.length === 0 && !stylesText) {
+    if (iconFontCandidates.length === 0) {
       return this.pass();
     }
 
@@ -75,22 +72,32 @@ export class NoIconFontIsUsed extends Rule {
       };
     });
 
-    await postcss([iconFontPlugin])
-      .process(stylesText, {
-        from: undefined,
-        parser: safeParser,
-      })
-      .catch((err) => {
-        console.warn(`Failed to process CSS`, err.message);
-        return { css: stylesText };
-      });
+    // grab the amp-custom css
+    const stylesText = $("style[amp-custom]").html();
+
+    if (stylesText) {
+      postcss([iconFontPlugin])
+        .process(stylesText, {
+          from: undefined,
+          parser: safeParser,
+        })
+        .catch((err) => {
+          console.warn(`Failed to process CSS`, err.message);
+          return { css: stylesText };
+        });
+    }
 
     if (iconFontMatches.length > 0) {
       return this.fail("It seems like icon fonts are being used on this page.");
     }
 
-    if (iconFontMatches.length === 0 && iconFontCandidates.length > 0) {
-      return this.warn("Suspicious icon font class names detected.");
-    }
+    return this.warn("Suspicious icon font class names detected.");
+  }
+  meta() {
+    return {
+      url: "",
+      title: "Icon fonts can have a negative impact on LCP.",
+      info: "",
+    };
   }
 }
