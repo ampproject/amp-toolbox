@@ -253,7 +253,7 @@ describe(FastGoogleFontsDisplay.name, () => {
 });
 
 describe(NoIconFontIsUsed.name, () => {
-  it(`${NoIconFontIsUsed.name} - icon font usage detected`, async () => {
+  it(`${NoIconFontIsUsed.name} - icon font usage`, async () => {
     return assertFail(
       runLocalTest(
         NoIconFontIsUsed,
@@ -261,7 +261,7 @@ describe(NoIconFontIsUsed.name, () => {
       )
     );
   });
-  it(`${NoIconFontIsUsed.name} - no icon font usage detected`, async () => {
+  it(`${NoIconFontIsUsed.name} - no icon font usage`, async () => {
     return assertPass(
       runLocalTest(
         NoIconFontIsUsed,
@@ -269,16 +269,16 @@ describe(NoIconFontIsUsed.name, () => {
       )
     );
   });
-  it(`${NoIconFontIsUsed.name} - possible usage of icon font detected`, async () => {
-    return assertWarn(
+  it(`${NoIconFontIsUsed.name} - suspicious class names, but no icon font`, async () => {
+    return assertPass(
       runLocalTest(
         NoIconFontIsUsed,
         `${__dirname}/local/NoIconFontIsUsed-3/source.html`
       )
     );
   });
-  it(`${NoIconFontIsUsed.name} - possible usage of icon font detected`, async () => {
-    return assertWarn(
+  it(`${NoIconFontIsUsed.name} - usage of material icons icon font`, async () => {
+    return assertFail(
       runLocalTest(
         NoIconFontIsUsed,
         `${__dirname}/local/NoIconFontIsUsed-4/source.html`
