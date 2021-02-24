@@ -23,6 +23,7 @@ import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPrel
 import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
+import { IconFontIsUsed } from "../src/rules/IconFontIsUsed";
 import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
 import { AmpImgUsesSrcSet } from "../src/rules/AmpImgUsesSrcSet";
@@ -248,6 +249,41 @@ describe(FastGoogleFontsDisplay.name, () => {
     await assertWarn(results[1]);
     await assertWarn(results[2]);
     await assertWarn(results[3]);
+  });
+});
+
+describe(IconFontIsUsed.name, () => {
+  it(`${IconFontIsUsed.name} - icon font usage detected`, async () => {
+    return assertFail(
+      runLocalTest(
+        IconFontIsUsed,
+        `${__dirname}/local/IconFontIsUsed-1/source.html`
+      )
+    );
+  });
+  it(`${IconFontIsUsed.name} - no icon font usage detected`, async () => {
+    return assertPass(
+      runLocalTest(
+        IconFontIsUsed,
+        `${__dirname}/local/IconFontIsUsed-2/source.html`
+      )
+    );
+  });
+  it(`${IconFontIsUsed.name} - possible usage of icon font detected`, async () => {
+    return assertWarn(
+      runLocalTest(
+        IconFontIsUsed,
+        `${__dirname}/local/IconFontIsUsed-3/source.html`
+      )
+    );
+  });
+  it(`${IconFontIsUsed.name} - possible usage of icon font detected`, async () => {
+    return assertWarn(
+      runLocalTest(
+        IconFontIsUsed,
+        `${__dirname}/local/IconFontIsUsed-4/source.html`
+      )
+    );
   });
 });
 
