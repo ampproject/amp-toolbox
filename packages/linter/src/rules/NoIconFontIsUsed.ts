@@ -54,7 +54,9 @@ export class NoIconFontIsUsed extends Rule {
     );
 
     if (knownExternalStylesheets.length) {
-      return this.fail("It seems like icon fonts are being used on this page.");
+      return this.fail(
+        "Avoid using icon fonts to improve loading speed and accessibility."
+      );
     }
 
     // check for known font-families in documents custom styles
@@ -106,7 +108,9 @@ export class NoIconFontIsUsed extends Rule {
       });
 
     if (iconFontMatches.length > 0) {
-      return this.fail("It seems like icon fonts are being used on this page.");
+      return this.fail(
+        "Avoid using icon fonts to improve loading speed and accessibility."
+      );
     }
 
     return this.pass();
