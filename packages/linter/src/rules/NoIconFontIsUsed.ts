@@ -23,8 +23,16 @@ const ICON_FONT_IDENTIFIERS = [
     fontFamilies: ["IcoFont"],
   },
   {
-    className: "ociton-",
+    className: "octicon-",
     fontFamilies: ["Octicons"],
+  },
+  {
+    className: "icn-",
+    fontFamilies: ["icon"],
+  },
+  {
+    className: "icon-",
+    fontFamilies: ["icon"],
   },
 ];
 
@@ -35,7 +43,7 @@ export class NoIconFontIsUsed extends Rule {
   run({ $ }: Context) {
     // check for known classnames
     const iconFontCandidates = ICON_FONT_IDENTIFIERS.filter((identifier) => {
-      return $(`[class*=${identifier.className}]`).length > 0;
+      return $(`[class*=${identifier.className} i]`).length > 0;
     });
 
     if (iconFontCandidates.length === 0) {
@@ -54,8 +62,8 @@ export class NoIconFontIsUsed extends Rule {
     );
 
     if (knownExternalStylesheets.length) {
-      return this.fail(
-        "Avoid using icon fonts to improve loading speed and accessibility."
+      return this.warn(
+        "Avoid using icon fonts to improve loading speed and accessibility"
       );
     }
 
@@ -108,8 +116,8 @@ export class NoIconFontIsUsed extends Rule {
       });
 
     if (iconFontMatches.length > 0) {
-      return this.fail(
-        "Avoid using icon fonts to improve loading speed and accessibility."
+      return this.warn(
+        "Avoid using icon fonts to improve loading speed and accessibility"
       );
     }
 
@@ -118,7 +126,7 @@ export class NoIconFontIsUsed extends Rule {
   meta() {
     return {
       url: "",
-      title: "Icon fonts can have a negative impact on LCP.",
+      title: "Page seems to use icon fonts",
       info: "",
     };
   }
