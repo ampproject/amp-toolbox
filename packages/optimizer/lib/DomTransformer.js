@@ -37,6 +37,7 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'OptimizeHeroImages',
   // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
+  // This needs to run after AutoExtensionImporter.
   'OptimizeAmpBind',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
@@ -76,6 +77,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Detect hero image and preload link rel=preload
   'OptimizeHeroImages',
   // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
+  // This needs to run after AutoExtensionImporter.
   'OptimizeAmpBind',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',

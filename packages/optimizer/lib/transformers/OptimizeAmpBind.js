@@ -24,7 +24,6 @@ class OptimizeAmpBind {
   constructor(config) {
     this.log_ = config.log.tag('OptimizeAmpBind');
 
-    // setup implementation only if placeholder generation is enabled
     this.enabled_ = !!config.optimizeAmpBind;
     if (!this.enabled_) {
       this.log_.debug('disabled');
