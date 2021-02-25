@@ -241,8 +241,7 @@ Minifies the generated HTML output and inlined CSS.
 
 #### `optimizeAmpBind`
 
-Enables a considerably faster scanning method in `amp-bind`, by taking injecting a `i-amphtml-binding` attribute on all elements with a bound attribute.
-
+Enables a considerably faster scanning method in `amp-bind`, by injecting a `i-amphtml-binding` attribute on all elements with a bound attribute.
 
 - name: `optimizeAmpBind`
 - valid options: `[true|false]`

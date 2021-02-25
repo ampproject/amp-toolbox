@@ -66,7 +66,7 @@ class OptimizeAmpBind {
 
 function hasAmpBindScriptNode(head) {
   for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-    if (node.tagName === 'script') continue;
+    if (node.tagName !== 'script') continue;
     if (!node.attribs) continue;
     if (node.attribs['custom-element'] !== 'amp-bind') continue;
     return true;
