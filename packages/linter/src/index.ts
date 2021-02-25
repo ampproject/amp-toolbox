@@ -29,6 +29,7 @@ import { BlockingExtensionsPreloaded } from "./rules/BlockingExtensionsPreloaded
 import { FontsArePreloaded } from "./rules/FontsArePreloaded";
 import { HeroImageIsDefined } from "./rules/HeroImageIsDefined";
 import { FastGoogleFontsDisplay } from "./rules/FastGoogleFontsDisplay";
+import { NoIconFontIsUsed } from "./rules/NoIconFontIsUsed";
 import { GoogleFontPreconnect } from "./rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "./rules/BoilerplateIsRemoved";
 import { AmpImgUsesSrcSet } from "./rules/AmpImgUsesSrcSet";
@@ -143,6 +144,7 @@ function testsForMode(type: LintMode) {
       BlockingExtensionsPreloaded,
       FontsArePreloaded,
       FastGoogleFontsDisplay,
+      NoIconFontIsUsed,
       GoogleFontPreconnect,
       IsTransformedAmp,
       BoilerplateIsRemoved,
