@@ -54,8 +54,8 @@ export class NoIconFontIsUsed extends Rule {
     );
 
     if (knownExternalStylesheets.length) {
-      return this.fail(
-        "Avoid using icon fonts to improve loading speed and accessibility."
+      return this.warn(
+        "Avoid using icon fonts to improve loading speed and accessibility"
       );
     }
 
@@ -108,8 +108,8 @@ export class NoIconFontIsUsed extends Rule {
       });
 
     if (iconFontMatches.length > 0) {
-      return this.fail(
-        "Avoid using icon fonts to improve loading speed and accessibility."
+      return this.warn(
+        "Avoid using icon fonts to improve loading speed and accessibility"
       );
     }
 
@@ -118,7 +118,7 @@ export class NoIconFontIsUsed extends Rule {
   meta() {
     return {
       url: "",
-      title: "Icon fonts can have a negative impact on LCP.",
+      title: "Page seems to use icon fonts",
       info: "",
     };
   }

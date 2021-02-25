@@ -254,7 +254,7 @@ describe(FastGoogleFontsDisplay.name, () => {
 
 describe(NoIconFontIsUsed.name, () => {
   it(`${NoIconFontIsUsed.name} - icon font usage`, async () => {
-    return assertFail(
+    return assertWarn(
       runLocalTest(
         NoIconFontIsUsed,
         `${__dirname}/local/NoIconFontIsUsed-1/source.html`
@@ -278,7 +278,7 @@ describe(NoIconFontIsUsed.name, () => {
     );
   });
   it(`${NoIconFontIsUsed.name} - usage of material icons icon font`, async () => {
-    return assertFail(
+    return assertWarn(
       runLocalTest(
         NoIconFontIsUsed,
         `${__dirname}/local/NoIconFontIsUsed-4/source.html`
