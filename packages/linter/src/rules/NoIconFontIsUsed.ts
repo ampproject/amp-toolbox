@@ -26,6 +26,14 @@ const ICON_FONT_IDENTIFIERS = [
     className: "ociton-",
     fontFamilies: ["Octicons"],
   },
+  {
+    className: "icn-",
+    fontFamilies: ["icon"],
+  },
+  {
+    className: "icon-",
+    fontFamilies: ["icon"],
+  },
 ];
 
 /**
@@ -35,7 +43,7 @@ export class NoIconFontIsUsed extends Rule {
   run({ $ }: Context) {
     // check for known classnames
     const iconFontCandidates = ICON_FONT_IDENTIFIERS.filter((identifier) => {
-      return $(`[class*=${identifier.className}]`).length > 0;
+      return $(`[class*=${identifier.className} i]`).length > 0;
     });
 
     if (iconFontCandidates.length === 0) {
