@@ -124,7 +124,7 @@ const appendAll = function (node, nodes) {
  * Returns the first child with the given tag name
  *
  * @param {Node} node
- * @param {String} tagName
+ * @param {string} tagName
  */
 const firstChildByTag = function (node, tagName) {
   if (!node || !node.children) {
@@ -137,11 +137,23 @@ const firstChildByTag = function (node, tagName) {
 /**
  * Returns true if an attribute with the given name exists
  * @param {Node} node
- * @param {String} attributeName
+ * @param {string} attribute
+ * @return {boolean}
  */
 const hasAttribute = function (node, attribute) {
   if (!node.attribs) return false;
   return attribute in node.attribs;
+};
+
+/**
+ * Sets the attribute to value.
+ * @param {Node} node
+ * @param {string} name
+ * @param {*} value
+ */
+const setAttribute = function (node, name, value) {
+  if (!node.attribs) node.attribs = {};
+  node.attribs[name] = value;
 };
 
 /**
@@ -195,6 +207,7 @@ module.exports = {
   insertText,
   insertBefore,
   hasAttribute,
+  setAttribute,
   firstChildByTag,
   move,
 };

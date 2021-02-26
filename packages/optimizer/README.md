@@ -90,6 +90,7 @@ Available options are:
 - [lts](#lts)
 - [markdown](#markdown)
 - [minify](#minify)
+- [optimizeAmpBind](#optimizeampbind)
 - [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
 - [verbose](#verbose)
@@ -237,6 +238,15 @@ Minifies the generated HTML output and inlined CSS.
 - used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
 
 **Warning:** this setting is not recommended when running AMP Optimizer in your backend on every request as execution time can increase by up to 7x.
+
+#### `optimizeAmpBind`
+
+Enables a considerably faster scanning method in `amp-bind`, by injecting a `i-amphtml-binding` attribute on all elements with a bound attribute.
+
+- name: `optimizeAmpBind`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [OptimizeAmpBind](lib/transformers/OptimizeAmpBind.js)
 
 #### `optimizeHeroImages`
 
