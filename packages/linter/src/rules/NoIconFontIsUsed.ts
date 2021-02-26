@@ -32,7 +32,7 @@ const ICON_FONT_IDENTIFIERS = [
   },
   {
     className: "icon-",
-    fontFamilies: ["icon"],
+    fontFamilies: ["icon", "icons", "icomoon"],
   },
 ];
 
