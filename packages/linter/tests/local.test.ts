@@ -253,7 +253,7 @@ describe(FastGoogleFontsDisplay.name, () => {
 });
 
 describe(NoIconFontIsUsed.name, () => {
-  it(`${NoIconFontIsUsed.name} - icon font usage`, async () => {
+  it(`${NoIconFontIsUsed.name} - icon font found`, async () => {
     return assertWarn(
       runLocalTest(
         NoIconFontIsUsed,
@@ -261,7 +261,7 @@ describe(NoIconFontIsUsed.name, () => {
       )
     );
   });
-  it(`${NoIconFontIsUsed.name} - no icon font usage`, async () => {
+  it(`${NoIconFontIsUsed.name} - no icon font found`, async () => {
     return assertPass(
       runLocalTest(
         NoIconFontIsUsed,
@@ -269,7 +269,7 @@ describe(NoIconFontIsUsed.name, () => {
       )
     );
   });
-  it(`${NoIconFontIsUsed.name} - suspicious class names, but no icon font`, async () => {
+  it(`${NoIconFontIsUsed.name} - suspicious class names`, async () => {
     return assertPass(
       runLocalTest(
         NoIconFontIsUsed,
@@ -277,11 +277,35 @@ describe(NoIconFontIsUsed.name, () => {
       )
     );
   });
-  it(`${NoIconFontIsUsed.name} - usage of material icons icon font`, async () => {
+  it(`${NoIconFontIsUsed.name} - material icons icon font found`, async () => {
     return assertWarn(
       runLocalTest(
         NoIconFontIsUsed,
         `${__dirname}/local/NoIconFontIsUsed-4/source.html`
+      )
+    );
+  });
+  it(`${NoIconFontIsUsed.name} - icomoon icon font found`, async () => {
+    return assertWarn(
+      runLocalTest(
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-5/source.html`
+      )
+    );
+  });
+  it(`${NoIconFontIsUsed.name} - icofont icon font found`, async () => {
+    return assertWarn(
+      runLocalTest(
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-6/source.html`
+      )
+    );
+  });
+  it(`${NoIconFontIsUsed.name} - nerd font icon font found`, async () => {
+    return assertWarn(
+      runLocalTest(
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-7/source.html`
       )
     );
   });
