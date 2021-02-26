@@ -23,10 +23,6 @@ const ICON_FONT_IDENTIFIERS = [
     fontFamilies: ["IcoFont"],
   },
   {
-    className: "octicon-",
-    fontFamilies: ["Octicons"],
-  },
-  {
     className: "icn-",
     fontFamilies: ["icon"],
   },
