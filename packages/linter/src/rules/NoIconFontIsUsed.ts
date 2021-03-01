@@ -83,23 +83,28 @@ export class NoIconFontIsUsed extends Rule {
       return false;
     };
 
-    const iconFontPlugin = postcss.plugin("postcss-icon-font-is-used", () => {
-      return (root) => {
-        root.nodes.forEach((rule) => {
-          if (rule.name === "font-face") {
-            for (const declaration of rule.nodes) {
-              if (declaration.prop === "font-family") {
-                // check if font-family matches candidate list
-                const match = isIconFontDeclaration(declaration.value);
-                if (match) {
-                  iconFontMatches.push(declaration);
+    const iconFontPlugin = () => {
+      return {
+        postcssPlugin: "postcss-icon-font-is-used-2",
+        Once(root) {
+          root.nodes.forEach((rule) => {
+            if (rule.name === "font-face") {
+              for (const declaration of rule.nodes) {
+                if (declaration.prop === "font-family") {
+                  // check if font-family matches candidate list
+                  const match = isIconFontDeclaration(declaration.value);
+                  if (match) {
+                    iconFontMatches.push(declaration);
+                  }
                 }
               }
             }
-          }
-        });
+          });
+        },
       };
-    });
+    };
+
+    iconFontPlugin.postcss = true;
 
     postcss([iconFontPlugin])
       .process(stylesText, {
