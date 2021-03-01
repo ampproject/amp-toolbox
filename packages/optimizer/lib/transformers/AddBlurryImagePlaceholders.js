@@ -77,10 +77,12 @@ class AddBlurryImagePlaceholders {
     // generation at runtime
     this.missingDependencies_ = false;
     if (!isDependencyInstalled('jimp') || !isDependencyInstalled('lru-cache')) {
-      this.log_.warn(
-        'jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
-          'for this transformer to work'
-      );
+      if (this.blurredPlaceholders_) {
+        this.log_.warn(
+          'jimp and lru-cache need to be installed via `npm install jimp lru-cache` ' +
+            'for this transformer to work'
+        );
+      }
       // we can't generate placeholders
       this.blurredPlaceholders_ = false;
       this.missingDependencies_ = true;
