@@ -309,6 +309,14 @@ describe(NoIconFontIsUsed.name, () => {
       )
     );
   });
+  it(`${NoIconFontIsUsed.name} - icofont with typical font awesome classnames found`, async () => {
+    return assertWarn(
+      runLocalTest(
+        NoIconFontIsUsed,
+        `${__dirname}/local/NoIconFontIsUsed-8/source.html`
+      )
+    );
+  });
 });
 
 describe(FontsArePreloaded.name, () => {
