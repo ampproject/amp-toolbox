@@ -49,7 +49,7 @@ function createCacheUrl(domainSuffix, url, servingType = null) {
   pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
   // Remove trailing slash added by url-parse
   if (!url.endsWith('/')) {
-    canonicalUrl.pathname = canonicalUrl.pathname.replace(/\/$/,'');
+    canonicalUrl.pathname = canonicalUrl.pathname.replace(/\/$/, '');
   }
   return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
     const cacheUrl = new Url(url);

@@ -1,3 +1,26 @@
+## v2.8.0-canary.4 (2021-02-12)
+
+#### :rocket: Enhancement
+* `linter`
+  * [#1153](https://github.com/ampproject/amp-toolbox/pull/1153) ♻️ Refactor icon font detection ([@lluerich](https://github.com/lluerich))
+  * [#1149](https://github.com/ampproject/amp-toolbox/pull/1149) 🔧 Add icomoon ([@lluerich](https://github.com/lluerich))
+  * [#1148](https://github.com/ampproject/amp-toolbox/pull/1148) ♻️ Refine icon font detection ([@lluerich](https://github.com/lluerich))
+  * [#1145](https://github.com/ampproject/amp-toolbox/pull/1145) 🚀 Add icon font linter rule ([@lluerich](https://github.com/lluerich))
+* `optimizer`
+  * [#1147](https://github.com/ampproject/amp-toolbox/pull/1147) Add amp-bind optimizer ([@jridgewell](https://github.com/jridgewell))
+  * [#1143](https://github.com/ampproject/amp-toolbox/pull/1143) Add extension scripts in logical order ([@schlessera](https://github.com/schlessera))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1151](https://github.com/ampproject/amp-toolbox/pull/1151) Show blurredPlaceholders warning only when enabled ([@att55](https://github.com/att55))
+  * [#1143](https://github.com/ampproject/amp-toolbox/pull/1143) Add extension scripts in logical order ([@schlessera](https://github.com/schlessera))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Atsuto Yamashita ([@att55](https://github.com/att55))
+- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
+- [@lluerich](https://github.com/lluerich)
+
 ## v2.8.0-canary.1 (2021-02-12)
 
 #### :bug: Bug Fix
