@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "2.8.0-canary.3",
+  "version": "2.8.0-canary.4",
   "description": "A linter for AMP documents",
   "repository": {
     "type": "git",
@@ -12,8 +12,8 @@
   "author": "AMPHTML Team",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.8.0-canary.0",
-    "@ampproject/toolbox-cache-url": "^2.8.0-canary.0",
-    "@ampproject/toolbox-optimizer": "^2.8.0-canary.3",
+    "@ampproject/toolbox-cache-url": "^2.8.0-canary.4",
+    "@ampproject/toolbox-optimizer": "^2.8.0-canary.4",
     "amphtml-validator": "1.0.34",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.5",
@@ -44,6 +44,6 @@
   "devDependencies": {
     "prettier": "2.2.1",
     "tap-parser": "10.1.0",
-    "typescript": "4.1.5"
+    "typescript": "4.2.2"
   }
 }

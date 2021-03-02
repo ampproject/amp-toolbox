@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cache-url",
-  "version": "2.8.0-canary.0",
+  "version": "2.8.0-canary.4",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "dist/amp-toolbox-cache-url.cjs.js",
   "types": "index.d.ts",
@@ -35,7 +35,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/cache-url",
   "dependencies": {
     "punycode": "2.1.1",
-    "url-parse": "1.4.7"
+    "url-parse": "1.5.1"
   },
   "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }
