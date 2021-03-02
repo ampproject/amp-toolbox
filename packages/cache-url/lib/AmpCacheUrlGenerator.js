@@ -47,7 +47,10 @@ function createCacheUrl(domainSuffix, url, servingType = null) {
   const canonicalUrl = new Url(url);
   let pathSegment = _getResourcePath(canonicalUrl.pathname, servingType);
   pathSegment += canonicalUrl.protocol === 'https:' ? '/s/' : '/';
-
+  // Remove trailing slash added by url-parse
+  if (!url.endsWith('/')) {
+    canonicalUrl.pathname = canonicalUrl.pathname.replace(/\/$/,'');
+  }
   return createCurlsSubdomain(canonicalUrl.toString()).then((curlsSubdomain) => {
     const cacheUrl = new Url(url);
     cacheUrl.protocol = 'https';
