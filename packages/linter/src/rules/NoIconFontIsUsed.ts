@@ -78,7 +78,7 @@ export class NoIconFontIsUsed extends Rule {
 
     const iconFontPlugin = () => {
       return {
-        postcssPlugin: "postcss-icon-font-is-used-2",
+        postcssPlugin: "postcss-icon-font-is-used",
         Once(root) {
           root.nodes.forEach((rule) => {
             if (rule.name === "font-face") {
