@@ -1,0 +1,38 @@
+{
+  "name": "@ampproject/toolbox-page-experience",
+  "version": "2.8.0-canary.4",
+  "description": "Optimize your AMP pages for page experiemnce",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gcloud functions deploy checkFonts --runtime nodejs14 --trigger-http --allow-unauthenticated --project amp-dev-staging",
+    "test": "jest",
+    "test:snapshot": "PAGE_EXPERIENCE_SNAPSHOT=true jest"
+  },
+  "bin": {
+    "px": "bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/page-experience"
+  },
+  "keywords": ["amp", "amp-toolbox", "page experience", "core web vitals"],
+  "files": ["bin", "lib", "index.js", "package.json", "../LICENSE", "README.md"],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ampproject/amp-toolbox/issues"
+  },
+  "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/page-experience",
+  "dependencies": {
+    "css-font-face-src": "^1.0.0",
+    "postcss": "8.2.6",
+    "postcss-safe-parser": "5.0.2",
+    "puppeteer": "7.1.0",
+    "tree-kill": "1.2.2"
+  },
+  "directories": {
+    "lib": "lib",
+    "bin": "bin"
+  }
+}

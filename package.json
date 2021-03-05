@@ -91,6 +91,7 @@
     "@ampproject/toolbox-linter": "file:packages/linter",
     "@ampproject/toolbox-optimizer": "file:packages/optimizer",
     "@ampproject/toolbox-optimizer-express": "file:packages/optimizer-express",
+    "@ampproject/toolbox-page-experience": "file:packages/page-experience",
     "@ampproject/toolbox-runtime-fetch": "file:packages/runtime-fetch",
     "@ampproject/toolbox-runtime-version": "file:packages/runtime-version",
     "@ampproject/toolbox-script-csp": "file:packages/script-csp",

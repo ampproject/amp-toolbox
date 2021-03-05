@@ -1,0 +1,11 @@
+{
+  "fontDisplay": {
+    "title": "Improve LCP using `font-display: optional`",
+    "url": "https://web.dev/optimize-webfont-loading/",
+    "message": "Load the critical webfont 'Open Sans' using `font-display: optional` to improve LCP on slow connections and avoid content shifts. ",
+    "info": {
+      "font": "Open Sans"
+    },
+    "status": "WARN"
+  }
+}
