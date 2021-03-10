@@ -20,6 +20,9 @@ test('parses src', () => {
   const styles = `
 @font-face {
   font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  unicode-range: U+A,U+20,U+26-29,U+2C-39,U+3F,U+41-59,U+61-69,U+6B-70,U+72-7A,U+A9,U+2019;
   src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"), url("/fonts/OpenSans-Regular-webfont.woff") format("woff");
 }
 `;

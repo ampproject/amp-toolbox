@@ -27,21 +27,55 @@ const DEFAULT_VIEWPORT = {
  * Renders a page in Puppeteer and collects all data required for the page experience recommendations.
  */
 class PageAnalyzer {
+  /**
+   * @param config optional configuration
+   * @param config.debug enable debug output, default false
+   * @param config.viewport the viewport size, default Pixel 5XL
+   */
   constructor(config = {}) {
     this.viewport = config.viewport || DEFAULT_VIEWPORT;
     this.debug = config.debug || false;
+    this.started = false;
   }
 
+  /**
+   * Start puppeteer
+   */
   async start() {
     this.browser = await puppeteer.launch();
+    this.started = true;
   }
 
+  /**
+   * Load a page in Puppeteer and collect data required by checks. Needs to be called after 'start'.
+   *
+   * @param {string} url the URL to analyze
+   * @return {Object} all data collected on the page
+   */
   async execute(url) {
+    if (!this.started) {
+      throw new Error('Puppeteer not running, please call `start` first.');
+    }
     const {page, remoteStyles} = await this.setupPage();
     await page.goto(url, {waitUntil: 'load'});
     return await this.gatherPageData(page, remoteStyles);
   }
 
+  /**
+   * Shutdown Puppeteer.
+   */
+  async shutdown() {
+    try {
+      await this.browser.close();
+    } finally {
+      treeKill(this.browser.process().pid, 'SIGKILL');
+      this.started = false;
+    }
+  }
+
+  /**
+   * @private
+   */
   async gatherPageData(page, remoteStyles) {
     const result = await page.evaluate(async () => {
       /* global document, window */
@@ -134,6 +168,7 @@ class PageAnalyzer {
         });
         return {
           criticalFonts: Array.from(criticalFonts),
+          // Make sure to remove later discovered critical fonts from the list of non-critical ones
           nonCriticalFonts: Array.from(nonCriticalFonts).filter((font) => !criticalFonts.has(font)),
         };
       };
@@ -155,6 +190,9 @@ class PageAnalyzer {
     };
   }
 
+  /**
+   * @private
+   */
   async setupPage() {
     const page = await this.browser.newPage();
     const remoteStyles = [];
@@ -192,11 +230,6 @@ class PageAnalyzer {
       page,
       remoteStyles,
     };
-  }
-
-  async shutdown() {
-    await this.browser.close();
-    treeKill(this.browser.process().pid, 'SIGKILL');
   }
 }
 
