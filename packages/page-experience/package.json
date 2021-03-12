@@ -41,9 +41,9 @@
     "@ampproject/toolbox-linter": "2.7.6",
     "cheerio": "1.0.0-rc.5",
     "css-font-face-src": "1.0.0",
-    "postcss": "8.2.6",
+    "postcss": "8.2.8",
     "postcss-safe-parser": "5.0.2",
-    "puppeteer": "7.1.0",
+    "puppeteer": "8.0.0",
     "tree-kill": "1.2.2"
   },
   "directories": {
