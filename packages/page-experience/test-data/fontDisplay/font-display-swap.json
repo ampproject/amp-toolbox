@@ -1,0 +1,12 @@
+{
+  "fontDisplay": {
+    "title": "Avoid content shift caused by font swapping",
+    "url": "https://web.dev/preload-optional-fonts/",
+    "message": "Consider loading the critical webfont 'Open Sans' using `font-display: optional` instead of `font-display: swap`. This can avoid content shifts on page load caused by font swapping. ",
+    "info": {
+      "font": "Open Sans",
+      "fontDisplay": "swap"
+    },
+    "status": "WARN"
+  }
+}
