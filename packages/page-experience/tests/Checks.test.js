@@ -18,7 +18,7 @@ const path = require('path');
 const fileUrl = require('file-url');
 
 const PageExperienceGuide = require('../lib/PageExperienceGuide');
-const TEST_DATA_DIR = path.join(__dirname, '../test-data');
+const TEST_DATA_DIR = path.join(__dirname, '../test-data/checks');
 let CREATE_SNAPSHOT = process.env.PAGE_EXPERIENCE_SNAPSHOT;
 
 const pageExperienceGuide = new PageExperienceGuide();
