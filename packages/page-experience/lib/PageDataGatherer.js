@@ -61,8 +61,10 @@ class PageAnalyzer {
       throw new Error('Puppeteer not running, please call `start` first.');
     }
     const {page, remoteStyles} = await this.setupPage();
-    await page.goto(url, {waitUntil: 'load'});
-    return await this.gatherPageData(page, remoteStyles);
+    const response = await page.goto(url, {waitUntil: 'load'});
+
+    const html = await response.text();
+    return await this.gatherPageData(page, {remoteStyles, html, headers: response.headers()});
   }
 
   /**
@@ -80,7 +82,8 @@ class PageAnalyzer {
   /**
    * @private
    */
-  async gatherPageData(page, remoteStyles) {
+  async gatherPageData(page, globalData) {
+    const {remoteStyles, html, headers} = globalData;
     const result = await page.evaluate(async () => {
       /* global document, window */
 
@@ -178,6 +181,7 @@ class PageAnalyzer {
       };
 
       return {
+        url: window.location,
         origin: window.location.origin,
         fontPreloads: collectFontPreloads(),
         localStyles: collectInlineStyles(),
@@ -186,11 +190,14 @@ class PageAnalyzer {
     });
 
     return {
-      remoteStyles: remoteStyles,
       criticalFonts: result.criticalFonts,
       nonCriticalFonts: result.nonCriticalFonts,
-      fontPreloads: result.fontPreloads,
       fontFaces: parseFontfaces([...remoteStyles, ...result.localStyles].join('\n'), result.origin),
+      fontPreloads: result.fontPreloads,
+      headers,
+      html,
+      remoteStyles: remoteStyles,
+      url: result.url,
     };
   }
 
