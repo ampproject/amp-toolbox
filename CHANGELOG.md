@@ -1,3 +1,18 @@
+## v2.8.0-canary.5 (2021-03-12)
+
+#### :rocket: Enhancement
+* `page-experience`
+  * [#1160](https://github.com/ampproject/amp-toolbox/pull/1160) Run amp-linter checks as part of this module ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1156](https://github.com/ampproject/amp-toolbox/pull/1156) Add page experience guide ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :memo: Documentation
+* `optimizer`
+  * [#1154](https://github.com/ampproject/amp-toolbox/pull/1154) Add warning about esmModulesEnabled + amppkg ([@twifkak](https://github.com/twifkak))
+
+#### Committers: 2
+- Devin Mullins ([@twifkak](https://github.com/twifkak))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.4 (2021-02-12)
 
 #### :rocket: Enhancement
