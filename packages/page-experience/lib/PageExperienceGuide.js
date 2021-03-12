@@ -16,6 +16,9 @@
 const PageDataGatherer = require('./PageDataGatherer');
 
 const {readdir} = require('fs').promises;
+const {lint, LintMode} = require('@ampproject/toolbox-linter');
+const cheerio = require('cheerio');
+
 const path = require('path');
 
 const CHECK_DIR = path.join(__dirname, 'checks');
@@ -91,6 +94,22 @@ class PageExperienceGuide {
    */
   async runChecks(url, filter = '') {
     const pageData = await this.pageDataGatherer.execute(url);
+    const pxChecksResult = await this.runPageExperienceChecks(filter, pageData);
+    const linterResults = await this.runAmpLinter(filter, pageData);
+    return Object.assign(pxChecksResult, linterResults);
+  }
+
+  /**
+   * Teardown the guide and all running Puppeteer instances.
+   */
+  async teardown() {
+    this.pageDataGatherer.shutdown();
+  }
+
+  /**
+   * @private
+   */
+  async runPageExperienceChecks(filter, pageData) {
     let checksToRun = await this.filterChecks(filter);
     const recommendations = new Recommendations();
     for (const check of checksToRun) {
@@ -101,10 +120,29 @@ class PageExperienceGuide {
   }
 
   /**
-   * Teardown the guide and all running Puppeteer instances.
+   * @private
    */
-  async teardown() {
-    this.pageDataGatherer.shutdown();
+  async runAmpLinter(filter, pageData) {
+    const $ = cheerio.load(pageData.html);
+
+    const context = {
+      $,
+      headers: {},
+      raw: {
+        headers: pageData.headers,
+        body: pageData.html,
+      },
+      url: pageData.url,
+      mode: LintMode.PageExperience,
+    };
+
+    const result = await lint(context);
+    if (!filter) {
+      return result;
+    }
+    return {
+      filter: result[filter],
+    };
   }
 
   /**
