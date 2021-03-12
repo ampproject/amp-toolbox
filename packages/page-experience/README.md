@@ -11,7 +11,7 @@ const PageExperienceGuide = require('@ammproject/toolbox-page-experience');
   const pageExperienceGuide = new PageExperienceGuide();
   const result = pageExperienceGuide.analyze('https://amp.dev');
   console.log('result')
-})
+})()
 ```
 
 ## Development
