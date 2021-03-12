@@ -40,7 +40,7 @@
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "0c3af53a631fffeffbe3da1f2d626172fc996f1b",
+  "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403",
   "devDependencies": {
     "prettier": "2.2.1",
     "tap-parser": "10.1.0",

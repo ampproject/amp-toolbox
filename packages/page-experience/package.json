@@ -49,5 +49,6 @@
   "directories": {
     "lib": "lib",
     "bin": "bin"
-  }
+  },
+  "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"
 }
