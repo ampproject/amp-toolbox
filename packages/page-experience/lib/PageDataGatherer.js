@@ -21,6 +21,8 @@ const parseFontfaces = require('./helpers/parseFontface');
 const DEFAULT_VIEWPORT = {
   width: 393,
   height: 851,
+  isMobile: true,
+  hasTouch: true,
 };
 
 /**
@@ -42,7 +44,9 @@ class PageAnalyzer {
    * Start puppeteer
    */
   async start() {
-    this.browser = await puppeteer.launch();
+    this.browser = await puppeteer.launch({
+      viewport: this.viewport,
+    });
     this.started = true;
   }
 
@@ -199,7 +203,6 @@ class PageAnalyzer {
     if (this.debug) {
       page.on('console', (msg) => console.log('[PAGE LOG] ', msg.text()));
     }
-    page.setViewport(this.viewport);
     page.setRequestInterception(true);
 
     // Abort requests not needed for rendering the page
