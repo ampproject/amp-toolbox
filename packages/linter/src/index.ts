@@ -142,8 +142,6 @@ function testsForMode(type: LintMode) {
       IsValid,
       RuntimeIsPreloaded,
       BlockingExtensionsPreloaded,
-      FontsArePreloaded,
-      FastGoogleFontsDisplay,
       NoIconFontIsUsed,
       GoogleFontPreconnect,
       IsTransformedAmp,
