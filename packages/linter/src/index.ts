@@ -147,7 +147,6 @@ function testsForMode(type: LintMode) {
       IsTransformedAmp,
       BoilerplateIsRemoved,
       ModuleRuntimeUsed,
-      HeroImageIsDefined,
       AmpImgUsesSrcSet,
       AmpImgPlaceholderIsDataUri,
       ViewportDisablesTapDelay,
