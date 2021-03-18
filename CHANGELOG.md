@@ -1,3 +1,15 @@
+## v2.8.0-canary.6 (2021-03-18)
+
+#### :rocket: Enhancement
+* `linter`, `page-experience`
+  * [#1164](https://github.com/ampproject/amp-toolbox/pull/1164) Add more detailed info to font checks ([@sebastianbenz](https://github.com/sebastianbenz))
+* `linter`
+  * [#1165](https://github.com/ampproject/amp-toolbox/pull/1165) Check for latest component versions ([@lluerich](https://github.com/lluerich))
+
+#### Committers: 2
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- [@lluerich](https://github.com/lluerich)
+
 ## v2.8.0-canary.5 (2021-03-12)
 
 #### :rocket: Enhancement
