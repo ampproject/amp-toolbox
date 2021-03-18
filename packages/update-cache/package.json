@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-update-cache",
-  "version": "2.8.0-canary.5",
+  "version": "2.8.0-canary.6",
   "description": "Implements the AMP update-cache API, as described at https://developers.google.com/amp/cache/update-cache ",
   "main": "index.js",
   "repository": {
@@ -26,7 +26,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/update-cache",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.8.0-canary.0",
-    "@ampproject/toolbox-cache-url": "^2.8.0-canary.5",
+    "@ampproject/toolbox-cache-url": "^2.8.0-canary.6",
     "jsrsasign": "10.1.13"
   },
   "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"

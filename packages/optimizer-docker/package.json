@@ -1,6 +1,6 @@
 {
   "name": "toolbox-optimizer-docker",
-  "version": "2.8.0-canary.5",
+  "version": "2.8.0-canary.6",
   "description": "Thin wrapper around the amp-optimizer",
   "main": "index.js",
   "private": true,
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer",
   "dependencies": {
-    "@ampproject/toolbox-optimizer": "^2.8.0-canary.5"
+    "@ampproject/toolbox-optimizer": "^2.8.0-canary.6"
   },
   "gitHead": "b86ff10f2a20a9e5f810f31a694c7f020eb291ae"
 }

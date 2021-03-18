@@ -10,7 +10,7 @@
     "amphtml-validator": "1.0.34",
     "node-fetch": "^2.6.1"
   },
-  "version": "2.8.0-canary.5",
+  "version": "2.8.0-canary.6",
   "main": "./plugin.js",
   "peerDependencies": {
     "lighthouse": ">=7.2.0"

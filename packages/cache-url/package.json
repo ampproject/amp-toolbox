@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cache-url",
-  "version": "2.8.0-canary.5",
+  "version": "2.8.0-canary.6",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "dist/amp-toolbox-cache-url.cjs.js",
   "types": "index.d.ts",

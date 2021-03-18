@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-optimizer-express",
-  "version": "2.8.0-canary.5",
+  "version": "2.8.0-canary.6",
   "description": "Express middleware for @ampproject/toolbox-optimizer",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer-express",
   "dependencies": {
     "@ampproject/toolbox-core": "^2.8.0-canary.0",
-    "@ampproject/toolbox-optimizer": "^2.8.0-canary.5",
+    "@ampproject/toolbox-optimizer": "^2.8.0-canary.6",
     "@ampproject/toolbox-runtime-version": "^2.8.0-canary.0",
     "mime-types": "2.1.29",
     "whatwg-url": "8.4.0"

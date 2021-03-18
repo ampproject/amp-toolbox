@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cors",
-  "version": "2.8.0-canary.5",
+  "version": "2.8.0-canary.6",
   "description": "An express middleware implementing the AMP CORS protocol",
   "main": "index.js",
   "keywords": [
@@ -20,7 +20,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.8.0-canary.0",
-    "@ampproject/toolbox-cache-url": "^2.8.0-canary.5",
+    "@ampproject/toolbox-cache-url": "^2.8.0-canary.6",
     "@ampproject/toolbox-core": "^2.8.0-canary.0"
   },
   "bugs": {
