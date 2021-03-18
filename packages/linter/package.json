@@ -14,6 +14,7 @@
     "@ampproject/toolbox-cache-list": "^2.8.0-canary.0",
     "@ampproject/toolbox-cache-url": "^2.8.0-canary.5",
     "@ampproject/toolbox-optimizer": "^2.8.0-canary.5",
+    "@ampproject/toolbox-validator-rules": "^2.8.0-canary.0",
     "amphtml-validator": "1.0.34",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.5",

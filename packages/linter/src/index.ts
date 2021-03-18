@@ -34,6 +34,7 @@ import { GoogleFontPreconnect } from "./rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "./rules/BoilerplateIsRemoved";
 import { AmpImgUsesSrcSet } from "./rules/AmpImgUsesSrcSet";
 import { ViewportDisablesTapDelay } from "./rules/ViewportDisablesTapDelay";
+import { IsUsingLatestComponentVersion } from "./rules/IsUsingLatestComponentVersion";
 import { RuleConstructor } from "./rule";
 import { isArray } from "util";
 import * as cheerio from "cheerio";
@@ -153,6 +154,7 @@ function testsForMode(type: LintMode) {
       AmpImgUsesSrcSet,
       AmpImgPlaceholderIsDataUri,
       ViewportDisablesTapDelay,
+      IsUsingLatestComponentVersion,
     ])
   );
   return tests.get(type) || [];
