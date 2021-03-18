@@ -1,9 +1,28 @@
 {
   "fontPreloading": {
     "title": "Preload critical fonts",
-    "url": "https://web.dev/codelab-preload-web-fonts/",
-    "message": "Critical font 'Open Sans' is not preloaded. Add `<link rel=\"preload\" href=\"file:///fonts/OpenSans-Regular-webfont.woff2\" as=\"font\" crossorigin>` to your `<head>`.",
-    "info": "",
-    "status": "FAIL"
+    "url": "https://web.dev/optimize-webfont-loading/",
+    "message": "Preload critical fonts to help the browser discover fonts used in the first viewport quicker.",
+    "details": {
+      "headings": [
+        {
+          "label": "Font",
+          "valueType": "text",
+          "key": "font"
+        },
+        {
+          "key": "fix",
+          "valueType": "text",
+          "label": "Suggestion"
+        }
+      ]
+    },
+    "items": [
+      {
+        "font": "Open Sans",
+        "fix": "Add `<link rel=\"preload\" href=\"file:///fonts/OpenSans-Regular-webfont.woff2\" as=\"font\" crossorigin>` to your `<head>`."
+      }
+    ],
+    "status": "WARN"
   }
 }

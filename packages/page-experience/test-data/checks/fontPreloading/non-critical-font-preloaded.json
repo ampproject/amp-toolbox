@@ -1,9 +1,1 @@
-{
-  "fontPreloading": {
-    "title": "Preload only critical fonts",
-    "url": "https://web.dev/optimize-webfont-loading/#preload-your-webfont-resources",
-    "message": "Avoid preloading non-critical font 'file:///fonts/OpenSans-Regular-webfont.woff2' as it is not used in the first viewport.",
-    "info": "",
-    "status": "FAIL"
-  }
-}
+{}

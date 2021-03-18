@@ -22,49 +22,48 @@
  * @param {Object} pageData
  */
 const checkDisplayOptional = (pageData, result) => {
+  const items = [];
   for (const font of pageData.criticalFonts) {
     const fontface = pageData.fontFaces.get(font);
     if (!fontface) {
       continue;
     }
-
     if (!fontface.fontDisplay) {
-      result.warn({
-        title: 'Improve LCP using `font-display: optional`',
-        url: 'https://web.dev/optimize-webfont-loading/',
-        message: `Load the critical webfont '${font}' using \`font-display: optional\` to improve LCP on slow connections and avoid content shifts. ${maybeAddGoogleFontsTip(
-          fontface
-        )}`,
-        info: {
-          font,
-          fontDisplay: font.fontDisplay,
-        },
+      items.push({
+        font,
+        fix: generateSuggestion(fontface),
       });
     } else if (fontface.fontDisplay !== 'optional') {
       // TODO: only show this warning if CLS > 0
-      result.warn({
-        title: 'Avoid content shift caused by font swapping',
-        url: 'https://web.dev/preload-optional-fonts/',
-        message: `Consider loading the critical webfont '${font}' using \`font-display: optional\` instead of \`font-display: ${
-          fontface.fontDisplay
-        }\`. This can avoid content shifts on page load caused by font swapping. ${maybeAddGoogleFontsTip(
-          fontface
-        )}`,
-        info: {
-          font,
-          fontDisplay: fontface.fontDisplay,
-        },
+      items.push({
+        font,
+        fix: generateSuggestion(fontface),
       });
     }
   }
+  if (items.length === 0) {
+    return;
+  }
+  result.warn({
+    title: 'Improve LCP and CLS using `font-display: optional`',
+    url: 'https://web.dev/optimize-webfont-loading/',
+    message: `Load the critical webfonts using \`font-display: optional\` to improve LCP on slow connections and avoid content shifts.`,
+    details: {
+      headings: [
+        {label: 'Font', valueType: 'text', key: 'font'},
+        {key: 'fix', valueType: 'text', label: 'Suggestion'},
+      ],
+    },
+    items,
+  });
 };
 
-function maybeAddGoogleFontsTip(fontface) {
+function generateSuggestion(fontface) {
   const isGoogleFont = fontface.mainSrc && fontface.mainSrc.startsWith('https://fonts.gstatic.com');
   if (!isGoogleFont) {
-    return '';
+    return 'Add `font-display: optional` to your font-face declaration.';
   }
-  return 'Add the `&display=optional` parameter to the end of your Google Fonts URL to enable ([read more](https://web.dev/font-display/#google-fonts)).';
+  return 'Add the `&display=optional` parameter to the end of your Google Font import declaration ([read more](https://web.dev/font-display/#google-fonts)).';
 }
 
 module.exports = checkDisplayOptional;

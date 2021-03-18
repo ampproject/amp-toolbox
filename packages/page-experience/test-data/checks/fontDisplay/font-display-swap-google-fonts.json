@@ -1,12 +1,28 @@
 {
   "fontDisplay": {
-    "title": "Avoid content shift caused by font swapping",
-    "url": "https://web.dev/preload-optional-fonts/",
-    "message": "Consider loading the critical webfont 'Open Sans' using `font-display: optional` instead of `font-display: swap`. This can avoid content shifts on page load caused by font swapping. Add the `&display=optional` parameter to the end of your Google Fonts URL to enable ([read more](https://web.dev/font-display/#google-fonts)).",
-    "info": {
-      "font": "Open Sans",
-      "fontDisplay": "swap"
+    "title": "Improve LCP and CLS using `font-display: optional`",
+    "url": "https://web.dev/optimize-webfont-loading/",
+    "message": "Load the critical webfonts using `font-display: optional` to improve LCP on slow connections and avoid content shifts.",
+    "details": {
+      "headings": [
+        {
+          "label": "Font",
+          "valueType": "text",
+          "key": "font"
+        },
+        {
+          "key": "fix",
+          "valueType": "text",
+          "label": "Suggestion"
+        }
+      ]
     },
+    "items": [
+      {
+        "font": "Open Sans",
+        "fix": "Add the `&display=optional` parameter to the end of your Google Font import declaration ([read more](https://web.dev/font-display/#google-fonts))."
+      }
+    ],
     "status": "WARN"
   }
 }
