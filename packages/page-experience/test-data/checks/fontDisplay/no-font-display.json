@@ -1,11 +1,28 @@
 {
   "fontDisplay": {
-    "title": "Improve LCP using `font-display: optional`",
+    "title": "Improve LCP and CLS using `font-display: optional`",
     "url": "https://web.dev/optimize-webfont-loading/",
-    "message": "Load the critical webfont 'Open Sans' using `font-display: optional` to improve LCP on slow connections and avoid content shifts. ",
-    "info": {
-      "font": "Open Sans"
+    "message": "Load the critical webfonts using `font-display: optional` to improve LCP on slow connections and avoid content shifts.",
+    "details": {
+      "headings": [
+        {
+          "label": "Font",
+          "valueType": "text",
+          "key": "font"
+        },
+        {
+          "key": "fix",
+          "valueType": "text",
+          "label": "Suggestion"
+        }
+      ]
     },
+    "items": [
+      {
+        "font": "Open Sans",
+        "fix": "Add `font-display: optional` to your font-face declaration."
+      }
+    ],
     "status": "WARN"
   }
 }

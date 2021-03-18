@@ -1,9 +1,1 @@
-{
-  "fontPreloading": {
-    "title": "Self-host Google Fonts",
-    "url": "https://www.tunetheweb.com/blog/should-you-self-host-google-fonts/",
-    "message": "Consider self-hosting and preloading 'Open Sans'. The font is used in the first viewport and self-hosting Google Fonts can improve LCP times. Important: run a few tests first, because if you are not using a CDN or your server response times are slow, this might not have a positive impact.",
-    "info": "",
-    "status": "WARN"
-  }
-}
+{}

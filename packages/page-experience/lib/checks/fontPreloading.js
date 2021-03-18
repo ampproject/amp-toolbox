@@ -20,25 +20,17 @@
  * @param {Object} pageData
  */
 const checkPreloads = (pageData, result) => {
+  const items = [];
   for (const font of pageData.criticalFonts) {
     const fontface = pageData.fontFaces.get(font);
     if (!fontface || !fontface.mainSrc) {
       continue;
     }
     if (!pageData.fontPreloads.includes(fontface.mainSrc)) {
-      if (fontface.mainSrc.startsWith('https://fonts.gstatic.com')) {
-        result.warn({
-          title: 'Self-host Google Fonts',
-          url: 'https://www.tunetheweb.com/blog/should-you-self-host-google-fonts/',
-          message: `Consider self-hosting and preloading '${font}'. The font is used in the first viewport and self-hosting Google Fonts can improve LCP times. Important: run a few tests first, because if you are not using a CDN or your server response times are slow, this might not have a positive impact.`,
-          info: '',
-        });
-      } else {
-        result.fail({
-          title: 'Preload critical fonts',
-          url: 'https://web.dev/codelab-preload-web-fonts/',
-          message: `Critical font '${font}' is not preloaded. Add \`<link rel="preload" href="${fontface.mainSrc}" as="font" crossorigin>\` to your \`<head>\`.`,
-          info: '',
+      if (!fontface.mainSrc.startsWith('https://fonts.gstatic.com')) {
+        items.push({
+          font,
+          fix: `Add \`<link rel="preload" href="${fontface.mainSrc}" as="font" crossorigin>\` to your \`<head>\`.`,
         });
       }
     }
@@ -50,14 +42,32 @@ const checkPreloads = (pageData, result) => {
     }
     if (pageData.fontPreloads.includes(fontface.mainSrc)) {
       // TODO: investigate how we can avoid only optimizing for mobile
+      /*
       result.fail({
         title: 'Preload only critical fonts',
         url: 'https://web.dev/optimize-webfont-loading/#preload-your-webfont-resources',
         message: `Avoid preloading non-critical font '${fontface.mainSrc}' as it is not used in the first viewport.`,
         info: '',
       });
+      */
     }
   }
+  if (items.length === 0) {
+    return;
+  }
+  result.warn({
+    title: 'Preload critical fonts',
+    url: 'https://web.dev/optimize-webfont-loading/',
+    message:
+      'Preload critical fonts to help the browser discover fonts used in the first viewport quicker.',
+    details: {
+      headings: [
+        {label: 'Font', valueType: 'text', key: 'font'},
+        {key: 'fix', valueType: 'text', label: 'Suggestion'},
+      ],
+    },
+    items,
+  });
 };
 
 module.exports = checkPreloads;
