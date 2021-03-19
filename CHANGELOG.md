@@ -1,3 +1,12 @@
+## v2.8.0-canary.7 (2021-03-19)
+
+#### :rocket: Enhancement
+* `page-experience`
+  * [#1169](https://github.com/ampproject/amp-toolbox/pull/1169) Give page specific advice on how to fix fonts ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.7  (2021-03-19)
 
 #### :bug: Bug Fix
