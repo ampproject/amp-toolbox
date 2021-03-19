@@ -186,11 +186,9 @@ class PageAnalyzer {
        * @return {Array<string>}
        */
       const collectInitialIframes = () => {
-        const iframes = [...document.querySelectorAll('iframe')]
+        return [...document.querySelectorAll('amp-iframe')]
           .filter(isElementInViewport)
-          .map((i) => i.src);
-
-        return iframes.length > 0 ? iframes : null;
+          .map((i) => i.getAttribute('src'));
       };
 
       return {
@@ -198,14 +196,14 @@ class PageAnalyzer {
         origin: window.location.origin,
         fontPreloads: collectFontPreloads(),
         localStyles: collectInlineStyles(),
-        iframes: collectInitialIframes(),
+        criticalIframes: collectInitialIframes(),
         ...collectFontsUsedOnPage(),
       };
     });
 
     return {
       criticalFonts: result.criticalFonts,
-      iframes: result.iframes,
+      criticalIframes: result.criticalIframes,
       nonCriticalFonts: result.nonCriticalFonts,
       fontFaces: parseFontfaces([...remoteStyles, ...result.localStyles].join('\n'), result.origin),
       fontPreloads: result.fontPreloads,

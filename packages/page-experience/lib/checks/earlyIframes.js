@@ -20,7 +20,7 @@
  * @param {Object} pageData
  */
 const earlyIframes = (pageData, result) => {
-  if (pageData.iframes === null) {
+  if (pageData.criticalIframes.length === 0) {
     return;
   }
 
@@ -28,12 +28,12 @@ const earlyIframes = (pageData, result) => {
     title: 'Avoid iframes at the begining of pages',
     message:
       'You have iframes at the top of your page - move them below the initial viewport to improve your loading time',
-    details: {
-      headings: [
-        {label: 'Iframe', valueType: 'text', key: 'iframe'},
-        {key: 'fix', valueType: 'text', label: 'Suggestion'},
-      ],
-    },
+  });
+  result.addDetails({
+    headings: [{label: 'src', valueType: 'text', key: 'src'}],
+    items: pageData.criticalIframes.map((iframeSrc) => {
+      return {src: iframeSrc};
+    }),
   });
 };
 
