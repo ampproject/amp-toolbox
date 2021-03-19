@@ -16,7 +16,7 @@
       "items": [
         {
           "font": "Open Sans",
-          "fix": "Add `font-display: optional` to your font-face declaration."
+          "fix": "Add `font-display: optional`"
         }
       ]
     }

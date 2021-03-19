@@ -16,7 +16,7 @@
       "items": [
         {
           "font": "Open Sans",
-          "fix": "Add `<link rel=\"preload\" href=\"file:///fonts/OpenSans-Regular-webfont.woff2\" as=\"font\" crossorigin>` to your `<head>`."
+          "fix": "Add `<link rel=\"preload\" href=\"file:///fonts/OpenSans-Regular-webfont.woff2\" as=\"font\" crossorigin>`."
         }
       ]
     }
