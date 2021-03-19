@@ -28,7 +28,9 @@ const CHECK_DIR = path.join(__dirname, 'checks');
  */
 class Recommendations {
   constructor() {
-    this.results = {};
+    this.results = {
+      details: {},
+    };
     this.currentCheck = '';
   }
 
@@ -46,6 +48,10 @@ class Recommendations {
 
   fail(result) {
     this.addResult('FAIL', result);
+  }
+
+  addDetails(details) {
+    this.results.details[this.currentCheck] = details;
   }
 
   addResult(status, result) {

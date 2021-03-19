@@ -60,12 +60,12 @@ const checkPreloads = (pageData, result) => {
     url: 'https://web.dev/optimize-webfont-loading/',
     message:
       'Preload critical fonts to help the browser discover fonts used in the first viewport quicker.',
-    details: {
-      headings: [
-        {label: 'Font', valueType: 'text', key: 'font'},
-        {key: 'fix', valueType: 'text', label: 'Suggestion'},
-      ],
-    },
+  });
+  result.addDetails({
+    headings: [
+      {label: 'Font', valueType: 'text', key: 'font'},
+      {key: 'fix', valueType: 'text', label: 'Suggestion'},
+    ],
     items,
   });
 };
