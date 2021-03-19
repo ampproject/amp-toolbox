@@ -1,3 +1,12 @@
+## v2.8.0-canary.7  (2021-03-19)
+
+#### :bug: Bug Fix
+* `page-experience`
+  * [#1166](https://github.com/ampproject/amp-toolbox/pull/1166) Move result details to top level ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.6 (2021-03-18)
 
 #### :rocket: Enhancement
