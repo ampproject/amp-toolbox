@@ -30,7 +30,7 @@ const checkPreloads = (pageData, result) => {
       if (!fontface.mainSrc.startsWith('https://fonts.gstatic.com')) {
         items.push({
           font,
-          fix: `Add \`<link rel="preload" href="${fontface.mainSrc}" as="font" crossorigin>\` to your \`<head>\`.`,
+          fix: `Add \`<link rel="preload" href="${fontface.mainSrc}" as="font" crossorigin>\`.`,
         });
       }
     }
