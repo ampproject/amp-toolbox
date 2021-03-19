@@ -48,12 +48,12 @@ const checkDisplayOptional = (pageData, result) => {
     title: 'Improve LCP and CLS using `font-display: optional`',
     url: 'https://web.dev/optimize-webfont-loading/',
     message: `Load the critical webfonts using \`font-display: optional\` to improve LCP on slow connections and avoid content shifts.`,
-    details: {
-      headings: [
-        {label: 'Font', valueType: 'text', key: 'font'},
-        {key: 'fix', valueType: 'text', label: 'Suggestion'},
-      ],
-    },
+  });
+  result.addDetails({
+    headings: [
+      {label: 'Font', valueType: 'text', key: 'font'},
+      {key: 'fix', valueType: 'text', label: 'Suggestion'},
+    ],
     items,
   });
 };
