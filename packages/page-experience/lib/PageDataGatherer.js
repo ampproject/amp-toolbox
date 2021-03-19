@@ -180,17 +180,30 @@ class PageAnalyzer {
         };
       };
 
+      /**
+       * Returns am array of URLs representing any iframe found in the initial viewport of a page
+       *
+       * @return {Array<string>}
+       */
+      const collectInitialIframes = () => {
+        return [...document.querySelectorAll('amp-iframe')]
+          .filter(isElementInViewport)
+          .map((i) => i.getAttribute('src'));
+      };
+
       return {
         url: window.location.href,
         origin: window.location.origin,
         fontPreloads: collectFontPreloads(),
         localStyles: collectInlineStyles(),
+        criticalIframes: collectInitialIframes(),
         ...collectFontsUsedOnPage(),
       };
     });
 
     return {
       criticalFonts: result.criticalFonts,
+      criticalIframes: result.criticalIframes,
       nonCriticalFonts: result.nonCriticalFonts,
       fontFaces: parseFontfaces([...remoteStyles, ...result.localStyles].join('\n'), result.origin),
       fontPreloads: result.fontPreloads,
