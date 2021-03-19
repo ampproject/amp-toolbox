@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-linter",
-  "version": "2.8.0-canary.4",
+  "version": "2.8.0-canary.6",
   "description": "A linter for AMP documents",
   "repository": {
     "type": "git",
@@ -12,8 +12,9 @@
   "author": "AMPHTML Team",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "^2.8.0-canary.0",
-    "@ampproject/toolbox-cache-url": "^2.8.0-canary.4",
-    "@ampproject/toolbox-optimizer": "^2.8.0-canary.4",
+    "@ampproject/toolbox-cache-url": "^2.8.0-canary.6",
+    "@ampproject/toolbox-optimizer": "^2.8.0-canary.6",
+    "@ampproject/toolbox-validator-rules": "^2.8.0-canary.0",
     "amphtml-validator": "1.0.34",
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.5",
@@ -21,9 +22,9 @@
     "cross-fetch": "3.0.6",
     "debug": "4.3.1",
     "execa": "5.0.0",
-    "postcss": "8.2.6",
+    "postcss": "8.2.8",
     "postcss-safe-parser": "5.0.2",
-    "probe-image-size": "6.0.0",
+    "probe-image-size": "7.0.0",
     "throat": "6.0.1"
   },
   "bugs": {
@@ -40,10 +41,10 @@
   "prettier": {
     "quoteProps": "consistent"
   },
-  "gitHead": "b86ff10f2a20a9e5f810f31a694c7f020eb291ae",
+  "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403",
   "devDependencies": {
     "prettier": "2.2.1",
     "tap-parser": "10.1.0",
-    "typescript": "4.2.2"
+    "typescript": "4.2.3"
   }
 }

@@ -122,6 +122,8 @@ Enables the smaller ESM module version of AMP runtime and components:
 <script async src="https://cdn.ampproject.org/v0.mjs" type="module" crossorigin="anonymous"></script>
 ```
 
+**Warning: This is incompatible with AMP Packager unless using a prerelease version containing [this commit](https://github.com/ampproject/amppackager/commit/92387ecf97e420eec10b378282383c59f95ab45f).**
+
 - name: `esmModulesEnabled`
 - valid options: `[true|false]`
 - default: `true`

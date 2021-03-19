@@ -28,6 +28,7 @@ import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
 import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
 import { AmpImgUsesSrcSet } from "../src/rules/AmpImgUsesSrcSet";
 import { ViewportDisablesTapDelay } from "../src/rules/ViewportDisablesTapDelay";
+import { IsUsingLatestComponentVersion } from "../src/rules/IsUsingLatestComponentVersion";
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -691,6 +692,26 @@ describe(ViewportDisablesTapDelay.name, () => {
       runLocalTest(
         ViewportDisablesTapDelay,
         `${__dirname}/local/ViewportDisablesTapDelay-3/source.html`
+      )
+    );
+  });
+});
+
+describe(IsUsingLatestComponentVersion.name, () => {
+  it(`${IsUsingLatestComponentVersion.name} - Page is using latest version of components`, async () => {
+    return assertPass(
+      runLocalTest(
+        IsUsingLatestComponentVersion,
+        `${__dirname}/local/IsUsingLatestComponentVersion-1/source.html`
+      )
+    );
+  });
+
+  it(`${IsUsingLatestComponentVersion.name} - Page is using old version of a component`, async () => {
+    return assertWarn(
+      runLocalTest(
+        IsUsingLatestComponentVersion,
+        `${__dirname}/local/IsUsingLatestComponentVersion-2/source.html`
       )
     );
   });

@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cache-url",
-  "version": "2.8.0-canary.4",
+  "version": "2.8.0-canary.6",
   "description": "Transform canonical URLs into AMP Cache URLs",
   "main": "dist/amp-toolbox-cache-url.cjs.js",
   "types": "index.d.ts",
@@ -8,7 +8,6 @@
   "browser": "dist/amp-toolbox-cache-url.umd.js",
   "scripts": {
     "build": "npx rollup -c",
-    "prepublish": "npm run build",
     "serve": "npx rollup -c -w"
   },
   "repository": {
@@ -37,5 +36,5 @@
     "punycode": "2.1.1",
     "url-parse": "1.5.1"
   },
-  "gitHead": "9b159391d776396512b01ec250fa76941713c763"
+  "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"
 }
