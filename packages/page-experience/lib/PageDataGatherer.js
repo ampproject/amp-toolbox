@@ -115,6 +115,23 @@ class PageAnalyzer {
       };
 
       /**
+       * Returns a bool that reflects if a transformed page is using
+       * the module version of the AMP runtime
+       *
+       * @return {Array<string>}
+       */
+      const collectTransformedRuntimeUse = () => {
+        const IS_TRANSFORMED = document.querySelectorAll('html[transformed]');
+        const RUNTIME_MODULE = document.querySelectorAll('script[src$="v0.mjs"]');
+
+        if (!IS_TRANSFORMED) {
+          return null
+        }
+
+        return RUNTIME_MODULE.length > 0
+      };
+
+      /**
        * Returns a list of all font preload hrefs. URLs are normalized to the current origin.
        *
        * @return {Array<string>} a list of URLs
@@ -185,6 +202,7 @@ class PageAnalyzer {
         origin: window.location.origin,
         fontPreloads: collectFontPreloads(),
         localStyles: collectInlineStyles(),
+        usingModuleVersion: collectTransformedRuntimeUse(),
         ...collectFontsUsedOnPage(),
       };
     });
@@ -192,6 +210,7 @@ class PageAnalyzer {
     return {
       criticalFonts: result.criticalFonts,
       nonCriticalFonts: result.nonCriticalFonts,
+      usingModuleVersion: result.usingModuleVersion,
       fontFaces: parseFontfaces([...remoteStyles, ...result.localStyles].join('\n'), result.origin),
       fontPreloads: result.fontPreloads,
       headers,
