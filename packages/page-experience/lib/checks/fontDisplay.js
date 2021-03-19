@@ -28,16 +28,22 @@ const checkDisplayOptional = (pageData, result) => {
     if (!fontface) {
       continue;
     }
+    const isGoogleFont =
+      fontface.mainSrc && fontface.mainSrc.startsWith('https://fonts.gstatic.com');
     if (!fontface.fontDisplay) {
       items.push({
         font,
-        fix: generateSuggestion(fontface),
+        fix: isGoogleFont
+          ? 'Add `&display=optional` to your Google Font import declaration. [Read more](https://web.dev/font-display/#google-fonts).'
+          : 'Add `font-display: optional`',
       });
     } else if (fontface.fontDisplay !== 'optional') {
       // TODO: only show this warning if CLS > 0
       items.push({
         font,
-        fix: generateSuggestion(fontface),
+        fix: isGoogleFont
+          ? `Replace \`$display=${fontface.fontDisplay}\` with \`&display: optional\` in your Google Font import declaration. [Read more](https://web.dev/font-display/#google-fonts).',`
+          : `Replace \`font-display: ${fontface.fontDisplay}\` with \`font-display: optional\``,
       });
     }
   }
@@ -57,13 +63,5 @@ const checkDisplayOptional = (pageData, result) => {
     items,
   });
 };
-
-function generateSuggestion(fontface) {
-  const isGoogleFont = fontface.mainSrc && fontface.mainSrc.startsWith('https://fonts.gstatic.com');
-  if (!isGoogleFont) {
-    return 'Add `font-display: optional` to your font-face declaration.';
-  }
-  return 'Add the `&display=optional` parameter to the end of your Google Font import declaration ([read more](https://web.dev/font-display/#google-fonts)).';
-}
 
 module.exports = checkDisplayOptional;
