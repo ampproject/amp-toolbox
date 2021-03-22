@@ -74,10 +74,10 @@ class PageExperienceGuide {
    * @param {string} url the URL to test
    * @return {Promise<Object>} Recommendations
    */
-  async analyze(url) {
+  async analyze(url, filter = '') {
     await this.setup();
     try {
-      return await this.runChecks(url);
+      return await this.runChecks(url, filter);
     } finally {
       await this.teardown();
     }

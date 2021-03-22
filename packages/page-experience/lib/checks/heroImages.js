@@ -34,13 +34,14 @@ const heroImages = (pageData, result) => {
     message:
       'Let AMP Caches and Optimizers optimize your hero images by adding the [`data-hero` attribute](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/amp-optimizer-guide/explainer/?format=websites#hero-image-optimization) to images in your first viewport.',
   });
+  const items = heroImageCandidates.map((img) => {
+    return {
+      image: `\`<amp-img src="${img.src}" layout="${img.layout}" width="${img.width}" height="${img.height}" ...>\``,
+    };
+  });
   result.addDetails({
     headings: [{label: 'Affected images', valueType: 'text', key: 'image'}],
-    items: heroImageCandidates.map((img) => {
-      return {
-        image: `\`<amp-img src="${img.src}" layout="${img.layout}" width="${img.width}" height="${img.height}" ...>\``,
-      };
-    }),
+    items,
   });
 };
 
