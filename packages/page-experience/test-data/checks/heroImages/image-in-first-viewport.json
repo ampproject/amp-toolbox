@@ -10,7 +10,7 @@
       ],
       "items": [
         {
-          "image": "`<amp-img src=\"/image.jpg\" layout=\"/image.jpg\" width=\"/image.jpg\" height=\"/image.jpg\" ...>`"
+          "image": "`<amp-img src=\"/image.jpg\" layout=\"responsive\" width=\"200\" height=\"200\" ...>`"
         }
       ]
     }
