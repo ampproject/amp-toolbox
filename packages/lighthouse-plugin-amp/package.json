@@ -13,7 +13,7 @@
   "version": "2.8.0-canary.6",
   "main": "./plugin.js",
   "peerDependencies": {
-    "lighthouse": ">=7.2.0"
+    "lighthouse": ">=7.3.0"
   },
   "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"
 }

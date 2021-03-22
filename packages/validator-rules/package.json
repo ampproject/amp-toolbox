@@ -24,7 +24,7 @@
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
   "dependencies": {
-    "cross-fetch": "3.0.6"
+    "cross-fetch": "3.1.2"
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/validator-rules",
   "directories": {
