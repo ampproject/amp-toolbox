@@ -1,4 +1,4 @@
-## v2.8.0-canary.10  (2021-03-22)
+## v2.8.0-canary.12  (2021-03-22)
 
 #### :rocket: Enhancement
 * `page-experience`
