@@ -20,5 +20,5 @@ const url = process.argv[2];
 
 (async () => {
   const result = await new PageExperienceGuide().analyze(url);
-  console.log(result);
+  console.log(JSON.stringify(result, null, 2));
 })();

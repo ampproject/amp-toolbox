@@ -18,12 +18,7 @@ const treeKill = require('tree-kill');
 const parseFontfaces = require('./helpers/parseFontface');
 
 // Pixel 5 XL
-const DEFAULT_VIEWPORT = {
-  width: 393,
-  height: 851,
-  isMobile: true,
-  hasTouch: true,
-};
+const DEFAULT_DEVICE = 'Pixel 2 XL';
 
 /**
  * Renders a page in Puppeteer and collects all data required for the page experience recommendations.
@@ -32,10 +27,13 @@ class PageAnalyzer {
   /**
    * @param config optional configuration
    * @param config.debug enable debug output, default false
-   * @param config.viewport the viewport size, default Pixel 5XL
+   * @param config.device the viewport size, default Pixel 2XL, see https://github.com/puppeteer/puppeteer/blob/main/src/common/DeviceDescriptors.ts for full list
    */
   constructor(config = {}) {
-    this.viewport = config.viewport || DEFAULT_VIEWPORT;
+    this.device = puppeteer.devices[config.device || DEFAULT_DEVICE];
+    if (!this.device) {
+      throw new Error(`Unknown device "${config.device}"`);
+    }
     this.debug = config.debug || false;
     this.started = false;
   }
@@ -45,7 +43,7 @@ class PageAnalyzer {
    */
   async start() {
     this.browser = await puppeteer.launch({
-      viewport: this.viewport,
+      timeout: 10000,
     });
     this.started = true;
   }
@@ -61,6 +59,7 @@ class PageAnalyzer {
       throw new Error('Puppeteer not running, please call `start` first.');
     }
     const {page, remoteStyles} = await this.setupPage();
+
     const response = await page.goto(url, {waitUntil: 'load'});
 
     const html = await response.text();
@@ -104,10 +103,10 @@ class PageAnalyzer {
        * @return {boolean}
        */
       const isCriticalElement = (elem) => {
-        const rect = elem.getBoundingClientRect();
         if (!isVisible(elem)) {
           return false;
         }
+        const rect = elem.getBoundingClientRect();
         return (
           rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
           rect.left <= (window.innerWidth || document.documentElement.clientWidth)
@@ -210,15 +209,20 @@ class PageAnalyzer {
        * @return {Array<Object>} object containing the image's src, layout, width and height values
        */
       const collectInitialAmpImg = () => {
-        return [...document.querySelectorAll('amp-img')].filter(isCriticalElement).map((ampImg) => {
-          return {
-            src: ampImg.getAttribute('src'),
-            dataHero: ampImg.hasAttribute('data-hero'),
-            layout: ampImg.getAttribute('layout'),
-            width: ampImg.getAttribute('width'),
-            height: ampImg.getAttribute('height'),
-          };
-        });
+        const ampImgs = document.querySelectorAll('amp-img');
+        const result = [];
+        for (const ampImg of ampImgs) {
+          if (isCriticalElement(ampImg)) {
+            result.push({
+              src: ampImg.getAttribute('src'),
+              dataHero: ampImg.hasAttribute('data-hero'),
+              layout: ampImg.getAttribute('layout'),
+              width: ampImg.getAttribute('width'),
+              height: ampImg.getAttribute('height'),
+            });
+          }
+        }
+        return result;
       };
 
       return {
@@ -251,6 +255,7 @@ class PageAnalyzer {
    */
   async setupPage() {
     const page = await this.browser.newPage();
+    await page.emulate(this.device);
     const remoteStyles = [];
     if (this.debug) {
       page.on('console', (msg) => console.log('[PAGE LOG] ', msg.text()));
