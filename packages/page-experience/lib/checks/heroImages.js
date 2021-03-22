@@ -40,7 +40,7 @@ const heroImages = (pageData, result) => {
     };
   });
   result.addDetails({
-    headings: [{label: 'Affected images', valueType: 'text', key: 'image'}],
+    headings: [{label: 'Images', valueType: 'text', key: 'image'}],
     items,
   });
 };
