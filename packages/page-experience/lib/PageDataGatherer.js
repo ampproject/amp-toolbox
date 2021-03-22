@@ -88,13 +88,26 @@ class PageAnalyzer {
       /* global document, window */
 
       /**
-       * Returns true if the given element is in the first viewport.
+       * Returns true if the given element is visible
        *
-       * @param {Element} el
+       * @param {Element} elem
        * @return {boolean}
        */
-      const isElementInViewport = (el) => {
-        const rect = el.getBoundingClientRect();
+      const isVisible = (elem) => {
+        return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+      };
+
+      /**
+       * Returns true if the given element is visible and in the first viewport.
+       *
+       * @param {Element} elem
+       * @return {boolean}
+       */
+      const isCriticalElement = (elem) => {
+        const rect = elem.getBoundingClientRect();
+        if (!isVisible(elem)) {
+          return false;
+        }
         return (
           rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
           rect.left <= (window.innerWidth || document.documentElement.clientWidth)
@@ -167,7 +180,7 @@ class PageAnalyzer {
           if (!font) {
             return;
           }
-          if (isElementInViewport(node)) {
+          if (isCriticalElement(node)) {
             criticalFonts.add(font);
           } else {
             nonCriticalFonts.add(font);
@@ -187,7 +200,7 @@ class PageAnalyzer {
        */
       const collectInitialIframes = () => {
         return [...document.querySelectorAll('amp-iframe')]
-          .filter(isElementInViewport)
+          .filter(isCriticalElement)
           .map((i) => i.getAttribute('src'));
       };
 
@@ -197,17 +210,15 @@ class PageAnalyzer {
        * @return {Array<Object>} object containing the image's src, layout, width and height values
        */
       const collectInitialAmpImg = () => {
-        return [...document.querySelectorAll('amp-img')]
-          .filter(isElementInViewport)
-          .map((ampImg) => {
-            return {
-              src: ampImg.getAttribute('src'),
-              dataHero: ampImg.hasAttribute('data-hero'),
-              layout: ampImg.getAttribute('layout'),
-              width: ampImg.getAttribute('width'),
-              height: ampImg.getAttribute('height'),
-            };
-          });
+        return [...document.querySelectorAll('amp-img')].filter(isCriticalElement).map((ampImg) => {
+          return {
+            src: ampImg.getAttribute('src'),
+            dataHero: ampImg.hasAttribute('data-hero'),
+            layout: ampImg.getAttribute('layout'),
+            width: ampImg.getAttribute('width'),
+            height: ampImg.getAttribute('height'),
+          };
+        });
       };
 
       return {
