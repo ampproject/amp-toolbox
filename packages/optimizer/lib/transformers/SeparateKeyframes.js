@@ -99,43 +99,49 @@ class SeparateKeyframes {
       return invalidProperty;
     };
 
-    const keyframesPlugin = postcss.plugin('postcss-amp-keyframes-mover', () => {
-      return (root) => {
-        root.nodes = root.nodes.filter((rule) => {
-          if (rule.name === 'keyframes') {
-            // We can't move a keyframe with an invalid property
-            // or else the style[amp-keyframes] is invalid
-            const invalidProperty = isInvalidKeyframe(rule);
-            if (invalidProperty) {
-              this.logInvalid(rule.name, invalidProperty);
-              return true;
-            }
-            keyframesTree.nodes.push(rule);
-            return false;
-          }
-          // if rule has any keyframes duplicate rule and move just
-          // the keyframes
-          if (rule.name === 'media' || rule.name === 'supports') {
-            const copiedRule = Object.assign({}, rule, {nodes: []});
-            rule.nodes = rule.nodes.filter((rule) => {
-              if (rule.name !== 'keyframes') return true;
+    const keyframesPlugin = () => {
+      const logInvalid_ = this.logInvalid.bind(this);
+      return {
+        postcssPlugin: 'postcss-amp-keyframes-mover',
+        Once(root) {
+          root.nodes = root.nodes.filter((rule) => {
+            if (rule.name === 'keyframes') {
+              // We can't move a keyframe with an invalid property
+              // or else the style[amp-keyframes] is invalid
               const invalidProperty = isInvalidKeyframe(rule);
               if (invalidProperty) {
-                this.logInvalid(rule.name, invalidProperty);
+                logInvalid_(rule.name, invalidProperty);
                 return true;
               }
-              copiedRule.nodes.push(rule);
-            });
-            if (copiedRule.nodes.length) {
-              keyframesTree.nodes.push(copiedRule);
+              keyframesTree.nodes.push(rule);
+              return false;
             }
-            // if no remaining rules remove it
-            return rule.nodes.length;
-          }
-          return true;
-        });
+            // if rule has any keyframes duplicate rule and move just
+            // the keyframes
+            if (rule.name === 'media' || rule.name === 'supports') {
+              const copiedRule = Object.assign({}, rule, {nodes: []});
+              rule.nodes = rule.nodes.filter((rule) => {
+                if (rule.name !== 'keyframes') return true;
+                const invalidProperty = isInvalidKeyframe(rule);
+                if (invalidProperty) {
+                  logInvalid_(rule.name, invalidProperty);
+                  return true;
+                }
+                copiedRule.nodes.push(rule);
+              });
+              if (copiedRule.nodes.length) {
+                keyframesTree.nodes.push(copiedRule);
+              }
+              // if no remaining rules remove it
+              return rule.nodes.length;
+            }
+            return true;
+          });
+        },
       };
-    });
+    };
+
+    keyframesPlugin.postcss = true;
 
     const {css: cssResult} = await postcss([...extraPlugins, keyframesPlugin])
       .process(stylesText, {
