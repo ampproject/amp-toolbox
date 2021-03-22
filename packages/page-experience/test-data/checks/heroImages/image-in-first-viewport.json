@@ -3,7 +3,7 @@
     "heroImages": {
       "headings": [
         {
-          "label": "Affected images",
+          "label": "Images",
           "valueType": "text",
           "key": "image"
         }
