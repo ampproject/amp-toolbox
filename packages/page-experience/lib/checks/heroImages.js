@@ -38,7 +38,7 @@ const heroImages = (pageData, result) => {
     headings: [{label: 'Affected images', valueType: 'text', key: 'image'}],
     items: heroImageCandidates.map((img) => {
       return {
-        image: `<amp-img data-hero src="${img.src}" layout="${img.src}" width="${img.src}" height="${img.src}" ...>`,
+        image: `\`<amp-img src="${img.src}" layout="${img.src}" width="${img.src}" height="${img.src}" ...>\``,
       };
     }),
   });

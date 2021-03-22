@@ -10,7 +10,7 @@
       ],
       "items": [
         {
-          "image": "<amp-img data-hero src=\"/image.jpg\" layout=\"/image.jpg\" width=\"/image.jpg\" height=\"/image.jpg\" ...>"
+          "image": "`<amp-img src=\"/image.jpg\" layout=\"/image.jpg\" width=\"/image.jpg\" height=\"/image.jpg\" ...>`"
         }
       ]
     }

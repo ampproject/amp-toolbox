@@ -32,7 +32,7 @@ const earlyIframes = (pageData, result) => {
   result.addDetails({
     headings: [{label: 'src', valueType: 'text', key: 'src'}],
     items: pageData.criticalIframes.map((iframeSrc) => {
-      return {src: iframeSrc};
+      return {src: `\`${iframeSrc}\``};
     }),
   });
 };
