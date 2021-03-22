@@ -1,3 +1,12 @@
+## v2.8.0-canary.10  (2021-03-22)
+
+#### :rocket: Enhancement
+* `page-experience`
+  * [#1172](https://github.com/ampproject/amp-toolbox/pull/1172) PX: escape html in suggestions ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.9 (2021-03-22)
 
 #### :rocket: Enhancement
