@@ -1,3 +1,15 @@
+## v2.8.0-canary.9 (2021-03-22)
+
+#### :rocket: Enhancement
+* `page-experience`
+  * [#1171](https://github.com/ampproject/amp-toolbox/pull/1171) PX: detect hero images ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer`
+  * [#1170](https://github.com/ampproject/amp-toolbox/pull/1170) 👽 Remove postcss deprecation warning ([@lluerich](https://github.com/lluerich))
+
+#### Committers: 2
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- [@lluerich](https://github.com/lluerich)
+
 ## v2.8.0-canary.8 (2021-03-19)
 
 #### :rocket: Enhancement
