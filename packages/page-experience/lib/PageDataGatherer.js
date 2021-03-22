@@ -181,7 +181,7 @@ class PageAnalyzer {
       };
 
       /**
-       * Returns am array of URLs representing any iframe found in the initial viewport of a page
+       * Returns an array of URLs representing any iframe found in the initial viewport of a page
        *
        * @return {Array<string>}
        */
@@ -191,12 +191,32 @@ class PageAnalyzer {
           .map((i) => i.getAttribute('src'));
       };
 
+      /**
+       * Returns an array of amp-img declarations representing any amp-img found in the initial viewport of a page
+       *
+       * @return {Array<Object>} object containing the image's src, layout, width and height values
+       */
+      const collectInitialAmpImg = () => {
+        return [...document.querySelectorAll('amp-img')]
+          .filter(isElementInViewport)
+          .map((ampImg) => {
+            return {
+              src: ampImg.getAttribute('src'),
+              dataHero: ampImg.hasAttribute('data-hero'),
+              layout: ampImg.getAttribute('layout'),
+              width: ampImg.getAttribute('width'),
+              height: ampImg.getAttribute('height'),
+            };
+          });
+      };
+
       return {
         url: window.location.href,
         origin: window.location.origin,
         fontPreloads: collectFontPreloads(),
         localStyles: collectInlineStyles(),
         criticalIframes: collectInitialIframes(),
+        criticalAmpImg: collectInitialAmpImg(),
         ...collectFontsUsedOnPage(),
       };
     });
@@ -204,6 +224,7 @@ class PageAnalyzer {
     return {
       criticalFonts: result.criticalFonts,
       criticalIframes: result.criticalIframes,
+      criticalAmpImg: result.criticalAmpImg,
       nonCriticalFonts: result.nonCriticalFonts,
       fontFaces: parseFontfaces([...remoteStyles, ...result.localStyles].join('\n'), result.origin),
       fontPreloads: result.fontPreloads,

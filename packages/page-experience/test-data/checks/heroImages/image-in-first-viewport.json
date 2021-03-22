@@ -1,0 +1,23 @@
+{
+  "details": {
+    "heroImages": {
+      "headings": [
+        {
+          "label": "Affected images",
+          "valueType": "text",
+          "key": "image"
+        }
+      ],
+      "items": [
+        {
+          "image": "<amp-img data-hero src=\"/image.jpg\" layout=\"/image.jpg\" width=\"/image.jpg\" height=\"/image.jpg\" ...>"
+        }
+      ]
+    }
+  },
+  "heroImages": {
+    "title": "Improve LCP by optimizing hero images",
+    "message": "Let AMP Caches and Optimizers optimize your hero images by adding the [`data-hero` attribute](https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/amp-optimizer-guide/explainer/?format=websites#hero-image-optimization) to images in your first viewport.",
+    "status": "WARN"
+  }
+}
