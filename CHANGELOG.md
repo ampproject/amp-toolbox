@@ -1,3 +1,16 @@
+## v2.8.0-canary.13   (2021-03-22)
+
+#### :rocket: Enhancement
+* `page-experience`
+  * [#1174](https://github.com/ampproject/amp-toolbox/pull/1174) PX: enable mobile device emulation ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `page-experience`
+  * [#1173](https://github.com/ampproject/amp-toolbox/pull/1173) PX:ignore invinsible elements ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.12  (2021-03-22)
 
 #### :rocket: Enhancement
