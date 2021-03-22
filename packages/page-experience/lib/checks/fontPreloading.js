@@ -30,7 +30,7 @@ const checkPreloads = (pageData, result) => {
       if (!fontface.mainSrc.startsWith('https://fonts.gstatic.com')) {
         items.push({
           font,
-          fix: `Add \`<link rel="preload" href="${fontface.mainSrc}" as="font" crossorigin>\` to your \`<head>\`.`,
+          fix: `Add \`<link rel="preload" href="${fontface.mainSrc}" as="font" crossorigin>\`.`,
         });
       }
     }
@@ -60,12 +60,12 @@ const checkPreloads = (pageData, result) => {
     url: 'https://web.dev/optimize-webfont-loading/',
     message:
       'Preload critical fonts to help the browser discover fonts used in the first viewport quicker.',
-    details: {
-      headings: [
-        {label: 'Font', valueType: 'text', key: 'font'},
-        {key: 'fix', valueType: 'text', label: 'Suggestion'},
-      ],
-    },
+  });
+  result.addDetails({
+    headings: [
+      {label: 'Font', valueType: 'text', key: 'font'},
+      {key: 'fix', valueType: 'text', label: 'Suggestion'},
+    ],
     items,
   });
 };

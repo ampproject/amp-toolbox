@@ -1,9 +1,6 @@
 {
-  "fontDisplay": {
-    "title": "Improve LCP and CLS using `font-display: optional`",
-    "url": "https://web.dev/optimize-webfont-loading/",
-    "message": "Load the critical webfonts using `font-display: optional` to improve LCP on slow connections and avoid content shifts.",
-    "details": {
+  "details": {
+    "fontDisplay": {
       "headings": [
         {
           "label": "Font",
@@ -15,14 +12,19 @@
           "valueType": "text",
           "label": "Suggestion"
         }
+      ],
+      "items": [
+        {
+          "font": "Open Sans",
+          "fix": "Add `font-display: optional`"
+        }
       ]
-    },
-    "items": [
-      {
-        "font": "Open Sans",
-        "fix": "Add `font-display: optional` to your font-face declaration."
-      }
-    ],
+    }
+  },
+  "fontDisplay": {
+    "title": "Improve LCP and CLS using `font-display: optional`",
+    "url": "https://web.dev/optimize-webfont-loading/",
+    "message": "Load the critical webfonts using `font-display: optional` to improve LCP on slow connections and avoid content shifts.",
     "status": "WARN"
   }
 }

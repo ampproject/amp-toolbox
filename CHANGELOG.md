@@ -1,3 +1,23 @@
+## v2.8.0-canary.8 (2021-03-19)
+
+#### :rocket: Enhancement
+* `page-experience`
+  * [#1168](https://github.com/ampproject/amp-toolbox/pull/1168) Check for early iframes ([@patrickkettner](https://github.com/patrickkettner))
+  * [#1169](https://github.com/ampproject/amp-toolbox/pull/1169) Give page specific advice on how to fix fonts ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 2
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- patrick kettner ([@patrickkettner](https://github.com/patrickkettner))
+
+## v2.8.0-canary.7  (2021-03-19)
+
+#### :bug: Bug Fix
+* `page-experience`
+  * [#1166](https://github.com/ampproject/amp-toolbox/pull/1166) Move result details to top level ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.6 (2021-03-18)
 
 #### :rocket: Enhancement

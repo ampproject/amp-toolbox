@@ -1,0 +1,23 @@
+{
+  "details": {
+    "earlyIframes": {
+      "headings": [
+        {
+          "label": "src",
+          "valueType": "text",
+          "key": "src"
+        }
+      ],
+      "items": [
+        {
+          "src": "https://www.google.com/maps/embed/v1/place?key=AIzaSyAyAS599A2GGPKTmtNr9CptD61LE4gN6oQ&q=iceland"
+        }
+      ]
+    }
+  },
+  "earlyIframes": {
+    "title": "Avoid iframes at the begining of pages",
+    "message": "You have iframes at the top of your page - move them below the initial viewport to improve your loading time",
+    "status": "WARN"
+  }
+}
