@@ -58,12 +58,16 @@ class PageAnalyzer {
     if (!this.started) {
       throw new Error('Puppeteer not running, please call `start` first.');
     }
-    const {page, remoteStyles} = await this.setupPage();
+    const {page, remoteStyles, responsePromise} = await this.setupPage();
 
-    const response = await page.goto(url, {waitUntil: 'load'});
+    await page.goto(url, {waitUntil: 'load'});
 
-    const html = await response.text();
-    return await this.gatherPageData(page, {remoteStyles, html, headers: response.headers()});
+    const response = await responsePromise;
+    if (!response) {
+      throw new Error('Failed loading url', url);
+    }
+    const {html, headers} = response;
+    return await this.gatherPageData(page, {remoteStyles, html, headers});
   }
 
   /**
@@ -244,9 +248,9 @@ class PageAnalyzer {
       fontFaces: parseFontfaces([...remoteStyles, ...result.localStyles].join('\n'), result.origin),
       fontPreloads: result.fontPreloads,
       headers,
-      html,
       remoteStyles: remoteStyles,
       url: result.url,
+      html,
     };
   }
 
@@ -280,14 +284,28 @@ class PageAnalyzer {
       return request.continue();
     });
 
+    let responseCallback;
+    const responsePromise = new Promise((resolve) => {
+      responseCallback = resolve;
+    });
     // Collect external stylesheets from requests as we can't read them otherwise due to CORS
     page.on('response', async (response) => {
       if (response.request().resourceType() === 'stylesheet') {
-        remoteStyles.push(await response.text());
+        if (response.ok()) {
+          remoteStyles.push(await response.text());
+        }
+      } else if (response.request().resourceType() === 'document') {
+        if (response.ok()) {
+          responseCallback({
+            html: await response.text(),
+            headers: await response.headers(),
+          });
+        }
       }
     });
     return {
       page,
+      responsePromise,
       remoteStyles,
     };
   }
