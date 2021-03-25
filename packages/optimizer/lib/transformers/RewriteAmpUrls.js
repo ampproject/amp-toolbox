@@ -141,7 +141,7 @@ class RewriteAmpUrls {
         as: 'script',
         crossorigin: 'anonymous',
         href: esmScriptUrl,
-        rel: 'preload',
+        rel: 'modulepreload',
       });
       result = preload;
     }
