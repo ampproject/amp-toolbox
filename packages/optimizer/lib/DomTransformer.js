@@ -103,6 +103,30 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AmpScriptCsp',
 ];
 
+/**
+ * AMP Optimizer Configuration only applying the minimal set of AMP transformations ensuring maximum performance.
+ */
+const TRANSFORMATIONS_MINIMAL = [
+  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
+  'OptimizeHeroImages',
+  // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
+  // This needs to run after AutoExtensionImporter.
+  'OptimizeAmpBind',
+  // Applies server-side-rendering optimizations
+  'ServerSideRendering',
+  // Removes the boilerplate
+  // needs to run after ServerSideRendering
+  'AmpBoilerplateTransformer',
+  // Optimizes script import order
+  // needs to run after ServerSideRendering
+  'ReorderHeadTransformer',
+  // needs to run after ReorderHeadTransformer
+  'RewriteAmpUrls',
+  'GoogleFontsPreconnect',
+  'PruneDuplicateResourceHints',
+  'AddTransformedFlag',
+];
+
 const DEFAULT_CONFIG = {
   fetch,
   log,
@@ -185,4 +209,5 @@ module.exports = {
   DEFAULT_CONFIG,
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
+  TRANSFORMATIONS_MINIMAL,
 };
