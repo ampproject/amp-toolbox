@@ -8,9 +8,6 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/optimizer"
   },
-  "scripts": {
-    "postinstall": "node lib/warmup.js"
-  },
   "files": [
     "index.js",
     "lib"
