@@ -17,20 +17,34 @@
 const fs = require('fs').promises;
 const {existsSync, mkdirSync} = require('fs');
 const crypto = require('crypto');
+const os = require('os');
 const log = require('./Log');
 const LRUCache = require('lru-cache');
 
 const path = require('path');
 
 const DEFAULT_OPTS = {
-  baseDir: path.join(__dirname, '.cache'),
   log,
   maxItems: 50,
 };
 
 class FileSystemCache {
-  static create(opts = {}) {
-    return new FileSystemCache(Object.assign(DEFAULT_OPTS, opts));
+  static create(customOpts = {}) {
+    const opts = Object.assign(DEFAULT_OPTS, customOpts);
+    // Try to create a tmp directory...
+    try {
+      if (!opts.baseDir) {
+        opts.baseDir = path.join(os.tmpdir(), 'ampproject-toolbox-optimizer');
+      }
+      if (!existsSync(opts.baseDir)) {
+        mkdirSync(opts.baseDir);
+      }
+    } catch (e) {
+      log.debug('No filesystem access, falling back to in-memory cache only', e);
+      // ... if this fails, we have no write access to the fs, use a simple memory cache instead
+      return new LRUCache(opts.maxItems);
+    }
+    return new FileSystemCache(opts);
   }
 
   constructor(opts) {
@@ -57,9 +71,6 @@ class FileSystemCache {
   async set(key, value) {
     try {
       this.cache.set(key, value);
-      if (!existsSync(this.opts.baseDir)) {
-        mkdirSync(this.opts.baseDir);
-      }
       const cacheFile = this.createCacheFileName(key);
       return fs.writeFile(cacheFile, JSON.stringify(value, null, ''), 'utf-8');
     } catch (e) {

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 const FileSystemCache = require('../../lib/FileSystemCache.js');
 
 let cache;
@@ -22,7 +21,6 @@ beforeEach(async () => {
   cache = FileSystemCache.create();
   await cache.clear();
 });
-//afterEach(async () => await cache.clear());
 
 test('returns null by default', async () => {
   const result = await cache.get('key');
@@ -35,6 +33,15 @@ test('returns default value', async () => {
 });
 
 test('returns cached value', async () => {
+  await cache.set('key', 'value');
+  const result = await cache.get('key');
+  expect(result).toBe('value');
+});
+
+test('falls back to in memory cache', async () => {
+  cache = FileSystemCache.create({
+    baseDir: {}, // invalid pathname to trigger exception
+  });
   await cache.set('key', 'value');
   const result = await cache.get('key');
   expect(result).toBe('value');
