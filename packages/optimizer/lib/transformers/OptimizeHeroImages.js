@@ -290,7 +290,7 @@ class OptimizeHeroImage {
   // Any node with width or height less than 150 pixels and a non-responsive layout.
   isTinyNode(layout, width, height) {
     if (width <= 0 || height <= 0) return true;
-    if (layout === 'intrinsic' || layout === 'responsive') {
+    if (layout === 'responsive') {
       return false;
     }
     return width < TINY_IMG_THRESHOLD || height < TINY_IMG_THRESHOLD;
