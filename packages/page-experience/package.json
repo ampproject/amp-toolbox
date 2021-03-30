@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "deploy": "gcloud functions deploy checkFonts --runtime nodejs14 --trigger-http --allow-unauthenticated --project amp-dev-staging",
-    "test": "jest",
-    "test:snapshot": "PAGE_EXPERIENCE_SNAPSHOT=true jest"
+    "test": "npx jest",
+    "test:snapshot": "PAGE_EXPERIENCE_SNAPSHOT=true npx jest"
   },
   "bin": {
     "px": "bin/cli.js"
