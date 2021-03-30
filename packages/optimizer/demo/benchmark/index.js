@@ -5,13 +5,29 @@ const suite = new Benchmark.Suite();
 const fs = require('fs').promises;
 const path = require('path');
 
-const defaultAmpOptimizer = AmpOptimizer.create();
-const minimalAmpOptimizer = AmpOptimizer.create({
-  transformations: AmpOptimizer.TRANSFORMATIONS_MINIMAL,
-});
-
 (async () => {
   const testInput = await fs.readFile(path.join(__dirname, 'samples/amp.dev.html'), 'utf-8');
+
+  console.log('Transformer Execution times:\n');
+  const profilingOptimizer = AmpOptimizer.create({profile: true});
+  await profilingOptimizer.transformHtml(testInput);
+
+  console.log('\n\nFill vs Minimal mode\n');
+
+  console.time('default');
+  const defaultAmpOptimizer = AmpOptimizer.create({
+    cache: false,
+  });
+  await defaultAmpOptimizer.transformHtml(testInput);
+  console.timeEnd('default');
+  console.time('minimal');
+  const minimalAmpOptimizer = AmpOptimizer.create({
+    cache: false,
+    transformations: AmpOptimizer.TRANSFORMATIONS_MINIMAL,
+  });
+  await minimalAmpOptimizer.transformHtml(testInput);
+  console.timeEnd('minimal');
+  //
   suite
     .add('minimal', {
       defer: true,

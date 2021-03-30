@@ -169,11 +169,15 @@ class DomTransformer {
   async transformTree(tree, customParams = {}) {
     log.verbose(customParams.verbose || false);
     const runtimeParameters = await fetchRuntimeParameters(this.config, customParams);
-    const sequence = async (promise, transformer) => {
-      await promise;
-      return transformer.transform(tree, runtimeParameters);
-    };
-    return this.transformers_.reduce(sequence, Promise.resolve());
+    for (const transformer of this.transformers_) {
+      if (this.config.profile) {
+        console.time(this.getTransformerId(transformer));
+      }
+      await transformer.transform(tree, runtimeParameters);
+      if (this.config.profile) {
+        console.timeEnd(this.getTransformerId(transformer));
+      }
+    }
   }
 
   /**
@@ -203,6 +207,10 @@ class DomTransformer {
       }
       return new Transformer(config);
     });
+  }
+
+  getTransformerId(transformer) {
+    return transformer.constructor ? transformer.constructor.name : 'custom';
   }
 }
 
