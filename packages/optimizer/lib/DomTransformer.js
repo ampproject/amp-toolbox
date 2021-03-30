@@ -107,6 +107,8 @@ const TRANSFORMATIONS_PAIRED_AMP = [
  * AMP Optimizer Configuration only applying the minimal set of AMP transformations ensuring maximum performance.
  */
 const TRANSFORMATIONS_MINIMAL = [
+  // Applies image optimizations, must run before PreloadHeroImage
+  'OptimizeImages',
   // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
   'OptimizeHeroImages',
   // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
