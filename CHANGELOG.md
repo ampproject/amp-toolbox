@@ -1,3 +1,25 @@
+## v2.8.0-canary.15 (2021-03-30)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1180](https://github.com/ampproject/amp-toolbox/pull/1180) Add minimal Optimizer Transformer Config ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1181](https://github.com/ampproject/amp-toolbox/pull/1181) Disable cache warmup on install ([@sebastianbenz](https://github.com/sebastianbenz))
+* `core`
+  * [#1182](https://github.com/ampproject/amp-toolbox/pull/1182) Use os.tmpDir for file system cache ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `page-experience`
+  * [#1186](https://github.com/ampproject/amp-toolbox/pull/1186) Skip fonts with a data: URL source from fontPreloading check ([@westonruter](https://github.com/westonruter))
+* `optimizer`
+  * [#1184](https://github.com/ampproject/amp-toolbox/pull/1184) Remove hard-coded isTiny() result for intrinsic layout ([@schlessera](https://github.com/schlessera))
+  * [#1161](https://github.com/ampproject/amp-toolbox/pull/1161) when using module/nomodule make sure to use `modulepreload` instead of `preload` for the priority hint ([@erwinmombay](https://github.com/erwinmombay))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+- erwin mombay ([@erwinmombay](https://github.com/erwinmombay))
+
 ## v2.8.0-canary.13   (2021-03-22)
 
 #### :rocket: Enhancement
