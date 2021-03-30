@@ -17,7 +17,11 @@
 require('fetch-mock');
 const createSpec = require('../helpers/TransformerRunner.js');
 const log = require('../../lib/log.js');
-const {DomTransformer, TRANSFORMATIONS_PAIRED_AMP} = require('../../lib/DomTransformer.js');
+const {
+  DomTransformer,
+  TRANSFORMATIONS_PAIRED_AMP,
+  TRANSFORMATIONS_MINIMAL,
+} = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock
   .sandbox()
@@ -37,6 +41,31 @@ createSpec({
         fetch,
         log,
         markdown: true,
+        runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
+      });
+      return ampOptimizer.transformTree(tree, params);
+    },
+  },
+});
+
+createSpec({
+  name: 'End-to-End: Minimal',
+  testDir: __dirname,
+  tag: 'minimal',
+  validAmp: true,
+  transformer: {
+    transform: (tree, params) => {
+      const ampOptimizer = new DomTransformer({
+        cache: false,
+        fetch,
+        log,
+        markdown: true,
+        transformations: [
+          'AddMandatoryTags',
+          'Markdown',
+          'AutoExtensionImporter',
+          ...TRANSFORMATIONS_MINIMAL,
+        ],
         runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
       });
       return ampOptimizer.transformTree(tree, params);

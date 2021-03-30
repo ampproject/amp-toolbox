@@ -1,0 +1,16 @@
+{
+  "name": "amp-optimizer-benchmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "The AMPHTML Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "benchmark": "^2.1.4"
+  }
+}

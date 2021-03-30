@@ -103,6 +103,32 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AmpScriptCsp',
 ];
 
+/**
+ * AMP Optimizer Configuration only applying the minimal set of AMP transformations ensuring maximum performance.
+ */
+const TRANSFORMATIONS_MINIMAL = [
+  // Applies image optimizations, must run before PreloadHeroImage
+  'OptimizeImages',
+  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
+  'OptimizeHeroImages',
+  // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
+  // This needs to run after AutoExtensionImporter.
+  'OptimizeAmpBind',
+  // Applies server-side-rendering optimizations
+  'ServerSideRendering',
+  // Removes the boilerplate
+  // needs to run after ServerSideRendering
+  'AmpBoilerplateTransformer',
+  // Optimizes script import order
+  // needs to run after ServerSideRendering
+  'ReorderHeadTransformer',
+  // needs to run after ReorderHeadTransformer
+  'RewriteAmpUrls',
+  'GoogleFontsPreconnect',
+  'PruneDuplicateResourceHints',
+  'AddTransformedFlag',
+];
+
 const DEFAULT_CONFIG = {
   fetch,
   log,
@@ -143,11 +169,15 @@ class DomTransformer {
   async transformTree(tree, customParams = {}) {
     log.verbose(customParams.verbose || false);
     const runtimeParameters = await fetchRuntimeParameters(this.config, customParams);
-    const sequence = async (promise, transformer) => {
-      await promise;
-      return transformer.transform(tree, runtimeParameters);
-    };
-    return this.transformers_.reduce(sequence, Promise.resolve());
+    for (const transformer of this.transformers_) {
+      if (this.config.profile) {
+        console.time(this.getTransformerId(transformer));
+      }
+      await transformer.transform(tree, runtimeParameters);
+      if (this.config.profile) {
+        console.timeEnd(this.getTransformerId(transformer));
+      }
+    }
   }
 
   /**
@@ -178,6 +208,10 @@ class DomTransformer {
       return new Transformer(config);
     });
   }
+
+  getTransformerId(transformer) {
+    return transformer.constructor ? transformer.constructor.name : 'custom';
+  }
 }
 
 module.exports = {
@@ -185,4 +219,5 @@ module.exports = {
   DEFAULT_CONFIG,
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
+  TRANSFORMATIONS_MINIMAL,
 };
