@@ -23,7 +23,7 @@ const checkPreloads = (pageData, result) => {
   const items = [];
   for (const font of pageData.criticalFonts) {
     const fontface = pageData.fontFaces.get(font);
-    if (!fontface || !fontface.mainSrc) {
+    if (!fontface || !fontface.mainSrc || fontface.mainSrc.startsWith('data:')) {
       continue;
     }
     if (!pageData.fontPreloads.includes(fontface.mainSrc)) {
@@ -37,7 +37,7 @@ const checkPreloads = (pageData, result) => {
   }
   for (const font of pageData.nonCriticalFonts) {
     const fontface = pageData.fontFaces.get(font);
-    if (!fontface || !fontface.mainSrc) {
+    if (!fontface || !fontface.mainSrc || fontface.mainSrc.startsWith('data:')) {
       continue;
     }
     if (pageData.fontPreloads.includes(fontface.mainSrc)) {
