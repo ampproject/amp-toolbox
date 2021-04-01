@@ -47,6 +47,9 @@ const {calculateHost} = require('../RuntimeHostHelper');
  *   option is ineffective with the lts flag, but will simply be ignored
  *   rather than throwing an error.
  *
+ * * `esmModulesEnabled`: Enables the smaller ESM module version of AMP runtime
+ *   and components.
+ *
  * All parameters are optional. If no option is provided, runtime URLs won't be
  * re-written. You can combine `ampRuntimeVersion` and  `ampUrlPrefix` to
  * rewrite AMP runtime URLs to versioned URLs on a different origin.
