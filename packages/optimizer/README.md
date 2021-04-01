@@ -157,22 +157,6 @@ Specifies the AMP format of the input file. Defaults to `AMP`.
 - default: `AMP`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js), [AddMandatoryTags](lib/transformers/AddMandatoryTags.js)
 
-#### `experimentEsm`
-
-Enable [JavaScript Module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) support for AMP runtime and components. AMP Optimizer will generate module/nonmodule script imports for AMP runtime and components:
-
-```
-<script async nomodule src="https://cdn.ampproject.org/v0.js"></script>
-<script async src="https://cdn.ampproject.org/v0.mjs" type="module" crossorigin="anonymous"></script>
-```
-
-**Warning: this will result in invalid AMP pages.**
-
-- name: `experimentEsm`
-- valid options: `[true|false]`
-- default: `false`
-- used by: [RewriteAmpUrls](lib/transformers/RewriteAmpUrls.js)
-
 #### `imageBasePath`
 
 Specifies a base path used to resolve an image during build,
