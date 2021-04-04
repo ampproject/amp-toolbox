@@ -120,5 +120,5 @@ Prints the current AMP Toolbox version:
 ```shell
 $ amp version
 
-=> 011905291911450
+=> v2.7.6
 ```
