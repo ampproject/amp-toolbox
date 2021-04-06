@@ -160,7 +160,13 @@ class HeadNodes {
       return;
     }
 
-    if (rel === 'preload' || rel === 'prefetch' || rel === 'dns-prefetch' || rel === 'preconnect') {
+    if (
+      rel === 'preload' ||
+      rel === 'prefetch' ||
+      rel === 'dns-prefetch' ||
+      rel === 'preconnect' ||
+      rel == 'modulepreload'
+    ) {
       this._resourceHintLinks.push(node);
       return;
     }
