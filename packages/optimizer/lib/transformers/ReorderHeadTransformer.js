@@ -60,10 +60,10 @@ class HeadNodes {
 
   appendToHead(head) {
     appendChild(head, this._metaCharset);
-    appendChild(head, this._linkStyleAmpRuntime);
-    appendChild(head, this._styleAmpRuntime);
     appendAll(head, this._metaOther);
     appendAll(head, this._resourceHintLinks);
+    appendChild(head, this._linkStyleAmpRuntime);
+    appendChild(head, this._styleAmpRuntime);
     appendChild(head, this._scriptAmpEngine);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
