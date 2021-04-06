@@ -50,12 +50,12 @@ class HeadNodes {
   }
 
   _removeDuplicateCustomExtensions(extensions) {
-    const nodesByName = new Map();
+    const nodesBySrc = new Map();
     for (const node of extensions) {
-      const name = this._getName(node);
-      nodesByName.set(name, node);
+      const src = node.attribs['src'];
+      nodesBySrc.set(src, node);
     }
-    return Array.from(nodesByName.values());
+    return Array.from(nodesBySrc.values());
   }
 
   appendToHead(head) {
