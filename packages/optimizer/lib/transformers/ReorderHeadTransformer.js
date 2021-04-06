@@ -25,9 +25,9 @@ class HeadNodes {
     this._metaCharset = null;
     this._scriptAmpEngine = null;
     this._metaOther = [];
+    this._resourceHintLinks = [];
     this._scriptRenderDelayingExtensions = [];
     this._scriptNonRenderDelayingExtensions = [];
-    this._resourceHintLinks = [];
     this._linkIcons = [];
     this._styleAmpCustom = null;
     this._linkStylesheetsBeforeAmpCustom = [];
@@ -63,11 +63,11 @@ class HeadNodes {
     appendChild(head, this._linkStyleAmpRuntime);
     appendChild(head, this._styleAmpRuntime);
     appendAll(head, this._metaOther);
+    appendAll(head, this._resourceHintLinks);
     appendChild(head, this._scriptAmpEngine);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
     appendAll(head, this._linkIcons);
-    appendAll(head, this._resourceHintLinks);
     appendAll(head, this._linkStylesheetsBeforeAmpCustom);
     appendChild(head, this._styleAmpCustom);
     appendAll(head, this._others);
