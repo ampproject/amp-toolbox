@@ -44,7 +44,6 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
@@ -86,7 +85,6 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
@@ -119,7 +117,6 @@ const TRANSFORMATIONS_MINIMAL = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
