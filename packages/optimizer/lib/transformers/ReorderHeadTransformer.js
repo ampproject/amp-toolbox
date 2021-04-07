@@ -57,8 +57,8 @@ class HeadNodes {
 
   appendToHead(head) {
     appendChild(head, this._metaCharset);
-    appendAll(head, this._metaOther);
     appendAll(head, this._resourceHintLinks);
+    appendAll(head, this._metaOther);
     appendChild(head, this._linkStyleAmpRuntime);
     appendChild(head, this._styleAmpRuntime);
     appendAll(head, this._scriptAmpEngine);
@@ -67,9 +67,9 @@ class HeadNodes {
     appendAll(head, this._linkIcons);
     appendAll(head, this._linkStylesheetsBeforeAmpCustom);
     appendChild(head, this._styleAmpCustom);
-    appendAll(head, this._others);
     appendChild(head, this._styleAmpBoilerplate);
     appendChild(head, this._noscript);
+    appendAll(head, this._others);
   }
 
   _registerNode(node) {
