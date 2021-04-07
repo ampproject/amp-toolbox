@@ -51,7 +51,8 @@ class HeadNodes {
 
   _sortExtensions(extensions) {
     const sortedExtensions = new Map([...extensions].sort((a, b) => a[0].localeCompare(b[0])));
-    return Array.from(sortedExtensions.values()).flat();
+    // TODO replace with Array#flat once Node 10 is EOL
+    return [].concat.apply([], Array.from(sortedExtensions.values()));
   }
 
   appendToHead(head) {
