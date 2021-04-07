@@ -97,7 +97,7 @@ class HeadNodes {
   }
 
   _registerScript(node) {
-    const moduleIndex = hasAttribute(node, 'nomodule') ? 0 : 1;
+    const scriptIndex = hasAttribute(node, 'nomodule') ? 1 : 0;
     const name = this._getName(node);
     // Currently there are two amp engine tags: v0.js and
     // amp4ads-v0.js.  According to validation rules they are the
@@ -106,27 +106,27 @@ class HeadNodes {
     // amp engine tag so it can be emitted first among script
     // tags.
     if (hasAttribute(node, 'src') && !name) {
-      this._scriptAmpEngine[moduleIndex] = node;
+      this._scriptAmpEngine[scriptIndex] = node;
       return;
     }
     if (hasAttribute(node, 'custom-element')) {
       if (isRenderDelayingExtension(node)) {
-        this._registerExtension(this._scriptRenderDelayingExtensions, name, moduleIndex, node);
+        this._registerExtension(this._scriptRenderDelayingExtensions, name, scriptIndex, node);
         return;
       }
-      this._registerExtension(this._scriptNonRenderDelayingExtensions, name, moduleIndex, node);
+      this._registerExtension(this._scriptNonRenderDelayingExtensions, name, scriptIndex, node);
       return;
     }
     if (hasAttribute(node, 'custom-template')) {
-      this._registerExtension(this._scriptNonRenderDelayingExtensions, name, moduleIndex, node);
+      this._registerExtension(this._scriptNonRenderDelayingExtensions, name, scriptIndex, node);
       return;
     }
     this._others.push(node);
   }
 
-  _registerExtension(collection, name, moduleIndex, node) {
+  _registerExtension(collection, name, scriptIndex, node) {
     const values = collection.get(name) || [];
-    values[moduleIndex] = node;
+    values[scriptIndex] = node;
     collection.set(name, values);
   }
 
