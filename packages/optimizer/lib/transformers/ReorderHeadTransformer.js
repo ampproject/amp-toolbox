@@ -23,6 +23,7 @@ class HeadNodes {
     this._styleAmpRuntime = null;
     this._linkStyleAmpRuntime = null;
     this._metaCharset = null;
+    this._metaViewport = null;
     this._scriptAmpEngine = [];
     this._metaOther = [];
     this._resourceHintLinks = [];
@@ -57,6 +58,7 @@ class HeadNodes {
 
   appendToHead(head) {
     appendChild(head, this._metaCharset);
+    appendChild(head, this._metaViewport);
     appendAll(head, this._resourceHintLinks);
     appendAll(head, this._metaOther);
     appendChild(head, this._linkStyleAmpRuntime);
@@ -64,11 +66,11 @@ class HeadNodes {
     appendAll(head, this._scriptAmpEngine);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
-    appendAll(head, this._linkIcons);
-    appendAll(head, this._linkStylesheetsBeforeAmpCustom);
     appendChild(head, this._styleAmpCustom);
     appendChild(head, this._styleAmpBoilerplate);
     appendChild(head, this._noscript);
+    appendAll(head, this._linkIcons);
+    appendAll(head, this._linkStylesheetsBeforeAmpCustom);
     appendAll(head, this._others);
   }
 
@@ -91,6 +93,10 @@ class HeadNodes {
   _registerMeta(node) {
     if (node.attribs.charset) {
       this._metaCharset = node;
+      return;
+    }
+    if (node.attribs.name == 'viewport') {
+      this._metaViewport = node;
       return;
     }
     this._metaOther.push(node);
