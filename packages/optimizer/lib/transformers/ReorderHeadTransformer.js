@@ -23,11 +23,11 @@ class HeadNodes {
     this._styleAmpRuntime = null;
     this._linkStyleAmpRuntime = null;
     this._metaCharset = null;
-    this._scriptAmpEngine = null;
+    this._scriptAmpEngine = [];
     this._metaOther = [];
     this._resourceHintLinks = [];
-    this._scriptRenderDelayingExtensions = [];
-    this._scriptNonRenderDelayingExtensions = [];
+    this._scriptRenderDelayingExtensions = new Map();
+    this._scriptNonRenderDelayingExtensions = new Map();
     this._linkIcons = [];
     this._styleAmpCustom = null;
     this._linkStylesheetsBeforeAmpCustom = [];
@@ -41,21 +41,17 @@ class HeadNodes {
   }
 
   uniquifyAndSortCustomElements() {
-    this._scriptRenderDelayingExtensions = this._removeDuplicateCustomExtensions(
+    this._scriptRenderDelayingExtensions = this._sortExtensions(
       this._scriptRenderDelayingExtensions
     );
-    this._scriptNonRenderDelayingExtensions = this._removeDuplicateCustomExtensions(
+    this._scriptNonRenderDelayingExtensions = this._sortExtensions(
       this._scriptNonRenderDelayingExtensions
     );
   }
 
-  _removeDuplicateCustomExtensions(extensions) {
-    const nodesBySrc = new Map();
-    for (const node of extensions) {
-      const src = node.attribs['src'];
-      nodesBySrc.set(src, node);
-    }
-    return Array.from(nodesBySrc.values());
+  _sortExtensions(extensions) {
+    const sortedExtensions = new Map([...extensions].sort((a, b) => a[0].localeCompare(b[0])));
+    return Array.from(sortedExtensions.values()).flat();
   }
 
   appendToHead(head) {
@@ -64,7 +60,7 @@ class HeadNodes {
     appendAll(head, this._resourceHintLinks);
     appendChild(head, this._linkStyleAmpRuntime);
     appendChild(head, this._styleAmpRuntime);
-    appendChild(head, this._scriptAmpEngine);
+    appendAll(head, this._scriptAmpEngine);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
     appendAll(head, this._linkIcons);
@@ -100,29 +96,37 @@ class HeadNodes {
   }
 
   _registerScript(node) {
+    const moduleIndex = hasAttribute(node, 'nomodule') ? 0 : 1;
+    const name = this._getName(node);
     // Currently there are two amp engine tags: v0.js and
     // amp4ads-v0.js.  According to validation rules they are the
     // only script tags with a src attribute and do not have
     // attributes custom-element or custom-template. Record the
     // amp engine tag so it can be emitted first among script
     // tags.
-    if (hasAttribute(node, 'src') && !this._getName(node)) {
-      this._scriptAmpEngine = node;
+    if (hasAttribute(node, 'src') && !name) {
+      this._scriptAmpEngine[moduleIndex] = node;
       return;
     }
     if (hasAttribute(node, 'custom-element')) {
       if (isRenderDelayingExtension(node)) {
-        this._scriptRenderDelayingExtensions.push(node);
+        this._registerExtension(this._scriptRenderDelayingExtensions, name, moduleIndex, node);
         return;
       }
-      this._scriptNonRenderDelayingExtensions.push(node);
+      this._registerExtension(this._scriptNonRenderDelayingExtensions, name, moduleIndex, node);
       return;
     }
     if (hasAttribute(node, 'custom-template')) {
-      this._scriptNonRenderDelayingExtensions.push(node);
+      this._registerExtension(this._scriptNonRenderDelayingExtensions, name, moduleIndex, node);
       return;
     }
     this._others.push(node);
+  }
+
+  _registerExtension(collection, name, moduleIndex, node) {
+    const values = collection.get(name) || [];
+    values[moduleIndex] = node;
+    collection.set(name, values);
   }
 
   _registerStyle(node) {
