@@ -44,16 +44,15 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // Optimizes script import order
-  // needs to run after ServerSideRendering
-  'ReorderHeadTransformer',
-  // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
   // Move keyframes into a separate style tag
   'SeparateKeyframes',
+  // Optimizes script import order
+  // needs to run after ServerSideRendering
+  'ReorderHeadTransformer',
   'AddTransformedFlag',
   // Minifies HTML, JSON, inline amp-script
   'MinifyHtml',
@@ -86,16 +85,15 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // Optimizes script import order
-  // needs to run after ServerSideRendering
-  'ReorderHeadTransformer',
-  // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
   'SeparateKeyframes',
   'AddTransformedFlag',
+  // Optimizes script import order
+  // needs to run after ServerSideRendering
+  'ReorderHeadTransformer',
   // Minifies HTML, JSON, inline amp-script
   'MinifyHtml',
   // Inject CSP script has required for inline amp-script
@@ -119,13 +117,12 @@ const TRANSFORMATIONS_MINIMAL = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // Optimizes script import order
-  // needs to run after ServerSideRendering
-  'ReorderHeadTransformer',
-  // needs to run after ReorderHeadTransformer
   'RewriteAmpUrls',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
+  // Optimizes script import order
+  // needs to run after ServerSideRendering
+  'ReorderHeadTransformer',
   'AddTransformedFlag',
 ];
 
