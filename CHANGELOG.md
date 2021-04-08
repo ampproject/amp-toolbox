@@ -1,3 +1,24 @@
+## v2.8.0-canary.16  (2021-04-08)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1192](https://github.com/ampproject/amp-toolbox/pull/1192) Filter duplicate extensions by src URL ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1188](https://github.com/ampproject/amp-toolbox/pull/1188) Make ES modules option consistent ([@schlessera](https://github.com/schlessera))
+
+#### :memo: Documentation
+* `cli`
+  * [#1190](https://github.com/ampproject/amp-toolbox/pull/1190) correct the amp version output ([@rajannpatel](https://github.com/rajannpatel))
+* `optimizer`
+  * [#1188](https://github.com/ampproject/amp-toolbox/pull/1188) Make ES modules option consistent ([@schlessera](https://github.com/schlessera))
+
+#### Committers: 3
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Rajan Patel ([@rajannpatel](https://github.com/rajannpatel))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.15 (2021-03-30)
 
 #### :rocket: Enhancement
