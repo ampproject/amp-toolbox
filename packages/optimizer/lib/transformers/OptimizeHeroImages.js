@@ -375,6 +375,7 @@ class OptimizeHeroImage {
     while (node) {
       if (!node.tagName) {
         node = node.parent;
+        continue;
       }
 
       if ('data-hero' in node.attribs) {
