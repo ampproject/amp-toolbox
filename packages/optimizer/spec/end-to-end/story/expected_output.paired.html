@@ -22,6 +22,11 @@
         text-transform: uppercase;
       }</style>
   <link rel="amphtml" href="https://example.com/amp-version.html">
+  <script amp-onerror>
+    document.querySelector("script[src*='/v0.js']").onerror = function() {
+      document.querySelector('style[amp-boilerplate]').textContent = ''
+    }
+  </script>
 </head>
 <body>
   <amp-story title="test" publisher="test" poster-portrait-src="test" publisher-logo-src="img.jpg" standalone class="i-amphtml-layout-container" i-amphtml-layout="container">

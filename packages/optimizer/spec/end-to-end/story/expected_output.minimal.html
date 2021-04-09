@@ -23,6 +23,11 @@
         text-transform: uppercase;
       }
     </style>
+  <script amp-onerror>
+    document.querySelector("script[src*='/v0.js']").onerror = function() {
+      document.querySelector('style[amp-boilerplate]').textContent = ''
+    }
+  </script>
 </head>
 
 <body>
