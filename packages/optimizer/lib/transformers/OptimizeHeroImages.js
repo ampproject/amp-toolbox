@@ -332,9 +332,12 @@ class OptimizeHeroImage {
     // If the image was detected as hero image candidate (and thus lacks an explicit
     // data-hero), mark it as a hero and add loading=lazy to guard against making
     // the page performance even worse by eagerly loading an image outside the viewport.
+    if (!this.isMarkedAsHeroImage(node)) {
+      imgNode.attribs['loading'] = 'lazy';
+    }
+
     if (!('data-hero' in node.attribs)) {
       node.attribs['data-hero'] = '';
-      imgNode.attribs['loading'] = 'lazy';
     }
 
     // Copy attributes
@@ -366,6 +369,25 @@ class OptimizeHeroImage {
       imgNode.attribs.style = styles.join(';');
     }
     appendChild(node, imgNode);
+  }
+
+  isMarkedAsHeroImage(node) {
+    while (node) {
+      if (!node.tagName) {
+        node = node.parent;
+      }
+
+      if ('data-hero' in node.attribs) {
+        return true;
+      }
+
+      if (node.tagName === 'body' || node.tagName === 'html') {
+        return false;
+      }
+
+      node = node.parent;
+    }
+    return false;
   }
 }
 
