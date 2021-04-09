@@ -152,6 +152,7 @@ class RewriteAmpUrls {
       async: '',
       nomodule: '',
       src: scriptNode.attribs.src,
+      crossorigin: 'anonymous',
     });
     const customElement = scriptNode.attribs['custom-element'];
     if (customElement) {
