@@ -322,12 +322,21 @@ class OptimizeHeroImage {
       return;
     }
     node.attribs['i-amphtml-ssr'] = '';
-    node.attribs['data-hero'] = '';
+
     // Create img node
     const imgNode = createElement('img', {
       class: 'i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
     });
+
+    // If the image was detected as hero image candidate (and thus lacks an explicit
+    // data-hero), mark it as a hero and add loading=lazy to guard against making
+    // the page performance even worse by eagerly loading an image outside the viewport.
+    if (!('data-hero' in node.attribs)) {
+      node.attribs['data-hero'] = '';
+      imgNode.attribs['loading'] = 'lazy';
+    }
+
     // Copy attributes
     const attributesToCopy = [
       'alt',
