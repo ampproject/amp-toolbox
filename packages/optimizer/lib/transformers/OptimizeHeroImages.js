@@ -145,12 +145,17 @@ class OptimizeHeroImage {
     let heroImageCandidate = null;
     let heroImages = [];
     let node = root;
+    let seenParagraphCount = 0;
     // Walk over all nodes in the body
     while (node !== null) {
+      if (node.tagName === 'p') {
+        seenParagraphCount++;
+      }
       // Look for data-hero attribute
       this.addImageWithDataHero(node, heroImages);
-      // Auto detect a hero image in case data-hero is not used
-      if (!heroImageCandidate && heroImages.length === 0) {
+      // Auto detect a hero image in case data-hero is not used,
+      // but only if before the second paragraph.
+      if (!heroImageCandidate && seenParagraphCount < 2 && heroImages.length === 0) {
         heroImageCandidate = this.isCandidateHeroImage(node);
       }
       if (isTemplate(node)) {
@@ -317,12 +322,21 @@ class OptimizeHeroImage {
       return;
     }
     node.attribs['i-amphtml-ssr'] = '';
-    node.attribs['data-hero'] = '';
+
     // Create img node
     const imgNode = createElement('img', {
       class: 'i-amphtml-fill-content i-amphtml-replaced-content',
       decoding: 'async',
     });
+
+    // If the image was detected as hero image candidate (and thus lacks an explicit
+    // data-hero), mark it as a hero and add loading=lazy to guard against making
+    // the page performance even worse by eagerly loading an image outside the viewport.
+    if (!('data-hero' in node.attribs)) {
+      node.attribs['data-hero'] = '';
+      imgNode.attribs['loading'] = 'lazy';
+    }
+
     // Copy attributes
     const attributesToCopy = [
       'alt',
