@@ -145,12 +145,17 @@ class OptimizeHeroImage {
     let heroImageCandidate = null;
     let heroImages = [];
     let node = root;
+    let seenParagraphCount = 0;
     // Walk over all nodes in the body
     while (node !== null) {
+      if (node.tagName === 'p') {
+        seenParagraphCount++;
+      }
       // Look for data-hero attribute
       this.addImageWithDataHero(node, heroImages);
-      // Auto detect a hero image in case data-hero is not used
-      if (!heroImageCandidate && heroImages.length === 0) {
+      // Auto detect a hero image in case data-hero is not used,
+      // but only if before the second paragraph.
+      if (!heroImageCandidate && seenParagraphCount < 2 && heroImages.length === 0) {
         heroImageCandidate = this.isCandidateHeroImage(node);
       }
       if (isTemplate(node)) {
