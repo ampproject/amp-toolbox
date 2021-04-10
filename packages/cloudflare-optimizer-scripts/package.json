@@ -1,0 +1,29 @@
+{
+  "name": "@ampproject/cloudflare-optimizer-scripts",
+  "version": "0.0.1",
+  "description": "Configuration and scripts for cloudflare-amp-optimizer",
+  "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/cloudflare-optimizer-scripts"
+  },
+  "scripts": {
+    "beta": "wrangler publish --env=beta",
+    "coverage": "jest --coverage && open coverage/lcov-report/index.html",
+    "publish": "wrangler publish",
+    "start": "wrangler dev --env=dev",
+    "test": "jest"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/*.js"
+    ]
+  },
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@ampproject/toolbox-optimizer": "2.8.0-canary.16",
+    "jest": "^26.6.3"
+  }
+}
