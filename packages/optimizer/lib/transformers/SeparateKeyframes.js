@@ -15,11 +15,8 @@
  */
 'use strict';
 
+const isDependencyInstalled = require('../isDependencyInstalled');
 const {insertText, createElement, hasAttribute, firstChildByTag} = require('../NodeUtils');
-const safeParser = require('postcss-safe-parser');
-const postcss = require('postcss');
-
-const cssnano = require('cssnano-simple');
 
 const allowedKeyframeProps = new Set([
   'animation-timing-function',
@@ -45,9 +42,27 @@ class SeparateKeyframes {
   constructor(config) {
     this.log_ = config.log.tag('SeparateKeyframes');
     this.minify = config.minify !== false;
+    this.enabled = true;
+    if (
+      !isDependencyInstalled('postcss') &&
+      !isDependencyInstalled('postcss-safe-parser') &&
+      !isDependencyInstalled('cssnano-simple')
+    ) {
+      this.enabled = false;
+      this.log_.debug(
+        'Install postcss to move keyframe animations into amp-keyframes via `npm install postcss postcss-safe-parser cssnano-simple`.'
+      );
+      return;
+    }
+    this.safeParser = require('postcss-safe-parser');
+    this.postcss = require('postcss');
+    this.cssnano = require('cssnano-simple');
   }
 
   async transform(tree) {
+    if (!this.enabled) {
+      return;
+    }
     const html = firstChildByTag(tree, 'html');
     if (!html) return;
     const head = firstChildByTag(html, 'head');
@@ -73,7 +88,7 @@ class SeparateKeyframes {
       return true;
     });
 
-    const extraPlugins = this.minify ? [cssnano] : [];
+    const extraPlugins = this.minify ? [this.cssnano] : [];
 
     // If no custom styles, there's nothing to do
     if (!stylesCustomTag) return;
@@ -83,7 +98,7 @@ class SeparateKeyframes {
     stylesText = stylesText.data;
 
     // initialize an empty keyframes tree
-    const keyframesTree = postcss.parse('');
+    const keyframesTree = this.postcss.parse('');
 
     const isInvalidKeyframe = (keyframe) => {
       let invalidProperty;
@@ -143,10 +158,10 @@ class SeparateKeyframes {
 
     keyframesPlugin.postcss = true;
 
-    const {css: cssResult} = await postcss([...extraPlugins, keyframesPlugin])
+    const {css: cssResult} = await this.postcss([...extraPlugins, keyframesPlugin])
       .process(stylesText, {
         from: undefined,
-        parser: safeParser,
+        parser: this.safeParser,
       })
       .catch((err) => {
         this.log_.warn(`Failed to process CSS`, err.message);
@@ -176,19 +191,21 @@ class SeparateKeyframes {
     }
     // Insert keyframes styles to Node
     const keyframesTextNode = stylesKeyframesTag.children[0];
-    const currentKeyframesTree = postcss.parse((keyframesTextNode && keyframesTextNode.data) || '');
+    const currentKeyframesTree = this.postcss.parse(
+      (keyframesTextNode && keyframesTextNode.data) || ''
+    );
     currentKeyframesTree.nodes = keyframesTree.nodes.concat(currentKeyframesTree.nodes);
 
     let keyframesText = '';
-    postcss.stringify(currentKeyframesTree, (part) => {
+    this.postcss.stringify(currentKeyframesTree, (part) => {
       keyframesText += part;
     });
 
     // if we have extra plugins make sure process the keyframes CSS with them
     if (extraPlugins.length > 0) {
-      const cssResult = await postcss(extraPlugins).process(keyframesText, {
+      const cssResult = await this.postcss(extraPlugins).process(keyframesText, {
         from: undefined,
-        parser: safeParser,
+        parser: this.safeParser,
       });
       keyframesText = cssResult.css;
     }
