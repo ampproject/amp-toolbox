@@ -13,6 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+jest.mock('@ampproject/toolbox-optimizer', () => {
+  const transformHtml = jest.fn()
+  return {
+    create: jest.fn(() => ({ transformHtml })),
+    transformHtmlSpy: transformHtml,
+  }
+})
+
 const { beforeEach, expect, it, describe } = require('@jest/globals')
 const AmpOptimizer = require('@ampproject/toolbox-optimizer')
 const {
@@ -22,14 +31,6 @@ const {
   resetOptimizerForTesting,
 } = require('../src/index')
 const { Response, HTMLRewriter } = require('./builtins')
-
-jest.mock('@ampproject/toolbox-optimizer', () => {
-  const transformHtml = jest.fn()
-  return {
-    create: jest.fn(() => ({ transformHtml })),
-    transformHtmlSpy: transformHtml,
-  }
-})
 
 beforeEach(() => {
   global.fetch = jest.fn()
