@@ -20,6 +20,7 @@ const {
   appendChild,
   createElement,
   hasAttribute,
+  remove,
   insertAfter,
   nextNode,
   firstChildByTag,
@@ -332,9 +333,22 @@ class OptimizeHeroImage {
     // If the image was detected as hero image candidate (and thus lacks an explicit
     // data-hero), mark it as a hero and add loading=lazy to guard against making
     // the page performance even worse by eagerly loading an image outside the viewport.
-    if (!('data-hero' in node.attribs)) {
-      node.attribs['data-hero'] = '';
+    // But if there is a noscript > img then preserve its original loading attribute.
+    const noscriptImg = this.getNoscriptFallbackImage(node);
+    if (noscriptImg) {
+      // Preserve the original loading attribute from the noscript fallback img.
+      if (hasAttribute(noscriptImg, 'loading')) {
+        imgNode.attribs.loading = noscriptImg.attribs.loading;
+      }
+
+      // Remove any noscript fallback when an amp-img is pre-rendered.
+      remove(noscriptImg.parent);
+    } else if (!this.isMarkedAsHeroImage(node)) {
       imgNode.attribs['loading'] = 'lazy';
+    }
+
+    if (!hasAttribute(node.attribs, 'data-hero')) {
+      node.attribs['data-hero'] = '';
     }
 
     // Copy attributes
@@ -366,6 +380,34 @@ class OptimizeHeroImage {
       imgNode.attribs.style = styles.join(';');
     }
     appendChild(node, imgNode);
+  }
+
+  getNoscriptFallbackImage(node) {
+    const noscript = firstChildByTag(node, 'noscript');
+    if (!noscript) {
+      return null;
+    }
+    return firstChildByTag(noscript, 'img');
+  }
+
+  isMarkedAsHeroImage(node) {
+    while (node) {
+      if (!node.tagName) {
+        node = node.parent;
+        continue;
+      }
+
+      if (hasAttribute(node, 'data-hero')) {
+        return true;
+      }
+
+      if (node.tagName === 'body' || node.tagName === 'html') {
+        return false;
+      }
+
+      node = node.parent;
+    }
+    return false;
   }
 }
 
