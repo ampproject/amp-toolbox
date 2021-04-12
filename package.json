@@ -16,7 +16,7 @@
     "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
     "test:page-experience:snapshot": "PAGE_EXPERIENCE_SNAPSHOT=true jest",
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-    "format": "prettier --write **/*.{js,ts}",
+    "format": "prettier --config=prettier.config.js --write **/*.{js,ts}",
     "lint": "eslint  -c .eslintrc.json .",
     "lint:fix": "eslint  -c .eslintrc.json --fix '**/*.{js,ts}'"
   },

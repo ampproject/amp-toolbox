@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 module.exports = {
-  minify: str => str,
-}
+  minify: (str) => str,
+};
