@@ -15,12 +15,7 @@
  */
 'use strict';
 
-const {
-    appendChild,
-    createElement,
-    firstChildByTag,
-    insertText,
-} = require('../NodeUtils');
+const {appendChild, createElement, firstChildByTag, insertText} = require('../NodeUtils');
 
 /**
  * AmpBoilerplateErrorHandler - adds amp-onerror handler to disable boilerplate early on runtime error
@@ -29,30 +24,30 @@ const {
  * while loading the AMP runtime that could already be detected much earlier.
  */
 class AmpBoilerplateErrorHandler {
-    transform(root) {
-        const html = firstChildByTag(root, 'html');
-        if (!html) {
-            return;
-        }
-
-        if (html.attribs['i-amphtml-no-boilerplate'] !== undefined) {
-            // Boilerplate was removed, so no need for the amp-onerror handler
-            return;
-        }
-
-        const head = firstChildByTag(html, 'head');
-        if (!head) {
-            return;
-        }
-
-        const errorHandler = createElement('script', {"amp-onerror": ''});
-        insertText(
-            errorHandler,
-            'document.querySelector("script[src*=\'/v0.js\']").onerror=function(){document.querySelector(\'style[amp-boilerplate]\').textContent=\'\'}'
-        );
-
-        appendChild(head, errorHandler);
+  transform(root) {
+    const html = firstChildByTag(root, 'html');
+    if (!html) {
+      return;
     }
+
+    if (html.attribs['i-amphtml-no-boilerplate'] !== undefined) {
+      // Boilerplate was removed, so no need for the amp-onerror handler
+      return;
+    }
+
+    const head = firstChildByTag(html, 'head');
+    if (!head) {
+      return;
+    }
+
+    const errorHandler = createElement('script', {'amp-onerror': ''});
+    insertText(
+      errorHandler,
+      "document.querySelector(\"script[src*='/v0.js']\").onerror=function(){document.querySelector('style[amp-boilerplate]').textContent=''}"
+    );
+
+    appendChild(head, errorHandler);
+  }
 }
 
 module.exports = AmpBoilerplateErrorHandler;
