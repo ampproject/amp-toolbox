@@ -22,7 +22,7 @@ const validatorRules = require('@ampproject/toolbox-validator-rules').fetch();
 
 const BEAUTIFY_OPTIONS = {
   'indent_size': 2,
-  'unformatted': ['noscript', 'style'],
+  'unformatted': ['noscript', 'script', 'style'],
   'indent-char': ' ',
   'no-preserve-newlines': '',
   'extra_liners': [],
