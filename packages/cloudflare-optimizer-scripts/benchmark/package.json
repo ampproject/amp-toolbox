@@ -1,0 +1,15 @@
+{
+  "name": "cloudflare-optimizer-benchmarks",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["amp"],
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "console-table-printer": "2.8.2",
+    "performance-leaderboard": "4.1.0"
+  }
+}
