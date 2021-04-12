@@ -1,9 +1,9 @@
 {
   "name": "@ampproject/cloudflare-optimizer-scripts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Configuration and scripts for cloudflare-amp-optimizer",
   "main": "./src/index.js",
-  "files": ["src","webpack.config.json"],
+  "files": ["src","webpack.config.js"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
