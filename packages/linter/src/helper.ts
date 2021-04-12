@@ -1,19 +1,17 @@
 const CONCURRENCY = 8;
 
-import { parse, format, resolve } from "url";
-import { stringify } from "querystring";
-import * as cheerio from "cheerio";
+import {parse, format, resolve} from 'url';
+import {stringify} from 'querystring';
+import * as cheerio from 'cheerio';
 
-import throat from "throat";
-import fetch, { Request } from "node-fetch";
-import probe from "probe-image-size";
+import throat from 'throat';
+import fetch, {Request} from 'node-fetch';
+import probe from 'probe-image-size';
 
-import { Context } from "./";
+import {Context} from './';
 
 export function schemaMetadata($: cheerio.Root) {
-  const metadata = JSON.parse(
-    $('script[type="application/ld+json"]').html() as string
-  );
+  const metadata = JSON.parse($('script[type="application/ld+json"]').html() as string);
   return metadata ? metadata : {};
 }
 
@@ -37,29 +35,26 @@ export function buildSourceOrigin(url: string) {
 
 export function corsEndpoints($: cheerio.Root) {
   const result: string[] = [];
-  const storyBookendSrc = $("amp-story amp-story-bookend").attr("src");
+  const storyBookendSrc = $('amp-story amp-story-bookend').attr('src');
   if (storyBookendSrc) {
     result.push(storyBookendSrc);
   }
-  const bookendConfigSrc = $("amp-story").attr("bookend-config-src");
+  const bookendConfigSrc = $('amp-story').attr('bookend-config-src');
   if (bookendConfigSrc) {
     result.push(bookendConfigSrc);
   }
-  const ampListSrc = $("amp-list[src]")
-    .map((_, e) => $(e).attr("src"))
+  const ampListSrc = $('amp-list[src]')
+    .map((_, e) => $(e).attr('src'))
     .get() as String[];
   return (result as String[]).concat(ampListSrc);
 }
 
 export const isTransformedAmp = ($: cheerio.Root): boolean => {
-  return $("html[transformed]").length > 0;
+  return $('html[transformed]').length > 0;
 };
 
-export const absoluteUrl = (
-  s: string | undefined,
-  base: string | undefined
-) => {
-  if (typeof s !== "string" || typeof base !== "string") {
+export const absoluteUrl = (s: string | undefined, base: string | undefined) => {
+  if (typeof s !== 'string' || typeof base !== 'string') {
     return undefined;
   } else {
     return resolve(base, s);
@@ -68,51 +63,41 @@ export const absoluteUrl = (
 
 export function fetchToCurl(
   url: string,
-  init: { headers?: { [k: string]: string } } = { headers: {} },
+  init: {headers?: {[k: string]: string}} = {headers: {}},
   includeHeaders = true
 ) {
   const headers = init.headers || {};
 
   const h = Object.keys(headers)
-    .map(k => `-H '${k}: ${headers[k]}'`)
-    .join(" ");
+    .map((k) => `-H '${k}: ${headers[k]}'`)
+    .join(' ');
 
-  return `curl -sS ${includeHeaders ? " -i " : ""}${h} '${url}'`;
+  return `curl -sS ${includeHeaders ? ' -i ' : ''}${h} '${url}'`;
 }
 
-export const redirectUrl = throat(
-  CONCURRENCY,
-  async (context: Context, s: string | Request) => {
-    const res = await fetch(s, { headers: context.headers });
-    return res.url;
-  }
-);
+export const redirectUrl = throat(CONCURRENCY, async (context: Context, s: string | Request) => {
+  const res = await fetch(s, {headers: context.headers});
+  return res.url;
+});
 
 export function dimensions(
   context: Context,
   url: string
-): Promise<{ width: number; height: number; mime: string; [k: string]: any }> {
+): Promise<{width: number; height: number; mime: string; [k: string]: any}> {
   // Try to prevent server from sending us encoded/compressed streams, since
   // probe-image-size can't handle them:
   // https://github.com/nodeca/probe-image-size/issues/28
   const headers = Object.assign({}, context.headers);
-  delete headers["accept-encoding"];
-  return probe(absoluteUrl(url, context.url), { headers });
+  delete headers['accept-encoding'];
+  return probe(absoluteUrl(url, context.url), {headers});
 }
 
-export const contentLength = throat(
-  CONCURRENCY,
-  async (context: Context, s: string | Request) => {
-    const options = Object.assign(
-      {},
-      { method: "HEAD" },
-      { headers: context.headers }
-    );
-    const res = await fetch(s, options);
-    if (!res.ok) {
-      return Promise.reject(res);
-    }
-    const contentLength = res.headers.get("content-length");
-    return contentLength ? contentLength : 0;
+export const contentLength = throat(CONCURRENCY, async (context: Context, s: string | Request) => {
+  const options = Object.assign({}, {method: 'HEAD'}, {headers: context.headers});
+  const res = await fetch(s, options);
+  if (!res.ok) {
+    return Promise.reject(res);
   }
-);
+  const contentLength = res.headers.get('content-length');
+  return contentLength ? contentLength : 0;
+});

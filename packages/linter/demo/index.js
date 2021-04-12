@@ -1,8 +1,8 @@
-const { lint } = require("../dist/index");
-const cheerio = require("cheerio");
-const fetch = require("node-fetch");
+const {lint} = require('../dist/index');
+const cheerio = require('cheerio');
+const fetch = require('node-fetch');
 
-lintDocument("https://amp.dev");
+lintDocument('https://amp.dev');
 
 async function lintDocument(url) {
   const body = await fetchDocument(url);
@@ -12,10 +12,10 @@ async function lintDocument(url) {
     $: cheerio.load(body),
     raw: {
       headers: {},
-      body
+      body,
     },
     headers: {},
-    mode: "amp"
+    mode: 'amp',
   };
 
   const result = await lint(context);

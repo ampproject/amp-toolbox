@@ -1,9 +1,9 @@
-import { schemaMetadata } from "../helper";
-import { Context } from "../index";
-import { Rule } from "../rule";
+import {schemaMetadata} from '../helper';
+import {Context} from '../index';
+import {Rule} from '../rule';
 
 export class SchemaMetadataIsRecent extends Rule {
-  run({ $ }: Context) {
+  run({$}: Context) {
     const inLastMonth = (time: number) => {
       return time > Date.now() - 30 * 24 * 60 * 60 * 1000 && time < Date.now();
     };

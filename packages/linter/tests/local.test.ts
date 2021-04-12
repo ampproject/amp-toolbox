@@ -1,34 +1,28 @@
-import {
-  assertPass,
-  runLocalTest,
-  assertWarn,
-  assertFail,
-  assertInfo,
-} from "./lib";
-import { AmpImgAmpPixelPreferred } from "../src/rules/AmpImgAmpPixelPreferred";
-import { AmpImgPlaceholderIsDataUri } from "../src/rules/AmpImgPlaceholderIsDataUri";
-import { MetaCharsetIsFirst } from "../src/rules/MetaCharsetIsFirst";
-import { RuntimeIsPreloaded } from "../src/rules/RuntimeIsPreloaded";
-import { SchemaMetadataIsNews } from "../src/rules/SchemaMetadataIsNews";
-import { StoryRuntimeIsV1 } from "../src/rules/StoryRuntimeIsV1";
-import { ImagesHaveAltText } from "../src/rules/ImagesHaveAltText";
-import { MetadataIncludesOGImageSrc } from "../src/rules/MetadataIncludesOGImageSrc";
-import { VideosHaveAltText } from "../src/rules/VideosHaveAltText";
-import { VideosAreSubtitled } from "../src/rules/VideosAreSubtitled";
-import { BookendExists } from "../src/rules/BookendExists";
-import { TitleMeetsLengthCriteria } from "../src/rules/TitleMeetsLengthCriteria";
-import { IsTransformedAmp } from "../src/rules/IsTransformedAmp";
-import { ModuleRuntimeUsed } from "../src/rules/ModuleRuntimeUsed";
-import { BlockingExtensionsPreloaded } from "../src/rules/BlockingExtensionsPreloaded";
-import { FontsArePreloaded } from "../src/rules/FontsArePreloaded";
-import { HeroImageIsDefined } from "../src/rules/HeroImageIsDefined";
-import { FastGoogleFontsDisplay } from "../src/rules/FastGoogleFontsDisplay";
-import { NoIconFontIsUsed } from "../src/rules/NoIconFontIsUsed";
-import { GoogleFontPreconnect } from "../src/rules/GoogleFontPreconnect";
-import { BoilerplateIsRemoved } from "../src/rules/BoilerplateIsRemoved";
-import { AmpImgUsesSrcSet } from "../src/rules/AmpImgUsesSrcSet";
-import { ViewportDisablesTapDelay } from "../src/rules/ViewportDisablesTapDelay";
-import { IsUsingLatestComponentVersion } from "../src/rules/IsUsingLatestComponentVersion";
+import {assertPass, runLocalTest, assertWarn, assertFail, assertInfo} from './lib';
+import {AmpImgAmpPixelPreferred} from '../src/rules/AmpImgAmpPixelPreferred';
+import {AmpImgPlaceholderIsDataUri} from '../src/rules/AmpImgPlaceholderIsDataUri';
+import {MetaCharsetIsFirst} from '../src/rules/MetaCharsetIsFirst';
+import {RuntimeIsPreloaded} from '../src/rules/RuntimeIsPreloaded';
+import {SchemaMetadataIsNews} from '../src/rules/SchemaMetadataIsNews';
+import {StoryRuntimeIsV1} from '../src/rules/StoryRuntimeIsV1';
+import {ImagesHaveAltText} from '../src/rules/ImagesHaveAltText';
+import {MetadataIncludesOGImageSrc} from '../src/rules/MetadataIncludesOGImageSrc';
+import {VideosHaveAltText} from '../src/rules/VideosHaveAltText';
+import {VideosAreSubtitled} from '../src/rules/VideosAreSubtitled';
+import {BookendExists} from '../src/rules/BookendExists';
+import {TitleMeetsLengthCriteria} from '../src/rules/TitleMeetsLengthCriteria';
+import {IsTransformedAmp} from '../src/rules/IsTransformedAmp';
+import {ModuleRuntimeUsed} from '../src/rules/ModuleRuntimeUsed';
+import {BlockingExtensionsPreloaded} from '../src/rules/BlockingExtensionsPreloaded';
+import {FontsArePreloaded} from '../src/rules/FontsArePreloaded';
+import {HeroImageIsDefined} from '../src/rules/HeroImageIsDefined';
+import {FastGoogleFontsDisplay} from '../src/rules/FastGoogleFontsDisplay';
+import {NoIconFontIsUsed} from '../src/rules/NoIconFontIsUsed';
+import {GoogleFontPreconnect} from '../src/rules/GoogleFontPreconnect';
+import {BoilerplateIsRemoved} from '../src/rules/BoilerplateIsRemoved';
+import {AmpImgUsesSrcSet} from '../src/rules/AmpImgUsesSrcSet';
+import {ViewportDisablesTapDelay} from '../src/rules/ViewportDisablesTapDelay';
+import {IsUsingLatestComponentVersion} from '../src/rules/IsUsingLatestComponentVersion';
 
 describe(AmpImgAmpPixelPreferred.name, () => {
   it(`${AmpImgAmpPixelPreferred.name} - <amp-img height="1" width="1">`, async () => {
@@ -100,55 +94,37 @@ describe(AmpImgPlaceholderIsDataUri, () => {
 describe(AmpImgUsesSrcSet.name, () => {
   it(`${AmpImgUsesSrcSet.name} - responsive - no srcset`, async () => {
     return assertWarn(
-      runLocalTest(
-        AmpImgUsesSrcSet,
-        `${__dirname}/local/AmpImgUsesSrcSet-1/source.html`
-      )
+      runLocalTest(AmpImgUsesSrcSet, `${__dirname}/local/AmpImgUsesSrcSet-1/source.html`)
     );
   });
 
   it(`${AmpImgUsesSrcSet.name} - svg`, async () => {
     return assertPass(
-      runLocalTest(
-        AmpImgUsesSrcSet,
-        `${__dirname}/local/AmpImgUsesSrcSet-2/source.html`
-      )
+      runLocalTest(AmpImgUsesSrcSet, `${__dirname}/local/AmpImgUsesSrcSet-2/source.html`)
     );
   });
 
   it(`${AmpImgUsesSrcSet.name} - fixed`, async () => {
     return assertPass(
-      runLocalTest(
-        AmpImgUsesSrcSet,
-        `${__dirname}/local/AmpImgUsesSrcSet-3/source.html`
-      )
+      runLocalTest(AmpImgUsesSrcSet, `${__dirname}/local/AmpImgUsesSrcSet-3/source.html`)
     );
   });
 
   it(`${AmpImgUsesSrcSet.name} - fixed-height`, async () => {
     return assertPass(
-      runLocalTest(
-        AmpImgUsesSrcSet,
-        `${__dirname}/local/AmpImgUsesSrcSet-4/source.html`
-      )
+      runLocalTest(AmpImgUsesSrcSet, `${__dirname}/local/AmpImgUsesSrcSet-4/source.html`)
     );
   });
 
   it(`${AmpImgUsesSrcSet.name} - srcset`, async () => {
     return assertPass(
-      runLocalTest(
-        AmpImgUsesSrcSet,
-        `${__dirname}/local/AmpImgUsesSrcSet-5/source.html`
-      )
+      runLocalTest(AmpImgUsesSrcSet, `${__dirname}/local/AmpImgUsesSrcSet-5/source.html`)
     );
   });
 
   it(`${AmpImgUsesSrcSet.name} - parent is fixed`, async () => {
     return assertPass(
-      runLocalTest(
-        AmpImgUsesSrcSet,
-        `${__dirname}/local/AmpImgUsesSrcSet-6/source.html`
-      )
+      runLocalTest(AmpImgUsesSrcSet, `${__dirname}/local/AmpImgUsesSrcSet-6/source.html`)
     );
   });
 });
@@ -156,46 +132,31 @@ describe(AmpImgUsesSrcSet.name, () => {
 describe(BoilerplateIsRemoved.name, () => {
   it(`${BoilerplateIsRemoved.name} - boilerplate removed`, async () => {
     return assertPass(
-      runLocalTest(
-        BoilerplateIsRemoved,
-        `${__dirname}/local/BoilerplateIsRemoved-1/source.html`
-      )
+      runLocalTest(BoilerplateIsRemoved, `${__dirname}/local/BoilerplateIsRemoved-1/source.html`)
     );
   });
 
   it(`${BoilerplateIsRemoved.name} - amp-story boilerplate cannot be removed`, async () => {
     return assertPass(
-      runLocalTest(
-        BoilerplateIsRemoved,
-        `${__dirname}/local/BoilerplateIsRemoved-2/source.html`
-      )
+      runLocalTest(BoilerplateIsRemoved, `${__dirname}/local/BoilerplateIsRemoved-2/source.html`)
     );
   });
 
   it(`${BoilerplateIsRemoved.name} - amp-experiment boilerplate avoidable`, async () => {
     return assertInfo(
-      runLocalTest(
-        BoilerplateIsRemoved,
-        `${__dirname}/local/BoilerplateIsRemoved-3/source.html`
-      )
+      runLocalTest(BoilerplateIsRemoved, `${__dirname}/local/BoilerplateIsRemoved-3/source.html`)
     );
   });
 
   it(`${BoilerplateIsRemoved.name} - boilerplate was not removed`, async () => {
     return assertWarn(
-      runLocalTest(
-        BoilerplateIsRemoved,
-        `${__dirname}/local/BoilerplateIsRemoved-4/source.html`
-      )
+      runLocalTest(BoilerplateIsRemoved, `${__dirname}/local/BoilerplateIsRemoved-4/source.html`)
     );
   });
 
   it(`${BoilerplateIsRemoved.name} - not transformed amp`, async () => {
     return assertPass(
-      runLocalTest(
-        BoilerplateIsRemoved,
-        `${__dirname}/local/BoilerplateIsRemoved-5/source.html`
-      )
+      runLocalTest(BoilerplateIsRemoved, `${__dirname}/local/BoilerplateIsRemoved-5/source.html`)
     );
   });
 });
@@ -256,66 +217,42 @@ describe(FastGoogleFontsDisplay.name, () => {
 describe(NoIconFontIsUsed.name, () => {
   it(`${NoIconFontIsUsed.name} - icon font found`, async () => {
     return assertWarn(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-1/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-1/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - no icon font found`, async () => {
     return assertPass(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-2/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-2/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - suspicious class names`, async () => {
     return assertPass(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-3/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-3/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - material icons icon font found`, async () => {
     return assertWarn(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-4/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-4/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - icomoon icon font found`, async () => {
     return assertWarn(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-5/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-5/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - icofont icon font found`, async () => {
     return assertWarn(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-6/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-6/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - nerd font icon font found`, async () => {
     return assertWarn(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-7/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-7/source.html`)
     );
   });
   it(`${NoIconFontIsUsed.name} - icofont with typical font awesome classnames found`, async () => {
     return assertWarn(
-      runLocalTest(
-        NoIconFontIsUsed,
-        `${__dirname}/local/NoIconFontIsUsed-8/source.html`
-      )
+      runLocalTest(NoIconFontIsUsed, `${__dirname}/local/NoIconFontIsUsed-8/source.html`)
     );
   });
 });
@@ -323,26 +260,17 @@ describe(NoIconFontIsUsed.name, () => {
 describe(FontsArePreloaded.name, () => {
   it(`${FontsArePreloaded.name} - preload for font exists`, async () => {
     return assertPass(
-      runLocalTest(
-        FontsArePreloaded,
-        `${__dirname}/local/FontsArePreloaded-1/source.html`
-      )
+      runLocalTest(FontsArePreloaded, `${__dirname}/local/FontsArePreloaded-1/source.html`)
     );
   });
   it(`${FontsArePreloaded.name} - preload for font missing`, async () => {
     return assertInfo(
-      runLocalTest(
-        FontsArePreloaded,
-        `${__dirname}/local/FontsArePreloaded-2/source.html`
-      )
+      runLocalTest(FontsArePreloaded, `${__dirname}/local/FontsArePreloaded-2/source.html`)
     );
   });
   it(`${FontsArePreloaded.name} - all fonts have font-display set`, async () => {
     return assertPass(
-      runLocalTest(
-        FontsArePreloaded,
-        `${__dirname}/local/FontsArePreloaded-3/source.html`
-      )
+      runLocalTest(FontsArePreloaded, `${__dirname}/local/FontsArePreloaded-3/source.html`)
     );
   });
 });
@@ -350,26 +278,17 @@ describe(FontsArePreloaded.name, () => {
 describe(GoogleFontPreconnect.name, () => {
   it(`${GoogleFontPreconnect.name} - dns-prefetch preconnect exists`, async () => {
     return assertPass(
-      runLocalTest(
-        GoogleFontPreconnect,
-        `${__dirname}/local/GoogleFontPreconnect-1/source.html`
-      )
+      runLocalTest(GoogleFontPreconnect, `${__dirname}/local/GoogleFontPreconnect-1/source.html`)
     );
   });
   it(`${GoogleFontPreconnect.name} - preconnect missing`, async () => {
     return assertWarn(
-      runLocalTest(
-        GoogleFontPreconnect,
-        `${__dirname}/local/GoogleFontPreconnect-2/source.html`
-      )
+      runLocalTest(GoogleFontPreconnect, `${__dirname}/local/GoogleFontPreconnect-2/source.html`)
     );
   });
   it(`${GoogleFontPreconnect.name} - dns-prefetch missing`, async () => {
     return assertWarn(
-      runLocalTest(
-        GoogleFontPreconnect,
-        `${__dirname}/local/GoogleFontPreconnect-3/source.html`
-      )
+      runLocalTest(GoogleFontPreconnect, `${__dirname}/local/GoogleFontPreconnect-3/source.html`)
     );
   });
 });
@@ -377,26 +296,17 @@ describe(GoogleFontPreconnect.name, () => {
 describe(HeroImageIsDefined.name, () => {
   it(`${HeroImageIsDefined.name} - data-hero exists`, async () => {
     return assertPass(
-      runLocalTest(
-        HeroImageIsDefined,
-        `${__dirname}/local/HeroImageIsDefined-1/source.html`
-      )
+      runLocalTest(HeroImageIsDefined, `${__dirname}/local/HeroImageIsDefined-1/source.html`)
     );
   });
   it(`${HeroImageIsDefined.name} - no relevant hero images`, async () => {
     return assertPass(
-      runLocalTest(
-        HeroImageIsDefined,
-        `${__dirname}/local/HeroImageIsDefined-2/source.html`
-      )
+      runLocalTest(HeroImageIsDefined, `${__dirname}/local/HeroImageIsDefined-2/source.html`)
     );
   });
   it(`${HeroImageIsDefined.name} - data-hero missing`, async () => {
     return assertWarn(
-      runLocalTest(
-        HeroImageIsDefined,
-        `${__dirname}/local/HeroImageIsDefined-3/source.html`
-      )
+      runLocalTest(HeroImageIsDefined, `${__dirname}/local/HeroImageIsDefined-3/source.html`)
     );
   });
 });
@@ -404,19 +314,13 @@ describe(HeroImageIsDefined.name, () => {
 describe(IsTransformedAmp.name, () => {
   it(`${IsTransformedAmp.name} - Transformed AMP detected`, async () => {
     return assertPass(
-      runLocalTest(
-        IsTransformedAmp,
-        `${__dirname}/local/IsTransformedAmp-1/source.html`
-      )
+      runLocalTest(IsTransformedAmp, `${__dirname}/local/IsTransformedAmp-1/source.html`)
     );
   });
 
   it(`${IsTransformedAmp.name} - No transformed AMP detected`, async () => {
     return assertWarn(
-      runLocalTest(
-        IsTransformedAmp,
-        `${__dirname}/local/IsTransformedAmp-2/source.html`
-      )
+      runLocalTest(IsTransformedAmp, `${__dirname}/local/IsTransformedAmp-2/source.html`)
     );
   });
 });
@@ -424,19 +328,13 @@ describe(IsTransformedAmp.name, () => {
 describe(MetaCharsetIsFirst.name, () => {
   it(`${MetaCharsetIsFirst.name} - <meta charset> is first`, async () => {
     return assertPass(
-      runLocalTest(
-        MetaCharsetIsFirst,
-        `${__dirname}/local/MetaCharsetIsFirst-1/source.html`
-      )
+      runLocalTest(MetaCharsetIsFirst, `${__dirname}/local/MetaCharsetIsFirst-1/source.html`)
     );
   });
 
   it(`${MetaCharsetIsFirst.name} - <meta charset> missing`, async () => {
     return assertFail(
-      runLocalTest(
-        MetaCharsetIsFirst,
-        `${__dirname}/local/MetaCharsetIsFirst-2/source.html`
-      )
+      runLocalTest(MetaCharsetIsFirst, `${__dirname}/local/MetaCharsetIsFirst-2/source.html`)
     );
   });
 });
@@ -444,19 +342,13 @@ describe(MetaCharsetIsFirst.name, () => {
 describe(ModuleRuntimeUsed.name, () => {
   it(`${ModuleRuntimeUsed.name} - Module runtime script found`, async () => {
     return assertPass(
-      runLocalTest(
-        ModuleRuntimeUsed,
-        `${__dirname}/local/ModuleRuntimeUsed-1/source.html`
-      )
+      runLocalTest(ModuleRuntimeUsed, `${__dirname}/local/ModuleRuntimeUsed-1/source.html`)
     );
   });
 
   it(`${ModuleRuntimeUsed.name} - Module runtime script not found`, async () => {
     return assertWarn(
-      runLocalTest(
-        ModuleRuntimeUsed,
-        `${__dirname}/local/ModuleRuntimeUsed-2/source.html`
-      )
+      runLocalTest(ModuleRuntimeUsed, `${__dirname}/local/ModuleRuntimeUsed-2/source.html`)
     );
   });
 });
@@ -464,28 +356,19 @@ describe(ModuleRuntimeUsed.name, () => {
 describe(RuntimeIsPreloaded.name, () => {
   it(`${RuntimeIsPreloaded.name} - <link rel="preload"> is absent`, async () => {
     return assertWarn(
-      runLocalTest(
-        RuntimeIsPreloaded,
-        `${__dirname}/local/RuntimeIsPreloaded-1/source.html`
-      )
+      runLocalTest(RuntimeIsPreloaded, `${__dirname}/local/RuntimeIsPreloaded-1/source.html`)
     );
   });
 
   it(`${RuntimeIsPreloaded.name} - <link rel="preload"> is present`, async () => {
     return assertPass(
-      runLocalTest(
-        RuntimeIsPreloaded,
-        `${__dirname}/local/RuntimeIsPreloaded-2/source.html`
-      )
+      runLocalTest(RuntimeIsPreloaded, `${__dirname}/local/RuntimeIsPreloaded-2/source.html`)
     );
   });
 
   it(`${RuntimeIsPreloaded.name} - <link rel="modulepreload"> is present`, async () => {
     return assertPass(
-      runLocalTest(
-        RuntimeIsPreloaded,
-        `${__dirname}/local/RuntimeIsPreloaded-3/source.html`
-      )
+      runLocalTest(RuntimeIsPreloaded, `${__dirname}/local/RuntimeIsPreloaded-3/source.html`)
     );
   });
 });
@@ -493,19 +376,13 @@ describe(RuntimeIsPreloaded.name, () => {
 describe(SchemaMetadataIsNews.name, () => {
   it(`${SchemaMetadataIsNews.name} - schema type is NewsArticle`, async () => {
     return assertPass(
-      runLocalTest(
-        SchemaMetadataIsNews,
-        `${__dirname}/local/SchemaMetadataIsNews-1/source.html`
-      )
+      runLocalTest(SchemaMetadataIsNews, `${__dirname}/local/SchemaMetadataIsNews-1/source.html`)
     );
   });
 
   it(`${SchemaMetadataIsNews.name} - schema type is not NewsArticle`, async () => {
     return assertWarn(
-      runLocalTest(
-        SchemaMetadataIsNews,
-        `${__dirname}/local/SchemaMetadataIsNews-2/source.html`
-      )
+      runLocalTest(SchemaMetadataIsNews, `${__dirname}/local/SchemaMetadataIsNews-2/source.html`)
     );
   });
 });
@@ -513,19 +390,13 @@ describe(SchemaMetadataIsNews.name, () => {
 describe(StoryRuntimeIsV1.name, () => {
   it(`${StoryRuntimeIsV1.name} - runtime is v1`, async () => {
     return assertPass(
-      runLocalTest(
-        StoryRuntimeIsV1,
-        `${__dirname}/local/StoryRuntimeIsV1-1/source.html`
-      )
+      runLocalTest(StoryRuntimeIsV1, `${__dirname}/local/StoryRuntimeIsV1-1/source.html`)
     );
   });
 
   it(`${StoryRuntimeIsV1.name} - runtime is not v1`, async () => {
     return assertFail(
-      runLocalTest(
-        StoryRuntimeIsV1,
-        `${__dirname}/local/StoryRuntimeIsV1-2/source.html`
-      )
+      runLocalTest(StoryRuntimeIsV1, `${__dirname}/local/StoryRuntimeIsV1-2/source.html`)
     );
   });
 });
@@ -533,28 +404,19 @@ describe(StoryRuntimeIsV1.name, () => {
 describe(BookendExists.name, () => {
   it(`${BookendExists.name} - external bookend data`, async () => {
     return assertPass(
-      runLocalTest(
-        BookendExists,
-        `${__dirname}/local/BookendExists-1/source.html`
-      )
+      runLocalTest(BookendExists, `${__dirname}/local/BookendExists-1/source.html`)
     );
   });
 
   it(`${BookendExists.name} - inline bookend data`, async () => {
     return assertPass(
-      runLocalTest(
-        BookendExists,
-        `${__dirname}/local/BookendExists-2/source.html`
-      )
+      runLocalTest(BookendExists, `${__dirname}/local/BookendExists-2/source.html`)
     );
   });
 
   it(`${BookendExists.name} - no bookend`, async () => {
     return assertWarn(
-      runLocalTest(
-        BookendExists,
-        `${__dirname}/local/BookendExists-3/source.html`
-      )
+      runLocalTest(BookendExists, `${__dirname}/local/BookendExists-3/source.html`)
     );
   });
 });
@@ -591,19 +453,13 @@ describe(MetadataIncludesOGImageSrc.name, () => {
 describe(ImagesHaveAltText.name, () => {
   it(`${ImagesHaveAltText.name} - All <amp-img> have alt text`, async () => {
     return assertPass(
-      runLocalTest(
-        ImagesHaveAltText,
-        `${__dirname}/local/ImagesHaveAltText-1/source.html`
-      )
+      runLocalTest(ImagesHaveAltText, `${__dirname}/local/ImagesHaveAltText-1/source.html`)
     );
   });
 
   it(`${ImagesHaveAltText.name} - At least one <amp-img> is missing alt text`, async () => {
     return assertWarn(
-      runLocalTest(
-        ImagesHaveAltText,
-        `${__dirname}/local/ImagesHaveAltText-2/source.html`
-      )
+      runLocalTest(ImagesHaveAltText, `${__dirname}/local/ImagesHaveAltText-2/source.html`)
     );
   });
 });
@@ -611,19 +467,13 @@ describe(ImagesHaveAltText.name, () => {
 describe(VideosHaveAltText.name, () => {
   it(`${VideosHaveAltText.name} - All <amp-video> have alt text`, async () => {
     return assertPass(
-      runLocalTest(
-        VideosHaveAltText,
-        `${__dirname}/local/VideosHaveAltText-1/source.html`
-      )
+      runLocalTest(VideosHaveAltText, `${__dirname}/local/VideosHaveAltText-1/source.html`)
     );
   });
 
   it(`${VideosHaveAltText.name} - At least one <amp-video> is missing alt text`, async () => {
     return assertWarn(
-      runLocalTest(
-        VideosHaveAltText,
-        `${__dirname}/local/VideosHaveAltText-2/source.html`
-      )
+      runLocalTest(VideosHaveAltText, `${__dirname}/local/VideosHaveAltText-2/source.html`)
     );
   });
 });
@@ -631,19 +481,13 @@ describe(VideosHaveAltText.name, () => {
 describe(VideosAreSubtitled.name, () => {
   it(`${VideosAreSubtitled.name} - All <amp-video> have subtitles`, async () => {
     return assertPass(
-      runLocalTest(
-        VideosAreSubtitled,
-        `${__dirname}/local/VideosAreSubtitled-1/source.html`
-      )
+      runLocalTest(VideosAreSubtitled, `${__dirname}/local/VideosAreSubtitled-1/source.html`)
     );
   });
 
   it(`${VideosAreSubtitled.name} - One or more <amp-video> are missing subtitles`, async () => {
     return assertWarn(
-      runLocalTest(
-        VideosAreSubtitled,
-        `${__dirname}/local/VideosAreSubtitled-2/source.html`
-      )
+      runLocalTest(VideosAreSubtitled, `${__dirname}/local/VideosAreSubtitled-2/source.html`)
     );
   });
 });

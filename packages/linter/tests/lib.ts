@@ -1,18 +1,18 @@
-const FIXTURES = "fixtures";
+const FIXTURES = 'fixtures';
 
-import { existsSync, readFileSync } from "fs";
+import {existsSync, readFileSync} from 'fs';
 
-import * as cheerio from "cheerio";
-import debug from "debug";
-import { diffJson as diff } from "diff";
-import { back as nockBack } from "nock";
-import { default as fetch } from "node-fetch";
+import * as cheerio from 'cheerio';
+import debug from 'debug';
+import {diffJson as diff} from 'diff';
+import {back as nockBack} from 'nock';
+import {default as fetch} from 'node-fetch';
 
-import throat from "throat";
-import { Status, Result, guessMode } from "../src";
-import { RuleConstructor } from "../src/rule";
+import throat from 'throat';
+import {Status, Result, guessMode} from '../src';
+import {RuleConstructor} from '../src/rule';
 
-const log = debug("linter");
+const log = debug('linter');
 
 nockBack.fixtures = `${__dirname}/${FIXTURES}`;
 
@@ -24,17 +24,17 @@ export const withFixture = throat(
     const fixturePath = `${fixtureName}.json`;
     if (existsSync(`${nockBack.fixtures}/${fixturePath}`)) {
       log(`nocking HTTP requests with fixture [${fixturePath}]`);
-      nockBack.setMode("lockdown");
-      const { nockDone } = await nockBack(fixturePath);
+      nockBack.setMode('lockdown');
+      const {nockDone} = await nockBack(fixturePath);
       const res = await fn();
       nockDone();
       return res;
     } else {
       log(`recording HTTP requests to fixture [${fixturePath}] ...`);
-      nockBack.setMode("record");
-      const { nockDone } = await nockBack(fixturePath);
+      nockBack.setMode('record');
+      const {nockDone} = await nockBack(fixturePath);
       const res = await fn();
-      return new Promise<T>(resolve => {
+      return new Promise<T>((resolve) => {
         setTimeout(() => {
           // wait for probe-image-size's aborts to settle
           nockDone();
@@ -71,20 +71,20 @@ export async function assertStatus(
     if (expectedStatus === Status.PASS) {
       return;
     } else {
-      throw new Error("no results returned");
+      throw new Error('no results returned');
     }
   }
   if (actual.length > 1) {
-    throw new Error("multiple results returned");
+    throw new Error('multiple results returned');
   }
   const actualStatus = actual[0].status;
   if (actualStatus === expectedStatus) {
     return;
   } else {
     throw new Error(
-      `actual status: ${JSON.stringify(
-        actualStatus
-      )}, expected status: ${JSON.stringify(expectedStatus)}`
+      `actual status: ${JSON.stringify(actualStatus)}, expected status: ${JSON.stringify(
+        expectedStatus
+      )}`
     );
   }
 }
@@ -93,10 +93,7 @@ export async function assertEqual<T extends object>(
   actual: T | Promise<T>,
   expected: T | Promise<T>
 ) {
-  const res = diff(
-    await Promise.resolve(expected),
-    await Promise.resolve(actual)
-  );
+  const res = diff(await Promise.resolve(expected), await Promise.resolve(actual));
   if (!res || res.length !== 1) {
     const as = JSON.stringify(await Promise.resolve(actual));
     const es = JSON.stringify(await Promise.resolve(expected));
@@ -109,10 +106,7 @@ export async function assertNotEqual<T extends object>(
   actual: T | Promise<T>,
   expected: T | Promise<T>
 ) {
-  const res = diff(
-    await Promise.resolve(expected),
-    await Promise.resolve(actual)
-  );
+  const res = diff(await Promise.resolve(expected), await Promise.resolve(actual));
   if (res && res.length === 1) {
     const as = JSON.stringify(await Promise.resolve(actual));
     const es = JSON.stringify(await Promise.resolve(expected));
@@ -127,9 +121,7 @@ export async function assertMatch<T extends object>(
 ) {
   const s = JSON.stringify(await Promise.resolve(actual));
   if (!s.match(expected)) {
-    throw new Error(
-      `actual: ${s}, expected regexp match: ${expected.toString()}`
-    );
+    throw new Error(`actual: ${s}, expected regexp match: ${expected.toString()}`);
   }
 }
 
@@ -156,14 +148,14 @@ export async function assertFnList(
 }
 
 export async function runLocalTest(ctor: RuleConstructor, fixture: string) {
-  const body = readFileSync(fixture, { encoding: "utf8" });
+  const body = readFileSync(fixture, {encoding: 'utf8'});
   const $ = cheerio.load(body);
   const context = {
     $,
     headers: {},
-    url: "",
-    raw: { body, headers: {} },
-    mode: guessMode($)
+    url: '',
+    raw: {body, headers: {}},
+    mode: guessMode($),
   };
   const rule = new ctor();
   return Promise.resolve(rule.run(context));
@@ -177,8 +169,8 @@ export async function runNetworkTest(ctor: RuleConstructor, url: string) {
     $,
     headers: {},
     url,
-    raw: { body, headers: {} },
-    mode: guessMode($)
+    raw: {body, headers: {}},
+    mode: guessMode($),
   };
   const rule = new ctor();
   return Promise.resolve(rule.run(context));
