@@ -15,7 +15,6 @@
  */
 const AmpOptimizer = require('@ampproject/toolbox-optimizer')
 const { DocTagger, LinkRewriter } = require('./rewriters')
-const config = /** @type {ConfigDef} */ (require('../config.json'))
 
 // For origins that do not specify cache-control headers,
 // we use a default TTL of 15 minutes.
@@ -34,15 +33,15 @@ const DEFAULT_TTL = 60 * 15
  * }} ConfigDef
  */
 
-validateConfiguration(config)
-
 /**
  * @param {!FetchEvent} event
  * @param {!ConfigDef} config
  * @return {!Request}
  */
-async function handleRequest(event, config = config) {
+async function handleRequest(event, config) {
   event.passThroughOnException()
+  validateConfiguration(config);
+
   const request = event.request
   const url = new URL(request.url)
   if (isReverseProxy(config)) {
@@ -83,7 +82,8 @@ async function handleRequest(event, config = config) {
   }
 
   try {
-    const transformed = await ampOptimizer.transformHtml(responseText)
+    const optimizer = getOptimizer(config);
+    const transformed = await optimizer.transformHtml(responseText)
     let response = new Response(transformed, { headers, statusText, status })
     const rewritten = addTag(maybeRewriteLinks(response, config))
 
@@ -208,7 +208,7 @@ function validateConfiguration(config) {
   }
 }
 
-let optimizer = null;
+let ampOptimizer = null;
 /**
  * Returns an AmpOptimizer for the given configuraion.
  *
@@ -220,8 +220,8 @@ let optimizer = null;
  * @returns {!AmpOptimizer}
  */
 function getOptimizer(config) {
-  if (optimizer) {
-    return optimizer;
+  if (ampOptimizer) {
+    return ampOptimizer;
   }
   const imageOptimizer = (src, width) =>
     `/cdn-cgi/image/width=${width},f=auto/${src}`
@@ -246,7 +246,7 @@ function getOptimizer(config) {
 }
 
 function resetOptimizerForTesting() {
-  optimizer = null
+  ampOptimizer = null
 }
 
 module.exports = {

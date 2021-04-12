@@ -98,7 +98,7 @@ describe('handleRequest', () => {
     global.fetch.mockReturnValue(getResponse(input))
 
     const output = await getOutput('http://test.com')
-    expect(output).toBe(`transformed-${input}`)
+    expect(output).toBe(`transformed-${input}`) 
   })
 
   it('Should passthrough request to origin in request interceptor mode', async () => {
