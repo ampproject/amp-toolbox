@@ -93,6 +93,7 @@ Available options are:
 - [optimizeAmpBind](#optimizeampbind)
 - [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
+- [separateKeyframes](#separateKeyframes)
 - [verbose](#verbose)
 
 #### `autoAddMandatoryTags`
@@ -252,6 +253,15 @@ Hero images are optimized by server-side rendering the `img` element inside the 
 #### `preloadHeroImage`
 
 Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead. 
+
+#### `separateKeyframes`
+
+Automatically move keyframe animations to a separate `amp-keyframes` style block at the end of the document.  Putting keyframes declarations at the bottom of a document allows them to exceed size limitations and avoids blocking first contentful paint to parse them (see [documentation](https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=ads#keyframes-stylesheet)).
+
+- name: `separateKeyframes`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
 
 #### `verbose`
 
