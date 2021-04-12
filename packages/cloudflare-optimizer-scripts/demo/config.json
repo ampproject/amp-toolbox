@@ -2,6 +2,7 @@
     "from": "optimizer-demo.ampdev.workers.dev",
     "to": "cf-optimizer-demo.web.app",
     "enableKVCache": true,
+    "enableCloudflareImageOptimization": true,
     "optimizer": {
         "maxHeroImageCount": 5
     }

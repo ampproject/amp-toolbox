@@ -225,7 +225,8 @@ function getOptimizer(config) {
   if (ampOptimizer) {
     return ampOptimizer;
   }
-  const imageOptimizer = (src, width) => `/cdn-cgi/image/width=${width},f=auto/${src}`;
+  const imageOptimizer = (src, width) =>
+    `/cdn-cgi/image/width=${width},f=auto/${src}`
   return AmpOptimizer.create({
     ...(config.optimizer || {}),
     minify: false,
