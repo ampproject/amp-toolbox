@@ -1,11 +1,11 @@
-import { Context } from "../index";
-import { Rule } from "../rule";
+import {Context} from '../index';
+import {Rule} from '../rule';
 
 export class VideosHaveAltText extends Rule {
-  run({ $ }: Context) {
+  run({$}: Context) {
     let vidsWithoutAlt = 0;
 
-    $("amp-video").each(function (i, elem: cheerio.TagElement) {
+    $('amp-video').each(function (i, elem: cheerio.TagElement) {
       if (!elem.attribs.title) {
         vidsWithoutAlt += 1;
       }
@@ -17,9 +17,9 @@ export class VideosHaveAltText extends Rule {
   }
   meta() {
     return {
-      url: "https://blog.amp.dev/2020/02/12/seo-for-amp-stories/",
-      title: "Videos contain alt text",
-      info: "",
+      url: 'https://blog.amp.dev/2020/02/12/seo-for-amp-stories/',
+      title: 'Videos contain alt text',
+      info: '',
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Context, Result, Status } from "./index";
+import {Context, Result, Status} from './index';
 
 // Don't completely understand why we need to do this instead of "typeof Rule"
 // (should be equivalent??) but whatever. See
@@ -11,13 +11,13 @@ export abstract class Rule {
   abstract run(context: Context): Promise<Result | Array<Result>>;
   public meta() {
     return {
-      url: "",
+      url: '',
       title:
         this.constructor.name.replace(
           /([a-z])([A-Z])/g,
           (_, c1, c2) => `${c1} ${c2.toLowerCase()}`
-        ) + "?",
-      info: "",
+        ) + '?',
+      info: '',
     };
   }
   protected async pass(s?: string) {

@@ -1,16 +1,16 @@
-import { absoluteUrl, redirectUrl } from "../helper";
-import { Context, LintMode } from "../index";
-import { Rule } from "../rule";
+import {absoluteUrl, redirectUrl} from '../helper';
+import {Context, LintMode} from '../index';
+import {Rule} from '../rule';
 
 export class LinkRelCanonicalIsOk extends Rule {
   async run(context: Context) {
-    const { $, url, mode } = context;
+    const {$, url, mode} = context;
     if (mode !== LintMode.AmpStory) {
       return this.pass();
     }
-    const canonical = $('link[rel="canonical"]').attr("href");
+    const canonical = $('link[rel="canonical"]').attr('href');
     if (!canonical) {
-      return this.fail("<link rel=canonical> not specified");
+      return this.fail('<link rel=canonical> not specified');
     }
     const s1 = absoluteUrl(canonical, url);
     // does canonical match url?
@@ -32,9 +32,9 @@ export class LinkRelCanonicalIsOk extends Rule {
   meta() {
     return {
       url:
-        "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/discovery/#what-if-i-only-have-one-page?",
-      title: "Story is self-canonical",
-      info: "",
+        'https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/discovery/#what-if-i-only-have-one-page?',
+      title: 'Story is self-canonical',
+      info: '',
     };
   }
 }

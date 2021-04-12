@@ -1,5 +1,5 @@
-import { Response } from "node-fetch";
-import { Result, Status } from ".";
+import {Response} from 'node-fetch';
+import {Result, Status} from '.';
 
 export function isPass(m: Result): boolean {
   return m.status === Status.PASS;
@@ -14,11 +14,9 @@ export function isAccessControlHeaders(
   sourceOrigin: string
 ): (res: Response) => Promise<Response> {
   return (res) => {
-    const h1 = res.headers.get("access-control-allow-origin") || "";
-    if (h1 !== origin && h1 !== "*") {
-      throw new Error(
-        `access-control-allow-origin header is [${h1}], expected [${origin}]`
-      );
+    const h1 = res.headers.get('access-control-allow-origin') || '';
+    if (h1 !== origin && h1 !== '*') {
+      throw new Error(`access-control-allow-origin header is [${h1}], expected [${origin}]`);
     }
     // The AMP docs specify that the AMP-Access-Control-Allow-Source-Origin and
     // Access-Control-Expose-Headers headers must be returned, but this is not
@@ -44,15 +42,13 @@ export function isAccessControlHeaders(
 export async function isJson(res: Response): Promise<Response> {
   const contentType = (() => {
     if (!res.headers) {
-      return "";
+      return '';
     }
-    const s = res.headers.get("content-type") || "";
-    return s.toLowerCase().split(";")[0];
+    const s = res.headers.get('content-type') || '';
+    return s.toLowerCase().split(';')[0];
   })();
-  if (contentType !== "application/json") {
-    throw new Error(
-      `expected content-type: [application/json]; actual: [${contentType}]`
-    );
+  if (contentType !== 'application/json') {
+    throw new Error(`expected content-type: [application/json]; actual: [${contentType}]`);
   }
   const text = await res.text();
   try {
@@ -75,8 +71,6 @@ export function isStatusNotOk(res: Response) {
   if (!res.ok) {
     return Promise.resolve(res);
   } else {
-    throw new Error(
-      `expected status code: [1xx, 3xx, 4xx, 5xx], actual [${res.status}]`
-    );
+    throw new Error(`expected status code: [1xx, 3xx, 4xx, 5xx], actual [${res.status}]`);
   }
 }

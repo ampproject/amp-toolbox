@@ -1,17 +1,17 @@
-import { Context } from "../index";
-import { Rule } from "../rule";
-import { isTransformedAmp } from "../helper";
+import {Context} from '../index';
+import {Rule} from '../rule';
+import {isTransformedAmp} from '../helper';
 
 /**
  * Check if the AMP Optimizer removed the AMP Boilerplate.
  */
 export class BoilerplateIsRemoved extends Rule {
-  run({ $ }: Context) {
+  run({$}: Context) {
     if (!isTransformedAmp($)) {
       // this check is only relevant for transformed amp pages
       return this.pass();
     }
-    const boilerplate = $("html[i-amphtml-no-boilerplate]");
+    const boilerplate = $('html[i-amphtml-no-boilerplate]');
     if (boilerplate.length > 0) {
       // The desired result: boilerplate is removed
       return this.pass();
@@ -28,19 +28,19 @@ export class BoilerplateIsRemoved extends Rule {
     );
     if (optionalBlockingElements.length > 0) {
       return this.info(
-        "Avoid amp-experiment and amp-dynamic-css-styles if possible to allow AMP Boilerplate removal"
+        'Avoid amp-experiment and amp-dynamic-css-styles if possible to allow AMP Boilerplate removal'
       );
     }
     return this.warn(
-      "AMP Boilerplate not removed. Please upgrade to the latest AMP Optimizer version"
+      'AMP Boilerplate not removed. Please upgrade to the latest AMP Optimizer version'
     );
   }
   meta() {
     return {
       url:
-        "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/amp-optimizer-guide/",
-      title: "AMP Boilerplate is removed",
-      info: "",
+        'https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/amp-optimizer-guide/',
+      title: 'AMP Boilerplate is removed',
+      info: '',
     };
   }
 }

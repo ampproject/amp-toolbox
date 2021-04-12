@@ -1,9 +1,9 @@
-import { Context } from "../index";
-import { Rule } from "../rule";
+import {Context} from '../index';
+import {Rule} from '../rule';
 
 export class StoryIsMostlyText extends Rule {
-  run({ $ }: Context) {
-    const text = $("amp-story").text();
+  run({$}: Context) {
+    const text = $('amp-story').text();
     if (text.length > 100) {
       return this.pass();
     } else {
@@ -12,9 +12,9 @@ export class StoryIsMostlyText extends Rule {
   }
   meta() {
     return {
-      url: "",
-      title: "Text is HTML (and not embedded into video)",
-      info: "",
+      url: '',
+      title: 'Text is HTML (and not embedded into video)',
+      info: '',
     };
   }
 }

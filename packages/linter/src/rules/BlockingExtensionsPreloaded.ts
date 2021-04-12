@@ -1,14 +1,10 @@
-import { Context } from "../index";
-import { Rule } from "../rule";
+import {Context} from '../index';
+import {Rule} from '../rule';
 
-const blockingExtension = [
-  "amp-dynamic-css-classes",
-  "amp-experiment",
-  "amp-story",
-];
+const blockingExtension = ['amp-dynamic-css-classes', 'amp-experiment', 'amp-story'];
 
 export class BlockingExtensionsPreloaded extends Rule {
-  run({ $ }: Context) {
+  run({$}: Context) {
     const results = [];
     blockingExtension.forEach((extension) => {
       const scriptPart = `/v0/${extension}-`;
@@ -23,9 +19,9 @@ export class BlockingExtensionsPreloaded extends Rule {
   meta() {
     return {
       url:
-        "https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/#optimize-the-amp-runtime-loading",
-      title: "Render-blocking extensions are preloaded",
-      info: "",
+        'https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/#optimize-the-amp-runtime-loading',
+      title: 'Render-blocking extensions are preloaded',
+      info: '',
     };
   }
 }
