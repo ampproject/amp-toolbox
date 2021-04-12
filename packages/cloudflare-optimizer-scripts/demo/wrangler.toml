@@ -1,23 +1,26 @@
-name = "optimizer"
 type = "webpack"
 account_id = "d23423cc1d5bd44271dba1eeadd89fb7"
 workers_dev = true
-webpack_config = "node_modules/@ampproject-cloudflare-optimizer-scripts/dist/webpack.config.js"
-vars = { MODE = "production" }
-kv_namespaces = [
-  { binding = "KV", id = "471b51eb82a14c4382577ca2b2f06113", preview_id="2aa2540e31a8499ebc6cb23bfcde6541"},
-]
+webpack_config = "node_modules/@ampproject/cloudflare-optimizer-scripts/webpack.config.js"
 
 [env.dev]
-name = "optimizer-dev"
+name = "optimizer-demo-dev"
 vars = { MODE = "dev" }
 kv_namespaces = [
-  { binding = "KV", id = "a9b60f5037db4a4592e0b9208290384f", preview_id="a9b60f5037db4a4592e0b9208290384f"},
+  { binding = "KV", id = "1a016ffd9e1c491983dfeb8256c6a3e7", preview_id="ef0075e34193436c82af38b7e62b4c10"},
 ]
 
 [env.beta]
-name = "optimizer-beta"
+name = "optimizer-demo-beta"
 vars = { MODE = "beta" }
 kv_namespaces = [
-  { binding = "KV", id = "2aa2540e31a8499ebc6cb23bfcde6541", preview_id="2aa2540e31a8499ebc6cb23bfcde6541"},
+  { binding = "KV", id = "7e84a4b912a641edac3cb433b9b50d04", preview_id="b36c2fa7e5e6488eb8d4b2bc3c7a399f"},
 ]
+
+[env.prod]
+name="optimizer-demo"
+vars = { MODE = "prod" }
+kv_namespaces = [
+  { binding = "KV", id = "4d45ebfb84fd498dbf024c6512e7dfc8", preview_id="86b8fd11b0b64de786d76b0ed82bd40b"},
+]
+

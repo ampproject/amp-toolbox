@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/cloudflare-optimizer-scripts",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Configuration and scripts for cloudflare-amp-optimizer",
   "main": "./src/index.js",
   "files": ["src","webpack.config.js"],
@@ -18,8 +18,8 @@
   },
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
-  "devDependencies": {
+  "dependencies": {
     "@ampproject/toolbox-optimizer": "2.8.0-canary.16",
-    "jest": "^26.6.3"
+    "jest": "26.6.3"
   }
 }
