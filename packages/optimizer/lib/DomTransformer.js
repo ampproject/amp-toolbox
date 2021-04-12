@@ -133,6 +133,11 @@ const TRANSFORMATIONS_MINIMAL = [
   // needs to run after ServerSideRendering
   'ReorderHeadTransformer',
   'AddTransformedFlag',
+  // Minifies HTML, JSON, inline amp-script
+  'MinifyHtml',
+  // Inject CSP script has required for inline amp-script
+  // needs to run after MinifyHtml which changes the inline script
+  'AmpScriptCsp',
 ];
 
 const DEFAULT_CONFIG = {

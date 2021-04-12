@@ -216,14 +216,12 @@ get an intrinsic layout. For image detection to work, an optional dependency
 
 #### `minify`
 
-Minifies the generated HTML output and inlined CSS.
+Minifies the generated HTML output. Requires the following optional dependencies: `npm install cssnano-simple postcss postcss-safe-parser terser` to also minify inlined CSS and JavaScript.
 
 - name: `minify`
 - valid options: `[true|false]`
-- default: `true`
+- default: `false`
 - used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
-
-**Warning:** this setting is not recommended when running AMP Optimizer in your backend on every request as execution time can increase by up to 7x.
 
 #### `optimizeAmpBind`
 
