@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": ["amp"],
+  "keywords": [
+    "amp"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
