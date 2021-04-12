@@ -17,6 +17,6 @@ const config = /** @type {ConfigDef} */ require('../config.json');
 const {handleRequest} = require('../../src/index');
 
 addEventListener('fetch', (event) => {
-    console.error(event.request.url);
+  console.error(event.request.url);
   return event.respondWith(handleRequest(event, config));
 });

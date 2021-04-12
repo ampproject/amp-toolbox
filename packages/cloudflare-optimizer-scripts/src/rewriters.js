@@ -25,27 +25,27 @@ class LinkRewriter {
    */
   constructor(config) {
     /** @type {../index.js.ConfigDef} */
-    this.config = config
+    this.config = config;
   }
 
   element(element) {
-    const { to, from } = this.config
-    const href = element.getAttribute('href')
+    const {to, from} = this.config;
+    const href = element.getAttribute('href');
     if (this.config.MODE === 'dev') {
       element.setAttribute(
         'href',
-        href.replace(to, 'localhost:8787').replace('https://', 'http://'),
-      )
-      return
+        href.replace(to, 'localhost:8787').replace('https://', 'http://')
+      );
+      return;
     }
-    element.setAttribute('href', href.replace(from, to))
+    element.setAttribute('href', href.replace(from, to));
   }
 }
 
 class DocTagger {
   element(el) {
-    el.setAttribute('data-cfw', '')
+    el.setAttribute('data-cfw', '');
   }
 }
 
-module.exports = { LinkRewriter, DocTagger }
+module.exports = {LinkRewriter, DocTagger};

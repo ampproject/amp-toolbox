@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const AmpOptimizer = require('@ampproject/toolbox-optimizer')
-const { DocTagger, LinkRewriter } = require('./rewriters')
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+const {DocTagger, LinkRewriter} = require('./rewriters');
 
 // For origins that do not specify cache-control headers,
 // we use a default TTL of 15 minutes.
-const DEFAULT_TTL = 60 * 15
+const DEFAULT_TTL = 60 * 15;
 
 /**
  * Configuration typedef.
@@ -39,63 +39,63 @@ const DEFAULT_TTL = 60 * 15
  * @return {!Request}
  */
 async function handleRequest(event, config) {
-  event.passThroughOnException()
+  event.passThroughOnException();
   validateConfiguration(config);
 
-  const request = event.request
-  const url = new URL(request.url)
+  const request = event.request;
+  const url = new URL(request.url);
   if (isReverseProxy(config)) {
-    url.hostname = config.to
+    url.hostname = config.to;
   }
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    request.url = url
-    return fetch(request)
+    request.url = url;
+    return fetch(request);
   }
 
   if (config.enableKVCache) {
-    const cached = await KV.get(request.url)
+    const cached = await KV.get(request.url);
     if (cached) {
       // TODO: can we do something faster than JSON.parse?
-      const { status, statusText, headers, text } = JSON.parse(cached)
-      return new Response(text, { status, statusText, headers })
+      const {status, statusText, headers, text} = JSON.parse(cached);
+      return new Response(text, {status, statusText, headers});
     }
   }
 
   const response = await fetch(url.toString(), {
-    cf: { minify: { html: true } },
-  })
-  const clonedResponse = response.clone()
-  const { headers, status, statusText } = response
+    cf: {minify: {html: true}},
+  });
+  const clonedResponse = response.clone();
+  const {headers, status, statusText} = response;
 
   // Note: it turns out that content-type lies ~25% of the time.
   // See: https://blog.cloudflare.com/html-parsing-1/
   if (!headers.get('content-type').includes('text/html')) {
-    return clonedResponse
+    return clonedResponse;
   }
 
-  const responseText = await response.text()
+  const responseText = await response.text();
   if (!isAmp(responseText)) {
     // Note: we do not rewrite URLs for non-AMP. Unclear if we should.
-    return clonedResponse
+    return clonedResponse;
   }
 
   try {
     const optimizer = getOptimizer(config);
-    const transformed = await optimizer.transformHtml(responseText)
-    let response = new Response(transformed, { headers, statusText, status })
-    const rewritten = addTag(maybeRewriteLinks(response, config))
+    const transformed = await optimizer.transformHtml(responseText);
+    let response = new Response(transformed, {headers, statusText, status});
+    const rewritten = addTag(maybeRewriteLinks(response, config));
 
     if (config.enableKVCache) {
-      event.waitUntil(storeResponse(request.url, rewritten.clone()))
+      event.waitUntil(storeResponse(request.url, rewritten.clone()));
     }
-    return rewritten
+    return rewritten;
   } catch (err) {
     if (process.env.NODE_ENV !== 'test') {
-      console.error(`Failed to optimize: ${url.toString()}, with Error; ${err}`)
+      console.error(`Failed to optimize: ${url.toString()}, with Error; ${err}`);
     }
-    return clonedResponse
+    return clonedResponse;
   }
 }
 
@@ -107,13 +107,13 @@ async function handleRequest(event, config) {
 async function storeResponse(key, response) {
   // Wait a macrotask so that all of this logic occurs after
   // we've already started streaming the response.
-  await new Promise(r => setTimeout(r, 0))
+  await new Promise((r) => setTimeout(r, 0));
 
-  const { headers, status, statusText } = response
-  const text = await response.text()
+  const {headers, status, statusText} = response;
+  const text = await response.text();
 
-  const maxAge = parseCacheControl(headers.get('cache-control')).maxAge
-  const expirationTtl = Number.isFinite(maxAge) ? maxAge : DEFAULT_TTL
+  const maxAge = parseCacheControl(headers.get('cache-control')).maxAge;
+  const expirationTtl = Number.isFinite(maxAge) ? maxAge : DEFAULT_TTL;
   return KV.put(
     key,
     JSON.stringify({
@@ -124,8 +124,8 @@ async function storeResponse(key, response) {
     }),
     {
       expirationTtl,
-    },
-  )
+    }
+  );
 }
 
 /**
@@ -135,10 +135,10 @@ async function storeResponse(key, response) {
  */
 function maybeRewriteLinks(response, config) {
   if (!isReverseProxy(config)) {
-    return response
+    return response;
   }
-  const linkRewriter = new HTMLRewriter().on('a', new LinkRewriter(config))
-  return linkRewriter.transform(response)
+  const linkRewriter = new HTMLRewriter().on('a', new LinkRewriter(config));
+  return linkRewriter.transform(response);
 }
 
 /**
@@ -147,8 +147,8 @@ function maybeRewriteLinks(response, config) {
  * @returns {!Response}
  */
 function addTag(response) {
-  const rewriter = new HTMLRewriter().on('html', new DocTagger())
-  return rewriter.transform(response)
+  const rewriter = new HTMLRewriter().on('html', new DocTagger());
+  return rewriter.transform(response);
 }
 
 /**
@@ -156,7 +156,7 @@ function addTag(response) {
  * @returns {boolean}
  */
 function isAmp(html) {
-  return /<html\s[^>]*(⚡|amp)[^>]*>/.test(html)
+  return /<html\s[^>]*(⚡|amp)[^>]*>/.test(html);
 }
 
 /**
@@ -164,7 +164,7 @@ function isAmp(html) {
  * @returns {boolean}
  */
 function isReverseProxy(config) {
-  return !config.domain
+  return !config.domain;
 }
 
 /**
@@ -172,8 +172,8 @@ function isReverseProxy(config) {
  * @return {maxAge: number | undefined}
  */
 function parseCacheControl(str) {
-  const maxAge = str.match(/max-age=(\d+)/)[1]
-  return { maxAge }
+  const maxAge = str.match(/max-age=(\d+)/)[1];
+  return {maxAge};
 }
 
 /** @param {!ConfigDef} config */
@@ -186,24 +186,24 @@ function validateConfiguration(config) {
     'enableCloudflareImageResizing',
     'MODE',
     'enableKVCache',
-  ])
-  Object.keys(config).forEach(key => {
+  ]);
+  Object.keys(config).forEach((key) => {
     if (!allowed.has(key)) {
-      throw new Error(`Unknown key "${key}" found in configuration.`)
+      throw new Error(`Unknown key "${key}" found in configuration.`);
     }
-  })
+  });
 
   if (isReverseProxy(config)) {
     if (!config.from || !config.to) {
       throw new Error(
-        `If using amp-cloudflare-worker as a reverse proxy, you must provide both a "from" and "to" address in the config.json.`,
-      )
+        `If using amp-cloudflare-worker as a reverse proxy, you must provide both a "from" and "to" address in the config.json.`
+      );
     }
   } else {
     if (config.from || config.to) {
       throw new Error(
-        `If using amp-cloudflare-worker as an interceptor, "from" and "to" should be removed from config.json.`,
-      )
+        `If using amp-cloudflare-worker as an interceptor, "from" and "to" should be removed from config.json.`
+      );
     }
   }
 }
@@ -223,8 +223,7 @@ function getOptimizer(config) {
   if (ampOptimizer) {
     return ampOptimizer;
   }
-  const imageOptimizer = (src, width) =>
-    `/cdn-cgi/image/width=${width},f=auto/${src}`
+  const imageOptimizer = (src, width) => `/cdn-cgi/image/width=${width},f=auto/${src}`;
   return AmpOptimizer.create({
     ...(config.optimizer || {}),
     minify: false,
@@ -235,23 +234,21 @@ function getOptimizer(config) {
         cf: {
           cacheTtl: 6 * 60 * 60, // 6 hours. Only needed for AmpOptimizer init.
           cacheEverything: true,
-          minify: { html: true },
+          minify: {html: true},
         },
       }),
     transformations: AmpOptimizer.TRANSFORMATIONS_MINIMAL,
-    imageOptimizer: !!config.enableCloudflareImageOptimization
-      ? imageOptimizer
-      : undefined,
-  })
+    imageOptimizer: !!config.enableCloudflareImageOptimization ? imageOptimizer : undefined,
+  });
 }
 
 function resetOptimizerForTesting() {
-  ampOptimizer = null
+  ampOptimizer = null;
 }
 
 module.exports = {
   getOptimizer,
   handleRequest,
   validateConfiguration,
-  resetOptimizerForTesting
-}
+  resetOptimizerForTesting,
+};

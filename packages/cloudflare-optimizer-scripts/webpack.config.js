@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   target: 'webworker',
@@ -14,8 +14,8 @@ module.exports = {
   externals: {
     'jimp': 'jimp',
     'probe-image-size': 'probe-image-size',
-    "cssnano-simple": "cssnano-simple",
-    "postcss": "postcss",
-    "postcss-safe-parser": "postcss-safe-parser",
-  }
-}
+    'cssnano-simple': 'cssnano-simple',
+    'postcss': 'postcss',
+    'postcss-safe-parser': 'postcss-safe-parser',
+  },
+};
