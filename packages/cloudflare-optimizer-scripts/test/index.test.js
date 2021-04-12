@@ -104,7 +104,7 @@ describe('handleRequest', () => {
     const input = `<html amp><body></body></html>`;
     global.fetch.mockReturnValue(getResponse(input));
     await getOutput('http://test.com');
-    expect(fetch).toBeCalledWith('http://test.com/', expect.anything());
+    expect(global.fetch).toBeCalledWith('http://test.com/', expect.anything());
   });
 
   it('Should modify request url for reverse-proxy', async () => {
@@ -113,7 +113,7 @@ describe('handleRequest', () => {
     global.fetch.mockReturnValue(getResponse(input));
 
     await getOutput('http://test.com', config);
-    expect(fetch).toBeCalledWith('http://test-origin.com/', expect.anything());
+    expect(global.fetch).toBeCalledWith('http://test-origin.com/', expect.anything());
   });
 
   it('should call enable passThroughOnException', async () => {

@@ -16,6 +16,8 @@
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {DocTagger, LinkRewriter} = require('./rewriters');
 
+/*global fetch,KV,HTMLRewriter,Response*/
+
 // For origins that do not specify cache-control headers,
 // we use a default TTL of 15 minutes.
 const DEFAULT_TTL = 60 * 15;
@@ -238,7 +240,7 @@ function getOptimizer(config) {
         },
       }),
     transformations: AmpOptimizer.TRANSFORMATIONS_MINIMAL,
-    imageOptimizer: !!config.enableCloudflareImageOptimization ? imageOptimizer : undefined,
+    imageOptimizer: config.enableCloudflareImageOptimization ? imageOptimizer : undefined,
   });
 }
 

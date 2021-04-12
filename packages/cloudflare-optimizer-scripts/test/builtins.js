@@ -32,7 +32,6 @@ class Response {
 }
 
 class HTMLRewriter {
-  constructor() {}
   on() {
     return this;
   }
