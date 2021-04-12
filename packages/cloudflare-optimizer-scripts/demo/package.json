@@ -1,0 +1,21 @@
+{
+  "name": "@ampproject/cloudflare-optimizer-scripts-demo",
+  "version": "0.1.0",
+  "description": "Demo of using the clouflare-optimizer-scripts",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ampproject/amp-toolbox.git",
+    "directory": "packages/cloudflare-optimizer-scripts"
+  },
+  "scripts": {
+    "beta": "wrangler publish --env=beta",
+    "publish": "wrangler publish",
+    "start": "wrangler dev --env=dev"
+  },
+  "author": "AMPHTML Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@ampproject/cloudflare-optimizer-scripts": "0.0.1",
+  }
+}
