@@ -33,6 +33,15 @@ const DEFAULT_TTL = 60 * 15;
  * }} ConfigDef
  */
 
+async function handleEvent(event, config) {
+  event.passThroughOnException();
+  try {
+    event.respondWith(handleRequest(event, config));
+  } catch (e) {
+    event.respondWith(new Response('Error thrown ' + e.message));
+  }
+}
+
 /**
  * @param {!FetchEvent} event
  * @param {!ConfigDef} config
@@ -40,7 +49,6 @@ const DEFAULT_TTL = 60 * 15;
  */
 async function handleEvent(event, config) {
   event.passThroughOnException();
-  const createErrorResponse = (e) => new Response(`Error thrown: ${e.message}`, {status: 500});
 
   try {
     const response = handleRequest(event, config);
@@ -49,9 +57,10 @@ async function handleEvent(event, config) {
     if (process.env.NODE_ENV !== 'test') {
       console.error(e);
     }
+
     // Passthrough cannot work in rev proxy mode, so force a response.
     if (isReverseProxy(config)) {
-      event.respondWith(createErrorResponse(e));
+      event.respondWith(new Response(`Error thrown: ${e.message}`, {status: 500}));
     }
   }
 }
@@ -69,25 +78,36 @@ async function handleRequest(event, config) {
   if (isReverseProxy(config)) {
     url.hostname = config.proxy.origin;
   }
+  request.url = url;
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    request.url = url;
     return fetch(request);
   }
 
+  // First layer caching, local to the datacenter
+  {
+    const cached = await caches.default.match(request);
+    if (cached) {
+      return cached;
+    }
+  }
+
+  // Start the fetch before even checking KV Cache.
+  // This way if it isn't in KV (i.e. not an HTML file) we've greedily started the fetch and didn't have to wait.
+  const responsePromise = fetch(request, {cf: {minify: {html: true}}});
   if (config.enableKVCache) {
     const cached = await KV.get(request.url);
     if (cached) {
       // TODO: can we do something faster than JSON.parse?
       const {status, statusText, headers, text} = JSON.parse(cached);
-      return new Response(text, {status, statusText, headers});
+      const response = new Response(text, {status, statusText, headers});
+      event.waitUntil(storeResponseCache(request, response.clone()));
+      return response;
     }
   }
 
-  const response = await fetch(url.toString(), {
-    cf: {minify: {html: true}},
-  });
+  const response = await responsePromise;
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
@@ -110,7 +130,12 @@ async function handleRequest(event, config) {
     const rewritten = addTag(maybeRewriteLinks(response, config));
 
     if (config.enableKVCache) {
-      event.waitUntil(storeResponse(request.url, rewritten.clone()));
+      event.waitUntil(
+        Promise.all([
+          storeResponseCache(request, rewritten.clone()),
+          storeResponseKV(request.url, rewritten.clone()),
+        ])
+      );
     }
     return rewritten;
   } catch (err) {
@@ -126,7 +151,7 @@ async function handleRequest(event, config) {
  * @param {!Response} response
  * @returns {!Promise}
  */
-async function storeResponse(key, response) {
+async function storeResponseKV(key, response) {
   // Wait a macrotask so that all of this logic occurs after
   // we've already started streaming the response.
   await new Promise((r) => setTimeout(r, 0));
@@ -148,6 +173,15 @@ async function storeResponse(key, response) {
       expirationTtl,
     }
   );
+}
+
+/**
+ * @param {!Request} request
+ * @param {!Response} response
+ * @returns {!Promise}
+ */
+async function storeResponseCache(request, response) {
+  return caches.default.put(request, response);
 }
 
 /**
@@ -264,6 +298,7 @@ function resetOptimizerForTesting() {
 module.exports = {
   getOptimizer,
   handleEvent,
+  validateConfiguration,
   resetOptimizerForTesting,
   validateConfiguration,
 };
