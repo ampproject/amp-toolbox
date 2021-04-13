@@ -3,7 +3,7 @@
     "origin": "cf-optimizer-demo.web.app",
     "worker": "optimizer-demo.ampdev.workers.dev"
   },
-  "enableKVCache": false,
+  "enableKVCache": true,
   "enableCloudflareImageOptimization": false,
   "optimizer": {
     "maxHeroImageCount": 5
