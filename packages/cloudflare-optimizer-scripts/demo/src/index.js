@@ -15,9 +15,9 @@
  */
 
 const config = /** @type {ConfigDef} */ require('../config.json');
-const {handleRequest} = require('../../src/index');
+const {handleEvent} = require('@ampproject/cloudflare-optimizer-scripts');
 
 /*global addEventListener*/
-addEventListener('fetch', (event) => {
-  return event.respondWith(handleRequest(event, config));
+addEventListener('fetch', async (event) => {
+  handleEvent(event, config);
 });

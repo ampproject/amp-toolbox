@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/cloudflare-optimizer-scripts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Configuration and scripts for cloudflare-amp-optimizer",
   "main": "./src/index.js",
   "files": [

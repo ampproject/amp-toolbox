@@ -25,9 +25,7 @@ const DEFAULT_TTL = 60 * 15;
 /**
  * Configuration typedef.
  * @typedef {{
- *  from: string,
- *  to: string,
- *  domain: string,
+ *  proxy: { origin: string, worker: string},
  *  optimizer: Object,
  *  enableCloudflareImageOptimization: boolean,
  *  enableKVCache: boolean,
@@ -40,14 +38,36 @@ const DEFAULT_TTL = 60 * 15;
  * @param {!ConfigDef} config
  * @return {!Request}
  */
-async function handleRequest(event, config) {
+async function handleEvent(event, config) {
   event.passThroughOnException();
+  const createErrorResponse = (e) => new Response(`Error thrown: ${e.message}`, {status: 500});
+
+  try {
+    const response = handleRequest(event, config);
+    event.respondWith(response);
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.error(e);
+    }
+    // Passthrough cannot work in rev proxy mode, so force a response.
+    if (isReverseProxy(config)) {
+      event.respondWith(createErrorResponse(e));
+    }
+  }
+}
+
+/**
+ * @param {!FetchEvent} event
+ * @param {!ConfigDef} config
+ * @return {!Request}
+ */
+async function handleRequest(event, config) {
   validateConfiguration(config);
 
   const request = event.request;
   const url = new URL(request.url);
   if (isReverseProxy(config)) {
-    url.hostname = config.to;
+    url.hostname = config.proxy.origin;
   }
 
   // Immediately return if not GET.
@@ -166,7 +186,7 @@ function isAmp(html) {
  * @returns {boolean}
  */
 function isReverseProxy(config) {
-  return !config.domain;
+  return !!config.proxy;
 }
 
 /**
@@ -182,8 +202,7 @@ function parseCacheControl(str) {
 function validateConfiguration(config) {
   const allowed = new Set([
     'from',
-    'to',
-    'domain',
+    'proxy',
     'optimizer',
     'enableCloudflareImageOptimization',
     'MODE',
@@ -196,15 +215,9 @@ function validateConfiguration(config) {
   });
 
   if (isReverseProxy(config)) {
-    if (!config.from || !config.to) {
+    if (!config.proxy.origin || !config.proxy.worker) {
       throw new Error(
-        `If using amp-cloudflare-worker as a reverse proxy, you must provide both a "from" and "to" address in the config.json.`
-      );
-    }
-  } else {
-    if (config.from || config.to) {
-      throw new Error(
-        `If using amp-cloudflare-worker as an interceptor, "from" and "to" should be removed from config.json.`
+        `If using amp-cloudflare-worker as a reverse proxy, you must provide both a "origin" and "worker" domains in config.json.`
       );
     }
   }
@@ -250,7 +263,7 @@ function resetOptimizerForTesting() {
 
 module.exports = {
   getOptimizer,
-  handleRequest,
-  validateConfiguration,
+  handleEvent,
   resetOptimizerForTesting,
+  validateConfiguration,
 };
