@@ -56,6 +56,7 @@ async function handleRequest(event, config) {
     return fetch(request);
   }
 
+  const responsePromise = fetch(url.toString(), {cf: {minify: {html: true}}});
   if (config.enableKVCache) {
     const cached = await KV.get(request.url);
     if (cached) {
@@ -65,9 +66,7 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(url.toString(), {
-    cf: {minify: {html: true}},
-  });
+  const response = await responsePromise;
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
