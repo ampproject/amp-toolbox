@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*global fetch,KV,HTMLRewriter,Response*/
+
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {DocTagger, LinkRewriter} = require('./rewriters');
-
-/*global fetch,KV,HTMLRewriter,Response*/
 
 // For origins that do not specify cache-control headers,
 // we use a default TTL of 15 minutes.
@@ -185,7 +185,7 @@ function validateConfiguration(config) {
     'to',
     'domain',
     'optimizer',
-    'enableCloudflareImageResizing',
+    'enableCloudflareImageOptimization',
     'MODE',
     'enableKVCache',
   ]);
