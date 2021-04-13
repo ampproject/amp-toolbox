@@ -33,18 +33,20 @@ describe('Rewriters', () => {
 
     it('Should rewrite to localhost in MODE=dev', () => {
       const config = {
-        from: 'test-worker.com',
-        to: 'test-origin.com',
+        proxy: {
+          worker: 'test-worker.com',
+          origin: 'test-origin.com',
+        },
         MODE: 'dev',
       };
       new LinkRewriter(config).element(a);
       expect(a.setAttribute).toBeCalledWith('href', 'http://localhost:8787/subpage');
     });
 
-    it('Should rewrite to origin', () => {
-      const config = {from: 'test-worker.com', to: 'test-origin.com'};
+    it('Should rewrite origin links to the worker url', () => {
+      const config = {proxy: {worker: 'test-worker.com', origin: 'test-origin.com'}};
       new LinkRewriter(config).element(a);
-      expect(a.setAttribute).toBeCalledWith('href', 'https://test-origin.com/subpage');
+      expect(a.setAttribute).toBeCalledWith('href', 'https://test-worker.com/subpage');
     });
   });
 

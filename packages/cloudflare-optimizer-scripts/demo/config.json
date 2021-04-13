@@ -1,9 +1,11 @@
 {
-    "from": "optimizer-demo.ampdev.workers.dev",
-    "to": "cf-optimizer-demo.web.app",
-    "enableKVCache": true,
-    "enableCloudflareImageOptimization": false,
-    "optimizer": {
-        "maxHeroImageCount": 5
-    }
+  "proxy": {
+    "origin": "cf-optimizer-demo.web.app",
+    "worker": "optimizer-demo.ampdev.workers.dev"
+  },
+  "enableKVCache": false,
+  "enableCloudflareImageOptimization": false,
+  "optimizer": {
+    "maxHeroImageCount": 5
+  }
 }

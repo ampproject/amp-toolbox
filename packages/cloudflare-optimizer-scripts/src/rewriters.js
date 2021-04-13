@@ -29,16 +29,20 @@ class LinkRewriter {
   }
 
   element(element) {
-    const {to, from} = this.config;
+    if (!this.config.proxy) {
+      return;
+    }
+
+    const {origin, worker} = this.config.proxy;
     const href = element.getAttribute('href');
     if (this.config.MODE === 'dev') {
       element.setAttribute(
         'href',
-        href.replace(to, 'localhost:8787').replace('https://', 'http://')
+        href.replace(origin, 'localhost:8787').replace('https://', 'http://')
       );
       return;
     }
-    element.setAttribute('href', href.replace(from, to));
+    element.setAttribute('href', href.replace(origin, worker));
   }
 }
 

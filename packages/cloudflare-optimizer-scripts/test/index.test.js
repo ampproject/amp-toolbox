@@ -26,7 +26,7 @@ const {beforeEach, expect, it, describe} = require('@jest/globals');
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {
   getOptimizer,
-  handleRequest,
+  handleEvent,
   validateConfiguration,
   resetOptimizerForTesting,
 } = require('../src/index');
@@ -43,15 +43,19 @@ beforeEach(() => {
   global.HTMLRewriter = HTMLRewriter;
 });
 
-describe('handleRequest', () => {
-  const defaultConfig = {domain: 'example.com', MODE: 'test'};
+describe('handleEvent', () => {
+  const defaultConfig = {MODE: 'test'};
 
-  function getOutput(url, config = defaultConfig) {
+  async function getOutput(url, config = defaultConfig) {
     const event = {
       request: {url, method: 'GET'},
       passThroughOnException: jest.fn(),
+      respondWith: jest.fn(),
     };
-    return handleRequest(event, config).then((r) => r.text());
+    // Important: handleEvent must call event.respondWith sync.
+    handleEvent(event, config);
+    const response = await event.respondWith.mock.calls[0][0];
+    return response.text();
   }
 
   it('Should proxy through non GET requests', async () => {
@@ -60,9 +64,9 @@ describe('handleRequest', () => {
     global.fetch.mockReturnValue(incomingResponse);
 
     const request = {url: 'http://text.com', method: 'POST'};
-    const event = {request, passThroughOnException: jest.fn()};
-    const output = await handleRequest(event, defaultConfig);
-    expect(output).toBe(incomingResponse);
+    const event = {request, passThroughOnException: jest.fn(), respondWith: jest.fn()};
+    handleEvent(event, defaultConfig);
+    expect(await event.respondWith.mock.calls[0][0]).toBe(incomingResponse);
   });
 
   it('Should proxy through optimizer failures', async () => {
@@ -108,7 +112,7 @@ describe('handleRequest', () => {
   });
 
   it('Should modify request url for reverse-proxy', async () => {
-    const config = {from: 'test.com', to: 'test-origin.com'};
+    const config = {proxy: {worker: 'test.com', origin: 'test-origin.com'}};
     const input = `<html amp><body></body></html>`;
     global.fetch.mockReturnValue(getResponse(input));
 
@@ -119,30 +123,27 @@ describe('handleRequest', () => {
   it('should call enable passThroughOnException', async () => {
     const request = {url: 'http://text.com'};
     const event = {request, passThroughOnException: jest.fn()};
-    await handleRequest(event, defaultConfig);
+    await handleEvent(event, defaultConfig);
 
     expect(event.passThroughOnException).toBeCalled();
   });
 });
 
 describe('validateConfig', () => {
-  it('Should throw unless {to,from} or {domain} are present', () => {
-    expect(() => validateConfiguration({})).toThrow();
+  it('Should accept valid configurations', () => {
+    validateConfiguration({});
+    validateConfiguration({proxy: {worker: 'worker.dev', origin: 'example.com'}});
+    validateConfiguration({enableCloudflareImageOptimization: true, enableKVCache: true});
   });
 
-  it('Should throw if both {to,from} and {domain} are present', () => {
-    const config = {to: 'test', from: 'test', domain: 'test'};
-    expect(() => validateConfiguration(config)).toThrow();
+  it('Should throw if only one of the two proxy keys are present', () => {
+    expect(() => validateConfiguration({proxy: {worker: ''}})).toThrow();
+    expect(() => validateConfiguration({proxy: {origin: ''}})).toThrow();
   });
 
   it('Should throw if unknown keys are present', () => {
-    const config = {domain: 'example.com', hello: 'world'};
+    const config = {hello: 'world'};
     expect(() => validateConfiguration(config)).toThrow();
-  });
-
-  it('Should accept valid configurations', () => {
-    validateConfiguration({domain: 'example.com'});
-    validateConfiguration({from: 'example-from.com', to: 'example-to.com'});
   });
 });
 
