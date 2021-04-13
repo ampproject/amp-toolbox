@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --hoist",
     "changelog": "lerna-changelog",
+    "clean": "git clean -xdf",
     "postinstall": "run-s bootstrap link",
     "link": "lerna link",
     "generate:changelog": "lerna-changelog",
@@ -18,7 +19,8 @@
     "test:browser": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "format": "prettier --config=prettier.config.js --write '**/*.{js,ts}'",
     "lint": "eslint  -c .eslintrc.json .",
-    "lint:fix": "eslint  -c .eslintrc.json --fix '**/*.{js,ts}'"
+    "lint:fix": "eslint  -c .eslintrc.json --fix '**/*.{js,ts}'",
+    "reset": "run-s clean bootstrap"
   },
   "repository": {
     "type": "git",
