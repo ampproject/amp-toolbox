@@ -217,7 +217,7 @@ function validateConfiguration(config) {
   if (isReverseProxy(config)) {
     if (!config.proxy.origin || !config.proxy.worker) {
       throw new Error(
-        `If using amp-cloudflare-worker as a reverse proxy, you must provide both a "origin" and "domain" address in the config.json.`
+        `If using amp-cloudflare-worker as a reverse proxy, you must provide both a "origin" and "worker" domains in config.json.`
       );
     }
   }
