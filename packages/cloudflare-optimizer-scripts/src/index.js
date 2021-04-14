@@ -48,7 +48,6 @@ async function handleEvent(event, config) {
     if (process.env.NODE_ENV !== 'test') {
       console.error(e);
     }
-
     // Passthrough cannot work in rev proxy mode, so force a response.
     if (isReverseProxy(config)) {
       event.respondWith(new Response(`Error thrown: ${e.message}`, {status: 500}));
@@ -69,10 +68,10 @@ async function handleRequest(event, config) {
   if (isReverseProxy(config)) {
     url.hostname = config.proxy.origin;
   }
-  request.url = url;
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
+    request.url = url;
     return fetch(request);
   }
 
@@ -86,7 +85,6 @@ async function handleRequest(event, config) {
 
   // Start the fetch before even checking KV Cache.
   // This way if it isn't in KV (i.e. not an HTML file) we've greedily started the fetch and didn't have to wait.
-  const responsePromise = fetch(request, {cf: {minify: {html: true}}});
   if (config.enableKVCache) {
     const cached = await KV.get(request.url);
     if (cached) {
@@ -98,7 +96,7 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await responsePromise;
+  const response = await fetch(request, {cf: {minify: {html: true}}});
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
@@ -120,14 +118,12 @@ async function handleRequest(event, config) {
     let response = new Response(transformed, {headers, statusText, status});
     const rewritten = addTag(maybeRewriteLinks(response, config));
 
-    if (config.enableKVCache) {
-      event.waitUntil(
-        Promise.all([
-          storeResponseCache(request, rewritten.clone()),
-          storeResponseKV(request.url, rewritten.clone()),
-        ])
-      );
-    }
+    event.waitUntil(
+      Promise.all([
+        storeResponseCache(request, rewritten.clone()),
+        config.enableKVCache ? storeResponseKV(request.url, rewritten.clone()) : Promise.resolve(),
+      ])
+    );
     return rewritten;
   } catch (err) {
     if (process.env.NODE_ENV !== 'test') {
