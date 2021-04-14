@@ -33,15 +33,6 @@ const DEFAULT_TTL = 60 * 15;
  * }} ConfigDef
  */
 
-async function handleEvent(event, config) {
-  event.passThroughOnException();
-  try {
-    event.respondWith(handleRequest(event, config));
-  } catch (e) {
-    event.respondWith(new Response('Error thrown ' + e.message));
-  }
-}
-
 /**
  * @param {!FetchEvent} event
  * @param {!ConfigDef} config
