@@ -107,11 +107,11 @@ Automatically inject any missing markup required by AMP.
 
 #### `autoExtensionImport`
 
-Automatically import any missing AMP Extensions (e.g. amp-carousel).
+Automatically import any missing AMP Extensions (e.g. amp-carousel). This is not recommended if AMP Optimizer is run in the critical serving path.
 
 - name: `autoExtensionImport`
 - valid options: `[true|false]`
-- default: `true`
+- default: `false`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
 
 #### `esmModulesEnabled`

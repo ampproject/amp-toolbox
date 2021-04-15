@@ -46,6 +46,10 @@ if (WRITE_SNAPSHOT) {
 module.exports = function (testConfig) {
   describe(testConfig.name, () => {
     getDirectories(testConfig.testDir).forEach((testDir) => {
+      console.log('testdir', basename(testDir), testConfig.ignore);
+      if (testConfig.ignore && testConfig.ignore.includes(basename(testDir))) {
+        return;
+      }
       it(basename(testDir), async (done) => {
         let params = TRANSFORMER_PARAMS;
         const validatorInstance = await validator.getInstance();

@@ -107,45 +107,35 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AmpScriptCsp',
 ];
 
-/**
- * AMP Optimizer Configuration only applying the minimal set of AMP transformations ensuring maximum performance.
- */
-const TRANSFORMATIONS_MINIMAL = [
-  // Applies image optimizations, must run before PreloadHeroImage
-  'OptimizeImages',
-  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
-  'OptimizeHeroImages',
-  // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
-  // This needs to run after AutoExtensionImporter.
-  'OptimizeAmpBind',
-  // Applies server-side-rendering optimizations
-  'ServerSideRendering',
-  // Removes the boilerplate
-  // needs to run after ServerSideRendering
-  'AmpBoilerplateTransformer',
-  // Adds amp-onerror to disable boilerplate early
-  // needs to run after ServerSideRendering
-  'AmpBoilerplateErrorHandler',
-  'RewriteAmpUrls',
-  'GoogleFontsPreconnect',
-  'PruneDuplicateResourceHints',
-  // Optimizes script import order
-  // needs to run after ServerSideRendering
-  'ReorderHeadTransformer',
-  'AddTransformedFlag',
-  // Minifies HTML, JSON, inline amp-script
-  'MinifyHtml',
-  // Inject CSP script has required for inline amp-script
-  // needs to run after MinifyHtml which changes the inline script
-  'AmpScriptCsp',
-];
-
 const DEFAULT_CONFIG = {
   fetch,
   log,
+  profile: false,
   transformations: TRANSFORMATIONS_AMP_FIRST,
   verbose: false,
 };
+
+const CONFIG_BUILD = Object.assign({}, DEFAULT_CONFIG, {
+  autoAddMandatoryTags: true,
+  autoExtensionImport: true,
+  esmModulesEnabled: true,
+  markdown: true,
+  minify: true,
+  optimizeAmpBind: true,
+  optimizeHeroImages: true,
+  separateKeyframes: true,
+});
+
+const CONFIG_RUNTIME = Object.assign({}, DEFAULT_CONFIG, {
+  autoAddMandatoryTags: false,
+  autoExtensionImport: false,
+  esmModulesEnabled: true,
+  markdown: false,
+  minify: false,
+  optimizeAmpBind: true,
+  optimizeHeroImages: true,
+  separateKeyframes: false,
+});
 
 /**
  * Applies a set of transformations to a DOM tree.
@@ -228,7 +218,8 @@ class DomTransformer {
 module.exports = {
   DomTransformer,
   DEFAULT_CONFIG,
+  CONFIG_BUILD,
+  CONFIG_RUNTIME,
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
-  TRANSFORMATIONS_MINIMAL,
 };

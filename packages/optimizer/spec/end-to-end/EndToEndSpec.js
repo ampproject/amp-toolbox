@@ -20,7 +20,8 @@ const log = require('../../lib/log.js');
 const {
   DomTransformer,
   TRANSFORMATIONS_PAIRED_AMP,
-  TRANSFORMATIONS_MINIMAL,
+  CONFIG_BUILD,
+  CONFIG_RUNTIME,
 } = require('../../lib/DomTransformer.js');
 const fetchMock = require('fetch-mock');
 const fetch = fetchMock
@@ -30,42 +31,36 @@ const fetch = fetchMock
   .mock('https://cdn.ampproject.org/v0.css', '/* ampproject.org v0.css */');
 
 createSpec({
-  name: 'End-to-End: AMP First',
+  name: 'End-to-End: Build Time Config',
   testDir: __dirname,
-  tag: 'default',
+  tag: 'buildtime',
   validAmp: true,
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
+        ...CONFIG_BUILD,
         cache: false,
         fetch,
         log,
-        markdown: true,
         runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
       });
       return ampOptimizer.transformTree(tree, params);
     },
   },
 });
-
 createSpec({
-  name: 'End-to-End: Minimal',
+  name: 'End-to-End: Runtime Time Config',
   testDir: __dirname,
-  tag: 'minimal',
+  tag: 'runtime',
   validAmp: true,
+  ignore: ['markdown', 'body-only'],
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
+        ...CONFIG_RUNTIME,
         cache: false,
         fetch,
         log,
-        markdown: true,
-        transformations: [
-          'AddMandatoryTags',
-          'Markdown',
-          'AutoExtensionImporter',
-          ...TRANSFORMATIONS_MINIMAL,
-        ],
         runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
       });
       return ampOptimizer.transformTree(tree, params);
