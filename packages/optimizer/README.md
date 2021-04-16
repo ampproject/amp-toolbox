@@ -23,12 +23,28 @@ The performance optimizations can improve page rendering times by up to 50%. You
 
 ## Usage
 
-### API
+AMP Optimizer provides two different default modes:
+
+1. **Fast:** this will perform only critical optimizations minimizing bundle install size and execution time. Use this when running AMP Optimizer in your critical rendering path, for example, when running AMP Optimizer in your server.
+2. **Full:** this will perform all available optimizations, resulting in the best AMP performance. This mode offers a better AMP developer experience as missing AMP specific markup and imports are added automaticallye. This maskes it a great choice when integrating it into a static site generator. **Important:** use only when running AMP Optimizer does not negatively affect the rendering time of your page, for example, when building a static site.
+
+Please note: both modes just provide defaults and can be individually configured via these [options](#options). The main differences between these two modes are listed here:
+
+| Option                | Fast    | Full   |
+|-----------------------|---------|--------|
+| autoAddMandatoryTags  | `false` | `true` |
+| autoExtensionImport   | `false` | `true` |
+| markdown              | `false` | `true` |
+| minify                | `false` | `true` |
+| separateKeyframes     | `false` | `true` |
+
+
+### Using `fast` mode
 
 Install via:
 
 ```
-npm install @ampproject/toolbox-optimizer
+npm install @ampproject/toolbox-optimizer 
 ```
 
 Minimal usage:
@@ -36,7 +52,7 @@ Minimal usage:
 ```js
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
-const ampOptimizer = AmpOptimizer.create();
+const ampOptimizer = AmpOptimizer.createFastOptimizer();
 
 const originalHtml = `
 <!doctype html>
@@ -49,7 +65,56 @@ ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
 });
 ```
 
-You can find a sample implementation [here](/packages/optimizer/demo/simple). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](/packages/optimizer-express).
+It's also possible to add additional options, for example, to enable Markdown mode:
+
+```js
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+
+const ampOptimizer = AmpOptimizer.createFastOptimizer({
+  autoAddMandatoryTags: true,
+  autoExtensionImport: true,
+  imageBasePath: '../img',
+  markdown: true
+});
+
+const originalHtml = `
+  <img src="img.jpg"/>
+`;
+
+ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
+  console.log(optimizedHtml);
+});
+```
+
+### Using `full` mode
+
+Install via:
+
+```
+npm install @ampproject/toolbox-optimizer terser postcss postcss-safe-parser cssnano-simple
+```
+
+Note: `full` mode requires additional dependencies.
+
+Minimal usage:
+
+```js
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+
+const ampOptimizer = AmpOptimizer.createFullOptimizer({
+  // optional parameters
+});
+
+const originalHtml = `
+<!doctype html>
+<html ⚡>
+  ...
+</html>`;
+
+ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
+  console.log(optimizedHtml);
+});
+```
 
 ### CLI
 
@@ -67,15 +132,6 @@ npx @ampproject/toolbox-cli optimize myFile.html
 ```
 
 ### Options
-
-Options are passed when creating a new AMP Optimizer instance:
-
-```js
-const ampOptimizer = AmpOptimizer.create({
-  verbose: true
-});
-...
-```
 
 Available options are:
 
@@ -217,12 +273,13 @@ get an intrinsic layout. For image detection to work, an optional dependency
 
 #### `minify`
 
-Minifies the generated HTML output. Requires the following optional dependencies: `npm install cssnano-simple postcss postcss-safe-parser terser` to also minify inlined CSS and JavaScript.
+Minifies the generated HTML output. Requires the following `terser` to be installed when inlined `amp-script` should be minified. Combine with [separateKeyframes](#separateKeyframes) to also minify CSS.
 
 - name: `minify`
 - valid options: `[true|false]`
 - default: `false`
 - used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
+- additional dependency (when using amp-script): `npm install terser`
 
 #### `optimizeAmpBind`
 
@@ -262,6 +319,7 @@ Automatically move keyframe animations to a separate `amp-keyframes` style block
 - valid options: `[true|false]`
 - default: `true`
 - used by: [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
+- additional dependencies: `npm install postcss postcss-safe-parser cssnano-simple`
 
 #### `verbose`
 
