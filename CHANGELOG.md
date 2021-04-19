@@ -1,3 +1,21 @@
+## Unreleased (2021-04-19)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1195](https://github.com/ampproject/amp-toolbox/pull/1195) Add AmpBoilerplateErrorHandler transformer ([@schlessera](https://github.com/schlessera))
+  * [#1194](https://github.com/ampproject/amp-toolbox/pull/1194) Add crossorigin=anonymous to nomodule scripts the same as module ones ([@westonruter](https://github.com/westonruter))
+  * [#1196](https://github.com/ampproject/amp-toolbox/pull/1196) Prevent SSR for amp-img occurring after second paragraph ([@westonruter](https://github.com/westonruter))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1198](https://github.com/ampproject/amp-toolbox/pull/1198) Improve logic to detect explicitly marked hero images ([@schlessera](https://github.com/schlessera))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Jake Fried ([@samouri](https://github.com/samouri))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+
 ## v2.8.0-canary.16  (2021-04-08)
 
 #### :rocket: Enhancement
