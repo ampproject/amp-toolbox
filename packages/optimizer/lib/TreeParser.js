@@ -62,9 +62,7 @@ class TreeParser {
    * @param {Tree} tree
    */
   serialize(node) {
-    return render(node, {
-      decodeEntities: false,
-    });
+    return render(node, {});
   }
 }
 
