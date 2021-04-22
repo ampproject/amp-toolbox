@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
+// Copy of https://github.com/ampproject/amp-toolbox/blob/main/packages/linter/src/rules/NoIconFontIsUsed.ts#L9
+const ICON_FONTS = new Set([
+  'FontAwesome',
+  'Font Awesome',
+  'NerdFontsSymbols',
+  'Nerd Font',
+  'Material Icons',
+  'IcoFont',
+  'icon',
+  'icons',
+  'icomoon',
+]);
+
 /**
  * Checks whether a page uses the optimal font loading strategy for AMP pages. The recommemdation is to
  * use `font-display: optional` for critical fonts used in the first viewport. This improves LCP on slow
@@ -30,6 +43,11 @@ const checkDisplayOptional = (pageData, result) => {
     }
     const isGoogleFont =
       fontface.mainSrc && fontface.mainSrc.startsWith('https://fonts.gstatic.com');
+    const isIconFont = ICON_FONTS.has(fontface.fontFamily);
+    if (isIconFont) {
+      // warn to avoid icon fonts instead
+      continue;
+    }
     if (!fontface.fontDisplay) {
       items.push({
         font,

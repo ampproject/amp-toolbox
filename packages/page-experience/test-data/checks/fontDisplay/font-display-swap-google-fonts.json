@@ -16,7 +16,7 @@
       "items": [
         {
           "font": "Open Sans",
-          "fix": "Replace `$display=swap` with `&display: optional` in your Google Font import declaration. [Read more](https://web.dev/font-display/#google-fonts).',"
+          "fix": "Add `&display=optional` to your Google Font import declaration. [Read more](https://web.dev/font-display/#google-fonts).',"
         }
       ]
     }
