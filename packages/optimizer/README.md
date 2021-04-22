@@ -231,7 +231,7 @@ Enables a considerably faster scanning method in `amp-bind`, by injecting a `i-a
 
 - name: `optimizeAmpBind`
 - valid options: `[true|false]`
-- default: `false`
+- default: `true`
 - used by: [OptimizeAmpBind](lib/transformers/OptimizeAmpBind.js)
 
 #### `optimizeHeroImages`

@@ -24,7 +24,7 @@ class OptimizeAmpBind {
   constructor(config) {
     this.log_ = config.log.tag('OptimizeAmpBind');
 
-    this.enabled_ = !!config.optimizeAmpBind;
+    this.enabled_ = config.optimizeAmpBind !== false;
     if (!this.enabled_) {
       this.log_.debug('disabled');
     }
