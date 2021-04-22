@@ -13,24 +13,24 @@ const path = require('path');
   console.log('\nUncached execution time\n');
 
   console.time('runtime');
-  let runtimeOptimizer = AmpOptimizer.runtime({
+  let runtimeOptimizer = AmpOptimizer.createFastOptimizer({
     cache: false,
   });
   await runtimeOptimizer.transformHtml(testInput);
   console.timeEnd('runtime');
   console.time('buildtime');
-  let buildtimeOptimizer = AmpOptimizer.buildtime({
+  let buildtimeOptimizer = AmpOptimizer.createFullOptimizer({
     cache: false,
   });
   await buildtimeOptimizer.transformHtml(testInput);
   console.timeEnd('buildtime');
 
   // warm up caches
-  runtimeOptimizer = AmpOptimizer.runtime({
+  runtimeOptimizer = AmpOptimizer.createFastOptimizer({
     cache: true,
   });
   await runtimeOptimizer.transformHtml(testInput);
-  buildtimeOptimizer = AmpOptimizer.buildtime({
+  buildtimeOptimizer = AmpOptimizer.createFullOptimizer({
     cache: true,
   });
   await buildtimeOptimizer.transformHtml(testInput);
@@ -38,7 +38,7 @@ const path = require('path');
   console.log('\nProfiling buildtime Optimizer\n');
 
   console.time('buildtime');
-  const profiingBuildTimeOptimizer = AmpOptimizer.buildtime({profile: true});
+  const profiingBuildTimeOptimizer = AmpOptimizer.createFullOptimizer({profile: true});
   await profiingBuildTimeOptimizer.transformHtml(testInput);
   console.log('\n');
   console.timeEnd('buildtime');
@@ -46,7 +46,7 @@ const path = require('path');
   console.log('\nProfiling runtime Optimizer\n');
 
   console.time('runtime');
-  const profilingRuntimeOptimizer = AmpOptimizer.runtime({profile: true});
+  const profilingRuntimeOptimizer = AmpOptimizer.createFastOptimizer({profile: true});
   await profilingRuntimeOptimizer.transformHtml(testInput);
   console.log('\n');
   console.timeEnd('runtime');

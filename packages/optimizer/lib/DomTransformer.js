@@ -107,7 +107,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AmpScriptCsp',
 ];
 
-const DEFAULT_CONFIG = {
+const CONFIG_DEFAULT = {
   fetch,
   log,
   profile: false,
@@ -115,7 +115,7 @@ const DEFAULT_CONFIG = {
   verbose: false,
 };
 
-const CONFIG_BUILD = Object.assign({}, DEFAULT_CONFIG, {
+const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
   autoAddMandatoryTags: true,
   autoExtensionImport: true,
   esmModulesEnabled: true,
@@ -126,7 +126,7 @@ const CONFIG_BUILD = Object.assign({}, DEFAULT_CONFIG, {
   separateKeyframes: true,
 });
 
-const CONFIG_RUNTIME = Object.assign({}, DEFAULT_CONFIG, {
+const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
   autoAddMandatoryTags: false,
   autoExtensionImport: false,
   esmModulesEnabled: true,
@@ -146,7 +146,7 @@ class DomTransformer {
    * @param {Object} config - The config.
    * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
    */
-  constructor(config = DEFAULT_CONFIG) {
+  constructor(config = CONFIG_DEFAULT) {
     this.setConfig(config);
   }
 
@@ -189,7 +189,7 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
-    this.config = Object.assign({}, DEFAULT_CONFIG, config);
+    this.config = Object.assign({}, CONFIG_DEFAULT, config);
     if (!this.config.runtimeVersion) {
       // Re-use custom fetch implementation for runtime version provider
       this.config.runtimeVersion = new RuntimeVersion(this.config.fetch);
@@ -217,7 +217,6 @@ class DomTransformer {
 
 module.exports = {
   DomTransformer,
-  DEFAULT_CONFIG,
   CONFIG_BUILD,
   CONFIG_RUNTIME,
   TRANSFORMATIONS_AMP_FIRST,

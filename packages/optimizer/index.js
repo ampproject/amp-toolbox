@@ -32,8 +32,9 @@ module.exports = {
    * @deprecated
    */
   create: (config = CONFIG_BUILD) => new DomTransformer(config),
-  buildtime: (config = {}) => new DomTransformer(Object.assign({}, CONFIG_BUILD, config)),
-  runtime: (config = {}) => new DomTransformer(Object.assign({}, CONFIG_RUNTIME, config)),
+  createFullOptimizer: (config = {}) => new DomTransformer(Object.assign({}, CONFIG_BUILD, config)),
+  createFastOptimizer: (config = {}) =>
+    new DomTransformer(Object.assign({}, CONFIG_RUNTIME, config)),
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
   CONFIG_BUILD,
