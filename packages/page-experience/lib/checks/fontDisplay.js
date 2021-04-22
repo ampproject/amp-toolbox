@@ -42,7 +42,7 @@ const checkDisplayOptional = (pageData, result) => {
       items.push({
         font,
         fix: isGoogleFont
-          ? `Replace \`$display=${fontface.fontDisplay}\` with \`&display: optional\` in your Google Font import declaration. [Read more](https://web.dev/font-display/#google-fonts).',`
+          ? `Add \`&display=optional\` to your Google Font import declaration. [Read more](https://web.dev/font-display/#google-fonts).',`
           : `Replace \`font-display: ${fontface.fontDisplay}\` with \`font-display: optional\``,
       });
     }
