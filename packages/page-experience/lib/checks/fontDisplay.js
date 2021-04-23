@@ -15,7 +15,7 @@
  */
 
 // Copy of https://github.com/ampproject/amp-toolbox/blob/main/packages/linter/src/rules/NoIconFontIsUsed.ts#L9
-const ICON_FONTS = new Set([
+const ICON_FONTS = [
   'FontAwesome',
   'Font Awesome',
   'NerdFontsSymbols',
@@ -25,7 +25,9 @@ const ICON_FONTS = new Set([
   'icon',
   'icons',
   'icomoon',
-]);
+  'Dashicons',
+  'Genericons',
+];
 
 /**
  * Checks whether a page uses the optimal font loading strategy for AMP pages. The recommemdation is to
@@ -43,7 +45,9 @@ const checkDisplayOptional = (pageData, result) => {
     }
     const isGoogleFont =
       fontface.mainSrc && fontface.mainSrc.startsWith('https://fonts.gstatic.com');
-    const isIconFont = ICON_FONTS.has(fontface.fontFamily);
+    const isIconFont = ICON_FONTS.some((font) => {
+      return fontface['fontFamily'].includes(font);
+    });
     if (isIconFont) {
       // warn to avoid icon fonts instead
       continue;

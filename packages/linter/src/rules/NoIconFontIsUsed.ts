@@ -1,50 +1,67 @@
-import {Context} from '../index';
-import {Rule} from '../rule';
+import { Context } from "../index";
+import { Rule } from "../rule";
 
-const postcss = require('postcss');
-const safeParser = require('postcss-safe-parser');
+const postcss = require("postcss");
+const safeParser = require("postcss-safe-parser");
 
 const ICON_FONT_IDENTIFIERS = {
-  classNames: ['fa-', 'nf-', 'material-icons', 'icofont-', 'icn-', 'icon-', 'icn', 'icon'],
-  fontFamilies: [
-    'FontAwesome',
-    'Font Awesome',
-    'NerdFontsSymbols',
-    'Nerd Font',
-    'Material Icons',
-    'IcoFont',
-    'icon',
-    'icons',
-    'icomoon',
+  classNames: [
+    "fa-",
+    "nf-",
+    "material-icons",
+    "icofont-",
+    "icn-",
+    "icon-",
+    "icn",
+    "icon",
   ],
-  urls: ['https://fonts.googleapis.com/icon?family=Material+Icons'],
+  fontFamilies: [
+    "FontAwesome",
+    "Font Awesome",
+    "NerdFontsSymbols",
+    "Nerd Font",
+    "Material Icons",
+    "IcoFont",
+    "icon",
+    "icons",
+    "icomoon",
+    "Dashicons",
+    "Genericons",
+  ],
+  urls: ["https://fonts.googleapis.com/icon?family=Material+Icons"],
 };
 
 /**
  * Checks if icon fonts are being used
  */
 export class NoIconFontIsUsed extends Rule {
-  run({$}: Context) {
+  run({ $ }: Context) {
     // check for known classnames
-    const iconFontCandidates = ICON_FONT_IDENTIFIERS.classNames.filter((className) => {
-      return $(`[class*=${className} i]`).length > 0;
-    });
+    const iconFontCandidates = ICON_FONT_IDENTIFIERS.classNames.filter(
+      (className) => {
+        return $(`[class*=${className} i]`).length > 0;
+      }
+    );
 
     if (iconFontCandidates.length === 0) {
       return this.pass();
     }
 
     // check for known external stylesheets
-    const knownExternalStylesheets = ICON_FONT_IDENTIFIERS.urls.filter((url) => {
-      return $(`link[rel='stylesheet'][href^='${url}']`).length > 0;
-    });
+    const knownExternalStylesheets = ICON_FONT_IDENTIFIERS.urls.filter(
+      (url) => {
+        return $(`link[rel='stylesheet'][href^='${url}']`).length > 0;
+      }
+    );
 
     if (knownExternalStylesheets.length) {
-      return this.warn('Avoid using icon fonts to improve loading speed and accessibility');
+      return this.warn(
+        "Avoid using icon fonts to improve loading speed and accessibility"
+      );
     }
 
     // check for known font-families in documents custom styles
-    const stylesText = $('style[amp-custom]').html();
+    const stylesText = $("style[amp-custom]").html();
 
     if (!stylesText) {
       return this.pass();
@@ -63,12 +80,12 @@ export class NoIconFontIsUsed extends Rule {
 
     const iconFontPlugin = () => {
       return {
-        postcssPlugin: 'postcss-icon-font-is-used',
+        postcssPlugin: "postcss-icon-font-is-used",
         Once(root) {
           root.nodes.forEach((rule) => {
-            if (rule.name === 'font-face') {
+            if (rule.name === "font-face") {
               for (const declaration of rule.nodes) {
-                if (declaration.prop === 'font-family') {
+                if (declaration.prop === "font-family") {
                   // check if font-family matches candidate list
                   const match = isIconFontDeclaration(declaration.value);
                   if (match) {
@@ -91,20 +108,22 @@ export class NoIconFontIsUsed extends Rule {
       })
       .catch((err) => {
         console.warn(`Failed to process CSS`, err.message);
-        return {css: stylesText};
+        return { css: stylesText };
       });
 
     if (iconFontMatches.length > 0) {
-      return this.warn('Avoid using icon fonts to improve loading speed and accessibility');
+      return this.warn(
+        "Avoid using icon fonts to improve loading speed and accessibility"
+      );
     }
 
     return this.pass();
   }
   meta() {
     return {
-      url: '',
-      title: 'Page seems to use icon fonts',
-      info: '',
+      url: "",
+      title: "Page seems to use icon fonts",
+      info: "",
     };
   }
 }
