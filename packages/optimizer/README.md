@@ -26,7 +26,7 @@ The performance optimizations can improve page rendering times by up to 50%. You
 AMP Optimizer provides two different default modes:
 
 1. **Fast:** this will perform only critical optimizations minimizing bundle install size and execution time. Use this when running AMP Optimizer in your critical rendering path, for example, when running AMP Optimizer in your server.
-2. **Full:** this will perform all available optimizations, resulting in the best AMP performance. This mode offers a better AMP developer experience as missing AMP specific markup and imports are added automaticallye. This maskes it a great choice when integrating it into a static site generator. **Important:** use only when running AMP Optimizer does not negatively affect the rendering time of your page, for example, when building a static site.
+2. **Full:** this will perform all available optimizations, resulting in the best AMP performance. This mode offers a better AMP developer experience as missing AMP specific markup and imports are added automatically. This makes it a great choice when integrating it into a static site generator. **Important:** use only when running AMP Optimizer does not negatively affect the rendering time of your page, for example, when building a static site.
 
 Please note: both modes just provide defaults and can be individually configured via these [options](#options). The main differences between these two modes are listed here:
 
@@ -94,7 +94,7 @@ Install via:
 npm install @ampproject/toolbox-optimizer terser postcss postcss-safe-parser cssnano-simple
 ```
 
-Note: `full` mode requires additional dependencies.
+Note: `full` mode requires additional dependencies for all features, such as CSS minification, to work. AMP Optimizer will skip transformations if dependencies are missing. Check the log output for debugging.
 
 Minimal usage:
 
@@ -273,7 +273,7 @@ get an intrinsic layout. For image detection to work, an optional dependency
 
 #### `minify`
 
-Minifies the generated HTML output. Requires the following `terser` to be installed when inlined `amp-script` should be minified. Combine with [separateKeyframes](#separateKeyframes) to also minify CSS.
+Minifies the generated HTML output. Requires [`terser`](https://www.npmjs.com/package/terser) to be installed when inlined `amp-script` should be minified. Combine with [separateKeyframes](#separateKeyframes) to also minify CSS.
 
 - name: `minify`
 - valid options: `[true|false]`

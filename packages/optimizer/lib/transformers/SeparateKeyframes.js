@@ -50,7 +50,7 @@ class SeparateKeyframes {
         !isDependencyInstalled('cssnano-simple'))
     ) {
       this.enabled = false;
-      this.log_.debug(
+      this.log_.error(
         'Install postcss to move keyframe animations into amp-keyframes via `npm install postcss postcss-safe-parser cssnano-simple`.'
       );
       return;

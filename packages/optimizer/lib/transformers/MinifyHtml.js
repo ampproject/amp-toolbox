@@ -132,7 +132,7 @@ class MinifyHtml {
 
   async minifyAmpScript(child) {
     if (!isDependencyInstalled('terser')) {
-      this.log_.warn(
+      this.log_.error(
         'terser needs to be installed via `npm install terser` for minifying inline amp-script'
       );
       return;
