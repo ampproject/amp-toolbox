@@ -26,7 +26,6 @@ const {
 
 const KEY_VALIDATOR_RULES = 'validator-rules';
 const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
-const cache = require('./cache.js');
 
 /**
  * Initializes the runtime parameters used by the transformers based on given config and parameter values.
@@ -81,13 +80,13 @@ async function fetchValidatorRulesFromCache_(config) {
   if (config.cache === false) {
     return fetchValidatorRules_(config);
   }
-  let rawRules = await cache.get('validator-rules');
+  let rawRules = await config.cache.get('validator-rules');
   let validatorRules;
   if (!rawRules) {
     validatorRules = await fetchValidatorRules_(config);
     config.log.debug('Downloaded AMP validation rules');
     // We save the raw rules to make the validation rules JSON serializable
-    cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
+    config.cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
   } else {
     validatorRules = await validatorRulesProvider.fetch({rules: rawRules});
   }
@@ -152,8 +151,8 @@ async function fetchAmpRuntimeVersion_(context) {
   if (context.config.cache === false) {
     return (await fetchLatestRuntimeData_(context)).version;
   }
-  const versionKey = context.ampUrlPrefix + '-' + context.lts;
-  let ampRuntimeData = await cache.get(versionKey);
+  const versionKey = `version-${context.ampUrlPrefix}-${context.lts}`;
+  let ampRuntimeData = await context.config.cache.get(versionKey);
   if (!ampRuntimeData) {
     ampRuntimeData = await fetchLatestRuntimeData_(context, versionKey);
     context.config.log.debug('Downloaded AMP runtime v' + ampRuntimeData.version);
@@ -182,7 +181,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
       versionKey
     );
   } else if (ampRuntimeData.version && versionKey) {
-    cache.set(versionKey, ampRuntimeData);
+    config.cache.set(versionKey, ampRuntimeData);
   }
   return ampRuntimeData;
 }
@@ -226,7 +225,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
 async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
   let styles;
   if (config.cache !== false) {
-    styles = await cache.get(runtimeCssUrl);
+    styles = await config.cache.get(runtimeCssUrl);
   }
   if (!styles) {
     const response = await config.fetch(runtimeCssUrl);
@@ -241,7 +240,7 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
     }
     config.log.debug(`Downloaded AMP runtime styles from ${runtimeCssUrl}`);
     if (config.cache !== false) {
-      cache.set(runtimeCssUrl, styles);
+      config.cache.set(runtimeCssUrl, styles);
     }
   }
   return styles;
