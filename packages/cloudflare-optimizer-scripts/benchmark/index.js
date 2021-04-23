@@ -2,10 +2,14 @@ const PerfLeaderboard = require('performance-leaderboard');
 const {printTable} = require('console-table-printer');
 
 let urls = {
-  'https://cf-optimizer-demo.web.app/ecommerce/templates/landing.amp.html': 'Unoptimized',
-  'https://optimizer-demo.ampdev.workers.dev/ecommerce/templates/landing.amp.html': 'Optimized',
+  'https://cf-optimizer-demo.web.app/the_scenic/templates/template_1_article.amp.html':
+    'Unoptimized',
+  'https://optimizer-demo.ampdev.workers.dev/the_scenic/templates/template_1_article.amp.html':
+    'Optimized',
+  'https://optimizer-demo-beta.ampdev.workers.dev/the_scenic/templates/template_1_article.amp.html':
+    'Optimized w/ WebCache',
 };
-const runs = 1;
+const runs = 30;
 
 async function run() {
   const scores = await PerfLeaderboard(Object.keys(urls), runs);

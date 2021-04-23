@@ -41,6 +41,7 @@ beforeEach(() => {
 
   global.Response = Response;
   global.HTMLRewriter = HTMLRewriter;
+  global.caches = {default: {match: () => null}};
 });
 
 describe('handleEvent', () => {
