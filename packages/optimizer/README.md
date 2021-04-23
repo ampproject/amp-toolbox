@@ -23,12 +23,28 @@ The performance optimizations can improve page rendering times by up to 50%. You
 
 ## Usage
 
-### API
+AMP Optimizer provides two different default modes:
+
+1. **Fast:** this will perform only critical optimizations minimizing bundle install size and execution time. Use this when running AMP Optimizer in your critical rendering path, for example, when running AMP Optimizer in your server.
+2. **Full:** this will perform all available optimizations, resulting in the best AMP performance. This mode offers a better AMP developer experience as missing AMP specific markup and imports are added automatically. This makes it a great choice when integrating it into a static site generator. **Important:** use only when running AMP Optimizer does not negatively affect the rendering time of your page, for example, when building a static site.
+
+Please note: both modes just provide defaults and can be individually configured via these [options](#options). The main differences between these two modes are listed here:
+
+| Option                | Fast    | Full   |
+|-----------------------|---------|--------|
+| autoAddMandatoryTags  | `false` | `true` |
+| autoExtensionImport   | `false` | `true` |
+| markdown              | `false` | `true` |
+| minify                | `false` | `true` |
+| separateKeyframes     | `false` | `true` |
+
+
+### Using `fast` mode
 
 Install via:
 
 ```
-npm install @ampproject/toolbox-optimizer
+npm install @ampproject/toolbox-optimizer 
 ```
 
 Minimal usage:
@@ -36,7 +52,7 @@ Minimal usage:
 ```js
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
-const ampOptimizer = AmpOptimizer.create();
+const ampOptimizer = AmpOptimizer.createFastOptimizer();
 
 const originalHtml = `
 <!doctype html>
@@ -49,7 +65,56 @@ ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
 });
 ```
 
-You can find a sample implementation [here](/packages/optimizer/demo/simple). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](/packages/optimizer-express).
+It's also possible to add additional options, for example, to enable Markdown mode:
+
+```js
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+
+const ampOptimizer = AmpOptimizer.createFastOptimizer({
+  autoAddMandatoryTags: true,
+  autoExtensionImport: true,
+  imageBasePath: '../img',
+  markdown: true
+});
+
+const originalHtml = `
+  <img src="img.jpg"/>
+`;
+
+ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
+  console.log(optimizedHtml);
+});
+```
+
+### Using `full` mode
+
+Install via:
+
+```
+npm install @ampproject/toolbox-optimizer terser postcss postcss-safe-parser cssnano-simple
+```
+
+Note: `full` mode requires additional dependencies for all features, such as CSS minification, to work. AMP Optimizer will skip transformations if dependencies are missing. Check the log output for debugging.
+
+Minimal usage:
+
+```js
+const AmpOptimizer = require('@ampproject/toolbox-optimizer');
+
+const ampOptimizer = AmpOptimizer.createFullOptimizer({
+  // optional parameters
+});
+
+const originalHtml = `
+<!doctype html>
+<html ⚡>
+  ...
+</html>`;
+
+ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
+  console.log(optimizedHtml);
+});
+```
 
 ### CLI
 
@@ -68,15 +133,6 @@ npx @ampproject/toolbox-cli optimize myFile.html
 
 ### Options
 
-Options are passed when creating a new AMP Optimizer instance:
-
-```js
-const ampOptimizer = AmpOptimizer.create({
-  verbose: true
-});
-...
-```
-
 Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
@@ -93,6 +149,7 @@ Available options are:
 - [optimizeAmpBind](#optimizeampbind)
 - [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
+- [separateKeyframes](#separateKeyframes)
 - [verbose](#verbose)
 
 #### `autoAddMandatoryTags`
@@ -106,11 +163,11 @@ Automatically inject any missing markup required by AMP.
 
 #### `autoExtensionImport`
 
-Automatically import any missing AMP Extensions (e.g. amp-carousel).
+Automatically import any missing AMP Extensions (e.g. amp-carousel). This is not recommended if AMP Optimizer is run in the critical serving path.
 
 - name: `autoExtensionImport`
 - valid options: `[true|false]`
-- default: `true`
+- default: `false`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
 
 #### `esmModulesEnabled`
@@ -216,14 +273,13 @@ get an intrinsic layout. For image detection to work, an optional dependency
 
 #### `minify`
 
-Minifies the generated HTML output and inlined CSS.
+Minifies the generated HTML output. Requires [`terser`](https://www.npmjs.com/package/terser) to be installed when inlined `amp-script` should be minified. Combine with [separateKeyframes](#separateKeyframes) to also minify CSS.
 
 - name: `minify`
 - valid options: `[true|false]`
-- default: `true`
+- default: `false`
 - used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
-
-**Warning:** this setting is not recommended when running AMP Optimizer in your backend on every request as execution time can increase by up to 7x.
+- additional dependency (when using amp-script): `npm install terser`
 
 #### `optimizeAmpBind`
 
@@ -254,6 +310,16 @@ Hero images are optimized by server-side rendering the `img` element inside the 
 #### `preloadHeroImage`
 
 Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead. 
+
+#### `separateKeyframes`
+
+Automatically move keyframe animations to a separate `amp-keyframes` style block at the end of the document.  Putting keyframes declarations at the bottom of a document allows them to exceed size limitations and avoids blocking first contentful paint to parse them (see [documentation](https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=ads#keyframes-stylesheet)).
+
+- name: `separateKeyframes`
+- valid options: `[true|false]`
+- default: `true`
+- used by: [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
+- additional dependencies: `npm install postcss postcss-safe-parser cssnano-simple`
 
 #### `verbose`
 

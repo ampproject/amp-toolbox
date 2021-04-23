@@ -19,19 +19,14 @@ const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isTemplate} = require('../AmpConstants');
 
 /**
+ * Allow the runtime to detect amp-bimd elements more efficiently by adding `i-amphtml-binding` attributes to elements that have bindings.
  */
 class OptimizeAmpBind {
   constructor(config) {
     this.log_ = config.log.tag('OptimizeAmpBind');
-
     this.enabled_ = config.optimizeAmpBind !== false;
-    if (!this.enabled_) {
-      this.log_.debug('disabled');
-    }
   }
 
-  /**
-   */
   transform(root) {
     if (!this.enabled_) return;
 

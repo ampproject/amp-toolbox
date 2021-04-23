@@ -8,13 +8,8 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/optimizer"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
-  "keywords": [
-    "amp"
-  ],
+  "files": ["index.js", "lib"],
+  "keywords": ["amp"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
@@ -23,6 +18,18 @@
     },
     "probe-image-size": {
       "optional": true
+    },
+    "cssnano-simple": {
+      "optional": true
+    },
+    "postcss": {
+      "optional": true
+    },
+    "postcss-safe-parser": {
+      "optional": true
+    },
+    "terser": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -30,19 +37,14 @@
     "@ampproject/toolbox-runtime-version": "^2.8.0-canary.15",
     "@ampproject/toolbox-script-csp": "^2.8.0-canary.0",
     "@ampproject/toolbox-validator-rules": "^2.8.0-canary.9",
-    "abort-controller": "3.0.0",
-    "cross-fetch": "3.1.2",
-    "cssnano-simple": "1.2.2",
     "dom-serializer": "1.2.0",
     "domhandler": "4.0.0",
     "domutils": "2.5.0",
     "htmlparser2": "6.0.1",
     "https-proxy-agent": "5.0.0",
     "lru-cache": "6.0.0",
-    "normalize-html-whitespace": "1.0.0",
-    "postcss": "8.2.8",
-    "postcss-safe-parser": "5.0.2",
-    "terser": "5.6.1"
+    "node-fetch": "2.6.1",
+    "normalize-html-whitespace": "1.0.0"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

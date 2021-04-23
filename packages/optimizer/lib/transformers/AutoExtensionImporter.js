@@ -62,7 +62,7 @@ const manualExtensions = Array.from(manualAttributeToExtensionMapping.values());
  */
 class AutoExtensionImporter {
   constructor(config) {
-    this.enabled = config.autoExtensionImport !== false;
+    this.enabled = !!config.autoExtensionImport;
     this.format = config.format || DEFAULT_FORMAT;
     this.log_ = config.log.tag('AutoExtensionImporter');
     this.experimentBindAttributeEnabled = config.experimentBindAttribute === true;

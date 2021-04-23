@@ -3,15 +3,8 @@
   "version": "2.8.0-canary.15",
   "description": "Download the AMP runtime",
   "main": "index.js",
-  "keywords": [
-    "amp",
-    "download",
-    "runtime"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp", "download", "runtime"],
+  "files": ["index.js", "lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
