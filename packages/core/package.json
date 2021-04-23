@@ -8,13 +8,8 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/core"
   },
-  "keywords": [
-    "amp"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp"],
+  "files": ["index.js", "lib"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -23,7 +18,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/core",
   "dependencies": {
     "lru-cache": "6.0.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "2.6.1"
   },
   "gitHead": "9b159391d776396512b01ec250fa76941713c763"
 }
