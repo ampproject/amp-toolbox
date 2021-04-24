@@ -85,9 +85,7 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(url.toString(), {
-    cf: {minify: {html: true}},
-  });
+  const response = await fetch(url.href, request);
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
