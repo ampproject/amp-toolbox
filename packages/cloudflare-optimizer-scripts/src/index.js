@@ -85,7 +85,7 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(url.href, request);
+  const response = await fetch(url, request);
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
