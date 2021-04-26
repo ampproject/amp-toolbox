@@ -33,7 +33,7 @@ const fetch = fetchMock
 createSpec({
   name: 'End-to-End: Build Time Config',
   testDir: __dirname,
-  tag: 'buildtime',
+  tag: 'full',
   validAmp: true,
   transformer: {
     transform: (tree, params) => {
@@ -51,7 +51,7 @@ createSpec({
 createSpec({
   name: 'End-to-End: Runtime Time Config',
   testDir: __dirname,
-  tag: 'runtime',
+  tag: 'fast',
   validAmp: true,
   ignore: ['markdown', 'body-only'],
   transformer: {
