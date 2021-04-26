@@ -32,7 +32,7 @@ Please note: both modes just provide defaults and can be individually configured
 
 | Option                | Fast    | Full   |
 |-----------------------|---------|--------|
-| autoAddMandatoryTags  | `false` | `true` |
+| autoAddMandatoryTags  | `true` | `true` |
 | autoExtensionImport   | `false` | `true` |
 | markdown              | `false` | `true` |
 | minify                | `false` | `true` |
@@ -71,7 +71,6 @@ It's also possible to add additional options, for example, to enable Markdown mo
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
 const ampOptimizer = AmpOptimizer.createFastOptimizer({
-  autoAddMandatoryTags: true,
   autoExtensionImport: true,
   imageBasePath: '../img',
   markdown: true
