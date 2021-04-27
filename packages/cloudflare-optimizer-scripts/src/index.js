@@ -238,6 +238,7 @@ function getOptimizer(config) {
   }
   const imageOptimizer = (src, width) => `/cdn-cgi/image/width=${width},f=auto/${src}`;
   return AmpOptimizer.create({
+    imageOptimizer: config.enableCloudflareImageOptimization ? imageOptimizer : undefined,
     ...(config.optimizer || {}),
     minify: false,
     cache: false,
@@ -251,7 +252,6 @@ function getOptimizer(config) {
         },
       }),
     transformations: AmpOptimizer.TRANSFORMATIONS_MINIMAL,
-    imageOptimizer: config.enableCloudflareImageOptimization ? imageOptimizer : undefined,
   });
 }
 
