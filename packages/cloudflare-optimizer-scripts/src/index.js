@@ -64,15 +64,15 @@ async function handleEvent(event, config) {
 async function handleRequest(event, config) {
   validateConfiguration(config);
 
-  const request = event.request;
+  let request = event.request;
   const url = new URL(request.url);
   if (isReverseProxy(config)) {
     url.hostname = config.proxy.origin;
   }
+  request = new Request(url.toString(), request);
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    request.url = url;
     return fetch(request);
   }
 
@@ -85,7 +85,7 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(url, request);
+  const response = await fetch(request);
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
@@ -113,7 +113,7 @@ async function handleRequest(event, config) {
     return rewritten;
   } catch (err) {
     if (process.env.NODE_ENV !== 'test') {
-      console.error(`Failed to optimize: ${url.toString()}, with Error; ${err}`);
+      console.error(`Failed to optimize: ${url.toString()}, with Error: ${err}`);
     }
     return clonedResponse;
   }

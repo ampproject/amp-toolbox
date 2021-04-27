@@ -30,6 +30,11 @@ class Response {
     });
   }
 }
+class Request {
+  constructor(url, oldRequest) {
+    return {...oldRequest, url};
+  }
+}
 
 class HTMLRewriter {
   on() {
@@ -40,4 +45,4 @@ class HTMLRewriter {
   }
 }
 
-module.exports = {Response, HTMLRewriter};
+module.exports = {Response, HTMLRewriter, Request};

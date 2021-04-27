@@ -30,7 +30,7 @@ const {
   validateConfiguration,
   resetOptimizerForTesting,
 } = require('../src/index');
-const {Response, HTMLRewriter} = require('./builtins');
+const {Request, Response, HTMLRewriter} = require('./builtins');
 
 beforeEach(() => {
   global.fetch = jest.fn();
@@ -39,6 +39,7 @@ beforeEach(() => {
   AmpOptimizer.transformHtmlSpy.mockReset();
   AmpOptimizer.transformHtmlSpy.mockImplementation((input) => `transformed-${input}`);
 
+  global.Request = Request;
   global.Response = Response;
   global.HTMLRewriter = HTMLRewriter;
 });
@@ -108,7 +109,7 @@ describe('handleEvent', () => {
     const input = `<html amp><body></body></html>`;
     global.fetch.mockReturnValue(getResponse(input));
     await getOutput('http://test.com');
-    expect(global.fetch).toBeCalledWith('http://test.com/', expect.anything());
+    expect(global.fetch).toBeCalledWith({url: 'http://test.com/', method: 'GET'});
   });
 
   it('Should modify request url for reverse-proxy', async () => {
@@ -117,7 +118,7 @@ describe('handleEvent', () => {
     global.fetch.mockReturnValue(getResponse(input));
 
     await getOutput('http://test.com', config);
-    expect(global.fetch).toBeCalledWith('http://test-origin.com/', expect.anything());
+    expect(global.fetch).toBeCalledWith({url: 'http://test-origin.com/', method: 'GET'});
   });
 
   it('should call enable passThroughOnException', async () => {
