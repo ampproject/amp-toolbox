@@ -16,6 +16,6 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/cloudflare-optimizer-scripts": "0.0.5"
+    "@ampproject/cloudflare-optimizer-scripts": "0.0.6"
   }
 }
