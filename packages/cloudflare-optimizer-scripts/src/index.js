@@ -285,7 +285,6 @@ function resetOptimizerForTesting() {
 module.exports = {
   getOptimizer,
   handleEvent,
-  validateConfiguration,
   resetOptimizerForTesting,
   validateConfiguration,
 };
