@@ -26,13 +26,9 @@ const path = require('path');
   console.timeEnd('buildtime');
 
   // warm up caches
-  runtimeOptimizer = AmpOptimizer.createFastOptimizer({
-    cache: true,
-  });
+  runtimeOptimizer = AmpOptimizer.createFastOptimizer({});
   await runtimeOptimizer.transformHtml(testInput);
-  buildtimeOptimizer = AmpOptimizer.createFullOptimizer({
-    cache: true,
-  });
+  buildtimeOptimizer = AmpOptimizer.createFullOptimizer({});
   await buildtimeOptimizer.transformHtml(testInput);
 
   console.log('\nProfiling buildtime Optimizer\n');

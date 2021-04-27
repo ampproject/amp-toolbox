@@ -17,6 +17,15 @@
 
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
+let fallbackRuntime;
+
+try {
+  fallbackRuntime = require('./runtimeData.json');
+} catch (e) {
+  // `npm run build` has not been executed
+  fallbackRuntime = {ampRuntimeStyles: '', ampRuntimeVersion: ''};
+}
+
 const {
   AMP_CACHE_HOST,
   AMP_RUNTIME_CSS_PATH,
@@ -63,13 +72,18 @@ async function fetchRuntimeParameters(config, customRuntimeParameters = {}) {
  * @private
  */
 async function initValidatorRules(runtimeParameters, customRuntimeParameters, config) {
+  if (!config.autoExtensionImport) {
+    // Validation rules are large, don't import if not needed
+    return;
+  }
   try {
     runtimeParameters.validatorRules =
       customRuntimeParameters.validatorRules ||
       config.validatorRules ||
       (await fetchValidatorRulesFromCache_(config));
   } catch (error) {
-    config.log.error('Could not fetch validator rules', error);
+    config.log.error('Could not fetch validator rules');
+    config.log.verbose(error);
   }
 }
 
@@ -116,7 +130,10 @@ async function initRuntimeStyles(runtimeParameters, config) {
         runtimeParameters.ampRuntimeVersion
       ));
   } catch (error) {
-    config.log.error('Could not fetch AMP runtime CSS', error);
+    config.log.error('Could not fetch AMP runtime CSS, falling back to built-in runtime styles.');
+    config.log.verbose(error);
+    // fallback to build-in runtime
+    runtimeParameters.ampRuntimeStyles = fallbackRuntime.ampRuntimeStyles;
   }
 }
 
@@ -136,12 +153,8 @@ async function initRuntimeVersion(runtimeParameters, customRuntimeParameters, co
     );
     ampRuntimeVersion = '';
   }
-  try {
-    runtimeParameters.ampRuntimeVersion =
-      ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
-  } catch (error) {
-    config.log.error('Could not fetch latest AMP runtime version', error);
-  }
+  runtimeParameters.ampRuntimeVersion =
+    ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
 }
 
 /**
@@ -172,7 +185,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
     maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
   };
-  if (!ampRuntimeData.version && ampUrlPrefix !== AMP_CACHE_HOST) {
+  if (!ampRuntimeData.version && ampUrlPrefix && ampUrlPrefix !== AMP_CACHE_HOST) {
     config.log.error(
       `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
     );
@@ -180,6 +193,12 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
       {config, ampUrlPrefix: AMP_CACHE_HOST, lts},
       versionKey
     );
+  } else if (!ampRuntimeData.version) {
+    config.log.error(
+      'Could not fetch latest AMP runtime version, falling back to built-in runtime styles.'
+    );
+    // Fallback to built-in runtime version
+    ampRuntimeData.version = fallbackRuntime.ampRuntimeVersion;
   } else if (ampRuntimeData.version && versionKey) {
     config.cache.set(versionKey, ampRuntimeData);
   }
