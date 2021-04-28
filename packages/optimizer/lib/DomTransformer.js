@@ -113,6 +113,15 @@ const CONFIG_DEFAULT = {
   profile: false,
   transformations: TRANSFORMATIONS_AMP_FIRST,
   verbose: false,
+  // keep these enabled for backward compatibility
+  autoAddMandatoryTags: true,
+  autoExtensionImport: true,
+  esmModulesEnabled: true,
+  markdown: true,
+  minify: true,
+  optimizeAmpBind: true,
+  optimizeHeroImages: true,
+  separateKeyframes: true,
 };
 
 const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
