@@ -32,7 +32,7 @@ Please note: both modes just provide defaults and can be individually configured
 
 | Option                | Fast    | Full   |
 |-----------------------|---------|--------|
-| autoAddMandatoryTags  | `false` | `true` |
+| autoAddMandatoryTags  | `true` | `true` |
 | autoExtensionImport   | `false` | `true` |
 | markdown              | `false` | `true` |
 | minify                | `false` | `true` |
@@ -71,7 +71,6 @@ It's also possible to add additional options, for example, to enable Markdown mo
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
 const ampOptimizer = AmpOptimizer.createFastOptimizer({
-  autoAddMandatoryTags: true,
   autoExtensionImport: true,
   imageBasePath: '../img',
   markdown: true
@@ -137,6 +136,7 @@ Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
+- [cache](#cache)
 - [esmModulesEnabled](#esmmodulesenabled)
 - [extensionVersions](#extensionversions)
 - [fetch](#fetch)
@@ -169,6 +169,23 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel). This is not
 - valid options: `[true|false]`
 - default: `false`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
+
+#### `cache`
+
+Specifies the cache implementation to use for caching artifacts required during transformation (runtime CSS, validation rules, latest runtime version,...). A cache needs to conform to the following interface:
+
+```typescript
+interface Cache {
+  set(key: Object, value: Object?): Promise<void>;
+  get(key: Object): Promise<Object?>;
+}
+```
+
+By default, artifacts will be cached in a temporary directory. If there is no filesystem access available, the cache will fallback to an in memory implementation.
+
+- name: `cache`
+- valid options: `[Cache|false]` (`false` will disable caching)
+- default: [cache.js](lib/cache.js)
 
 #### `esmModulesEnabled`
 
@@ -204,6 +221,13 @@ const ampOptimizer = AmpOptimizer.create({
 - valid options: `OBJECT`
 - default: `{}`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
+
+#### `fetch`
+
+Specifies the [fetch](https://fetch.spec.whatwg.org) implementation to use:
+
+- name: `fetch`
+- default: `node-fetch`
 
 #### `format`
 

@@ -34,7 +34,7 @@ class FileSystemCache {
     // Try to create a tmp directory...
     try {
       if (!opts.baseDir) {
-        opts.baseDir = path.join(os.tmpdir(), 'ampproject-toolbox-optimizer');
+        opts.baseDir = path.join(os.tmpdir(), opts.name || 'amp-toolbox');
       }
       if (!existsSync(opts.baseDir)) {
         mkdirSync(opts.baseDir);

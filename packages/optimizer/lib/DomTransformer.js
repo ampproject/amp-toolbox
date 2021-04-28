@@ -20,6 +20,7 @@ const log = require('./log');
 let fetch = require('node-fetch');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetchRuntimeParameters = require('./fetchRuntimeParameters');
+const cache = require('./cache.js');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
@@ -108,6 +109,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
 ];
 
 const CONFIG_DEFAULT = {
+  cache,
   fetch,
   log,
   profile: false,
