@@ -106,6 +106,7 @@ describe('handleEvent', () => {
   });
 
   it('Should passthrough request to origin in request interceptor mode', async () => {
+    throw new Error('Please fail.');
     const input = `<html amp><body></body></html>`;
     global.fetch.mockReturnValue(getResponse(input));
     await getOutput('http://test.com');
