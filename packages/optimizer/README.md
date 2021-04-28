@@ -172,12 +172,12 @@ Automatically import any missing AMP Extensions (e.g. amp-carousel). This is not
 
 #### `cache`
 
-Specifies the catch implementation to use for caching artifacts required during transformation (runtime CSS, validation rules, latest runtime version,...). A cache needs to conform to the following interface:
+Specifies the cache implementation to use for caching artifacts required during transformation (runtime CSS, validation rules, latest runtime version,...). A cache needs to conform to the following interface:
 
 ```typescript
 interface Cache {
-  set(key: Object, value: Object): void;
-  get(key: Object): Object;
+  set(key: Object, value: Object?): void;
+  get(key: Object): Object?;
 }
 ```
 
@@ -224,7 +224,7 @@ const ampOptimizer = AmpOptimizer.create({
 
 #### `fetch`
 
-Specifies the fetch implementation to use:
+Specifies the [fetch](https://fetch.spec.whatwg.org) implementation to use:
 
 - name: `fetch`
 - default: `node-fetch`

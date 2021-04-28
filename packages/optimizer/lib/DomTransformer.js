@@ -21,7 +21,6 @@ let fetch = require('node-fetch');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetchRuntimeParameters = require('./fetchRuntimeParameters');
 const cache = require('./cache.js');
-const {OperationCanceledException} = require('typescript');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
