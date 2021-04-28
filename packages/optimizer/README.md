@@ -176,8 +176,8 @@ Specifies the cache implementation to use for caching artifacts required during 
 
 ```typescript
 interface Cache {
-  set(key: Object, value: Object?): void;
-  get(key: Object): Object?;
+  set(key: Object, value: Object?): Promise<void>;
+  get(key: Object): Promise<Object?>;
 }
 ```
 
