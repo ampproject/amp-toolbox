@@ -1,7 +1,8 @@
-## Unreleased (2021-04-19)
+## v2.8.0-canary.17  (2021-05-07)
 
 #### :rocket: Enhancement
 * `optimizer`
+  * [#1217](https://github.com/ampproject/amp-toolbox/pull/1217) Enable OptimizeAmpBind transformer by default ([@schlessera](https://github.com/schlessera))
   * [#1195](https://github.com/ampproject/amp-toolbox/pull/1195) Add AmpBoilerplateErrorHandler transformer ([@schlessera](https://github.com/schlessera))
   * [#1194](https://github.com/ampproject/amp-toolbox/pull/1194) Add crossorigin=anonymous to nomodule scripts the same as module ones ([@westonruter](https://github.com/westonruter))
   * [#1196](https://github.com/ampproject/amp-toolbox/pull/1196) Prevent SSR for amp-img occurring after second paragraph ([@westonruter](https://github.com/westonruter))
