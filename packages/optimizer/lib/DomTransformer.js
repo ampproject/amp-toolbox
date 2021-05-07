@@ -124,7 +124,6 @@ const CONFIG_DEFAULT = {
   optimizeAmpBind: true,
   optimizeHeroImages: true,
   separateKeyframes: true,
-  config: 'custom',
 };
 
 const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
@@ -136,7 +135,6 @@ const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
   optimizeAmpBind: true,
   optimizeHeroImages: true,
   separateKeyframes: true,
-  confing: 'full',
 });
 
 const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
@@ -148,7 +146,6 @@ const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
   optimizeAmpBind: true,
   optimizeHeroImages: true,
   separateKeyframes: false,
-  confing: 'fast',
 });
 
 /**
