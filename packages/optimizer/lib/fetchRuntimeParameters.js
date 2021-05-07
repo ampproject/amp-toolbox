@@ -130,7 +130,7 @@ async function initRuntimeStyles(runtimeParameters, config) {
         runtimeParameters.ampRuntimeVersion
       ));
   } catch (error) {
-    config.log.error('Could not fetch AMP runtime CSS, falling back to built-in runtime styles.');
+    config.log.warn('Could not fetch AMP runtime CSS, falling back to built-in runtime styles.');
     config.log.verbose(error);
     // fallback to build-in runtime
     runtimeParameters.ampRuntimeStyles = fallbackRuntime.ampRuntimeStyles;
@@ -194,8 +194,8 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
       versionKey
     );
   } else if (!ampRuntimeData.version) {
-    config.log.error(
-      'Could not fetch latest AMP runtime version, falling back to built-in runtime styles.'
+    config.log.warn(
+      'Could not fetch latest AMP runtime version, falling back to bundled runtime styles.'
     );
     // Fallback to built-in runtime version
     ampRuntimeData.version = fallbackRuntime.ampRuntimeVersion;
@@ -223,7 +223,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   // Fetch runtime styles
   const styles = await downloadAmpRuntimeStyles_(config, runtimeCssUrl);
   if (!styles) {
-    config.log.error(`Could not download ${runtimeCssUrl}. Falling back to latest v0.css.`);
+    config.log.warn(`Could not download ${runtimeCssUrl}. Falling back to bundled v0.css.`);
     if (ampUrlPrefix || ampRuntimeVersion) {
       // Try to download latest from cdn.ampproject.org instead
       return fetchAmpRuntimeStyles_(
