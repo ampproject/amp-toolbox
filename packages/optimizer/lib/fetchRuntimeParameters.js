@@ -15,6 +15,7 @@
  */
 'mode strict';
 
+const URL_BENTO_COMPONENT_INFO = 'https://amp.dev/static/bento-components.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
 let fallbackRuntime;
@@ -85,6 +86,38 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
     config.log.error('Could not fetch validator rules');
     config.log.verbose(error);
   }
+  try {
+    runtimeParameters.bentoComponentInfo =
+      customRuntimeParameters.bentoComponentInfo ||
+      config.bentoComponentInfo ||
+      (await fetchBentoComponentInfoFromCache_(config));
+  } catch (error) {
+    config.log.error('Could not fetch bento component info');
+    config.log.verbose(error);
+    runtimeParameters.bentoComponentInfo = [];
+  }
+}
+async function fetchBentoComponentInfoFromCache_(config) {
+  if (config.cache === false) {
+    return fetchBentoComponentInfo_(config);
+  }
+  let bentoComponentInfo = await config.cache.get('bento-component-info');
+  if (!bentoComponentInfo) {
+    bentoComponentInfo = await fetchBentoComponentInfo_(config);
+    config.cache.set('bento-component-info', bentoComponentInfo);
+  }
+  return bentoComponentInfo;
+}
+
+async function fetchBentoComponentInfo_(config) {
+  const response = await config.fetch(URL_BENTO_COMPONENT_INFO);
+  if (!response.ok) {
+    config.log.error(
+      `Failed fetching bento component info from ${URL_BENTO_COMPONENT_INFO} with status: ${response.status}`
+    );
+    return [];
+  }
+  return response.json();
 }
 
 /**
