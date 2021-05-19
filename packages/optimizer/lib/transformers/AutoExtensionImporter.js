@@ -141,6 +141,12 @@ class AutoExtensionImporter {
       this.log_.error('Missing validation rules, cannot auto import extensions');
       return;
     }
+    if (!this.bentoComponentInfo) {
+      this.bentoComponentInfo = {};
+      for (const bentoComponent of params.bentoComponentInfo || []) {
+        this.bentoComponentInfo[bentoComponent.name] = bentoComponent;
+      }
+    }
     if (!this.extensionSpec_) {
       this.extensionSpec_ = this.createExtensionsSpec(params);
     }
@@ -187,13 +193,7 @@ class AutoExtensionImporter {
       const extension = this.extensionSpec_.extensionsMap.get(extensionName.trim());
       this.log_.debug('auto importing', extensionName);
       // Use the latest version by default
-      let version = extension.version[extension.version.length - 1];
-      const customVersion = this.extensionVersions[extensionName];
-      // Let user override default
-      if (customVersion) {
-        this.log_.debug('using custom version for', extensionName, customVersion);
-        version = customVersion;
-      }
+      let version = this.calculateVersion(extension, extensionName);
       const extensionImportAttribs = {
         async: '',
         src: `${host}/v0/${extensionName}-${version}.js`,
@@ -203,6 +203,33 @@ class AutoExtensionImporter {
       insertAfter(head, extensionImport, referenceNode);
       referenceNode = extensionImport;
     }
+  }
+
+  calculateVersion(extension, extensionName) {
+    const customVersion = this.extensionVersions[extensionName];
+    // Let user override default
+    if (customVersion) {
+      this.log_.debug('using custom version for', extensionName, customVersion);
+      return customVersion;
+    }
+    // Get latest version as specified by validation rules
+    let version = extension.version[extension.version.length - 1];
+    // Get bento component info as these might still be experimental
+    const bentoComponent = this.bentoComponentInfo[extensionName];
+    if (!bentoComponent) {
+      // No bento component
+      return version;
+    }
+    // Bento component is not experimental, nothing to worry about
+    if (!bentoComponent.experimental) {
+      return version;
+    }
+    // Bento component version is not yet known to the validator
+    if (version != bentoComponent.version) {
+      return version;
+    }
+    // Bento component version is not yet valid, pick the previous one
+    return extension.version[extension.version.length - 2] || '0.1';
   }
 
   /**
