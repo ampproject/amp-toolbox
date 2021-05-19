@@ -1,3 +1,12 @@
+## v2.8.0-canary.18  (2021-05-07)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1234](https://github.com/ampproject/amp-toolbox/pull/1234) Fix: don't auto import experimental bento components  ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.0-canary.17  (2021-05-07)
 
 #### :rocket: Enhancement
