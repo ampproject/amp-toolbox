@@ -19,6 +19,7 @@ const {writeFileContents, getFileContents, getDirectories} = require('../helpers
 
 const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
 const validatorRules = require('@ampproject/toolbox-validator-rules').fetch();
+const bentoComponentInfo = require('./bentoComponentInfo.json');
 
 const BEAUTIFY_OPTIONS = {
   'indent_size': 2,
@@ -29,6 +30,7 @@ const BEAUTIFY_OPTIONS = {
 };
 
 const treeParser = require('../../lib/TreeParser.js');
+const {parseDOM} = require('htmlparser2');
 
 const TRANSFORMER_PARAMS = {
   //verbose: true,
@@ -81,6 +83,7 @@ module.exports = function (testConfig) {
         }
         params = testConfig.validAmp ? {} : params;
         params.validatorRules = await validatorRules;
+        params.bentoComponentInfo = bentoComponentInfo;
         await testConfig.transformer.transform(tree, params);
         const actualOutput = serialize(tree, params.__format);
         if (WRITE_SNAPSHOT) {

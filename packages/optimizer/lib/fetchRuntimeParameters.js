@@ -15,6 +15,7 @@
  */
 'mode strict';
 
+const URL_BENTO_COMPONENT_INFO = 'https://amp.dev/static/bento-components.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
 const {
@@ -26,7 +27,7 @@ const {
 
 const KEY_VALIDATOR_RULES = 'validator-rules';
 const AMP_RUNTIME_MAX_AGE = 10 * 60; // 10 min
-const cache = require('./cache.js');
+let cacheErrorLogged = false;
 
 /**
  * Initializes the runtime parameters used by the transformers based on given config and parameter values.
@@ -72,22 +73,48 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
   } catch (error) {
     config.log.error('Could not fetch validator rules', error);
   }
+  try {
+    runtimeParameters.bentoComponentInfo =
+      customRuntimeParameters.bentoComponentInfo ||
+      config.bentoComponentInfo ||
+      (await fetchBentoComponentInfoFromCache_(config));
+  } catch (error) {
+    config.log.error('Could not fetch bento component info');
+    config.log.verbose(error);
+    runtimeParameters.bentoComponentInfo = [];
+  }
+}
+async function fetchBentoComponentInfoFromCache_(config) {
+  let bentoComponentInfo = await readFromCache_(config, 'bento-component-info');
+  if (!bentoComponentInfo) {
+    bentoComponentInfo = await fetchBentoComponentInfo_(config);
+    writeToCache_(config, 'bento-component-info', bentoComponentInfo);
+  }
+  return bentoComponentInfo;
+}
+
+async function fetchBentoComponentInfo_(config) {
+  const response = await config.fetch(URL_BENTO_COMPONENT_INFO);
+  if (!response.ok) {
+    config.log.error(
+      `Failed fetching bento component info from ${URL_BENTO_COMPONENT_INFO} with status: ${response.status}`
+    );
+    return [];
+  }
+  return response.json();
 }
 
 /**
  * @private
  */
 async function fetchValidatorRulesFromCache_(config) {
-  if (config.cache === false) {
-    return fetchValidatorRules_(config);
-  }
-  let rawRules = await cache.get('validator-rules');
+  let rawRules = await readFromCache_(config, 'validator-rules');
   let validatorRules;
   if (!rawRules) {
     validatorRules = await fetchValidatorRules_(config);
     config.log.debug('Downloaded AMP validation rules');
     // We save the raw rules to make the validation rules JSON serializable
-    cache.set(KEY_VALIDATOR_RULES, validatorRules.raw);
+    writeToCache_(config, KEY_VALIDATOR_RULES, validatorRules.raw);
   } else {
     validatorRules = await validatorRulesProvider.fetch({rules: rawRules});
   }
@@ -149,11 +176,8 @@ async function initRuntimeVersion(runtimeParameters, customRuntimeParameters, co
  * @private
  */
 async function fetchAmpRuntimeVersion_(context) {
-  if (context.config.cache === false) {
-    return (await fetchLatestRuntimeData_(context)).version;
-  }
-  const versionKey = context.ampUrlPrefix + '-' + context.lts;
-  let ampRuntimeData = await cache.get(versionKey);
+  const versionKey = `version-${context.ampUrlPrefix}-${context.lts}`;
+  let ampRuntimeData = await readFromCache_(context.config, versionKey);
   if (!ampRuntimeData) {
     ampRuntimeData = await fetchLatestRuntimeData_(context, versionKey);
     context.config.log.debug('Downloaded AMP runtime v' + ampRuntimeData.version);
@@ -182,7 +206,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
       versionKey
     );
   } else if (ampRuntimeData.version && versionKey) {
-    cache.set(versionKey, ampRuntimeData);
+    writeToCache_(config, versionKey, ampRuntimeData);
   }
   return ampRuntimeData;
 }
@@ -226,7 +250,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
 async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
   let styles;
   if (config.cache !== false) {
-    styles = await cache.get(runtimeCssUrl);
+    styles = await readFromCache_(config, runtimeCssUrl);
   }
   if (!styles) {
     const response = await config.fetch(runtimeCssUrl);
@@ -241,7 +265,7 @@ async function downloadAmpRuntimeStyles_(config, runtimeCssUrl) {
     }
     config.log.debug(`Downloaded AMP runtime styles from ${runtimeCssUrl}`);
     if (config.cache !== false) {
-      cache.set(runtimeCssUrl, styles);
+      writeToCache_(config, runtimeCssUrl, styles);
     }
   }
   return styles;
@@ -259,4 +283,37 @@ function isAbsoluteUrl_(url) {
   }
 }
 
+/**
+ * @private
+ */
+function readFromCache_(config, key) {
+  if (config.cache === false) {
+    return null;
+  }
+  try {
+    return config.cache.get(key);
+  } catch (e) {
+    if (!cacheErrorLogged) {
+      config.log.warn('Could not read from cache', e);
+      cacheErrorLogged = true;
+    }
+  }
+}
+
+/**
+ * @private
+ */
+function writeToCache_(config, key, value) {
+  if (config.cache === false) {
+    return;
+  }
+  try {
+    config.cache.set(key, value);
+  } catch (e) {
+    if (!cacheErrorLogged) {
+      config.log.warn('Could not write to cache', e);
+      cacheErrorLogged = true;
+    }
+  }
+}
 module.exports = fetchRuntimeParameters;
