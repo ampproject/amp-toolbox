@@ -30,7 +30,6 @@ const BEAUTIFY_OPTIONS = {
 };
 
 const treeParser = require('../../lib/TreeParser.js');
-const {parseDOM} = require('htmlparser2');
 
 const TRANSFORMER_PARAMS = {
   //verbose: true,
