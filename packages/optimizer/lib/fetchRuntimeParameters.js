@@ -15,7 +15,7 @@
  */
 'mode strict';
 
-const URL_BENTO_COMPONENT_INFO = 'https://amp.dev/static/bento-components.json';
+const URL_COMPONENT_VERSIONS = 'https://amp.dev/static/files/component-versions.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
 const {
@@ -74,30 +74,30 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
     config.log.error('Could not fetch validator rules', error);
   }
   try {
-    runtimeParameters.bentoComponentInfo =
-      customRuntimeParameters.bentoComponentInfo ||
-      config.bentoComponentInfo ||
-      (await fetchBentoComponentInfoFromCache_(config));
+    runtimeParameters.componentVersions =
+      customRuntimeParameters.componentVersions ||
+      config.componentVersions ||
+      (await fetchComponentVersionsFromCache_(config));
   } catch (error) {
-    config.log.error('Could not fetch bento component info');
+    config.log.error('Could not fetch latest component versions from amp.dev');
     config.log.verbose(error);
-    runtimeParameters.bentoComponentInfo = [];
+    runtimeParameters.componentVersions = [];
   }
 }
-async function fetchBentoComponentInfoFromCache_(config) {
-  let bentoComponentInfo = await readFromCache_(config, 'bento-component-info');
-  if (!bentoComponentInfo) {
-    bentoComponentInfo = await fetchBentoComponentInfo_(config);
-    writeToCache_(config, 'bento-component-info', bentoComponentInfo);
+async function fetchComponentVersionsFromCache_(config) {
+  let componentVersions = await readFromCache_(config, 'component-versions');
+  if (!componentVersions) {
+    componentVersions = await fetchComponentVersions_(config);
+    writeToCache_(config, 'component-versions', componentVersions);
   }
-  return bentoComponentInfo;
+  return componentVersions;
 }
 
-async function fetchBentoComponentInfo_(config) {
-  const response = await config.fetch(URL_BENTO_COMPONENT_INFO);
+async function fetchComponentVersions_(config) {
+  const response = await config.fetch(URL_COMPONENT_VERSIONS);
   if (!response.ok) {
     config.log.error(
-      `Failed fetching bento component info from ${URL_BENTO_COMPONENT_INFO} with status: ${response.status}`
+      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${response.status}`
     );
     return [];
   }
