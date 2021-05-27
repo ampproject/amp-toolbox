@@ -15,7 +15,8 @@
  */
 'mode strict';
 
-const URL_COMPONENT_VERSIONS = 'https://amp.dev/static/files/component-versions.json';
+const URL_COMPONENT_VERSIONS =
+  'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
 let fallbackRuntime;
@@ -54,17 +55,11 @@ async function fetchRuntimeParameters(config, customRuntimeParameters = {}) {
   const runtimeParameters = Object.assign({}, customRuntimeParameters);
   // Configure the log level
   runtimeParameters.verbose = customRuntimeParameters.verbose || config.verbose || false;
-  // Validation rules can be downloaded in parallel
-  const validationRulePromise = initValidatorRules(
-    runtimeParameters,
-    customRuntimeParameters,
-    config
-  );
   await initRuntimeVersion(runtimeParameters, customRuntimeParameters, config);
   // Runtime Styles depend on the Runtime version
   await initRuntimeStyles(runtimeParameters, config);
-  // Make sure validation rules are downloaded
-  await validationRulePromise;
+  // Validation rules depend on runtime version
+  await initValidatorRules(runtimeParameters, customRuntimeParameters, config);
   return runtimeParameters;
 }
 
@@ -91,29 +86,38 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
     runtimeParameters.componentVersions =
       customRuntimeParameters.componentVersions ||
       config.componentVersions ||
-      (await fetchComponentVersionsFromCache_(config));
+      (await fetchComponentVersionsFromCache_(config, runtimeParameters));
   } catch (error) {
     config.log.error('Could not fetch latest component versions from amp.dev');
     config.log.verbose(error);
     runtimeParameters.componentVersions = [];
   }
 }
-async function fetchComponentVersionsFromCache_(config) {
-  let componentVersions = await readFromCache_(config, 'component-versions');
+async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
+  const cacheKey = `component-versions-${runtimeParameters.ampRuntimeVersion}`;
+  let componentVersions = await readFromCache_(config, cacheKey);
   if (!componentVersions) {
-    componentVersions = await fetchComponentVersions_(config);
-    writeToCache_(config, 'component-versions', componentVersions);
+    try {
+      componentVersions = await fetchComponentVersions_(config, runtimeParameters);
+      writeToCache_(config, cacheKey, componentVersions);
+    } catch (e) {
+      config.log.warn(e.message);
+      componentVersions = require('./extensionConfig.json');
+    }
   }
   return componentVersions;
 }
 
-async function fetchComponentVersions_(config) {
-  const response = await config.fetch(URL_COMPONENT_VERSIONS);
+async function fetchComponentVersions_(config, runtimeParameters) {
+  // Strip the leading two chars from the version identifier to get the release tag
+  const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
+  const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
+
+  const response = await config.fetch(componentConfigUrl);
   if (!response.ok) {
-    config.log.error(
+    throw new Error(
       `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${response.status}`
     );
-    return [];
   }
   return response.json();
 }
