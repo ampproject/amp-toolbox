@@ -81,9 +81,6 @@ function apply(layout, width, height, node) {
       // Do nothing here.
       break;
     case 'fluid':
-      if (width.isSet) {
-        styles = `width:${width.numeral}${width.unit};`;
-      }
       styles += 'height:0;';
       addClass(node, 'i-amphtml-layout-awaiting-size');
       break;
