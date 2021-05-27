@@ -141,10 +141,10 @@ class AutoExtensionImporter {
       this.log_.error('Missing validation rules, cannot auto import extensions');
       return;
     }
-    if (!this.bentoComponentInfo) {
-      this.bentoComponentInfo = {};
-      for (const bentoComponent of params.bentoComponentInfo || []) {
-        this.bentoComponentInfo[bentoComponent.name] = bentoComponent;
+    if (!this.componentVersions) {
+      this.componentVersions = {};
+      for (const component of params.componentVersions) {
+        this.componentVersions[component.name] = component.latestVersion;
       }
     }
     if (!this.extensionSpec_) {
@@ -205,31 +205,25 @@ class AutoExtensionImporter {
     }
   }
 
+  /**
+   * @private
+   */
   calculateVersion(extension, extensionName) {
-    const customVersion = this.extensionVersions[extensionName];
     // Let user override default
+    const customVersion = this.extensionVersions[extensionName];
     if (customVersion) {
       this.log_.debug('using custom version for', extensionName, customVersion);
       return customVersion;
     }
-    // Get latest version as specified by validation rules
-    let version = extension.version[extension.version.length - 1];
-    // Get bento component info as these might still be experimental
-    const bentoComponent = this.bentoComponentInfo[extensionName];
-    if (!bentoComponent) {
-      // No bento component
-      return version;
+    // Get latest non-experimental prod version (as calculated based on experimental flag)
+    const latestProdVersion = this.componentVersions[extensionName];
+    // Also get latest version supported by the validator
+    const latestValidatorVersion = extension.version[extension.version.length - 1];
+    // Verify latest version based on validator support
+    if (latestValidatorVersion < latestProdVersion) {
+      return latestValidatorVersion;
     }
-    // Bento component is not experimental, nothing to worry about
-    if (!bentoComponent.experimental) {
-      return version;
-    }
-    // Bento component version is not yet known to the validator
-    if (version != bentoComponent.version) {
-      return version;
-    }
-    // Bento component version is not yet valid, pick the previous one
-    return extension.version[extension.version.length - 2] || '0.1';
+    return latestProdVersion;
   }
 
   /**
