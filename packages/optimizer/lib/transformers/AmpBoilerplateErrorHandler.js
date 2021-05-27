@@ -16,6 +16,13 @@
 'use strict';
 
 const {appendChild, createElement, firstChildByTag, insertText} = require('../NodeUtils');
+const ERROR_HANDLER_TRANSFORMED =
+  '[].slice.call(document.querySelectorAll(' +
+  "\"script[src*='/v0.js'],script[src*='/v0.mjs']\")).forEach(" +
+  'function(s){s.onerror=' +
+  'function(){' +
+  "document.querySelector('style[amp-boilerplate]').textContent=''" +
+  '}})';
 
 /**
  * AmpBoilerplateErrorHandler - adds amp-onerror handler to disable boilerplate early on runtime error
@@ -41,10 +48,7 @@ class AmpBoilerplateErrorHandler {
     }
 
     const errorHandler = createElement('script', {'amp-onerror': ''});
-    insertText(
-      errorHandler,
-      "document.querySelector(\"script[src*='/v0.js']\").onerror=function(){document.querySelector('style[amp-boilerplate]').textContent=''}"
-    );
+    insertText(errorHandler, ERROR_HANDLER_TRANSFORMED);
 
     appendChild(head, errorHandler);
   }

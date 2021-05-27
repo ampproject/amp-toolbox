@@ -141,7 +141,12 @@ class AutoExtensionImporter {
       this.log_.error('Missing validation rules, cannot auto import extensions');
       return;
     }
-    this.componentVersions = params.componentVersions || {};
+    if (!this.componentVersions) {
+      this.componentVersions = {};
+      for (const component of params.componentVersions) {
+        this.componentVersions[component.name] = component.latestVersion;
+      }
+    }
     if (!this.extensionSpec_) {
       this.extensionSpec_ = this.createExtensionsSpec(params);
     }

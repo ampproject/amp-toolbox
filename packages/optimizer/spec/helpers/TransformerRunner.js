@@ -19,7 +19,7 @@ const {writeFileContents, getFileContents, getDirectories} = require('../helpers
 
 const jsBeautify = require('js-beautify/js/lib/beautify-html.js');
 const validatorRules = require('@ampproject/toolbox-validator-rules').fetch();
-const componentVersions = require('./componentVersions.json');
+const componentVersions = require('../../lib/extensionConfig.json');
 
 const BEAUTIFY_OPTIONS = {
   'indent_size': 2,
