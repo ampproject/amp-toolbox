@@ -81,7 +81,7 @@ function apply(layout, width, height, node) {
       // Do nothing here.
       break;
     case 'fluid':
-      styles += 'width:100%;height:0px;';
+      styles += 'width:100%;height:0;';
       addClass(node, 'i-amphtml-layout-awaiting-size');
       break;
     case 'flex-item':
