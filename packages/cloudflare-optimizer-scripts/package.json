@@ -16,5 +16,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ampproject/toolbox-optimizer": "^2.8.0"
-  }
+  },
+  "gitHead": "6103eb57765445355421826791361ac9ed9cf4d8"
 }
