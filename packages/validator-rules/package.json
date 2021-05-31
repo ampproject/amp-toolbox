@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-validator-rules",
-  "version": "2.8.0-canary.9",
+  "version": "2.8.0",
   "description": "A library that helps query AMP Validator rules",
   "main": "index.js",
   "keywords": [

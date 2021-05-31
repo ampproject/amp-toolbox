@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-script-csp",
-  "version": "2.8.0-canary.0",
+  "version": "2.8.0",
   "description": "A library that calculates the CSP hash for amp-script",
   "main": "index.js",
   "keywords": [
