@@ -16,7 +16,18 @@
 'use strict';
 
 const {appendChild, createElement, firstChildByTag, insertText} = require('../NodeUtils');
-const ERROR_HANDLER_TRANSFORMED =
+
+/**
+ * Error handler script to be added to the document's <head> for AMP pages not using ES modules.
+ */
+const ERROR_HANDLER_NOMODULE =
+  'document.querySelector("script[src*=\'/v0.js\']").onerror=function(){' +
+  "document.querySelector('style[amp-boilerplate]').textContent=''}";
+
+/**
+ * Error handler script to be added to the document's <head> for AMP pages using ES modules.
+ */
+const ERROR_HANDLER_MODULE =
   '[].slice.call(document.querySelectorAll(' +
   "\"script[src*='/v0.js'],script[src*='/v0.mjs']\")).forEach(" +
   'function(s){s.onerror=' +
@@ -31,7 +42,7 @@ const ERROR_HANDLER_TRANSFORMED =
  * while loading the AMP runtime that could already be detected much earlier.
  */
 class AmpBoilerplateErrorHandler {
-  transform(root) {
+  transform(root, params) {
     const html = firstChildByTag(root, 'html');
     if (!html) {
       return;
@@ -48,7 +59,11 @@ class AmpBoilerplateErrorHandler {
     }
 
     const errorHandler = createElement('script', {'amp-onerror': ''});
-    insertText(errorHandler, ERROR_HANDLER_TRANSFORMED);
+    if (params.esmModuleEnabled) {
+      insertText(errorHandler, ERROR_HANDLER_MODULE);
+    } else {
+      insertText(errorHandler, ERROR_HANDLER_NOMODULE);
+    }
 
     appendChild(head, errorHandler);
   }

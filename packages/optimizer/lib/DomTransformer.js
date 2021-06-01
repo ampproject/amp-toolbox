@@ -45,10 +45,10 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // Adds amp-onerror to disable boilerplate early
-  // needs to run after ServerSideRendering
-  'AmpBoilerplateErrorHandler',
   'RewriteAmpUrls',
+  // Adds amp-onerror to disable boilerplate early
+  // needs to run after BoilerplateTransformer and rewrite AMP URLs
+  'AmpBoilerplateErrorHandler',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
@@ -89,10 +89,10 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
-  // Adds amp-onerror to disable boilerplate early
-  // needs to run after ServerSideRendering
-  'AmpBoilerplateErrorHandler',
   'RewriteAmpUrls',
+  // Adds amp-onerror to disable boilerplate early
+  // needs to run after BoilerplateTransformer and rewrite AMP URLs
+  'AmpBoilerplateErrorHandler',
   'GoogleFontsPreconnect',
   'PruneDuplicateResourceHints',
   'AddBlurryImagePlaceholders',
