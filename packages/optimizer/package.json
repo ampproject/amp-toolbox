@@ -26,13 +26,13 @@
     }
   },
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.8.0",
-    "@ampproject/toolbox-runtime-version": "^2.8.0",
-    "@ampproject/toolbox-script-csp": "^2.8.0",
-    "@ampproject/toolbox-validator-rules": "^2.8.0",
+    "@ampproject/toolbox-core": "2.8.0",
+    "@ampproject/toolbox-runtime-version": "2.8.0",
+    "@ampproject/toolbox-script-csp": "2.8.0",
+    "@ampproject/toolbox-validator-rules": "2.8.0",
     "abort-controller": "3.0.0",
     "cross-fetch": "3.1.2",
-    "cssnano-simple": "1.2.2",
+    "cssnano-simple": "2.0.0",
     "dom-serializer": "1.2.0",
     "domhandler": "4.0.0",
     "domutils": "2.5.0",
@@ -40,9 +40,9 @@
     "https-proxy-agent": "5.0.0",
     "lru-cache": "6.0.0",
     "normalize-html-whitespace": "1.0.0",
-    "postcss": "8.2.8",
+    "postcss": "8.2.13",
     "postcss-safe-parser": "5.0.2",
-    "terser": "5.6.1"
+    "terser": "5.5.1"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
