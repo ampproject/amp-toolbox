@@ -36,6 +36,7 @@ const SUPPORTED_LAYOUTS = [
   'container',
   'fill',
   'flex-item',
+  'fluid',
   'intrinsic',
 ];
 
@@ -78,6 +79,10 @@ function apply(layout, width, height, node) {
     case 'fill':
     case 'container':
       // Do nothing here.
+      break;
+    case 'fluid':
+      styles = 'width:100%;height:0;';
+      addClass(node, 'i-amphtml-layout-awaiting-size');
       break;
     case 'flex-item':
       if (width.isSet) {
