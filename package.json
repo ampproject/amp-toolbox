@@ -11,7 +11,7 @@
     "generate:changelog": "lerna-changelog",
     "prepublishOnly": "npm run build",
     "publish": "lerna publish --exact",
-    "publish:canary": "lerna publish  --exact --preid canary --dist-tag canary",
+    "publish:canary": "lerna publish --preid canary --dist-tag canary --exact",
     "test": "npm-run-all build test:node test:browser lint",
     "test:node": "jest",
     "test:optimizer:snapshot": "OPTIMIZER_SNAPSHOT=true jest",
