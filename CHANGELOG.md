@@ -1,3 +1,14 @@
+## v2.8.1 (2021-06-08)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1232](https://github.com/ampproject/amp-toolbox/pull/1232) Add SSR support for fluid layout ([@westonruter](https://github.com/westonruter))
+  * [#1236](https://github.com/ampproject/amp-toolbox/pull/1236) Update error handler to support module and nomodule version ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 2
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+
 # v2.8.0 (2021-05-31)
 
 #### :rocket: Enhancement
