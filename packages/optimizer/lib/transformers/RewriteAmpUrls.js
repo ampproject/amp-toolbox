@@ -72,6 +72,7 @@ class RewriteAmpUrls {
     let node = head.firstChild;
     let referenceNode = findMetaViewport(head);
     const esm = this.esmModulesEnabled || params.esmModulesEnabled;
+    params.esmModulesEnabled = esm;
     const preloads = [];
 
     while (node) {
