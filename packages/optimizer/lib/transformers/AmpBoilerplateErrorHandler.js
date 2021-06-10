@@ -59,7 +59,7 @@ class AmpBoilerplateErrorHandler {
     }
 
     const errorHandler = createElement('script', {'amp-onerror': ''});
-    if (params.esmModuleEnabled) {
+    if (params.esmModulesEnabled) {
       insertText(errorHandler, ERROR_HANDLER_MODULE);
     } else {
       insertText(errorHandler, ERROR_HANDLER_NOMODULE);
