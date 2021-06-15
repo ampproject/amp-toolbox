@@ -4,6 +4,10 @@ function objectFromEntries(arr) {
   return Object.assign({}, ...Array.from(arr, ([k, v]) => ({[k]: v})));
 }
 
+function toBooleanIfPossible(value) {
+  return value === 'true' ? true : value === 'false' ? false : value;
+}
+
 /*
  * Get the static options to pass AMP Optimizer on initialization.
  * All received environment variables prefixed with `AMP_OPTIMIZER_`
@@ -14,7 +18,7 @@ function getStaticOptions(env = process.env) {
     .filter((envVar) => envVar.startsWith('AMP_OPTIMIZER_'))
     .map((envVar) => {
       const optimizerFlag = snakeToCamel(envVar.substring('AMP_OPTIMIZER_'.length));
-      return [optimizerFlag, env[envVar]];
+      return [optimizerFlag, toBooleanIfPossible(env[envVar])];
     });
   return objectFromEntries(optionEntries);
 }
