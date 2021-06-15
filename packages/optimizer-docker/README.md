@@ -12,6 +12,17 @@ There are two different kinds of configuration you can supply to the container:
 1. Static configuration via environment variables: On startup, the container will search for environment variables prefixed with `AMP_OPTIMIZER_` and pass the values as configuration options when initializing the underlying optimizer library. The full list of options are available [here](https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer#options). Options should be specified in SCREAMING_SNAKE_CASE as opposed to camelCase. For example, in order to configure the `optimizeHeroImages` option, you would declare the environment variable named: `AMP_OPTIMIZER_OPTIMIZE_HERO_IMAGES`.
 2. Per-request configuration: there are some options that can only be set on a per-request basis. For example, the `canonical` flag for specifying an AMP page's canonical link. These can be specified via query params, e.g. `/?canonical=http://example.com`.
 
+## Monitoring
+
+By default, the docker image gathers metrics about the NodeJS process, and the time spent on applying the transformations.
+
+Metrics are exposed in the prometheus format on the `http://localhost:3001/metrics` endpoint.
+
+A sample dashboard for grafana is available [here](demo/grafana-dashboard.json).
+Checkout the grafana [documentation](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard) to import it.
+
+If you want to disable it, run the container with the `AMP_OPTIMIZER_PROFILE=false` environment variable.
+
 ## Usage
 
 ### Running a basic optimizer server

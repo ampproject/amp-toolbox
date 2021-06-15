@@ -1,4 +1,4 @@
-from node:lts-alpine3.12
+FROM node:lts-alpine3.12
 
 # Layer 1, add package.json and install deps.
 RUN echo "Building ampproject/toolbox-optimizer"
@@ -8,5 +8,5 @@ RUN yarn
 # Layer 2: add src files
 COPY *.js ./
 
-EXPOSE 3000
+EXPOSE 3000 3001
 CMD ["node", "./index.js"]
