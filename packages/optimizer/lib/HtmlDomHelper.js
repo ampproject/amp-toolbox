@@ -17,14 +17,29 @@
 'use strict';
 
 /**
- * Finds and returns the first 'meta charset' element in the head.
+ * Finds and returns the first 'meta viewport' element in the head.
  *
- * @param {Node} head the section to search for the meta charset node.
- * @returns {Node} the '<meta charset>' node or null.
+ * @param {Node} head the section to search for the meta viewport node.
+ * @returns {Node} the '<meta viewport>' node or null.
  */
 function findMetaViewport(head) {
   for (let node = head.firstChild; node !== null; node = node.nextSibling) {
     if (node.tagName === 'meta' && node.attribs.name === 'viewport') {
+      return node;
+    }
+  }
+  return null;
+}
+
+/**
+ * Finds and returns the first runtime script element in the head.
+ *
+ * @param {Node} head the section to search for the runtime script node.
+ * @returns {Node} the runtime script node or null.
+ */
+function findRuntimeScript(head) {
+  for (let node = head.firstChild; node !== null; node = node.nextSibling) {
+    if (node.tagName === 'script' && node.attribs.src.match(/^https:\/\/.+\/v0(\.js|\.mjs)$/)) {
       return node;
     }
   }
@@ -49,5 +64,6 @@ function skipNodeAndChildren(node) {
 /** @module HtmlDomHelper */
 module.exports = {
   findMetaViewport: findMetaViewport,
+  findRuntimeScript: findRuntimeScript,
   skipNodeAndChildren: skipNodeAndChildren,
 };

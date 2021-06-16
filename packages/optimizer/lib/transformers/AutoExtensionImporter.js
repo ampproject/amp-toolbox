@@ -22,7 +22,7 @@ const {
   firstChildByTag,
   hasAttribute,
 } = require('../NodeUtils');
-const {findMetaViewport} = require('../HtmlDomHelper');
+const {findMetaViewport, findRuntimeScript} = require('../HtmlDomHelper');
 const {AMP_FORMATS, AMP_CACHE_HOST} = require('../AmpConstants');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';
@@ -182,7 +182,10 @@ class AutoExtensionImporter {
     }
 
     // We use this for adding new import elements to the header
-    let referenceNode = findMetaViewport(head);
+    let referenceNode = findRuntimeScript(head);
+    if (!referenceNode) {
+      referenceNode = findMetaViewport(head);
+    }
 
     // Use cdn.ampproject.org as default, RewriteUrlTransformer will change this in case of self-hosting
     const host = AMP_CACHE_HOST;
