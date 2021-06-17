@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-core",
-  "version": "2.8.0-canary.15",
+  "version": "3.0.0-canary.1",
   "description": "Commonly used functionality for amp-toolbox",
   "main": "index.js",
   "repository": {
@@ -8,8 +8,13 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/core"
   },
-  "keywords": ["amp"],
-  "files": ["index.js", "lib"],
+  "keywords": [
+    "amp"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
