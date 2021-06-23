@@ -32,10 +32,7 @@ const DEFAULT_FORMAT = 'AMP';
 // Some AMP component don't bring their own tag, but enable new attributes on other
 // elements. Most are included in the AMP validation rules, but some are not. These
 // need to be defined manually here.
-const manualAttributeToExtensionMapping = new Map([
-  ['mask', 'amp-inputmask'],
-  ['lightbox', 'amp-lightbox-gallery'],
-]);
+const manualAttributeToExtensionMapping = new Map([['lightbox', 'amp-lightbox-gallery']]);
 const manualExtensions = Array.from(manualAttributeToExtensionMapping.values());
 
 /**
@@ -307,6 +304,8 @@ class AutoExtensionImporter {
       allRequiredExtensions.add(node.attribs.type);
     } else if (node.tagName === 'script' && hasAttribute(node, 'template')) {
       allRequiredExtensions.add(node.attribs.template);
+    } else if (node.tagName === 'input' && hasAttribute(node, 'mask')) {
+      allRequiredExtensions.add('amp-inputmask');
     }
   }
 
