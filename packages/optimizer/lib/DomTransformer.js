@@ -140,6 +140,13 @@ const DEFAULT_CONFIG = {
   cache,
   fetch,
   log,
+  profile: false,
+  profiler: (label) => {
+    console.time(label);
+    return () => {
+      console.timeEnd(label);
+    };
+  },
   transformations: TRANSFORMATIONS_AMP_FIRST,
   verbose: false,
 };
@@ -164,9 +171,27 @@ class DomTransformer {
    * @return {string} - the transformed html string
    */
   async transformHtml(html, params) {
-    const tree = await treeParser.parse(html);
-    await this.transformTree(tree, params);
-    return treeParser.serialize(tree);
+    async function transform() {
+      const tree = await this.doProfile('parsing', () => treeParser.parse(html));
+
+      await this.doProfile('transform', () => this.transformTree(tree, params));
+
+      return this.doProfile('serialization', () => treeParser.serialize(tree));
+    }
+
+    return await this.doProfile('overall', () => transform.call(this));
+  }
+
+  async doProfile(name, f) {
+    if (!this.config.profile) {
+      return f();
+    }
+    const endOfTimer = this.config.profiler(name);
+    try {
+      return await f();
+    } finally {
+      endOfTimer();
+    }
   }
 
   /**
@@ -178,13 +203,8 @@ class DomTransformer {
     log.verbose(customParams.verbose || false);
     const runtimeParameters = await fetchRuntimeParameters(this.config, customParams);
     for (const transformer of this.transformers_) {
-      if (this.config.profile) {
-        console.time(this.getTransformerId(transformer));
-      }
-      await transformer.transform(tree, runtimeParameters);
-      if (this.config.profile) {
-        console.timeEnd(this.getTransformerId(transformer));
-      }
+      const transformerId = this.getTransformerId(transformer);
+      await this.doProfile(transformerId, () => transformer.transform(tree, runtimeParameters));
     }
   }
 
