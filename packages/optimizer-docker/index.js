@@ -2,8 +2,11 @@ const http = require('http');
 const url = require('url');
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {parseRequest, getStaticOptions} = require('./utils');
+const {managementServer} = require('./metrics');
 
-const ampOptimizer = AmpOptimizer.create(getStaticOptions());
+const configuration = getStaticOptions();
+
+const ampOptimizer = AmpOptimizer.create(configuration);
 
 process.on('SIGINT', function () {
   process.exit();
@@ -45,6 +48,11 @@ const port = 3000;
 if (process.env.NODE_ENV !== 'test') {
   server.listen(port);
   console.log(`AMP Optimizer listening at http://localhost:${port}`);
+  if (configuration.profile) {
+    const managementPort = 3001;
+    console.log(`Metrics are available at http://localhost:${managementPort}/metrics`);
+    managementServer.listen(managementPort);
+  }
 } else {
   module.exports = {
     start: () => server.listen(port),
