@@ -129,6 +129,7 @@ const CONFIG_DEFAULT = {
   minify: true,
   optimizeAmpBind: true,
   optimizeHeroImages: true,
+  preloadEnabled: false,
   separateKeyframes: true,
 };
 
@@ -140,6 +141,7 @@ const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
   minify: true,
   optimizeAmpBind: true,
   optimizeHeroImages: true,
+  preloadEnabled: false,
   separateKeyframes: true,
 });
 
@@ -151,6 +153,7 @@ const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
   minify: false,
   optimizeAmpBind: true,
   optimizeHeroImages: true,
+  preloadEnabled: false,
   separateKeyframes: false,
 });
 

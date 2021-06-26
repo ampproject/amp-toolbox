@@ -60,6 +60,7 @@ const {calculateHost} = require('../RuntimeHostHelper');
 class RewriteAmpUrls {
   constructor(config) {
     this.esmModulesEnabled = config.esmModulesEnabled !== false;
+    this.preloadEnabled = config.preloadEnabled !== false;
     this.log = config.log;
   }
   transform(root, params) {
@@ -78,18 +79,23 @@ class RewriteAmpUrls {
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
-        if (esm) {
-          preloads.push(this._addEsm(node));
-        } else {
-          preloads.push(this._createPreload(node.attribs.src, 'script'));
-        }
+          if ( esm ) {
+            const preload = this._addEsm(node);
+            if (this.preloadEnabled && preload) {
+              preloads.push(preload);
+            }
+          } else if (this.preloadEnabled) {
+            preloads.push(this._createPreload(node.attribs.src, 'script'));
+          }
       } else if (
         node.tagName === 'link' &&
         node.attribs.rel === 'stylesheet' &&
         this._usesAmpCacheUrl(node.attribs.href)
       ) {
         node.attribs.href = this._replaceUrl(node.attribs.href, host);
-        preloads.push(this._createPreload(node.attribs.href, 'style'));
+        if (this.preloadEnabled) {
+          preloads.push(this._createPreload(node.attribs.href, 'style'));
+        }
       } else if (
         node.tagName === 'link' &&
         node.attribs.rel === 'preload' &&
@@ -140,7 +146,7 @@ class RewriteAmpUrls {
   _addEsm(scriptNode) {
     let result = null;
     const esmScriptUrl = scriptNode.attribs.src.replace(/\.js$/, '.mjs');
-    if (this._shouldPreload(scriptNode.attribs.src)) {
+    if (this.preloadEnabled && this._shouldPreload(scriptNode.attribs.src)) {
       const preload = createElement('link', {
         as: 'script',
         crossorigin: 'anonymous',
