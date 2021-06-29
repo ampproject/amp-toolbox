@@ -149,7 +149,6 @@ Available options are:
 - [optimizeAmpBind](#optimizeampbind)
 - [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
-- [preloadEnabled](#preloadenabled)
 - [separateKeyframes](#separateKeyframes)
 - [verbose](#verbose)
 
@@ -334,11 +333,7 @@ Hero images are optimized by server-side rendering the `img` element inside the 
 
 #### `preloadHeroImage`
 
-Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead.
-
-#### `preloadEnabled`
-
-Whether the AMP runtime script (v0.js or v0.mjs) and style (v0.css, if applicable) should be preloaded.
+Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead. 
 
 #### `separateKeyframes`
 

@@ -89,6 +89,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
+  // Needs to come after AmpBoilerplateTransformer.
   'RewriteAmpUrls',
   // Adds amp-onerror to disable boilerplate early
   // needs to run after BoilerplateTransformer and rewrite AMP URLs
@@ -129,7 +130,6 @@ const CONFIG_DEFAULT = {
   minify: true,
   optimizeAmpBind: true,
   optimizeHeroImages: true,
-  preloadEnabled: false,
   separateKeyframes: true,
 };
 
@@ -141,7 +141,6 @@ const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
   minify: true,
   optimizeAmpBind: true,
   optimizeHeroImages: true,
-  preloadEnabled: false,
   separateKeyframes: true,
 });
 
@@ -153,7 +152,6 @@ const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
   minify: false,
   optimizeAmpBind: true,
   optimizeHeroImages: true,
-  preloadEnabled: false,
   separateKeyframes: false,
 });
 
