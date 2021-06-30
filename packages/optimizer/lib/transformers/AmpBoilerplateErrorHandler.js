@@ -15,7 +15,13 @@
  */
 'use strict';
 
-const {appendChild, createElement, firstChildByTag, insertText} = require('../NodeUtils');
+const {
+  appendChild,
+  createElement,
+  hasAttribute,
+  firstChildByTag,
+  insertText,
+} = require('../NodeUtils');
 
 /**
  * Error handler script to be added to the document's <head> for AMP pages not using ES modules.
@@ -48,7 +54,7 @@ class AmpBoilerplateErrorHandler {
       return;
     }
 
-    if (html.attribs['i-amphtml-no-boilerplate'] !== undefined) {
+    if (hasAttribute(html, 'i-amphtml-no-boilerplate')) {
       // Boilerplate was removed, so no need for the amp-onerror handler
       return;
     }
