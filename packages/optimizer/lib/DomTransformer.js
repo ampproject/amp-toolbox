@@ -89,6 +89,7 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Removes the boilerplate
   // needs to run after ServerSideRendering
   'AmpBoilerplateTransformer',
+  // Needs to come after AmpBoilerplateTransformer.
   'RewriteAmpUrls',
   // Adds amp-onerror to disable boilerplate early
   // needs to run after BoilerplateTransformer and rewrite AMP URLs

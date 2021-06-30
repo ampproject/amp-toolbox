@@ -15,7 +15,14 @@
  */
 'use strict';
 
-const {createElement, firstChildByTag, insertAfter, insertBefore, remove} = require('../NodeUtils');
+const {
+  createElement,
+  hasAttribute,
+  firstChildByTag,
+  insertAfter,
+  insertBefore,
+  remove,
+} = require('../NodeUtils');
 const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
@@ -73,14 +80,18 @@ class RewriteAmpUrls {
     let referenceNode = findMetaViewport(head);
     const esm = this.esmModulesEnabled || params.esmModulesEnabled;
     params.esmModulesEnabled = esm;
+    const preloadEnabled = !hasAttribute(html, 'i-amphtml-no-boilerplate');
     const preloads = [];
 
     while (node) {
       if (node.tagName === 'script' && this._usesAmpCacheUrl(node.attribs.src)) {
         node.attribs.src = this._replaceUrl(node.attribs.src, host);
         if (esm) {
-          preloads.push(this._addEsm(node));
-        } else {
+          const preload = this._addEsm(node, preloadEnabled);
+          if (preloadEnabled && preload) {
+            preloads.push(preload);
+          }
+        } else if (preloadEnabled) {
           preloads.push(this._createPreload(node.attribs.src, 'script'));
         }
       } else if (
@@ -89,7 +100,9 @@ class RewriteAmpUrls {
         this._usesAmpCacheUrl(node.attribs.href)
       ) {
         node.attribs.href = this._replaceUrl(node.attribs.href, host);
-        preloads.push(this._createPreload(node.attribs.href, 'style'));
+        if (preloadEnabled) {
+          preloads.push(this._createPreload(node.attribs.href, 'style'));
+        }
       } else if (
         node.tagName === 'link' &&
         node.attribs.rel === 'preload' &&
@@ -137,10 +150,10 @@ class RewriteAmpUrls {
     return host + url.substring(AMP_CACHE_HOST.length);
   }
 
-  _addEsm(scriptNode) {
+  _addEsm(scriptNode, preloadEnabled) {
     let result = null;
     const esmScriptUrl = scriptNode.attribs.src.replace(/\.js$/, '.mjs');
-    if (this._shouldPreload(scriptNode.attribs.src)) {
+    if (preloadEnabled && this._shouldPreload(scriptNode.attribs.src)) {
       const preload = createElement('link', {
         as: 'script',
         crossorigin: 'anonymous',
