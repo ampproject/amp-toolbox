@@ -1,3 +1,23 @@
+## v2.8.2 (2021-07-02)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1248](https://github.com/ampproject/amp-toolbox/pull/1248) Disable preloading runtime script/style by default ([@westonruter](https://github.com/westonruter))
+* `optimizer-docker`, `optimizer`
+  * [#1240](https://github.com/ampproject/amp-toolbox/pull/1240) feat: add monitoring to the docker image ([@mathieu-pousse](https://github.com/mathieu-pousse))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1247](https://github.com/ampproject/amp-toolbox/pull/1247) Fix: don't import amp-inputmask for svg masks ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer-docker`
+  * [#1239](https://github.com/ampproject/amp-toolbox/pull/1239) fix docker image: transform environment variable values to boolean when possible ([@mathieu-pousse](https://github.com/mathieu-pousse))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Mathieu POUSSE ([@mathieu-pousse](https://github.com/mathieu-pousse))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+
 ## v2.8.1 (2021-06-08)
 
 #### :rocket: Enhancement
