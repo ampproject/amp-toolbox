@@ -5,7 +5,7 @@
 
 
   <link href="https://example.com/favicon.ico" rel="icon">
-  <style amp-custom>@media not all and (min-width: 650px){#i-amp-0,#my-image,#i-amp-4{display:none}}@media not screen and (min-width: 650px){#i-amp-1{display:none}}@media screen and (min-width: 650px){#i-amp-2{display:none}}@media (min-width: 650px){#i-amp-3,#i-amp-5,#i-amp-6{display:none}}</style>
+  <style amp-custom>@media not all and (min-width: 650px){#i-amp-0,#my-image,#i-amp-4{display:none}}@media not screen and (min-width: 650px){#i-amp-1{display:none}}@media screen and (min-width: 650px){#i-amp-2{display:none}}@media (min-width: 650px){#i-amp-3,#i-amp-5,#i-amp-6{display:none}}@media not all and (min-width: 999px){#i-amp-7{display:none}}</style>
 </head>
 <body>
   <!-- 1. empty -->
@@ -26,5 +26,7 @@
   <amp-img id="my-image" src="image7.jpg" height="355" width="466" class="i-amphtml-layout-fixed i-amphtml-layout-size-defined" style="width:466px;height:355px;" i-amphtml-layout="fixed"></amp-img>
   <!-- 8. avoids id conflicts -->
   <amp-img id="i-amp-4" src="image8.jpg" height="355" width="466" class="i-amphtml-layout-fixed i-amphtml-layout-size-defined" style="width:466px;height:355px;" i-amphtml-layout="fixed"></amp-img>
+  <!-- 9. media attribute empty sizes -->
+  <amp-img src="image2.jpg" height="355" width="466" class="i-amphtml-layout-fixed i-amphtml-layout-size-defined" style="width:466px;height:355px;" i-amphtml-layout="fixed" id="i-amp-7"></amp-img>
 </body>
 </html>
