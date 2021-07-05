@@ -35,7 +35,7 @@ describe('Optimizer produces valid AMP', () => {
       const result = validatorInstance.validateString(optimizedContents);
       if (result.status !== 'PASS') {
         writeFileSync(join(__dirname, 'tmp', fileName), optimizedContents, 'utf-8');
-        fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
+        throw new Error(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
       }
     });
   });

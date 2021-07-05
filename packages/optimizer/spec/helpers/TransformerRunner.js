@@ -50,7 +50,7 @@ module.exports = function (testConfig) {
       if (testConfig.ignore && testConfig.ignore.includes(basename(testDir))) {
         return;
       }
-      it(basename(testDir), async (done) => {
+      it(basename(testDir), async () => {
         let params = TRANSFORMER_PARAMS;
         const validatorInstance = await validator.getInstance();
 
@@ -99,7 +99,6 @@ module.exports = function (testConfig) {
             fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
           }
         }
-        done();
       });
     });
   });
