@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const {findMetaViewport} = require('../../lib/HtmlDomHelper');
+const {findMetaViewport, findRuntimeScript} = require('../../lib/HtmlDomHelper');
 const treeParser = require('../../lib/TreeParser');
 const {firstChildByTag} = require('../../lib/NodeUtils');
 
@@ -53,4 +53,38 @@ test('findMetaViewport returns the correct tag', async () => {
   const head = firstChildByTag(html, 'head');
   const result = findMetaViewport(head);
   expect(result).toEqual(head.children[3]);
+});
+
+test('findRuntimeScript returns runtime v0.mjs', async () => {
+  const root = await treeParser.parse(`<html><head>
+            <meta charset="utf-8">
+            <script async src="https://cdn.ampproject.org/v0.mjs"></script>
+          </head></html>`);
+  const html = firstChildByTag(root, 'html');
+  const head = firstChildByTag(html, 'head');
+  const result = findRuntimeScript(head);
+  expect(result).toEqual(head.children[3]);
+});
+
+test('findRuntimeScript returns runtime v0.js', async () => {
+  const root = await treeParser.parse(`<html><head>
+            <meta charset="utf-8">
+            <script async src="https://cdn.ampproject.org/v0.js"></script>
+          </head></html>`);
+  const html = firstChildByTag(root, 'html');
+  const head = firstChildByTag(html, 'head');
+  const result = findRuntimeScript(head);
+  expect(result).toEqual(head.children[3]);
+});
+
+test('findRuntimeScript ignores empty src', async () => {
+  const root = await treeParser.parse(`<html><head>
+  <meta charset="utf-8">
+  <script id="amp-access" type="application/json"></script>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+</head></html>`);
+  const html = firstChildByTag(root, 'html');
+  const head = firstChildByTag(html, 'head');
+  const result = findRuntimeScript(head);
+  expect(result).toEqual(head.children[5]);
 });
