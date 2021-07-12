@@ -27,8 +27,8 @@
     "@ampproject/toolbox-core": "3.0.0-canary.1",
     "@ampproject/toolbox-optimizer": "3.0.0-canary.1",
     "@ampproject/toolbox-runtime-version": "3.0.0-canary.1",
-    "mime-types": "2.1.29",
-    "whatwg-url": "8.4.0"
+    "mime-types": "2.1.31",
+    "whatwg-url": "9.0.0"
   },
   "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"
 }

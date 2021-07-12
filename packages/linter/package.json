@@ -12,18 +12,19 @@
   "author": "AMPHTML Team",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "3.0.0-canary.1",
-    "@ampproject/toolbox-cache-url": "^2.8.0-canary.6",
+    "@ampproject/toolbox-cache-url": "2.8.0",
     "@ampproject/toolbox-optimizer": "3.0.0-canary.1",
     "@ampproject/toolbox-validator-rules": "3.0.0-canary.1",
-    "amphtml-validator": "1.0.34",
-    "chalk": "4.1.0",
-    "cheerio": "1.0.0-rc.5",
-    "commander": "7.2.0",
-    "debug": "4.3.1",
-    "execa": "5.0.0",
+    "amphtml-validator": "1.0.35",
+    "chalk": "4.1.1",
+    "cheerio": "1.0.0-rc.10",
+    "commander": "8.0.0",
+    "debug": "4.3.2",
+    "domelementtype": "2.2.0",
+    "execa": "5.1.1",
     "node-fetch": "2.6.1",
-    "postcss": "8.2.8",
-    "postcss-safe-parser": "5.0.2",
+    "postcss": "8.3.5",
+    "postcss-safe-parser": "6.0.0",
     "probe-image-size": "7.0.1",
     "throat": "6.0.1"
   },
@@ -43,8 +44,8 @@
   },
   "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403",
   "devDependencies": {
-    "prettier": "2.2.1",
+    "prettier": "2.3.2",
     "tap-parser": "10.1.0",
-    "typescript": "4.2.3"
+    "typescript": "4.3.5"
   }
 }

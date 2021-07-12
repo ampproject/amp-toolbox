@@ -20,7 +20,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ampproject/toolbox-cache-list": "3.0.0-canary.1",
-    "@ampproject/toolbox-cache-url": "^2.8.0-canary.6",
+    "@ampproject/toolbox-cache-url": "^2.8.0",
     "@ampproject/toolbox-core": "3.0.0-canary.1"
   },
   "bugs": {

@@ -27,7 +27,7 @@ describe('update-cache', () => {
   });
 
   it('Display Error if URL is missing', (done) => {
-    return updateCacheCmd({_: []}, mockLogger)
+    updateCacheCmd({_: []}, mockLogger)
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message).toBe('Missing URL');
@@ -36,7 +36,7 @@ describe('update-cache', () => {
   });
 
   it('Displays an Error if privateKey is unavailable', (done) => {
-    return updateCacheCmd({_: ['', 'https://www.example.com']}, mockLogger)
+    updateCacheCmd({_: ['', 'https://www.example.com']}, mockLogger)
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message).toBe('./privateKey.pem does not exist');
@@ -50,7 +50,7 @@ describe('update-cache', () => {
       privateKey: __dirname + '/invalidKey.pem',
     };
 
-    return updateCacheCmd(args, mockLogger)
+    updateCacheCmd(args, mockLogger)
       .then(() => done(new Error('Expected Promise to be Rejected')))
       .catch((err) => {
         expect(err.message).toBe(

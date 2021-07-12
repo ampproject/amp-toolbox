@@ -24,7 +24,7 @@ describe('runtime-version', () => {
 
   it('prints the current amp runtime version', (done) => {
     mockLogger.clear();
-    return runtimeVersionCmd({}, mockLogger)
+    runtimeVersionCmd({}, mockLogger)
       .then(() => {
         const output = mockLogger.getLogs();
         expect(output.length).toBe(15);
