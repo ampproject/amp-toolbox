@@ -1,3 +1,13 @@
+## v2.8.3 (2021-07-12)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1254](https://github.com/ampproject/amp-toolbox/pull/1254) Handle empty src attributes ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1251](https://github.com/ampproject/amp-toolbox/pull/1251) Avoid duplicate auto generated ids ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.2 (2021-07-02)
 
 #### :rocket: Enhancement
