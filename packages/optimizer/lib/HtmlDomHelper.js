@@ -39,7 +39,11 @@ function findMetaViewport(head) {
  */
 function findRuntimeScript(head) {
   for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-    if (node.tagName === 'script' && node.attribs.src.match(/^https:\/\/.+\/v0(\.js|\.mjs)$/)) {
+    if (
+      node.tagName === 'script' &&
+      node.attribs.src &&
+      node.attribs.src.match(/^https:\/\/.+\/v0(\.js|\.mjs)$/)
+    ) {
       return node;
     }
   }
