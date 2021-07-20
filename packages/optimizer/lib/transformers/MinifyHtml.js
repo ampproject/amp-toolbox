@@ -139,7 +139,14 @@ class MinifyHtml {
     }
     try {
       const {minify} = require('terser');
-      const result = await minify(child.data, {});
+      const result = await minify(child.data, {
+        format: {
+          // Always use the original quotes.
+          quote_style: 3,
+          // Do not wrap function expressions that are passed as arguments in parenthesis.
+          wrap_func_args: false,
+        },
+      });
       if (result.error) {
         this.log.warn(
           'Could not minify inline amp-script',
