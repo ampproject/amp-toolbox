@@ -124,6 +124,7 @@ function maybeAddSizerInto(node, layout, width, height) {
 function createResponsiveSizer(width, height) {
   const padding = (height.numeral / width.numeral) * 100;
   const sizer = createElement('i-amphtml-sizer', {
+    slot: 'i-amphtml-svc',
     style: `display:block;padding-top:${parseFloat(padding.toFixed(4))}%`,
   });
   return sizer;
@@ -134,6 +135,7 @@ function createIntrinsicSizer(width, height) {
   // trick Note a naked svg won't work because other things expect the
   // i-amphtml-sizer element
   const sizer = createElement('i-amphtml-sizer', {
+    slot: 'i-amphtml-svc',
     class: 'i-amphtml-sizer',
   });
   const sizerImg = createElement('img', {
