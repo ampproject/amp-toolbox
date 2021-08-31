@@ -82,7 +82,7 @@
     "rollup-plugin-serve": "1.1.0",
     "semver": "7.3.5",
     "tap-parser": "10.1.0",
-    "tar": "6.1.0",
+    "tar": "6.1.9",
     "terser": "5.7.1",
     "throat": "6.0.1",
     "ts-jest": "27.0.3",
