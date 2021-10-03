@@ -129,7 +129,7 @@ class RewriteAmpUrls {
     if (!this._usesAmpCacheUrl(host) && !params.lts) {
       try {
         const url = new URL(host);
-        this._addMeta(head, 'runtime-host', url.origin);
+        this._addMeta(head, 'runtime-host', url.origin + url.pathname);
       } catch (e) {
         this.log.warn('ampUrlPrefix must be an absolute URL');
       }
