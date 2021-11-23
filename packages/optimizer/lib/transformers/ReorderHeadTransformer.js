@@ -22,6 +22,7 @@ class HeadNodes {
   constructor() {
     this._styleAmpRuntime = null;
     this._linkStyleAmpRuntime = null;
+    this._linkStyleAmpStory = null;
     this._metaCharset = null;
     this._metaViewport = null;
     this._scriptAmpEngine = [];
@@ -63,6 +64,7 @@ class HeadNodes {
     appendAll(head, this._metaOther);
     appendChild(head, this._linkStyleAmpRuntime);
     appendChild(head, this._styleAmpRuntime);
+    appendChild(head, this._linkStyleAmpStory);
     appendAll(head, this._scriptAmpEngine);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
@@ -157,6 +159,10 @@ class HeadNodes {
     if (rel === 'stylesheet') {
       if (node.attribs.href.endsWith('/v0.css')) {
         this._linkStyleAmpRuntime = node;
+        return;
+      }
+      if (node.attribs.href.endsWith('/amp-story-1.0.css')) {
+        this._linkStyleAmpStory = node;
         return;
       }
       if (!this._styleAmpCustom) {
