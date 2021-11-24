@@ -1,15 +1,21 @@
-const {nextNode, firstChildByTag, setAttribute} = require('../NodeUtils');
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
 const {isTemplate, AMP_CACHE_HOST} = require('../AmpConstants');
 const {calculateHost} = require('../RuntimeHostHelper');
 const {
+  insertText,
+  setAttribute,
   hasAttribute,
   remove,
   createElement,
   insertBefore,
   nextNode,
   firstChildByTag,
+  appendChild,
 } = require('../NodeUtils');
+
+const AMP_STORY_DVH_POLYFILL_CONTENT = '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
+
+const AMP_STORY_DVH_POLYFILL_ATTR = 'amp-story-dvh-polyfill';
 
 class AmpStoryCssTransformer {
   constructor(config) {
@@ -34,28 +40,62 @@ class AmpStoryCssTransformer {
     const body = firstChildByTag(html, 'body');
     if (!body) return;
 
-    // If there is no amp-story in this document then we don't need to do
-    // any transformations.
-    if (!hasAmpStoryScriptNode(head)) return;
+    const hasAmpStoryScript = false;
+    const hasAmpStoryDvhPolyfillScript = false;
+    const styleAmpCustom = null;
+
+    for (let node = head.firstChild; node !== null; node = node.nextSibling) {
+      if (isAmpStoryScript(node)) {
+        hasAmpStoryScript = true;
+        continue;
+      }
+
+      if (isAmpStoryDvhPolyfillScript(node)) {
+        hasAmpStoryDvhPolyfillScript = true;
+        continue;
+      }
+
+      if (isStyleAmpCustom(node)) {
+        styleAmpCustom = node;
+        continue;
+      }
+    }
+
+    if (!hasAmpStoryScript) return;
 
     const host = calculateHost(params);
 
-    const ampStoryCssLink = createElement('link', {
-      'rel': 'stylesheet',
-      'amp-extension': 'amp-story',
-      'href': `${host}/v0/amp-story-1.0.css`
-    });
+    appendAmpStoryCssLink(host, head);
   }
 }
 
-function hasAmpStoryScriptNode(head) {
-  for (let node = head.firstChild; node !== null; node = node.nextSibling) {
-    if (node.tagName !== 'script') continue;
-    if (!node.attribs) continue;
-    if (node.attribs['custom-element'] !== 'amp-story') continue;
-    return true;
-  }
-  return false;
+function appendAmpStoryCssLink(host, head) {
+  const ampStoryCssLink = createElement('link', {
+    'rel': 'stylesheet',
+    'amp-extension': 'amp-story',
+    'href': `${host}/v0/amp-story-1.0.css`
+  });
+  appendChild(head, ampStoryCssLink);
+}
+
+function appendAmpStoryDvhPolyfillScript(head) {
+  const ampStoryDvhPolyfillScript = createElement('script', {
+    [AMP_STORY_DVH_POLYFILL_ATTR]: ''
+  });
+  insertText(ampStoryDvhPolyfillScript, AMP_STORY_DVH_POLYFILL_CONTENT);
+}
+
+function isAmpStoryScript(node) {
+  return node.tagName === 'script' && node.attribs &&
+    node.attribs['custom-element'] === 'amp-story';
+}
+
+function isAmpStoryDvhPolyfillScript(node) {
+  return node.tagName === 'script' && hasAttribute(node, AMP_STORY_DVH_POLYFILL_ATTR);
+}
+
+function isStyleAmpCustom(node) {
+  return node.tagName === 'style' && hasAttribute(node, 'amp-custom');
 }
 
 /** @module AmpStoryCssTransformer */
