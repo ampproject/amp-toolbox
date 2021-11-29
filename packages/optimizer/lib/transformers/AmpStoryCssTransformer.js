@@ -1,13 +1,11 @@
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
-const {isTemplate, AMP_CACHE_HOST} = require('../AmpConstants');
+const {isTemplate} = require('../AmpConstants');
 const {calculateHost} = require('../RuntimeHostHelper');
 const {
   insertText,
-  setAttribute,
   hasAttribute,
   remove,
   createElement,
-  insertBefore,
   nextNode,
   firstChildByTag,
   appendChild,
