@@ -70,8 +70,10 @@ class AmpStoryCssTransformer {
     appendAmpStoryCssLink(host, head);
 
     if (styleAmpCustom) {
-      //modifyAmpCustomCSS();
-      //appendAmpStoryDvhPolyfillScript();
+      modifyAmpCustomCSS(styleAmpCustom);
+      if (!hasAmpStoryDvhPolyfillScript) {
+        appendAmpStoryDvhPolyfillScript(head);
+      }
     }
 
     supportsLandscapeSSR(body, html);
@@ -80,7 +82,24 @@ class AmpStoryCssTransformer {
   }
 }
 
-function modifyAmpCustomCSS(style) {}
+function modifyAmpCustomCSS(style) {
+  if (!style.children) return;
+  const children = style.children;
+  // Remove all text children from style.
+  // NOTE(erwinm): Is it actually possible in htmlparser2 to have multiple
+  // text children?
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    if (child.type == 'text' && child.data) {
+      const newText = child.data.replace(
+        /(-?[\d.]+)v(w|h|min|max)/gim,
+        'calc($1 * var(--story-page-v$2))'
+      );
+      remove(child);
+      insertText(style, newText);
+    }
+  }
+}
 
 function supportsLandscapeSSR(body, html) {
   const story = firstChildByTag(body, 'amp-story');
@@ -104,7 +123,7 @@ function aspectRatioSSR(body) {
       continue;
     }
 
-    const aspectRatio = attribs[ASPECT_RATIO_ATTR].replace(':', '/');
+    const aspectRatio = attribs[ASPECT_RATIO_ATTR].replace(/:/g, '/');
     // We need to a `attribs['style'] || ''` in case there is no style attribute as we
     // don't want to coerce "undefined" or "null" into a string.
     attribs['style'] = `--${ASPECT_RATIO_ATTR}:${aspectRatio};${attribs['style'] || ''}`;
@@ -125,6 +144,7 @@ function appendAmpStoryDvhPolyfillScript(head) {
     [AMP_STORY_DVH_POLYFILL_ATTR]: '',
   });
   insertText(ampStoryDvhPolyfillScript, AMP_STORY_DVH_POLYFILL_CONTENT);
+  appendChild(head, ampStoryDvhPolyfillScript);
 }
 
 function isAmpStoryGridLayer(node) {
