@@ -1,5 +1,5 @@
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
-const {isTemplate} = require('../AmpConstants');
+const {isTemplate, AMP_STORY_DVH_POLYFILL_ATTR, isAmpStoryDvhPolyfillScript} = require('../AmpConstants');
 const {calculateHost} = require('../RuntimeHostHelper');
 const {
   insertText,
@@ -14,7 +14,6 @@ const {
 const AMP_STORY_DVH_POLYFILL_CONTENT =
   '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
 
-const AMP_STORY_DVH_POLYFILL_ATTR = 'amp-story-dvh-polyfill';
 const ASPECT_RATIO_ATTR = 'aspect-ratio';
 
 class AmpStoryCssTransformer {
@@ -155,9 +154,6 @@ function isAmpStoryScript(node) {
   );
 }
 
-function isAmpStoryDvhPolyfillScript(node) {
-  return node.tagName === 'script' && hasAttribute(node, AMP_STORY_DVH_POLYFILL_ATTR);
-}
 
 function isStyleAmpCustom(node) {
   return node.tagName === 'style' && hasAttribute(node, 'amp-custom');
