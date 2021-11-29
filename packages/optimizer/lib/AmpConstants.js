@@ -53,7 +53,7 @@ module.exports = {
   },
   isAmpStoryDvhPolyfillScript: (node) => {
     return node.tagName === 'script' && hasAttribute(node, AMP_STORY_DVH_POLYFILL_ATTR);
-  }
+  },
 };
 
 function isAmpScriptImport(scriptNode) {

@@ -1,5 +1,9 @@
 const {skipNodeAndChildren} = require('../HtmlDomHelper');
-const {isTemplate, AMP_STORY_DVH_POLYFILL_ATTR, isAmpStoryDvhPolyfillScript} = require('../AmpConstants');
+const {
+  isTemplate,
+  AMP_STORY_DVH_POLYFILL_ATTR,
+  isAmpStoryDvhPolyfillScript,
+} = require('../AmpConstants');
 const {calculateHost} = require('../RuntimeHostHelper');
 const {
   insertText,
@@ -153,7 +157,6 @@ function isAmpStoryScript(node) {
     node.tagName === 'script' && node.attribs && node.attribs['custom-element'] === 'amp-story'
   );
 }
-
 
 function isStyleAmpCustom(node) {
   return node.tagName === 'style' && hasAttribute(node, 'amp-custom');
