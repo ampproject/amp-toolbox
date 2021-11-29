@@ -17,6 +17,7 @@ const AMP_STORY_DVH_POLYFILL_CONTENT =
   '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
 
 const AMP_STORY_DVH_POLYFILL_ATTR = 'amp-story-dvh-polyfill';
+const ASPECT_RATIO_ATTR = 'aspect-ratio';
 
 class AmpStoryCssTransformer {
   constructor(config) {
@@ -69,8 +70,8 @@ class AmpStoryCssTransformer {
     appendAmpStoryCssLink(host, head);
 
     if (styleAmpCustom) {
-      modifyAmpCustomCSS();
-      appendAmpStoryDvhPolyfillScript();
+      //modifyAmpCustomCSS();
+      //appendAmpStoryDvhPolyfillScript();
     }
 
     supportsLandscapeSSR(body, html);
@@ -81,7 +82,13 @@ class AmpStoryCssTransformer {
 
 function modifyAmpCustomCSS(style) {}
 
-function supportsLandscapeSSR(html, body) {}
+function supportsLandscapeSSR(body, html) {
+  const story = firstChildByTag(body, 'amp-story');
+  if (!story) return;
+  if (hasAttribute(story, 'supports-landscape') && html.attribs) {
+    html.attribs['data-story-supports-landscape'] = '';
+  }
+}
 
 function aspectRatioSSR(body) {
   for (let node = body; node !== null; node = nextNode(node)) {
@@ -93,8 +100,14 @@ function aspectRatioSSR(body) {
     if (!isAmpStoryGridLayer(node)) continue;
 
     const {attribs} = node;
-    if (!attribs) continue;
-    if (!attribs['aspect-ratio']) continue;
+    if (!attribs || !attribs[ASPECT_RATIO_ATTR] || typeof attribs[ASPECT_RATIO_ATTR] !== 'string') {
+      continue;
+    }
+
+    const aspectRatio = attribs[ASPECT_RATIO_ATTR].replace(':', '/');
+    // We need to a `attribs['style'] || ''` in case there is no style attribute as we
+    // don't want to coerce "undefined" or "null" into a string.
+    attribs['style'] = `--${ASPECT_RATIO_ATTR}:${aspectRatio};${attribs['style'] || ''}`;
   }
 }
 

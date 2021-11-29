@@ -8,11 +8,14 @@
 </head>
 <body>
   <amp-story standalone poster-portrait-src="http://url.example/" publisher-logo-src="http://url.example/" publisher title>
-    <amp-story-page id="my-first-page">
-      <amp-story-grid-layer template="fill">
-        <amp-img src="https://ampbyexample.com/img/image3.jpg" width="720" height="1280"></amp-img>
-      </amp-story-grid-layer>
-    </amp-story-page>
+    <amp-story-grid-layer aspect-ratio="4:8" style="--aspect-ratio:4/8;color: red">
+      <template>
+        <amp-story-grid-layer aspect-ratio="5:8"></amp-story-grid-layer>
+      </template>
+      <amp-story-grid-layer></amp-story-grid-layer>
+      <amp-story-grid-layer aspect-ratio="5:8" style="--aspect-ratio:5/8;"></amp-story-grid-layer>
+      <amp-story-grid-layer aspect-ratio="5:10" style="--aspect-ratio:5/10;background-color: yellow; font-size: 2px;"></amp-story-grid-layer>
+    </amp-story-grid-layer>
   </amp-story>
 </body>
 </html>
