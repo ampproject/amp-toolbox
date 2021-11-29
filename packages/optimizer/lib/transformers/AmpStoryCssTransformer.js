@@ -15,6 +15,8 @@ const {
   appendChild,
 } = require('../NodeUtils');
 
+// This string should not be modified, even slightly. This string is strictly
+// checked by the validator.
 const AMP_STORY_DVH_POLYFILL_CONTENT =
   '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
 
@@ -64,6 +66,7 @@ class AmpStoryCssTransformer {
       }
     }
 
+    // We can return early if no amp-story script is found.
     if (!hasAmpStoryScript) return;
 
     const host = calculateHost(params);
@@ -72,6 +75,7 @@ class AmpStoryCssTransformer {
 
     if (styleAmpCustom) {
       modifyAmpCustomCSS(styleAmpCustom);
+      // Make sure to not double install the dvh polyfill.
       if (!hasAmpStoryDvhPolyfillScript) {
         appendAmpStoryDvhPolyfillScript(head);
       }
