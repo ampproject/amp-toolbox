@@ -13,7 +13,8 @@ const {
   appendChild,
 } = require('../NodeUtils');
 
-const AMP_STORY_DVH_POLYFILL_CONTENT = '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
+const AMP_STORY_DVH_POLYFILL_CONTENT =
+  '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
 
 const AMP_STORY_DVH_POLYFILL_ATTR = 'amp-story-dvh-polyfill';
 
@@ -40,9 +41,9 @@ class AmpStoryCssTransformer {
     const body = firstChildByTag(html, 'body');
     if (!body) return;
 
-    const hasAmpStoryScript = false;
-    const hasAmpStoryDvhPolyfillScript = false;
-    const styleAmpCustom = null;
+    let hasAmpStoryScript = false;
+    let hasAmpStoryDvhPolyfillScript = false;
+    let styleAmpCustom = null;
 
     for (let node = head.firstChild; node !== null; node = node.nextSibling) {
       if (isAmpStoryScript(node)) {
@@ -66,6 +67,34 @@ class AmpStoryCssTransformer {
     const host = calculateHost(params);
 
     appendAmpStoryCssLink(host, head);
+
+    if (styleAmpCustom) {
+      modifyAmpCustomCSS();
+      appendAmpStoryDvhPolyfillScript();
+    }
+
+    supportsLandscapeSSR(body, html);
+
+    aspectRatioSSR(body);
+  }
+}
+
+function modifyAmpCustomCSS(style) {}
+
+function supportsLandscapeSSR(html, body) {}
+
+function aspectRatioSSR(body) {
+  for (let node = body; node !== null; node = nextNode(node)) {
+    if (isTemplate(node)) {
+      node = skipNodeAndChildren(node);
+      continue;
+    }
+
+    if (!isAmpStoryGridLayer(node)) continue;
+
+    const {attribs} = node;
+    if (!attribs) continue;
+    if (!attribs['aspect-ratio']) continue;
   }
 }
 
@@ -73,21 +102,26 @@ function appendAmpStoryCssLink(host, head) {
   const ampStoryCssLink = createElement('link', {
     'rel': 'stylesheet',
     'amp-extension': 'amp-story',
-    'href': `${host}/v0/amp-story-1.0.css`
+    'href': `${host}/v0/amp-story-1.0.css`,
   });
   appendChild(head, ampStoryCssLink);
 }
 
 function appendAmpStoryDvhPolyfillScript(head) {
   const ampStoryDvhPolyfillScript = createElement('script', {
-    [AMP_STORY_DVH_POLYFILL_ATTR]: ''
+    [AMP_STORY_DVH_POLYFILL_ATTR]: '',
   });
   insertText(ampStoryDvhPolyfillScript, AMP_STORY_DVH_POLYFILL_CONTENT);
 }
 
+function isAmpStoryGridLayer(node) {
+  return node.tagName === 'amp-story-grid-layer';
+}
+
 function isAmpStoryScript(node) {
-  return node.tagName === 'script' && node.attribs &&
-    node.attribs['custom-element'] === 'amp-story';
+  return (
+    node.tagName === 'script' && node.attribs && node.attribs['custom-element'] === 'amp-story'
+  );
 }
 
 function isAmpStoryDvhPolyfillScript(node) {
