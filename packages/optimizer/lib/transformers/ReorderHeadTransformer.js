@@ -16,12 +16,14 @@
 'use strict';
 
 const {appendChild, appendAll, hasAttribute, firstChildByTag} = require('../NodeUtils');
+const {isAmpStoryDvhPolyfillScript} = require('../AmpConstants');
 const {isRenderDelayingExtension} = require('../Extensions.js');
 
 class HeadNodes {
   constructor() {
     this._styleAmpRuntime = null;
     this._linkStyleAmpRuntime = null;
+    this._linkStyleAmpStory = null;
     this._metaCharset = null;
     this._metaViewport = null;
     this._scriptAmpEngine = [];
@@ -29,6 +31,7 @@ class HeadNodes {
     this._resourceHintLinks = [];
     this._scriptRenderDelayingExtensions = new Map();
     this._scriptNonRenderDelayingExtensions = new Map();
+    this._scriptAmpStoryDvhPollyfill = null;
     this._linkIcons = [];
     this._styleAmpCustom = null;
     this._linkStylesheetsBeforeAmpCustom = [];
@@ -63,7 +66,9 @@ class HeadNodes {
     appendAll(head, this._metaOther);
     appendChild(head, this._linkStyleAmpRuntime);
     appendChild(head, this._styleAmpRuntime);
+    appendChild(head, this._linkStyleAmpStory);
     appendAll(head, this._scriptAmpEngine);
+    appendChild(head, this._scriptAmpStoryDvhPollyfill);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
     appendChild(head, this._styleAmpCustom);
@@ -127,6 +132,10 @@ class HeadNodes {
       this._registerExtension(this._scriptNonRenderDelayingExtensions, name, scriptIndex, node);
       return;
     }
+    if (isAmpStoryDvhPolyfillScript(node)) {
+      this._scriptAmpStoryDvhPollyfill = node;
+      return;
+    }
     this._others.push(node);
   }
 
@@ -157,6 +166,10 @@ class HeadNodes {
     if (rel === 'stylesheet') {
       if (node.attribs.href.endsWith('/v0.css')) {
         this._linkStyleAmpRuntime = node;
+        return;
+      }
+      if (node.attribs.href.endsWith('/amp-story-1.0.css')) {
+        this._linkStyleAmpStory = node;
         return;
       }
       if (!this._styleAmpCustom) {
@@ -195,16 +208,18 @@ class HeadNodes {
  * orders the <head> like so:
  * (0) <meta charset> tag
  * (1) <style amp-runtime> (inserted by ampruntimecss.go)
- * (2) remaining <meta> tags (those other than <meta charset>)
- * (3) AMP runtime .js <script> tag
- * (4) <script> tags that are render delaying
- * (5) <script> tags for remaining extensions
- * (6) <link> tag for favicons
- * (7) <link> tag for resource hints
- * (8) <link rel=stylesheet> tags before <style amp-custom>
- * (9) <style amp-custom>
- * (10) any other tags allowed in <head>
- * (11) AMP boilerplate (first style amp-boilerplate, then noscript)
+ * (2) <link amp-extension=amp-story> (amp-story stylesheet)
+ * (3) remaining <meta> tags (those other than <meta charset>)
+ * (4) AMP runtime .js <script> tag
+ * (5) <script amp-story-dvh-polyfill> inline script tag
+ * (6) <script> tags that are render delaying
+ * (7) <script> tags for remaining extensions
+ * (8) <link> tag for favicons
+ * (9) <link> tag for resource hints
+ * (10) <link rel=stylesheet> tags before <style amp-custom>
+ * (11) <style amp-custom>
+ * (12) any other tags allowed in <head>
+ * (13) AMP boilerplate (first style amp-boilerplate, then noscript)
  */
 class ReorderHeadTransformer {
   transform(tree) {

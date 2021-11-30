@@ -1,0 +1,21 @@
+<!doctype html>
+<html ⚡>
+<head>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async custom-element="amp-story" src="https://cdn.ampproject.org/v0/amp-story-1.0.js"></script>
+  <link href="https://example.com/favicon.ico" rel="icon">
+  <link rel="stylesheet" amp-extension="amp-story" href="https://cdn.ampproject.org/v0/amp-story-1.0.css">
+</head>
+<body>
+  <amp-story standalone poster-portrait-src="http://url.example/" publisher-logo-src="http://url.example/" publisher title>
+    <amp-story-grid-layer aspect-ratio="4:8" style="--aspect-ratio:4/8;color: red">
+      <template>
+        <amp-story-grid-layer aspect-ratio="5:8"></amp-story-grid-layer>
+      </template>
+      <amp-story-grid-layer></amp-story-grid-layer>
+      <amp-story-grid-layer aspect-ratio="5:8" style="--aspect-ratio:5/8;"></amp-story-grid-layer>
+      <amp-story-grid-layer aspect-ratio="5:10" style="--aspect-ratio:5/10;background-color: yellow; font-size: 2px;"></amp-story-grid-layer>
+    </amp-story-grid-layer>
+  </amp-story>
+</body>
+</html>

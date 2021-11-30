@@ -115,7 +115,7 @@ class ServerSideRendering {
 
     let customStyles;
     for (let node = head.firstChild; node; node = node.nextSibling) {
-      // amp-experiment is a render delaying extension iff the tag is used in
+      // amp-experiment is a render delaying extension if the tag is used in
       // the doc, which we checked for above.
       if (
         node.tagName === 'script' &&

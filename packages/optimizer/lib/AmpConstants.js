@@ -17,12 +17,15 @@
 
 const {hasAttribute} = require('./NodeUtils');
 
+const AMP_STORY_DVH_POLYFILL_ATTR = 'amp-story-dvh-polyfill';
+
 module.exports = {
   AMP_TAGS: ['amp', '⚡', '⚡4ads', 'amp4ads', '⚡4email', 'amp4email'],
   AMP_CACHE_HOST: 'https://cdn.ampproject.org',
   AMP_VALIDATION_RULES_URL: 'https://cdn.ampproject.org/v0/validator.json',
   AMP_FORMATS: ['AMP', 'AMP4EMAIL', 'AMP4ADS'],
   AMP_RUNTIME_CSS_PATH: '/v0.css',
+  AMP_STORY_DVH_POLYFILL_ATTR,
   appendRuntimeVersion: (prefix, version) => prefix + '/rtv/' + version,
   isTemplate: (node) => {
     if (!node) {
@@ -47,6 +50,9 @@ module.exports = {
       }
     }
     return false;
+  },
+  isAmpStoryDvhPolyfillScript: (node) => {
+    return node.tagName === 'script' && hasAttribute(node, AMP_STORY_DVH_POLYFILL_ATTR);
   },
 };
 
