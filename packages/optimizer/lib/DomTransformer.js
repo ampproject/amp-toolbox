@@ -40,6 +40,10 @@ const TRANSFORMATIONS_AMP_FIRST = [
   // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
   // This needs to run after AutoExtensionImporter.
   'OptimizeAmpBind',
+  // Applies amp-story related optimizations such as appending a link[rel=stylesheet]
+  // to the amp-story css, server side rendering attributes, and adding css polyfills
+  // and fixes.
+  'AmpStoryCssTransformer',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes the boilerplate
@@ -129,6 +133,7 @@ const CONFIG_DEFAULT = {
   markdown: true,
   minify: true,
   optimizeAmpBind: true,
+  optimizeAmpStory: false,
   optimizeHeroImages: true,
   separateKeyframes: true,
 };
@@ -140,6 +145,7 @@ const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
   markdown: true,
   minify: true,
   optimizeAmpBind: true,
+  optimizeAmpStory: false,
   optimizeHeroImages: true,
   separateKeyframes: true,
 });
@@ -151,6 +157,7 @@ const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
   markdown: false,
   minify: false,
   optimizeAmpBind: true,
+  optimizeAmpStory: false,
   optimizeHeroImages: true,
   separateKeyframes: false,
 });

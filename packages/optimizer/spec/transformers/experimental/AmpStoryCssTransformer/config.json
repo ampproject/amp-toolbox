@@ -1,3 +1,4 @@
 {
-  "optimizeAmpStory": true
+  "optimizeAmpStory": true,
+  "lts": true
 }

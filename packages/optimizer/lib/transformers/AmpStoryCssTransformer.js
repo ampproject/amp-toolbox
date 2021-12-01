@@ -26,7 +26,7 @@ class AmpStoryCssTransformer {
   constructor(config) {
     this.log_ = config.log.tag('AmpStoryCssTransformer');
 
-    this.enabled_ = !!config.optimizeAmpStory;
+    this.enabled_ = config.optimizeAmpStory === true;
 
     if (!this.enabled_) {
       this.log_.debug('disabled');
