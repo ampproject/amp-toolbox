@@ -53,7 +53,7 @@ createSpec({
   testDir: __dirname,
   tag: 'fast',
   validAmp: true,
-  ignore: ['markdown', 'body-only'],
+  ignore: ['markdown', 'body-only', 'story-optimized'],
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
@@ -92,12 +92,33 @@ createSpec({
   name: 'End-to-End: Paired AMP',
   testDir: __dirname,
   tag: 'paired',
+  ignore: ['story-optimized'],
   transformer: {
     transform: (tree, params) => {
       const ampOptimizer = new DomTransformer({
         cache: false,
         fetch,
         transformations: TRANSFORMATIONS_PAIRED_AMP,
+        runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
+      });
+      return ampOptimizer.transformTree(tree, params);
+    },
+  },
+});
+
+createSpec({
+  name: 'End-to-End: AMP Story Optimized',
+  testDir: __dirname,
+  tag: 'amp-story-optimized',
+  ignore: ['body-only', 'hello-world', 'markdown', 'story', 'trailing-template'],
+  transformer: {
+    transform: (tree, params) => {
+      const ampOptimizer = new DomTransformer({
+        ...CONFIG_BUILD,
+        cache: false,
+        fetch,
+        log,
+        optimizeAmpStory: true,
         runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
       });
       return ampOptimizer.transformTree(tree, params);

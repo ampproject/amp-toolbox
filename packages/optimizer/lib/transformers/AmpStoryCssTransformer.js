@@ -18,7 +18,7 @@ const {
 // This string should not be modified, even slightly. This string is strictly
 // checked by the validator.
 const AMP_STORY_DVH_POLYFILL_CONTENT =
-  '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
+  '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()}';
 
 const ASPECT_RATIO_ATTR = 'aspect-ratio';
 
