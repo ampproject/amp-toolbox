@@ -34,6 +34,7 @@ createSpec({
   name: 'End-to-End: Build Time Config',
   testDir: __dirname,
   tag: 'full',
+  ignore: ['story-optimized'],
   validAmp: true,
   transformer: {
     transform: (tree, params) => {
@@ -72,6 +73,7 @@ createSpec({
   name: 'End-to-End: LTS',
   testDir: __dirname,
   tag: 'lts',
+  ignore: ['story-optimized'],
   validAmp: true,
   transformer: {
     transform: (tree, params) => {
@@ -116,6 +118,27 @@ createSpec({
       const ampOptimizer = new DomTransformer({
         ...CONFIG_BUILD,
         cache: false,
+        fetch,
+        log,
+        optimizeAmpStory: true,
+        runtimeVersion: {currentVersion: () => Promise.resolve('123456789000000')},
+      });
+      return ampOptimizer.transformTree(tree, params);
+    },
+  },
+});
+
+createSpec({
+  name: 'End-to-End: AMP Story Optimized LTS',
+  testDir: __dirname,
+  tag: 'amp-story-optimized-lts',
+  ignore: ['body-only', 'hello-world', 'markdown', 'story', 'trailing-template'],
+  transformer: {
+    transform: (tree, params) => {
+      const ampOptimizer = new DomTransformer({
+        ...CONFIG_BUILD,
+        cache: false,
+        lts: true,
         fetch,
         log,
         optimizeAmpStory: true,
