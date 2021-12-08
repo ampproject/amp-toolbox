@@ -228,6 +228,7 @@ class AutoExtensionImporter {
     // Let user override default
     const customVersion = this.extensionVersions[extensionName];
     if (customVersion) {
+      this.log_.debug('using custom version for', extensionName, customVersion);
       return customVersion;
     }
     // Get latest non-experimental prod version (as calculated based on experimental flag)
