@@ -317,7 +317,7 @@ Enables a considerably faster scanning method in `amp-bind`, by injecting a `i-a
 
 ### `optimizeAmpStory`
 
-Enabled server side rendering optimizations to improve amp-story performance such as linking to the amp-story-1.0.css, and server side rendering
+Enables AMP Story optimizations such as linking to the amp-story-1.0.css, and server side rendering
 attributes.
 
 - name: `optimizeAmpStory`
