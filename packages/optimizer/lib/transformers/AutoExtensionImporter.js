@@ -141,7 +141,22 @@ class AutoExtensionImporter {
     if (!this.componentVersions) {
       this.componentVersions = {};
       for (const component of params.componentVersions) {
-        this.componentVersions[component.name] = component.latestVersion;
+        if (Array.isArray(component.version)) {
+        // If version is an array then we need to find the highest value.
+        // Note we need to preserve the "stringy"ness of these versions
+        // so make sure we don't do any coercion or casting of the value
+        // we assign.
+          this.componentVersions[component.name] =
+            component.version.reduce((prev, cur) => {
+              return Number(prev) > Number(cur) ? prev : cur;
+            });
+        } else {
+          this.componentVersions[component.name] = Number(component.version) >
+            // Make sure to guard if the entry doesn't exist yet. We default
+            // comparing to 0.
+            Number(this.componentVersions[component.name] || 0) ?
+            component.version : this.componentVersions[component.name];
+        }
       }
     }
     if (!this.extensionSpec_) {
@@ -212,7 +227,6 @@ class AutoExtensionImporter {
     // Let user override default
     const customVersion = this.extensionVersions[extensionName];
     if (customVersion) {
-      this.log_.debug('using custom version for', extensionName, customVersion);
       return customVersion;
     }
     // Get latest non-experimental prod version (as calculated based on experimental flag)
