@@ -4,7 +4,6 @@ const {
   AMP_STORY_DVH_POLYFILL_ATTR,
   isAmpStoryDvhPolyfillScript,
 } = require('../AmpConstants');
-const {calculateHost} = require('../RuntimeHostHelper');
 const {
   insertText,
   hasAttribute,
@@ -14,6 +13,7 @@ const {
   firstChildByTag,
   appendChild,
 } = require('../NodeUtils');
+const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 
 // This string should not be modified, even slightly. This string is strictly
 // checked by the validator.
@@ -33,7 +33,7 @@ class AmpStoryCssTransformer {
     }
   }
 
-  transform(root, params) {
+  transform(root) {
     if (!this.enabled_) return;
 
     const html = firstChildByTag(root, 'html');
@@ -69,9 +69,7 @@ class AmpStoryCssTransformer {
     // We can return early if no amp-story script is found.
     if (!hasAmpStoryScript) return;
 
-    const host = calculateHost(params);
-
-    appendAmpStoryCssLink(host, head);
+    appendAmpStoryCssLink(head);
 
     if (styleAmpCustom) {
       modifyAmpCustomCSS(styleAmpCustom);
@@ -135,11 +133,13 @@ function aspectRatioSSR(body) {
   }
 }
 
-function appendAmpStoryCssLink(host, head) {
+function appendAmpStoryCssLink(head) {
   const ampStoryCssLink = createElement('link', {
     'rel': 'stylesheet',
     'amp-extension': 'amp-story',
-    'href': `${host}/v0/amp-story-1.0.css`,
+    // We rely on the `RewriteAmpUrls` transformer to modify this to
+    // the correct LTS or correct rtv path.
+    'href': `${AMP_CACHE_HOST}/v0/amp-story-1.0.css`,
   });
   appendChild(head, ampStoryCssLink);
 }
