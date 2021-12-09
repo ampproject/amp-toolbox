@@ -147,6 +147,7 @@ Available options are:
 - [markdown](#markdown)
 - [minify](#minify)
 - [optimizeAmpBind](#optimizeampbind)
+- [optimizeAmpStory](#optimizeampstory)
 - [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
 - [separateKeyframes](#separateKeyframes)
@@ -313,6 +314,16 @@ Enables a considerably faster scanning method in `amp-bind`, by injecting a `i-a
 - valid options: `[true|false]`
 - default: `true`
 - used by: [OptimizeAmpBind](lib/transformers/OptimizeAmpBind.js)
+
+### `optimizeAmpStory`
+
+Enables AMP Story optimizations such as linking to the amp-story-1.0.css, and server side rendering
+attributes.
+
+- name: `optimizeAmpStory`
+- valid options: `[true|false]`
+- default: `false`
+- used by: [AmpStoryCssTransformer](lib/transformers/AmpStoryCssTransformer.js)
 
 #### `optimizeHeroImages`
 

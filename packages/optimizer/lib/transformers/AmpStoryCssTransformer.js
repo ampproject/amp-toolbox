@@ -4,7 +4,6 @@ const {
   AMP_STORY_DVH_POLYFILL_ATTR,
   isAmpStoryDvhPolyfillScript,
 } = require('../AmpConstants');
-const {calculateHost} = require('../RuntimeHostHelper');
 const {
   insertText,
   hasAttribute,
@@ -14,11 +13,12 @@ const {
   firstChildByTag,
   appendChild,
 } = require('../NodeUtils');
+const {AMP_CACHE_HOST} = require('../AmpConstants.js');
 
 // This string should not be modified, even slightly. This string is strictly
 // checked by the validator.
 const AMP_STORY_DVH_POLYFILL_CONTENT =
-  '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()})';
+  '"use strict";if(!self.CSS||!CSS.supports||!CSS.supports("height:1dvh")){function e(){document.documentElement.style.setProperty("--story-dvh",innerHeight/100+"px","important")}addEventListener("resize",e,{passive:!0}),e()}';
 
 const ASPECT_RATIO_ATTR = 'aspect-ratio';
 
@@ -26,14 +26,14 @@ class AmpStoryCssTransformer {
   constructor(config) {
     this.log_ = config.log.tag('AmpStoryCssTransformer');
 
-    this.enabled_ = !!config.optimizeAmpStory;
+    this.enabled_ = config.optimizeAmpStory === true;
 
     if (!this.enabled_) {
       this.log_.debug('disabled');
     }
   }
 
-  transform(root, params) {
+  transform(root) {
     if (!this.enabled_) return;
 
     const html = firstChildByTag(root, 'html');
@@ -69,9 +69,7 @@ class AmpStoryCssTransformer {
     // We can return early if no amp-story script is found.
     if (!hasAmpStoryScript) return;
 
-    const host = calculateHost(params);
-
-    appendAmpStoryCssLink(host, head);
+    appendAmpStoryCssLink(head);
 
     if (styleAmpCustom) {
       modifyAmpCustomCSS(styleAmpCustom);
@@ -135,11 +133,13 @@ function aspectRatioSSR(body) {
   }
 }
 
-function appendAmpStoryCssLink(host, head) {
+function appendAmpStoryCssLink(head) {
   const ampStoryCssLink = createElement('link', {
     'rel': 'stylesheet',
     'amp-extension': 'amp-story',
-    'href': `${host}/v0/amp-story-1.0.css`,
+    // We rely on the `RewriteAmpUrls` transformer to modify this to
+    // the correct LTS or correct rtv path.
+    'href': `${AMP_CACHE_HOST}/v0/amp-story-1.0.css`,
   });
   appendChild(head, ampStoryCssLink);
 }
