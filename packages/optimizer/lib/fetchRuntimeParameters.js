@@ -17,8 +17,10 @@
 
 const URL_COMPONENT_VERSIONS =
   'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
+const URL_COMPONENT_LATEST_VERSIONS = 'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
+const JSON5 = require('json5');
 let fallbackRuntime;
 
 try {
@@ -111,15 +113,29 @@ async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
 async function fetchComponentVersions_(config, runtimeParameters) {
   // Strip the leading two chars from the version identifier to get the release tag
   const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
+  console.log('releaseTag', releaseTag);
   const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
+  const componentLatestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
-  const response = await config.fetch(componentConfigUrl);
-  if (!response.ok) {
+  const configResponse = await config.fetch(componentConfigUrl);
+  const latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrl);
+  if (!configResponse.ok) {
+    console.log('a');
+    debugger;
     throw new Error(
-      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${response.status}`
+      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${configResponse.status}`
     );
   }
-  return response.json();
+  if (!latestVersionsConfig.ok) {
+    console.log('b');
+    debugger;
+    throw new Error(
+      `Failed fetching latest component versions from ${URL_COMPONENT_LATEST_VERSIONS} with status: ${latestVersionsConfig.status}`
+    );
+  }
+  console.log('c');
+  debugger;
+  return configResponse.json();
 }
 
 /**
