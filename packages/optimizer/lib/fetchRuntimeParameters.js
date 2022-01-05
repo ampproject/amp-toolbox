@@ -113,29 +113,31 @@ async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
 async function fetchComponentVersions_(config, runtimeParameters) {
   // Strip the leading two chars from the version identifier to get the release tag
   const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
-  console.log('releaseTag', releaseTag);
   const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
   const componentLatestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.legacy-latest-versions.jsonc`;
+  const componentLatestVersionsUrlFallback = `https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
+  debugger;
   const configResponse = await config.fetch(componentConfigUrl);
-  const latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrl);
+  let latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrl);
   if (!configResponse.ok) {
-    console.log('a');
-    debugger;
     throw new Error(
       `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${configResponse.status}`
     );
   }
-  if (!latestVersionsConfig.ok) {
-    console.log('b');
-    debugger;
-    throw new Error(
-      `Failed fetching latest component versions from ${URL_COMPONENT_LATEST_VERSIONS} with status: ${latestVersionsConfig.status}`
-    );
+  // If the fetch for the latestVersion jsonc file fails, we try again using the
+  // main branch since it might not exist yet in the old releaseTag. The latestVersion's
+  // are frozen so its unlikely to have changed.
+  if (!latestVersionsConfigResponse.ok) {
+    latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrlFallback);
+    if (!latestVersionsConfigResponse.ok) {
+      throw new Error(
+        `Failed fetching latest component versions from ${URL_COMPONENT_LATEST_VERSIONS} with status: ${latestVersionsConfig.status}`
+      );
+    }
   }
-  console.log('c');
-  debugger;
-  return configResponse.json();
+  const configJson = await configResponse.json();
+  const latestVersionConfigJson = JSON5.parse(await latestVersionsConfigResponse.text());
 }
 
 /**
