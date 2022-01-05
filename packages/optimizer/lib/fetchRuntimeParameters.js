@@ -17,7 +17,8 @@
 
 const URL_COMPONENT_VERSIONS =
   'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
-const URL_COMPONENT_LATEST_VERSIONS = 'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc';
+const URL_COMPONENT_LATEST_VERSIONS =
+  'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
 const JSON5 = require('json5');
@@ -117,7 +118,6 @@ async function fetchComponentVersions_(config, runtimeParameters) {
   const componentLatestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.legacy-latest-versions.jsonc`;
   const componentLatestVersionsUrlFallback = `https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
-  debugger;
   const configResponse = await config.fetch(componentConfigUrl);
   let latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrl);
   if (!configResponse.ok) {
@@ -132,12 +132,16 @@ async function fetchComponentVersions_(config, runtimeParameters) {
     latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrlFallback);
     if (!latestVersionsConfigResponse.ok) {
       throw new Error(
-        `Failed fetching latest component versions from ${URL_COMPONENT_LATEST_VERSIONS} with status: ${latestVersionsConfig.status}`
+        `Failed fetching latest component versions from ${URL_COMPONENT_LATEST_VERSIONS} with status: ${latestVersionsConfigResponse.status}`
       );
     }
   }
   const configJson = await configResponse.json();
-  const latestVersionConfigJson = JSON5.parse(await latestVersionsConfigResponse.text());
+  const latestVersionsConfigJson = JSON5.parse(await latestVersionsConfigResponse.text());
+  configJson.forEach((entry) => {
+    entry['latestVersion'] = latestVersionsConfigJson[entry.name];
+  });
+  return configJson;
 }
 
 /**
