@@ -53,9 +53,6 @@ const JSON5 = require('json5');
       `Failed downloading ${extensionConfigUrl} with status ${configResponse.status}`
     );
   }
-  // If the fetch for the latestVersion jsonc file fails, we try again using the
-  // main branch since it might not exist yet in the old releaseTag. The latestVersion's
-  // are frozen so its unlikely to have changed.
   if (!latestVersionsConfigResponse.ok) {
     throw new Error(
       `Failed fetching latest component versions from ${latestVersionsUrl} with status: ${latestVersionsConfigResponse.status}`

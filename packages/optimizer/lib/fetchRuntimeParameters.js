@@ -17,11 +17,8 @@
 
 const URL_COMPONENT_VERSIONS =
   'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
-const URL_COMPONENT_LATEST_VERSIONS =
-  'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
-const JSON5 = require('json5');
 let fallbackRuntime;
 
 try {
@@ -115,33 +112,14 @@ async function fetchComponentVersions_(config, runtimeParameters) {
   // Strip the leading two chars from the version identifier to get the release tag
   const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
   const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
-  const componentLatestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.legacy-latest-versions.jsonc`;
-  const componentLatestVersionsUrlFallback = `https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
-  const configResponse = await config.fetch(componentConfigUrl);
-  let latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrl);
-  if (!configResponse.ok) {
+  const response = await config.fetch(componentConfigUrl);
+  if (!response.ok) {
     throw new Error(
-      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${configResponse.status}`
+      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${response.status}`
     );
   }
-  // If the fetch for the latestVersion jsonc file fails, we try again using the
-  // main branch since it might not exist yet in the old releaseTag. The latestVersion's
-  // are frozen so its unlikely to have changed.
-  if (!latestVersionsConfigResponse.ok) {
-    latestVersionsConfigResponse = await config.fetch(componentLatestVersionsUrlFallback);
-    if (!latestVersionsConfigResponse.ok) {
-      throw new Error(
-        `Failed fetching latest component versions from ${URL_COMPONENT_LATEST_VERSIONS} with status: ${latestVersionsConfigResponse.status}`
-      );
-    }
-  }
-  const configJson = await configResponse.json();
-  const latestVersionsConfigJson = JSON5.parse(await latestVersionsConfigResponse.text());
-  configJson.forEach((entry) => {
-    entry['latestVersion'] = latestVersionsConfigJson[entry.name];
-  });
-  return configJson;
+  return response.json();
 }
 
 /**
