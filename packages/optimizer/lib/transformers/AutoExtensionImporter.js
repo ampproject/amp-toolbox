@@ -141,23 +141,7 @@ class AutoExtensionImporter {
     if (!this.componentVersions) {
       this.componentVersions = {};
       for (const component of params.componentVersions) {
-        if (Array.isArray(component.version)) {
-          // If version is an array then we need to find the highest value.
-          // Note we need to preserve the "stringy"ness of these versions
-          // so make sure we don't do any coercion or casting of the value
-          // we assign.
-          this.componentVersions[component.name] = component.version.reduce((prev, cur) => {
-            return Number(prev) > Number(cur) ? prev : cur;
-          });
-        } else {
-          this.componentVersions[component.name] =
-            Number(component.version) >
-            // Make sure to guard if the entry doesn't exist yet. We default
-            // comparing to 0.
-            Number(this.componentVersions[component.name] || 0)
-              ? component.version
-              : this.componentVersions[component.name];
-        }
+        this.componentVersions[component.name] = component.latestVersion;
       }
     }
     if (!this.extensionSpec_) {
