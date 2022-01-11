@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-'mode strict';
+'use strict';
 
 const {join} = require('path');
 const {lstatSync, readdirSync, readFileSync, writeFileSync} = require('fs');

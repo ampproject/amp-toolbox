@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'mode strict';
+'use strict';
 
 module.exports = {
   isRenderDelayingExtension: function (script) {

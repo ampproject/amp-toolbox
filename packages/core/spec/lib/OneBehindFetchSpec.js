@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'mode strict';
+'use strict';
 
 const oneBehindFetch = require('../../lib/oneBehindFetch.js');
 const mockFetch = require('fetch-mock');
