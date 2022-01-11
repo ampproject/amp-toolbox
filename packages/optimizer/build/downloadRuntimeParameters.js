@@ -45,9 +45,8 @@ const JSON5 = require('json5');
     'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
   const latestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
-  const configResponse = await fetch(extensionConfigUrl);
-  const latestVersionsConfigResponse = await fetch(latestVersionsUrl);
-
+  const responses = await Promise.all([fetch(extensionConfigUrl), fetch(latestVersionsUrl)]);
+  const [configResponse, latestVersionsConfigResponse] = responses;
   if (!configResponse.ok) {
     throw new Error(
       `Failed downloading ${extensionConfigUrl} with status ${configResponse.status}`
@@ -58,6 +57,7 @@ const JSON5 = require('json5');
       `Failed fetching latest component versions from ${latestVersionsUrl} with status: ${latestVersionsConfigResponse.status}`
     );
   }
+
   const extensionConfig = await configResponse.json();
   const latestVersionsConfig = JSON5.parse(await latestVersionsConfigResponse.text());
   // We add back the "latestVersion" field so that the auto importer
