@@ -64,11 +64,13 @@ class HeadNodes {
     appendChild(head, this._metaViewport);
     appendAll(head, this._resourceHintLinks);
     appendAll(head, this._metaOther);
+    // We want the dvh polyfill to be before the amp-story styles to prevent
+    // triggering an increase to CLS score.
+    appendChild(head, this._scriptAmpStoryDvhPollyfill);
     appendChild(head, this._linkStyleAmpRuntime);
     appendChild(head, this._styleAmpRuntime);
     appendChild(head, this._linkStyleAmpStory);
     appendAll(head, this._scriptAmpEngine);
-    appendChild(head, this._scriptAmpStoryDvhPollyfill);
     appendAll(head, this._scriptRenderDelayingExtensions);
     appendAll(head, this._scriptNonRenderDelayingExtensions);
     appendChild(head, this._styleAmpCustom);
@@ -207,11 +209,11 @@ class HeadNodes {
  * ReorderHead reorders the children of <head>. Specifically, it
  * orders the <head> like so:
  * (0) <meta charset> tag
- * (1) <style amp-runtime> (inserted by ampruntimecss.go)
- * (2) <link amp-extension=amp-story> (amp-story stylesheet)
- * (3) remaining <meta> tags (those other than <meta charset>)
- * (4) AMP runtime .js <script> tag
- * (5) <script amp-story-dvh-polyfill> inline script tag
+ * (1) <script amp-story-dvh-polyfill> inline script tag
+ * (2) <style amp-runtime> (inserted by ampruntimecss.go)
+ * (3) <link amp-extension=amp-story> (amp-story stylesheet)
+ * (4) remaining <meta> tags (those other than <meta charset>)
+ * (5) AMP runtime .js <script> tag
  * (6) <script> tags that are render delaying
  * (7) <script> tags for remaining extensions
  * (8) <link> tag for favicons
