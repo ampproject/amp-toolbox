@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'mode strict';
+'use strict';
 
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetch = require('node-fetch');
