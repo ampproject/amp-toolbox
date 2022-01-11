@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cli",
-  "version": "3.0.0-canary.1",
+  "version": "3.0.0-canary.2",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
@@ -27,14 +27,14 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/cli",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "3.0.0-canary.1",
+    "@ampproject/toolbox-cache-list": "3.0.0-canary.2",
     "@ampproject/toolbox-cache-url": "^2.8.0",
-    "@ampproject/toolbox-core": "3.0.0-canary.1",
-    "@ampproject/toolbox-linter": "3.0.0-canary.1",
-    "@ampproject/toolbox-optimizer": "3.0.0-canary.1",
-    "@ampproject/toolbox-runtime-fetch": "3.0.0-canary.1",
-    "@ampproject/toolbox-runtime-version": "3.0.0-canary.1",
-    "@ampproject/toolbox-update-cache": "3.0.0-canary.1",
+    "@ampproject/toolbox-core": "3.0.0-canary.2",
+    "@ampproject/toolbox-linter": "3.0.0-canary.2",
+    "@ampproject/toolbox-optimizer": "3.0.0-canary.2",
+    "@ampproject/toolbox-runtime-fetch": "3.0.0-canary.2",
+    "@ampproject/toolbox-runtime-version": "3.0.0-canary.2",
+    "@ampproject/toolbox-update-cache": "3.0.0-canary.2",
     "minimist": "1.2.5",
     "minimist-options": "4.1.0",
     "node-fetch": "2.6.1"

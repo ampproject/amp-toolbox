@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-page-experience",
-  "version": "3.0.0-canary.1",
+  "version": "3.0.0-canary.2",
   "description": "Optimize your AMP pages for page experiemnce",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-runtime-version",
-  "version": "3.0.0-canary.1",
+  "version": "3.0.0-canary.2",
   "description": "AMP Runtime versions",
   "main": "index.js",
   "keywords": [
@@ -18,7 +18,7 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-core": "3.0.0-canary.1"
+    "@ampproject/toolbox-core": "3.0.0-canary.2"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
