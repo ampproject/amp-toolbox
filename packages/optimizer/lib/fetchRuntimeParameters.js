@@ -95,7 +95,6 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
 async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
   const cacheKey = `component-versions-${runtimeParameters.ampRuntimeVersion}`;
   let componentVersions = await readFromCache_(config, cacheKey);
-  console.log('fetch component versions from cache', componentVersions);
   if (!componentVersions) {
     try {
       componentVersions = await fetchComponentVersions_(config, runtimeParameters);
