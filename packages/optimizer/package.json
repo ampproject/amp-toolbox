@@ -38,6 +38,7 @@
     "domutils": "2.8.0",
     "htmlparser2": "7.2.0",
     "https-proxy-agent": "5.0.0",
+    "json5": "^2.2.0",
     "lru-cache": "6.0.0",
     "normalize-html-whitespace": "1.0.0",
     "postcss": "8.2.13",
