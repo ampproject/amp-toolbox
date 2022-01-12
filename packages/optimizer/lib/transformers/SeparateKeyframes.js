@@ -49,9 +49,9 @@ class SeparateKeyframes {
     }
 
     if (
-      (!isDependencyInstalled('postcss') ||
-        !isDependencyInstalled('postcss-safe-parser') ||
-        !isDependencyInstalled('cssnano-simple'))
+      !isDependencyInstalled('postcss') ||
+      !isDependencyInstalled('postcss-safe-parser') ||
+      !isDependencyInstalled('cssnano-simple')
     ) {
       this.enabled = false;
       this.log_.error(

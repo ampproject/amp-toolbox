@@ -23,6 +23,7 @@ let CREATE_SNAPSHOT = process.env.PAGE_EXPERIENCE_SNAPSHOT;
 
 const pageExperienceGuide = new PageExperienceGuide();
 let checks;
+jest.setTimeout(60000);
 
 beforeAll(async () => {
   await pageExperienceGuide.setup();

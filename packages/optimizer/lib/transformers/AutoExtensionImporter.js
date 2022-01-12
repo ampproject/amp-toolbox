@@ -98,6 +98,7 @@ class AutoExtensionImporter {
         // e.g. amp-carousel, amp-carousel[lightbox]
         // these are handled differently, so we filter them out here
         let requiresExtension = tag.requiresExtension || [];
+        // TODO: remove once amp-facebook 1.0 is out of exerimental.
         if (tagName === 'amp-facebook-comments') {
           requiresExtension = ['amp-facebook-comments'];
         }
