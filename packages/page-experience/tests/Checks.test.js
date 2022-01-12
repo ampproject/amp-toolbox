@@ -56,7 +56,7 @@ describe('Checks', () => {
           }
           expect(resultString).toEqual(expectedResult);
         }
-      });
+      }, 20000);
     }
   }
 });
