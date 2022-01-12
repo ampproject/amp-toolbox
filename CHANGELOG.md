@@ -1,3 +1,18 @@
+## v2.8.5
+
+#### :bug: Bug Fix
+* `optimizer`
+  * Pull in latest version from bundles.legacy-latest-versions.jsonc
+
+## v2.8.4 
+
+#### :bug: Bug Fix
+* `optimizer`
+  * Migrate to htmlparser2 v7.2.0
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
 ## v2.8.3 (2021-07-12)
 
 #### :bug: Bug Fix
