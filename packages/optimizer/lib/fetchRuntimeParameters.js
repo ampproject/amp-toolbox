@@ -15,10 +15,9 @@
  */
 'use strict';
 
-const URL_COMPONENT_VERSIONS =
-  'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
+const JSON5 = require('json5');
 let fallbackRuntime;
 
 try {
@@ -112,14 +111,33 @@ async function fetchComponentVersions_(config, runtimeParameters) {
   // Strip the leading two chars from the version identifier to get the release tag
   const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
   const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
+  const latestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
-  const response = await config.fetch(componentConfigUrl);
-  if (!response.ok) {
+  const responses = await Promise.all([
+    config.fetch(componentConfigUrl),
+    config.fetch(latestVersionsUrl),
+  ]);
+  const [configResponse, latestVersionsConfigResponse] = responses;
+  if (!configResponse.ok) {
     throw new Error(
-      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${response.status}`
+      `Failed downloading ${componentConfigUrl} with status ${configResponse.status}`
     );
   }
-  return response.json();
+  if (!latestVersionsConfigResponse.ok) {
+    throw new Error(
+      `Failed fetching latest component versions from ${latestVersionsUrl} with status: ${latestVersionsConfigResponse.status}`
+    );
+  }
+
+  const extensionConfig = await configResponse.json();
+  const latestVersionsConfig = JSON5.parse(await latestVersionsConfigResponse.text());
+  // We add back the "latestVersion" field so that the auto importer
+  // code knows what "stable" version of the extension to use.
+  extensionConfig.forEach((entry) => {
+    entry['latestVersion'] = latestVersionsConfig[entry.name];
+  });
+
+  return extensionConfig;
 }
 
 /**
