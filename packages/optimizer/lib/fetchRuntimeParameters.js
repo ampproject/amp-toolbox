@@ -13,12 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'mode strict';
+'use strict';
 
-const URL_COMPONENT_VERSIONS =
-  'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
+const JSON5 = require('json5');
+let fallbackRuntime;
+
+try {
+  fallbackRuntime = require('./runtimeData.json');
+} catch (e) {
+  // `npm run build` has not been executed
+  fallbackRuntime = {ampRuntimeStyles: '', ampRuntimeVersion: ''};
+}
+
 const {
   AMP_CACHE_HOST,
   AMP_RUNTIME_CSS_PATH,
@@ -60,13 +68,18 @@ async function fetchRuntimeParameters(config, customRuntimeParameters = {}) {
  * @private
  */
 async function initValidatorRules(runtimeParameters, customRuntimeParameters, config) {
+  if (!config.autoExtensionImport) {
+    // Validation rules are large, don't import if not needed
+    return;
+  }
   try {
     runtimeParameters.validatorRules =
       customRuntimeParameters.validatorRules ||
       config.validatorRules ||
       (await fetchValidatorRulesFromCache_(config));
   } catch (error) {
-    config.log.error('Could not fetch validator rules', error);
+    config.log.error('Could not fetch validator rules');
+    config.log.verbose(error);
   }
   try {
     runtimeParameters.componentVersions =
@@ -79,7 +92,6 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
     runtimeParameters.componentVersions = [];
   }
 }
-
 async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
   const cacheKey = `component-versions-${runtimeParameters.ampRuntimeVersion}`;
   let componentVersions = await readFromCache_(config, cacheKey);
@@ -99,14 +111,33 @@ async function fetchComponentVersions_(config, runtimeParameters) {
   // Strip the leading two chars from the version identifier to get the release tag
   const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
   const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
+  const latestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.legacy-latest-versions.jsonc`;
 
-  const response = await config.fetch(componentConfigUrl);
-  if (!response.ok) {
+  const responses = await Promise.all([
+    config.fetch(componentConfigUrl),
+    config.fetch(latestVersionsUrl),
+  ]);
+  const [configResponse, latestVersionsConfigResponse] = responses;
+  if (!configResponse.ok) {
     throw new Error(
-      `Failed fetching latest component versions from ${URL_COMPONENT_VERSIONS} with status: ${response.status}`
+      `Failed downloading ${componentConfigUrl} with status ${configResponse.status}`
     );
   }
-  return response.json();
+  if (!latestVersionsConfigResponse.ok) {
+    throw new Error(
+      `Failed fetching latest component versions from ${latestVersionsUrl} with status: ${latestVersionsConfigResponse.status}`
+    );
+  }
+
+  const extensionConfig = await configResponse.json();
+  const latestVersionsConfig = JSON5.parse(await latestVersionsConfigResponse.text());
+  // We add back the "latestVersion" field so that the auto importer
+  // code knows what "stable" version of the extension to use.
+  extensionConfig.forEach((entry) => {
+    entry['latestVersion'] = latestVersionsConfig[entry.name];
+  });
+
+  return extensionConfig;
 }
 
 /**
@@ -149,7 +180,10 @@ async function initRuntimeStyles(runtimeParameters, config) {
         runtimeParameters.ampRuntimeVersion
       ));
   } catch (error) {
-    config.log.error('Could not fetch AMP runtime CSS', error);
+    config.log.warn('Could not fetch AMP runtime CSS, falling back to built-in runtime styles.');
+    config.log.verbose(error);
+    // fallback to build-in runtime
+    runtimeParameters.ampRuntimeStyles = fallbackRuntime.ampRuntimeStyles;
   }
 }
 
@@ -169,12 +203,8 @@ async function initRuntimeVersion(runtimeParameters, customRuntimeParameters, co
     );
     ampRuntimeVersion = '';
   }
-  try {
-    runtimeParameters.ampRuntimeVersion =
-      ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
-  } catch (error) {
-    config.log.error('Could not fetch latest AMP runtime version', error);
-  }
+  runtimeParameters.ampRuntimeVersion =
+    ampRuntimeVersion || (await fetchAmpRuntimeVersion_({config, ampUrlPrefix, lts}));
 }
 
 /**
@@ -202,7 +232,7 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
     maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
   };
-  if (!ampRuntimeData.version && ampUrlPrefix !== AMP_CACHE_HOST) {
+  if (!ampRuntimeData.version && ampUrlPrefix && ampUrlPrefix !== AMP_CACHE_HOST) {
     config.log.error(
       `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
     );
@@ -210,6 +240,12 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
       {config, ampUrlPrefix: AMP_CACHE_HOST, lts},
       versionKey
     );
+  } else if (!ampRuntimeData.version) {
+    config.log.warn(
+      'Could not fetch latest AMP runtime version, falling back to bundled runtime styles.'
+    );
+    // Fallback to built-in runtime version
+    ampRuntimeData.version = fallbackRuntime.ampRuntimeVersion;
   } else if (ampRuntimeData.version && versionKey) {
     writeToCache_(config, versionKey, ampRuntimeData);
   }
@@ -234,7 +270,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   // Fetch runtime styles
   const styles = await downloadAmpRuntimeStyles_(config, runtimeCssUrl);
   if (!styles) {
-    config.log.error(`Could not download ${runtimeCssUrl}. Falling back to latest v0.css.`);
+    config.log.warn(`Could not download ${runtimeCssUrl}. Falling back to bundled v0.css.`);
     if (ampUrlPrefix || ampRuntimeVersion) {
       // Try to download latest from cdn.ampproject.org instead
       return fetchAmpRuntimeStyles_(

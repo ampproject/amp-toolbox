@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'mode strict';
+'use strict';
 
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetch = require('node-fetch');
 const fs = require('fs').promises;
 const path = require('path');
 const fetchRuntimeParameters = require('../lib/fetchRuntimeParameters');
+const JSON5 = require('json5');
 
 (async () => {
   const runtimeParameters = await fetchRuntimeParameters({
@@ -42,11 +43,28 @@ const fetchRuntimeParameters = require('../lib/fetchRuntimeParameters');
 
   const extensionConfigUrl =
     'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
-  const response = await fetch(extensionConfigUrl);
-  if (!response.ok) {
-    throw new Error(`Failed downloading ${extensionConfigUrl} with status ${response.status}`);
+  const latestVersionsUrl = `https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.legacy-latest-versions.jsonc`;
+
+  const responses = await Promise.all([fetch(extensionConfigUrl), fetch(latestVersionsUrl)]);
+  const [configResponse, latestVersionsConfigResponse] = responses;
+  if (!configResponse.ok) {
+    throw new Error(
+      `Failed downloading ${extensionConfigUrl} with status ${configResponse.status}`
+    );
   }
-  const extensionConfig = await response.json();
+  if (!latestVersionsConfigResponse.ok) {
+    throw new Error(
+      `Failed fetching latest component versions from ${latestVersionsUrl} with status: ${latestVersionsConfigResponse.status}`
+    );
+  }
+
+  const extensionConfig = await configResponse.json();
+  const latestVersionsConfig = JSON5.parse(await latestVersionsConfigResponse.text());
+  // We add back the "latestVersion" field so that the auto importer
+  // code knows what "stable" version of the extension to use.
+  extensionConfig.forEach((entry) => {
+    entry['latestVersion'] = latestVersionsConfig[entry.name];
+  });
   fs.writeFile(
     path.join(__dirname, '../lib/extensionConfig.json'),
     JSON.stringify(extensionConfig),
