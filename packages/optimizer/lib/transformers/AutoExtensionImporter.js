@@ -98,6 +98,9 @@ class AutoExtensionImporter {
         // e.g. amp-carousel, amp-carousel[lightbox]
         // these are handled differently, so we filter them out here
         let requiresExtension = tag.requiresExtension || [];
+        if (tagName === 'amp-facebook-comments') {
+          requiresExtension = ['amp-facebook-comments'];
+        }
         requiresExtension = requiresExtension.filter((ext) => !manualExtensions.includes(ext));
         tagToExtensionsMapping.set(tagName, requiresExtension);
       }
