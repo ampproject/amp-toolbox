@@ -43,8 +43,12 @@ class SeparateKeyframes {
     this.log_ = config.log.tag('SeparateKeyframes');
     this.minify = config.minify !== false;
     this.enabled = !!config.separateKeyframes;
+
+    if (!this.enabled) {
+      return;
+    }
+
     if (
-      this.enabled &&
       (!isDependencyInstalled('postcss') ||
         !isDependencyInstalled('postcss-safe-parser') ||
         !isDependencyInstalled('cssnano-simple'))
