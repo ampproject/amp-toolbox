@@ -35,28 +35,32 @@ describe('Checks', () => {
     const testCaseDir = path.join(TEST_DATA_DIR, testDir);
     const testCases = fs.readdirSync(testCaseDir).filter((file) => file.endsWith('.html'));
     for (const testCase of testCases) {
-      test(testCase, async () => {
-        const check = (await checks).find((check) => check.id === testDir);
-        if (!check) {
-          fail(`no check with name ${testDir}`);
-          return;
-        }
-        const url = fileUrl(path.join(testCaseDir, testCase));
-        const result = await pageExperienceGuide.runChecks(url, check.id);
-        const resultString = JSON.stringify(result, null, 2);
-        const expectedResultPath = path.join(testCaseDir, testCase.replace('.html', '.json'));
-        if (CREATE_SNAPSHOT) {
-          fs.promises.writeFile(expectedResultPath, resultString, 'utf-8');
-        } else {
-          let expectedResult;
-          try {
-            expectedResult = await fs.promises.readFile(expectedResultPath, 'utf-8');
-          } catch (e) {
-            fail(`No expected results for ${testCase}. Run 'npm run test:snapshot' to generate.`);
+      test(
+        testCase,
+        async () => {
+          const check = (await checks).find((check) => check.id === testDir);
+          if (!check) {
+            fail(`no check with name ${testDir}`);
+            return;
           }
-          expect(resultString).toEqual(expectedResult);
-        }
-      }, 20000);
+          const url = fileUrl(path.join(testCaseDir, testCase));
+          const result = await pageExperienceGuide.runChecks(url, check.id);
+          const resultString = JSON.stringify(result, null, 2);
+          const expectedResultPath = path.join(testCaseDir, testCase.replace('.html', '.json'));
+          if (CREATE_SNAPSHOT) {
+            fs.promises.writeFile(expectedResultPath, resultString, 'utf-8');
+          } else {
+            let expectedResult;
+            try {
+              expectedResult = await fs.promises.readFile(expectedResultPath, 'utf-8');
+            } catch (e) {
+              fail(`No expected results for ${testCase}. Run 'npm run test:snapshot' to generate.`);
+            }
+            expect(resultString).toEqual(expectedResult);
+          }
+        },
+        20000
+      );
     }
   }
 });
