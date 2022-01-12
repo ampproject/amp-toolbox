@@ -15,8 +15,6 @@
  */
 'use strict';
 
-const URL_COMPONENT_VERSIONS =
-  'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
 const validatorRulesProvider = require('@ampproject/toolbox-validator-rules');
 const {MaxAge} = require('@ampproject/toolbox-core');
 const JSON5 = require('json5');
