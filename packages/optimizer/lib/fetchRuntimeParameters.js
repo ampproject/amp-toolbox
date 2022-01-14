@@ -95,6 +95,7 @@ async function initValidatorRules(runtimeParameters, customRuntimeParameters, co
 }
 async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
   const cacheKey = `component-versions-${runtimeParameters.ampRuntimeVersion}`;
+  config.cache = false;
   let componentVersions = await readFromCache_(config, cacheKey);
   if (!componentVersions) {
     try {
@@ -110,7 +111,8 @@ async function fetchComponentVersionsFromCache_(config, runtimeParameters) {
 
 async function fetchComponentVersions_(config, runtimeParameters) {
   // Strip the leading two chars from the version identifier to get the release tag
-  const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
+  //const releaseTag = runtimeParameters.ampRuntimeVersion.substring(2);
+  const releaseTag = '000000000000000';
   const componentConfigUrl = `https://raw.githubusercontent.com/ampproject/amphtml/${releaseTag}/build-system/compile/bundles.config.extensions.json`;
 
   const response = await config.fetch(componentConfigUrl);
