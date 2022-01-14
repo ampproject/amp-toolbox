@@ -68,7 +68,7 @@ async function fetchRuntimeParameters(config, customRuntimeParameters = {}) {
  * @private
  */
 async function initValidatorRules(runtimeParameters, customRuntimeParameters, config) {
-  if (!config.autoExtensionImport) {
+  if (config.autoExtensionImport === false) {
     // Validation rules are large, don't import if not needed
     return;
   }
