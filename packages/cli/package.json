@@ -37,7 +37,7 @@
     "@ampproject/toolbox-update-cache": "3.0.0-canary.2",
     "minimist": "1.2.5",
     "minimist-options": "4.1.0",
-    "node-fetch": "2.6.1"
+    "node-fetch": "3.1.1"
   },
   "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"
 }
