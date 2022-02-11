@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/cloudflare-optimizer-scripts",
-  "version": "2.8.7",
+  "version": "2.8.8",
   "description": "Configuration and scripts for cloudflare-amp-optimizer",
   "main": "./src/index.js",
   "files": [
@@ -15,7 +15,7 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-optimizer": "2.8.7"
+    "@ampproject/toolbox-optimizer": "2.8.8"
   },
   "gitHead": "6103eb57765445355421826791361ac9ed9cf4d8"
 }
