@@ -3,15 +3,8 @@
   "version": "3.0.0-canary.2",
   "description": "Download the AMP runtime",
   "main": "index.js",
-  "keywords": [
-    "amp",
-    "download",
-    "runtime"
-  ],
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "keywords": ["amp", "download", "runtime"],
+  "files": ["index.js", "lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -25,7 +18,7 @@
     "@ampproject/toolbox-runtime-version": "3.0.0-canary.2",
     "at-least-node": "1.0.0",
     "fs-extra": "10.0.0",
-    "node-fetch": "2.6.1"
+    "node-fetch": "2.6.7"
   },
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"

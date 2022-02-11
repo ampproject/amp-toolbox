@@ -11,13 +11,8 @@
   "scripts": {
     "build": "node build/downloadRuntimeParameters.js"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
-  "keywords": [
-    "amp"
-  ],
+  "files": ["index.js", "lib"],
+  "keywords": ["amp"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "peerDependenciesMeta": {
@@ -52,7 +47,7 @@
     "htmlparser2": "6.1.0",
     "https-proxy-agent": "5.0.0",
     "lru-cache": "6.0.0",
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.7",
     "normalize-html-whitespace": "1.0.0"
   },
   "bugs": {
