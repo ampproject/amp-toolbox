@@ -20,5 +20,6 @@ const PageExperienceGuide = require('./PageExperienceGuide');
 test('runs amp linter checks', async () => {
   const url = fileUrl(path.join(__dirname, '../test-data/pages/hello-world.html'));
   const result = await new PageExperienceGuide().analyze(url);
+  console.log(result);
   expect(result['isvalid'].status).toBe('PASS');
 });

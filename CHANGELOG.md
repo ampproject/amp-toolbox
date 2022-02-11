@@ -1,3 +1,9 @@
+## v2.8.8
+
+#### :rocket: Enhancement
+* `linter`
+  * Upgrade to latest amphtml validator version
+
 ## v2.8.5
 
 #### :bug: Bug Fix
