@@ -55,7 +55,7 @@
     "jest": "27.0.6",
     "jimp": "0.16.1",
     "js-beautify": "1.14.0",
-    "karma": "6.3.4",
+    "karma": "6.3.14",
     "karma-chrome-launcher": "3.1.0",
     "karma-jasmine": "4.0.1",
     "lerna": "4.0.0",
