@@ -266,6 +266,7 @@ class ApplyCommonAttributes {
       // generate a new id if this one already exists
       return this.getOrCreateId(node);
     }
+    this.ids.add(id);
     return id;
   }
 }
