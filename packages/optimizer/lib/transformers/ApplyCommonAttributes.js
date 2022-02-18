@@ -210,6 +210,9 @@ class ApplyCommonAttributes {
               `Cannot remove boilerplate. Failed transforming ${attribute}="${node.attribs[attribute]}".`,
               e
             );
+            this.nodesToTransform = this.nodesToTransform.filter(
+              (nodeToTransform) => nodeToTransform !== node
+            );
             this.canRemoveBoilerplate = false;
           }
         }
