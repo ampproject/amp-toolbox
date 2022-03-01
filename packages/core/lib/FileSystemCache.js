@@ -42,14 +42,14 @@ class FileSystemCache {
     } catch (e) {
       log.debug('No filesystem access, falling back to in-memory cache only', e);
       // ... if this fails, we have no write access to the fs, use a simple memory cache instead
-      return new LRUCache(opts.maxItems);
+      return new LRUCache({max: opts.maxItems});
     }
     return new FileSystemCache(opts);
   }
 
   constructor(opts) {
     this.opts = opts;
-    this.cache = new LRUCache(opts.maxItems);
+    this.cache = new LRUCache({max: opts.maxItems});
   }
 
   async get(key, defaultValue = null) {

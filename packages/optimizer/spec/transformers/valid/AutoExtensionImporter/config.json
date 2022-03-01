@@ -2,6 +2,7 @@
   "autoExtensionImport": true,
   "experimentBindAttribute": true,
   "extensionVersions": {
-    "amp-sticky-ad": "0.1"
+    "amp-sticky-ad": "0.1",
+    "amp-list": "0.1"
   }
 }

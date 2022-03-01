@@ -64,6 +64,7 @@ class AutoExtensionImporter {
     this.log_ = config.log.tag('AutoExtensionImporter');
     this.experimentBindAttributeEnabled = config.experimentBindAttribute === true;
     this.extensionVersions = config.extensionVersions || {};
+    console.log(JSON.stringify(config.extensionVersions, null, 2));
   }
 
   /**
