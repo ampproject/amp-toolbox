@@ -219,6 +219,7 @@ class ApplyCommonAttributes {
       }
       if (nodeHasBeenTransformed) {
         node.attribs.id = id;
+        this.ids.add(id);
       } else {
         this.transformedNodesCounter--;
       }
