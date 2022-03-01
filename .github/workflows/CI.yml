@@ -21,6 +21,9 @@ jobs:
           node-version: ${{ matrix.node }}
           registry-url: https://registry.npmjs.org
       - name: install
-        run: npx lerna bootstrap --hoist
+        run: |
+          git clean -xdf
+          npx lerna clean --yes
+          npx lerna bootstrap --hoist
       - name: test
         run: npm test
