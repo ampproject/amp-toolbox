@@ -1,3 +1,10 @@
+## v2.8.9
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1303](https://github.com/ampproject/amp-toolbox/pull/1303) Fix for issue #1302: "SSR: Duplicated ids in rendered markup, if there are nodes with attributes 'media', 'heights' or 'sizes'"
+  * [#1305](https://github.com/ampproject/amp-toolbox/pull/1305) Fix for issue #1304: "SSR: Transforming of nodes with attribute 'heights' fails, if value contains multiple media queries"
+
 ## v2.8.8
 
 #### :rocket: Enhancement
