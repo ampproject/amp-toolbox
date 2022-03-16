@@ -141,7 +141,10 @@ class AutoExtensionImporter {
     if (!this.componentVersions) {
       this.componentVersions = {};
       for (const component of params.componentVersions) {
-        this.componentVersions[component.name] = component.latestVersion;
+        // only add latestVersion if defined, some components might be listed, but don't define a latest version
+        if (component.latestVersion) {
+          this.componentVersions[component.name] = component.latestVersion;
+        }
       }
     }
     if (!this.extensionSpec_) {
