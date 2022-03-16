@@ -1,3 +1,9 @@
+## v2.8.10
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1312](https://github.com/ampproject/amp-toolbox/pull/1312) More robust auto extension import
+
 ## v2.8.9
 
 #### :bug: Bug Fix
