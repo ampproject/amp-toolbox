@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-jest.mock('@ampproject/toolbox-optimizer', () => {
+ jest.mock('@ampproject/toolbox-optimizer', () => {
   const transformHtml = jest.fn();
   return {
     create: jest.fn(() => ({transformHtml})),
@@ -107,8 +107,7 @@ describe('handleEvent', () => {
 
   it('should follow redirects opaquely', async () => {
     const mockedResponse = new Response('', {
-      type: 'opaque-redirect',
-      status: 0,
+      status: 302,
       statusText: '',
     });
 

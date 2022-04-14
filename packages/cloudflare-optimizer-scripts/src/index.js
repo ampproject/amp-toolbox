@@ -89,7 +89,9 @@ async function handleRequest(event, config) {
 
   const response = await fetch(request, { redirect: 'manual' });
 
-  if (response.type === 'opaque-redirect') {
+
+  // Redirect based statuses should be returned
+  if (response.status >= 300 && response.status <= 399) {
     return response;
   }
 
