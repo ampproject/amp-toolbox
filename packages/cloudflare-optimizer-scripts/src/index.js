@@ -66,14 +66,16 @@ async function handleRequest(event, config) {
 
   let request = event.request;
   const url = new URL(request.url);
+
   if (isReverseProxy(config)) {
     url.hostname = config.proxy.origin;
   }
+
   request = new Request(url.toString(), request);
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    return fetch(request);
+    return fetch(request, {mode: 'redirect'});
   }
 
   if (config.enableKVCache) {
@@ -85,7 +87,12 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(request);
+  const response = await fetch(request, {mode: 'redirect'});
+
+  if (response.type === 'opaque-redirect') {
+    return response;
+  }
+
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 

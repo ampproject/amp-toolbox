@@ -74,7 +74,7 @@ describe('handleEvent', () => {
     const input = `<html amp><body></body></html>`;
     const incomingResponse = getResponse(input);
     global.fetch.mockReturnValue(incomingResponse);
-    AmpOptimizer.transformHtmlSpy.mockReturnValue(Promise.reject('Fail.'));
+    AmpOptimizer.transformHtmlSpy.mockImplementation(() => Promise.reject('Fail.'));
 
     const output = await getOutput('http://text.com');
     expect(output).toBe(input);
@@ -105,11 +105,37 @@ describe('handleEvent', () => {
     expect(output).toBe(`transformed-${input}`);
   });
 
+  it('should follow redirects opaquely', async () => {
+    const mockedResponse = new Response('', {
+      type: 'opaque-redirect',
+      status: 0,
+      statusText: '',
+    });
+
+    const event = {
+      request: {method: 'GET', url: 'https://example.com/'},
+      respondWith: jest.fn(),
+      passThroughOnException: jest.fn(),
+    };
+
+    global.fetch.mockReturnValue(mockedResponse);
+    handleEvent(event, defaultConfig);
+
+    expect(global.fetch).toBeCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith(event.request, {mode: 'redirect'});
+
+    expect(await event.respondWith.mock.calls[0][0]).toBe(mockedResponse);
+    expect(event.respondWith).toHaveBeenCalledTimes(1);
+  });
+
   it('Should passthrough request to origin in request interceptor mode', async () => {
     const input = `<html amp><body></body></html>`;
     global.fetch.mockReturnValue(getResponse(input));
     await getOutput('http://test.com');
-    expect(global.fetch).toBeCalledWith({url: 'http://test.com/', method: 'GET'});
+    expect(global.fetch).toBeCalledWith(
+      {url: 'http://test.com/', method: 'GET'},
+      {mode: 'redirect'}
+    );
   });
 
   it('Should modify request url for reverse-proxy', async () => {
@@ -118,7 +144,10 @@ describe('handleEvent', () => {
     global.fetch.mockReturnValue(getResponse(input));
 
     await getOutput('http://test.com', config);
-    expect(global.fetch).toBeCalledWith({url: 'http://test-origin.com/', method: 'GET'});
+    expect(global.fetch).toBeCalledWith(
+      {url: 'http://test-origin.com/', method: 'GET'},
+      {mode: 'redirect'}
+    );
   });
 
   it('should call enable passThroughOnException', async () => {

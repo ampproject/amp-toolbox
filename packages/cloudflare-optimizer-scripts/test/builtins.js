@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 class Response {
-  constructor(text, {headers, status, statusText}) {
+  constructor(text, {headers, status, statusText, type}) {
+    this.type = type;
     this.syncText = text;
     this.text = () => Promise.resolve(text);
     this.headers = headers;
@@ -27,6 +28,7 @@ class Response {
       headers: this.headers,
       status: this.status,
       statusText: this.statusText,
+      type: this.type,
     });
   }
 }
