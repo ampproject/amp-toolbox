@@ -105,7 +105,7 @@ describe('handleEvent', () => {
     expect(output).toBe(`transformed-${input}`);
   });
 
-  it('should follow redirects opaquely', async () => {
+  it('should handle redirects opaquely', async () => {
     const mockedResponse = new Response('', {
       status: 302,
       statusText: '',
