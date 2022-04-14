@@ -75,7 +75,7 @@ async function handleRequest(event, config) {
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    return fetch(request, {mode: 'redirect'});
+    return fetch(request, { redirect: 'manual' });
   }
 
   if (config.enableKVCache) {
@@ -87,7 +87,7 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(request, {mode: 'redirect'});
+  const response = await fetch(request, { redirect: 'manual' });
 
   if (response.type === 'opaque-redirect') {
     return response;

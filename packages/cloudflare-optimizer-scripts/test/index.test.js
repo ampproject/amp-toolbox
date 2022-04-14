@@ -122,7 +122,7 @@ describe('handleEvent', () => {
     handleEvent(event, defaultConfig);
 
     expect(global.fetch).toBeCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith(event.request, {mode: 'redirect'});
+    expect(global.fetch).toHaveBeenCalledWith(event.request, {redirect: 'manual'});
 
     expect(await event.respondWith.mock.calls[0][0]).toBe(mockedResponse);
     expect(event.respondWith).toHaveBeenCalledTimes(1);
@@ -134,7 +134,7 @@ describe('handleEvent', () => {
     await getOutput('http://test.com');
     expect(global.fetch).toBeCalledWith(
       {url: 'http://test.com/', method: 'GET'},
-      {mode: 'redirect'}
+      {redirect: 'manual'}
     );
   });
 
@@ -146,7 +146,7 @@ describe('handleEvent', () => {
     await getOutput('http://test.com', config);
     expect(global.fetch).toBeCalledWith(
       {url: 'http://test-origin.com/', method: 'GET'},
-      {mode: 'redirect'}
+      {redirect: 'manual'}
     );
   });
 
