@@ -111,7 +111,7 @@ function maybeAddSizerInto(node, layout, width, height) {
   }
   let sizer = null;
   if (layout === 'responsive') {
-    sizer = createResponsiveSizer();
+    sizer = createResponsiveSizer(node, width, height);
   } else if (layout === 'intrinsic') {
     sizer = createIntrinsicSizer(width, height);
   }
@@ -121,10 +121,13 @@ function maybeAddSizerInto(node, layout, width, height) {
   }
 }
 
-function createResponsiveSizer() {
+function createResponsiveSizer(node, width, height) {
+  const padding = (height.numeral / width.numeral) * 100;
+  const style = !node.attribs.heights ? `;padding-top:${parseFloat(padding.toFixed(4))}%` : '';
+
   const sizer = createElement('i-amphtml-sizer', {
     slot: 'i-amphtml-svc',
-    style: `display:block`,
+    style: `display:block${style}`,
   });
   return sizer;
 }
