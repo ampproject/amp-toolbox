@@ -126,7 +126,9 @@ function createResponsiveSizer(node, width, height) {
 
   // Skip adding padding-top when heights attr is present. HeightsTransformer will take care of it.
   // https://github.com/ampproject/amp-toolbox/issues/1314
-  const style = !node.attribs.heights ? `;padding-top:${parseFloat(padding.toFixed(4))}%` : '';
+  const style = !hasAttribute(node, 'heights')
+    ? `;padding-top:${parseFloat(padding.toFixed(4))}%`
+    : '';
 
   const sizer = createElement('i-amphtml-sizer', {
     slot: 'i-amphtml-svc',
