@@ -111,7 +111,7 @@ function maybeAddSizerInto(node, layout, width, height) {
   }
   let sizer = null;
   if (layout === 'responsive') {
-    sizer = createResponsiveSizer(width, height);
+    sizer = createResponsiveSizer(node, width, height);
   } else if (layout === 'intrinsic') {
     sizer = createIntrinsicSizer(width, height);
   }
@@ -121,11 +121,18 @@ function maybeAddSizerInto(node, layout, width, height) {
   }
 }
 
-function createResponsiveSizer(width, height) {
+function createResponsiveSizer(node, width, height) {
   const padding = (height.numeral / width.numeral) * 100;
+
+  // Skip adding padding-top when heights attr is present. HeightsTransformer will take care of it.
+  // https://github.com/ampproject/amp-toolbox/issues/1314
+  const style = !hasAttribute(node, 'heights')
+    ? `;padding-top:${parseFloat(padding.toFixed(4))}%`
+    : '';
+
   const sizer = createElement('i-amphtml-sizer', {
     slot: 'i-amphtml-svc',
-    style: `display:block;padding-top:${parseFloat(padding.toFixed(4))}%`,
+    style: `display:block${style}`,
   });
   return sizer;
 }
