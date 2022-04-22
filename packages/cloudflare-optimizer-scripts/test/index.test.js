@@ -117,12 +117,9 @@ describe('handleEvent', () => {
       passThroughOnException: jest.fn(),
     };
 
-    global.fetch.mockReturnValue(mockedResponse);
+    global.fetch.mockImplementation(() => Promise.resolve(mockedResponse));
+
     handleEvent(event, defaultConfig);
-
-    expect(global.fetch).toBeCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith(event.request, {redirect: 'manual'});
-
     expect(await event.respondWith.mock.calls[0][0]).toBe(mockedResponse);
     expect(event.respondWith).toHaveBeenCalledTimes(1);
   });
