@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- jest.mock('@ampproject/toolbox-optimizer', () => {
+jest.mock('@ampproject/toolbox-optimizer', () => {
   const transformHtml = jest.fn();
   return {
     create: jest.fn(() => ({transformHtml})),

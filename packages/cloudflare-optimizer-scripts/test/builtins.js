@@ -26,7 +26,7 @@ class Response {
     return new Response(this.syncText, {
       headers: this.headers,
       status: this.status,
-      statusText: this.statusText
+      statusText: this.statusText,
     });
   }
 }
