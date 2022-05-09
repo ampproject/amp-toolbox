@@ -91,6 +91,10 @@ async function handleRequest(event, config) {
 
   // Redirect based statuses should be returned
   if (response.status >= 300 && response.status <= 399) {
+    if (config.proxy && config.proxy.origin) {
+      return rewriteLocationHeaderIfRequired(response, config)
+    }
+
     return response;
   }
 
@@ -265,6 +269,42 @@ function getOptimizer(config) {
 
 function resetOptimizerForTesting() {
   ampOptimizer = null;
+}
+
+
+/**
+ * @param {!Response} response
+ * @param {!ConfigDef} config
+ * @description Rewrites the location header if the request is coming from the proxied origin, designed to work with
+ */
+ function rewriteLocationHeaderIfRequired (response, config) {
+  const locationHeader = (
+       response.headers.get('location') 
+    || response.headers.get('Location')
+    || response.headers.get('LOCATION')
+  )
+
+  if (!locationHeader) {
+    return response
+  }
+
+
+  const parsedLocation = new URL(locationHeader)
+  
+  if (config.proxy.origin === parsedLocation.hostname) {
+    parsedLocation.hostname = config.proxy.worker    
+    const newHeaders = new Headers(response.headers)
+    newHeaders.set('Location', parsedLocation.toString())
+  
+    return new Response(response.body, {
+      headers: newHeaders,
+      status: response.status,
+      statusText: response.statusText,
+    })
+  }
+
+
+  return response
 }
 
 module.exports = {

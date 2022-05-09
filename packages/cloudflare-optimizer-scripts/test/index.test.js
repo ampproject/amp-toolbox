@@ -30,7 +30,7 @@ const {
   validateConfiguration,
   resetOptimizerForTesting,
 } = require('../src/index');
-const {Request, Response, HTMLRewriter} = require('./builtins');
+const {Request, Response, HTMLRewriter, Headers} = require('./builtins');
 
 beforeEach(() => {
   global.fetch = jest.fn();
@@ -42,6 +42,7 @@ beforeEach(() => {
   global.Request = Request;
   global.Response = Response;
   global.HTMLRewriter = HTMLRewriter;
+  global.Headers = Headers
 });
 
 describe('handleEvent', () => {
@@ -121,6 +122,36 @@ describe('handleEvent', () => {
 
     handleEvent(event, defaultConfig);
     expect(await event.respondWith.mock.calls[0][0]).toBe(mockedResponse);
+    expect(event.respondWith).toHaveBeenCalledTimes(1);
+  });
+
+  
+  it('should rewrite location header for redirects to origin in proxy mode', async () => {
+    const config = {proxy:{worker: 'test.com', origin: 'test-origin.com'}}
+    
+    const originalHeaders = new Headers()
+    originalHeaders.set('Location', 'https://test-origin.com/abc')
+
+    const mockedResponse = new Response('', {
+      status: 302,
+      statusText: '',
+      headers: originalHeaders
+    });
+
+    const event = {
+      request: {method: 'GET', url: 'https://test.com/'},
+      respondWith: jest.fn(),
+      passThroughOnException: jest.fn(),
+    };
+
+    global.fetch.mockImplementation(() => Promise.resolve(mockedResponse));
+
+    handleEvent(event, {...defaultConfig, ...config });
+    
+    const response = await event.respondWith.mock.calls[0][0]
+    
+    expect(response.status).toBe(mockedResponse.status);
+    expect(response.headers.get('Location')).toBe('https://test.com/abc')
     expect(event.respondWith).toHaveBeenCalledTimes(1);
   });
 
@@ -204,8 +235,11 @@ describe('getAmpOptimizer', () => {
 });
 
 function getResponse(html, {contentType} = {contentType: 'text/html'}) {
+  const headers = new Headers()
+  headers.set('content-type', contentType)
+  
   return new Response(html, {
-    headers: {get: () => contentType},
+    headers: headers,
     status: 200,
     statusText: '200',
   });
