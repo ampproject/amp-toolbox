@@ -42,7 +42,7 @@ beforeEach(() => {
   global.Request = Request;
   global.Response = Response;
   global.HTMLRewriter = HTMLRewriter;
-  global.Headers = Headers
+  global.Headers = Headers;
 });
 
 describe('handleEvent', () => {
@@ -69,6 +69,29 @@ describe('handleEvent', () => {
     const event = {request, passThroughOnException: jest.fn(), respondWith: jest.fn()};
     handleEvent(event, defaultConfig);
     expect(await event.respondWith.mock.calls[0][0]).toBe(incomingResponse);
+  });
+
+  it('should rewrite Location header for Redirect in response to Non-Get Requests (Proxy Mode)', async () => {
+    const config = {proxy: {origin: 'test-origin.com', worker: 'test.com'}};
+
+    const originalHeaders = new Headers();
+    originalHeaders.set('Location', 'https://test-origin.com/abc');
+
+    const originResponse = new Response(undefined, {
+      status: 301,
+      statusText: '',
+      headers: originalHeaders,
+    });
+
+    global.fetch.mockImplementation(() => Promise.resolve(originResponse));
+
+    const request = {url: 'http://test.com', method: 'POST'};
+    const event = {request, passThroughOnException: jest.fn(), respondWith: jest.fn()};
+    handleEvent(event, {...defaultConfig, ...config});
+
+    const response = await event.respondWith.mock.calls[0][0];
+    expect(response.status).toBe(301);
+    expect(response.headers.get('Location')).toBe('https://test.com/abc');
   });
 
   it('Should proxy through optimizer failures', async () => {
@@ -125,17 +148,16 @@ describe('handleEvent', () => {
     expect(event.respondWith).toHaveBeenCalledTimes(1);
   });
 
-  
   it('should rewrite location header for redirects to origin in proxy mode', async () => {
-    const config = {proxy:{worker: 'test.com', origin: 'test-origin.com'}}
-    
-    const originalHeaders = new Headers()
-    originalHeaders.set('Location', 'https://test-origin.com/abc')
+    const config = {proxy: {worker: 'test.com', origin: 'test-origin.com'}};
+
+    const originalHeaders = new Headers();
+    originalHeaders.set('Location', 'https://test-origin.com/abc');
 
     const mockedResponse = new Response('', {
       status: 302,
       statusText: '',
-      headers: originalHeaders
+      headers: originalHeaders,
     });
 
     const event = {
@@ -146,12 +168,12 @@ describe('handleEvent', () => {
 
     global.fetch.mockImplementation(() => Promise.resolve(mockedResponse));
 
-    handleEvent(event, {...defaultConfig, ...config });
-    
-    const response = await event.respondWith.mock.calls[0][0]
-    
+    handleEvent(event, {...defaultConfig, ...config});
+
+    const response = await event.respondWith.mock.calls[0][0];
+
     expect(response.status).toBe(mockedResponse.status);
-    expect(response.headers.get('Location')).toBe('https://test.com/abc')
+    expect(response.headers.get('Location')).toBe('https://test.com/abc');
     expect(event.respondWith).toHaveBeenCalledTimes(1);
   });
 
@@ -235,11 +257,11 @@ describe('getAmpOptimizer', () => {
 });
 
 function getResponse(html, {contentType} = {contentType: 'text/html'}) {
-  const headers = new Headers()
-  headers.set('content-type', contentType)
-  
+  const headers = new Headers();
+  headers.set('content-type', contentType);
+
   return new Response(html, {
-    headers: headers,
+    headers,
     status: 200,
     statusText: '200',
   });
