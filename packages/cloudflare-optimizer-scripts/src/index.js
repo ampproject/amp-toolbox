@@ -298,7 +298,7 @@ function isRedirectResponse(response) {
  * @param {!ConfigDef} config
  * @description Rewrites the location header if the request is coming from the proxied origin, designed to work with
  */
-function rewriteLocationHeaderIfRequired(response, config) {
+function maybeRewriteRedirectHeader(response, config) {
   const locationHeader =
     response.headers.get('location') ||
     response.headers.get('Location') ||
