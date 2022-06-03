@@ -75,20 +75,14 @@ async function handleRequest(event, config) {
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    const fetchPromise = fetch(request, {redirect: 'manual'});
+    const response = await fetch(request, {redirect: 'manual'});
 
     // For reverse proxy based responses, Location header needs to be rewritten in some cases
-    if (isReverseProxy(config)) {
-      const response = await fetchPromise;
-
-      if (response.status >= 300 && response.status <= 399) {
-        return rewriteLocationHeaderIfRequired(response, config);
-      }
-
-      return response;
+    if (isReverseProxy(config) && isRedirect(response)) {
+      return rewriteRedirectHeader(response, config);
     }
 
-    return fetchPromise;
+    return response;
   }
 
   if (config.enableKVCache) {
@@ -103,9 +97,9 @@ async function handleRequest(event, config) {
   const response = await fetch(request, {redirect: 'manual'});
 
   // Redirect based statuses should be returned
-  if (response.status >= 300 && response.status <= 399) {
-    if (config.proxy && config.proxy.origin) {
-      return rewriteLocationHeaderIfRequired(response, config);
+  if (isRedirect(response)) {
+    if (isReverseProxy(config)) {
+      return rewriteRedirectHeader(response, config);
     }
 
     return response;
@@ -289,7 +283,7 @@ function resetOptimizerForTesting() {
  * @param {Response} response
  * @returns {boolean}
  */
-function isRedirectResponse(response) {
+function isRedirect(response) {
   return response.status >= 300 && response.status <= 399;
 }
 
@@ -298,11 +292,8 @@ function isRedirectResponse(response) {
  * @param {!ConfigDef} config
  * @description Rewrites the location header if the request is coming from the proxied origin, designed to work with
  */
-function maybeRewriteRedirectHeader(response, config) {
-  const locationHeader =
-    response.headers.get('location') ||
-    response.headers.get('Location') ||
-    response.headers.get('LOCATION');
+function rewriteRedirectHeader(response, config) {
+  const locationHeader = response.headers.get('location');
 
   if (!locationHeader) {
     return response;
@@ -313,7 +304,7 @@ function maybeRewriteRedirectHeader(response, config) {
   if (config.proxy.origin === parsedLocation.hostname) {
     parsedLocation.hostname = config.proxy.worker;
     const newHeaders = new Headers(response.headers);
-    newHeaders.set('Location', parsedLocation.toString());
+    newHeaders.set('location', parsedLocation.toString());
 
     return new Response(response.body, {
       headers: newHeaders,
