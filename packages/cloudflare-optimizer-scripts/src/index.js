@@ -75,14 +75,13 @@ async function handleRequest(event, config) {
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    const response = await fetch(request, {redirect: 'manual'});
-
-    // For reverse proxy based responses, Location header needs to be rewritten in some cases
-    if (isReverseProxy(config) && isRedirect(response)) {
-      return rewriteRedirectHeader(response, config);
+    if (!isReverseProxy(config)) {
+      return fetch(request, {redirect: 'manual'});
     }
 
-    return response;
+    const response = await fetch(request, {redirect: 'manual'});
+
+    return isRedirect(response) ? rewriteRedirectHeader(response, config) : response;
   }
 
   if (config.enableKVCache) {
@@ -290,7 +289,7 @@ function isRedirect(response) {
 /**
  * @param {!Response} response
  * @param {!ConfigDef} config
- * @description Rewrites the location header if the request is coming from the proxied origin, designed to work with
+ * @description Rewrites the location header to reflect the worker's hostname
  */
 function rewriteRedirectHeader(response, config) {
   const locationHeader = response.headers.get('location');
