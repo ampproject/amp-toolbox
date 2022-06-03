@@ -74,8 +74,7 @@ describe('handleEvent', () => {
   it('should rewrite Location header for Redirect in response to Non-Get Requests (Proxy Mode)', async () => {
     const config = {proxy: {origin: 'test-origin.com', worker: 'test.com'}};
 
-    const originalHeaders = new Headers();
-    originalHeaders.set('Location', 'https://test-origin.com/abc');
+    const originalHeaders = new Headers([['location', 'https://test-origin.com/abc']]);
 
     const originResponse = new Response(undefined, {
       status: 301,
