@@ -145,7 +145,6 @@ describe('handleEvent', () => {
 
     handleEvent(event, defaultConfig);
     expect(await event.respondWith.mock.calls[0][0]).toBe(mockedResponse);
-    expect(event.respondWith).toHaveBeenCalledTimes(1);
   });
 
   it('should rewrite location header for redirects to origin in proxy mode', async () => {
