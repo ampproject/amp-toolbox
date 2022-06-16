@@ -20,6 +20,7 @@ const {
   remove,
   createElement,
   insertBefore,
+  insertAfter,
   nextNode,
   firstChildByTag,
 } = require('../NodeUtils');
@@ -81,12 +82,9 @@ class ServerSideRendering {
         this.log_.debug('cannot remove boilerplate: amp-experiment');
       }
 
-      // amp-audio requires knowing the dimensions of the browser. Do not
-      // remove the boilerplate or apply layout if amp-audio is present in the
-      // document.
+      // Server-side rendering of an amp-audio element.
       if (node.tagName === 'amp-audio') {
-        canRemoveBoilerplate = false;
-        this.log_.debug('cannot remove boilerplate: amp-audio');
+        this.ssrAmpAudio(node);
         continue;
       }
 
@@ -210,6 +208,21 @@ class ServerSideRendering {
     } else {
       return nextNode(node);
     }
+  }
+
+  ssrAmpAudio(node) {
+    // Check if we already have a SSR-ed audio element.
+    for (const child of node.children || []) {
+      if (child.tagName === 'audio') {
+        return;
+      }
+    }
+
+    const audio = createElement('audio', {
+      controls: '',
+    });
+
+    insertAfter(node, audio);
   }
 }
 
