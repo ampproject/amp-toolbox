@@ -9,58 +9,37 @@ const path = require('path');
   const testInput = await fs.readFile(path.join(__dirname, 'samples/amp.dev.html'), 'utf-8');
 
   console.log('Transformer Execution times:\n');
+  const profilingOptimizer = AmpOptimizer.create({profile: true});
+  await profilingOptimizer.transformHtml(testInput);
 
-  console.log('\nUncached execution time\n');
+  console.log('\n\nFill vs Minimal mode\n');
 
-  console.time('runtime');
-  let runtimeOptimizer = AmpOptimizer.createFastOptimizer({
+  console.time('default');
+  const defaultAmpOptimizer = AmpOptimizer.create({
     cache: false,
   });
-  await runtimeOptimizer.transformHtml(testInput);
-  console.timeEnd('runtime');
-  console.time('buildtime');
-  let buildtimeOptimizer = AmpOptimizer.createFullOptimizer({
+  await defaultAmpOptimizer.transformHtml(testInput);
+  console.timeEnd('default');
+  console.time('minimal');
+  const minimalAmpOptimizer = AmpOptimizer.create({
     cache: false,
+    transformations: AmpOptimizer.TRANSFORMATIONS_MINIMAL,
   });
-  await buildtimeOptimizer.transformHtml(testInput);
-  console.timeEnd('buildtime');
-
-  // warm up caches
-  runtimeOptimizer = AmpOptimizer.createFastOptimizer({});
-  await runtimeOptimizer.transformHtml(testInput);
-  buildtimeOptimizer = AmpOptimizer.createFullOptimizer({});
-  await buildtimeOptimizer.transformHtml(testInput);
-
-  console.log('\nProfiling buildtime Optimizer\n');
-
-  console.time('buildtime');
-  const profiingBuildTimeOptimizer = AmpOptimizer.createFullOptimizer({profile: true});
-  await profiingBuildTimeOptimizer.transformHtml(testInput);
-  console.log('\n');
-  console.timeEnd('buildtime');
-
-  console.log('\nProfiling runtime Optimizer\n');
-
-  console.time('runtime');
-  const profilingRuntimeOptimizer = AmpOptimizer.createFastOptimizer({profile: true});
-  await profilingRuntimeOptimizer.transformHtml(testInput);
-  console.log('\n');
-  console.timeEnd('runtime');
-
-  console.log('\n\nComparing runtime vs buildtime Optimizer\n');
-
+  await minimalAmpOptimizer.transformHtml(testInput);
+  console.timeEnd('minimal');
+  //
   suite
-    .add('runtime', {
+    .add('minimal', {
       defer: true,
       fn: async (deferred) => {
-        const result = await runtimeOptimizer.transformHtml(testInput);
+        const result = await minimalAmpOptimizer.transformHtml(testInput);
         deferred.resolve(result);
       },
     })
-    .add('buildtime', {
+    .add('default', {
       defer: true,
       fn: async (deferred) => {
-        const result = await buildtimeOptimizer.transformHtml(testInput);
+        const result = await defaultAmpOptimizer.transformHtml(testInput);
         deferred.resolve(result);
       },
     })

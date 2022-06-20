@@ -45,7 +45,7 @@ function loadTestConfigs(subDir) {
     const config = {
       fetch,
       log,
-      cache: false,
+      cache: new Map(),
       imageOptimizer: require('../../lib/image-optimizers/simpleRename'),
       runtimeVersion: {
         currentVersion: async (params) => {

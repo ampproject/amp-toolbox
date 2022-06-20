@@ -19,29 +19,16 @@ const {
   DomTransformer,
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
-  CONFIG_BUILD,
-  CONFIG_RUNTIME,
+  TRANSFORMATIONS_MINIMAL,
+  DEFAULT_CONFIG,
 } = require('./lib/DomTransformer.js');
-
 const NodeUtils = require('./lib/NodeUtils.js');
 
-const DEFAULT_CONFIG = CONFIG_BUILD;
-
 module.exports = {
-  /*
-   * @deprecated
-   */
-  create: (config = CONFIG_BUILD) => new DomTransformer(config),
-  createFullOptimizer: (config = {}) => new DomTransformer(Object.assign({}, CONFIG_BUILD, config)),
-  createFastOptimizer: (config = {}) =>
-    new DomTransformer(Object.assign({}, CONFIG_RUNTIME, config)),
+  create: (config = DEFAULT_CONFIG) => new DomTransformer(config),
   TRANSFORMATIONS_AMP_FIRST,
+  /* @private */ TRANSFORMATIONS_MINIMAL,
   TRANSFORMATIONS_PAIRED_AMP,
-  CONFIG_BUILD,
-  CONFIG_RUNTIME,
-  /*
-   * @deprecated
-   */
   DEFAULT_CONFIG,
   NodeUtils,
 };

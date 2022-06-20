@@ -23,28 +23,12 @@ The performance optimizations can improve page rendering times by up to 50%. You
 
 ## Usage
 
-AMP Optimizer provides two different default modes:
-
-1. **Fast:** this will perform only critical optimizations minimizing bundle install size and execution time. Use this when running AMP Optimizer in your critical rendering path, for example, when running AMP Optimizer in your server.
-2. **Full:** this will perform all available optimizations, resulting in the best AMP performance. This mode offers a better AMP developer experience as missing AMP specific markup and imports are added automatically. This makes it a great choice when integrating it into a static site generator. **Important:** use only when running AMP Optimizer does not negatively affect the rendering time of your page, for example, when building a static site.
-
-Please note: both modes just provide defaults and can be individually configured via these [options](#options). The main differences between these two modes are listed here:
-
-| Option                | Fast    | Full   |
-|-----------------------|---------|--------|
-| autoAddMandatoryTags  | `true` | `true` |
-| autoExtensionImport   | `false` | `true` |
-| markdown              | `false` | `true` |
-| minify                | `false` | `true` |
-| separateKeyframes     | `false` | `true` |
-
-
-### Using `fast` mode
+### API
 
 Install via:
 
 ```
-npm install @ampproject/toolbox-optimizer 
+npm install @ampproject/toolbox-optimizer
 ```
 
 Minimal usage:
@@ -52,7 +36,7 @@ Minimal usage:
 ```js
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 
-const ampOptimizer = AmpOptimizer.createFastOptimizer();
+const ampOptimizer = AmpOptimizer.create();
 
 const originalHtml = `
 <!doctype html>
@@ -65,55 +49,7 @@ ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
 });
 ```
 
-It's also possible to add additional options, for example, to enable Markdown mode:
-
-```js
-const AmpOptimizer = require('@ampproject/toolbox-optimizer');
-
-const ampOptimizer = AmpOptimizer.createFastOptimizer({
-  autoExtensionImport: true,
-  imageBasePath: '../img',
-  markdown: true
-});
-
-const originalHtml = `
-  <img src="img.jpg"/>
-`;
-
-ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
-  console.log(optimizedHtml);
-});
-```
-
-### Using `full` mode
-
-Install via:
-
-```
-npm install @ampproject/toolbox-optimizer terser postcss postcss-safe-parser cssnano-simple
-```
-
-Note: `full` mode requires additional dependencies for all features, such as CSS minification, to work. AMP Optimizer will skip transformations if dependencies are missing. Check the log output for debugging.
-
-Minimal usage:
-
-```js
-const AmpOptimizer = require('@ampproject/toolbox-optimizer');
-
-const ampOptimizer = AmpOptimizer.createFullOptimizer({
-  // optional parameters
-});
-
-const originalHtml = `
-<!doctype html>
-<html ⚡>
-  ...
-</html>`;
-
-ampOptimizer.transformHtml(originalHtml).then((optimizedHtml) => {
-  console.log(optimizedHtml);
-});
-```
+You can find a sample implementation [here](/packages/optimizer/demo/simple). If you're using express to serve your site, you can use the [AMP Optimizer Middleware](/packages/optimizer-express).
 
 ### CLI
 
@@ -132,11 +68,19 @@ npx @ampproject/toolbox-cli optimize myFile.html
 
 ### Options
 
+Options are passed when creating a new AMP Optimizer instance:
+
+```js
+const ampOptimizer = AmpOptimizer.create({
+  verbose: true
+});
+...
+```
+
 Available options are:
 
 - [autoAddMandatoryTags](#autoaddmandatorytags)
 - [autoExtensionImport](#autoextensionimport)
-- [cache](#cache)
 - [esmModulesEnabled](#esmmodulesenabled)
 - [extensionVersions](#extensionversions)
 - [fetch](#fetch)
@@ -147,10 +91,8 @@ Available options are:
 - [markdown](#markdown)
 - [minify](#minify)
 - [optimizeAmpBind](#optimizeampbind)
-- [optimizeAmpStory](#optimizeampstory)
 - [optimizeHeroImages](#optimizeheroimages)
 - [preloadHeroImage](#preloadheroimage)
-- [separateKeyframes](#separateKeyframes)
 - [verbose](#verbose)
 
 #### `autoAddMandatoryTags`
@@ -164,29 +106,12 @@ Automatically inject any missing markup required by AMP.
 
 #### `autoExtensionImport`
 
-Automatically import any missing AMP Extensions (e.g. amp-carousel). This is not recommended if AMP Optimizer is run in the critical serving path.
+Automatically import any missing AMP Extensions (e.g. amp-carousel).
 
 - name: `autoExtensionImport`
 - valid options: `[true|false]`
-- default: `false`
+- default: `true`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
-
-#### `cache`
-
-Specifies the cache implementation to use for caching artifacts required during transformation (runtime CSS, validation rules, latest runtime version,...). A cache needs to conform to the following interface:
-
-```typescript
-interface Cache {
-  set(key: Object, value: Object?): Promise<void>;
-  get(key: Object): Promise<Object?>;
-}
-```
-
-By default, artifacts will be cached in a temporary directory. If there is no filesystem access available, the cache will fallback to an in memory implementation.
-
-- name: `cache`
-- valid options: `[Cache|false]` (`false` will disable caching)
-- default: [cache.js](lib/cache.js)
 
 #### `esmModulesEnabled`
 
@@ -222,13 +147,6 @@ const ampOptimizer = AmpOptimizer.create({
 - valid options: `OBJECT`
 - default: `{}`
 - used by: [AutoExtensionImport](lib/transformers/AutoExtensionImporter.js)
-
-#### `fetch`
-
-Specifies the [fetch](https://fetch.spec.whatwg.org) implementation to use:
-
-- name: `fetch`
-- default: `node-fetch`
 
 #### `format`
 
@@ -298,13 +216,14 @@ get an intrinsic layout. For image detection to work, an optional dependency
 
 #### `minify`
 
-Minifies the generated HTML output. Requires [`terser`](https://www.npmjs.com/package/terser) to be installed when inlined `amp-script` should be minified. Combine with [separateKeyframes](#separateKeyframes) to also minify CSS.
+Minifies the generated HTML output and inlined CSS.
 
 - name: `minify`
 - valid options: `[true|false]`
-- default: `false`
+- default: `true`
 - used by: [MinifyHtml](lib/transformers/MinifyHtml.js), [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
-- additional dependency (when using amp-script): `npm install terser`
+
+**Warning:** this setting is not recommended when running AMP Optimizer in your backend on every request as execution time can increase by up to 7x.
 
 #### `optimizeAmpBind`
 
@@ -314,16 +233,6 @@ Enables a considerably faster scanning method in `amp-bind`, by injecting a `i-a
 - valid options: `[true|false]`
 - default: `true`
 - used by: [OptimizeAmpBind](lib/transformers/OptimizeAmpBind.js)
-
-### `optimizeAmpStory`
-
-Enables AMP Story optimizations such as linking to the amp-story-1.0.css, and server side rendering
-attributes.
-
-- name: `optimizeAmpStory`
-- valid options: `[true|false]`
-- default: `false`
-- used by: [AmpStoryCssTransformer](lib/transformers/AmpStoryCssTransformer.js)
 
 #### `optimizeHeroImages`
 
@@ -345,16 +254,6 @@ Hero images are optimized by server-side rendering the `img` element inside the 
 #### `preloadHeroImage`
 
 Deprecated, use [optimizeHeroImages](#optimizeheroimages) instead. 
-
-#### `separateKeyframes`
-
-Automatically move keyframe animations to a separate `amp-keyframes` style block at the end of the document.  Putting keyframes declarations at the bottom of a document allows them to exceed size limitations and avoids blocking first contentful paint to parse them (see [documentation](https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=ads#keyframes-stylesheet)).
-
-- name: `separateKeyframes`
-- valid options: `[true|false]`
-- default: `true`
-- used by: [SeparateKeyframes](lib/transformers/SeparateKeyframes.js)
-- additional dependencies: `npm install postcss postcss-safe-parser cssnano-simple`
 
 #### `verbose`
 

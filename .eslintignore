@@ -1,3 +1,4 @@
 **/node_modules/
 **/dist/
-packages/linter/
+packages/linter
+packages/optimizer/spec/helpers/validator.js

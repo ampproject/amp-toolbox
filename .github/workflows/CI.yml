@@ -20,8 +20,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           registry-url: https://registry.npmjs.org
-      - name: install
-        run: npx lerna clean --yes
+      - name: bootstrap
         run: npx lerna bootstrap --hoist
+      - name: link
+        run: npx lerna link
+      - name: build
+        run: npm run build
       - name: test
         run: npm test

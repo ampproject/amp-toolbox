@@ -1,197 +1,150 @@
-## Unreleased (2021-04-19)
+## v2.8.10
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1312](https://github.com/ampproject/amp-toolbox/pull/1312) More robust auto extension import
+
+## v2.8.9
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1303](https://github.com/ampproject/amp-toolbox/pull/1303) Fix for issue #1302: "SSR: Duplicated ids in rendered markup, if there are nodes with attributes 'media', 'heights' or 'sizes'"
+  * [#1305](https://github.com/ampproject/amp-toolbox/pull/1305) Fix for issue #1304: "SSR: Transforming of nodes with attribute 'heights' fails, if value contains multiple media queries"
+
+## v2.8.8
+
+#### :rocket: Enhancement
+* `linter`
+  * Upgrade to latest amphtml validator version
+
+## v2.8.5
+
+#### :bug: Bug Fix
+* `optimizer`
+  * Pull in latest version from bundles.legacy-latest-versions.jsonc
+
+## v2.8.4 
+
+#### :bug: Bug Fix
+* `optimizer`
+  * Migrate to htmlparser2 v7.2.0
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.8.3 (2021-07-12)
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1254](https://github.com/ampproject/amp-toolbox/pull/1254) Handle empty src attributes ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1251](https://github.com/ampproject/amp-toolbox/pull/1251) Avoid duplicate auto generated ids ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 1
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+
+## v2.8.2 (2021-07-02)
 
 #### :rocket: Enhancement
 * `optimizer`
+  * [#1248](https://github.com/ampproject/amp-toolbox/pull/1248) Disable preloading runtime script/style by default ([@westonruter](https://github.com/westonruter))
+* `optimizer-docker`, `optimizer`
+  * [#1240](https://github.com/ampproject/amp-toolbox/pull/1240) feat: add monitoring to the docker image ([@mathieu-pousse](https://github.com/mathieu-pousse))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1247](https://github.com/ampproject/amp-toolbox/pull/1247) Fix: don't import amp-inputmask for svg masks ([@sebastianbenz](https://github.com/sebastianbenz))
+* `optimizer-docker`
+  * [#1239](https://github.com/ampproject/amp-toolbox/pull/1239) fix docker image: transform environment variable values to boolean when possible ([@mathieu-pousse](https://github.com/mathieu-pousse))
+
+#### Committers: 4
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Mathieu POUSSE ([@mathieu-pousse](https://github.com/mathieu-pousse))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+
+## v2.8.1 (2021-06-08)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1232](https://github.com/ampproject/amp-toolbox/pull/1232) Add SSR support for fluid layout ([@westonruter](https://github.com/westonruter))
+  * [#1236](https://github.com/ampproject/amp-toolbox/pull/1236) Update error handler to support module and nomodule version ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 2
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+
+# v2.8.0 (2021-05-31)
+
+#### :rocket: Enhancement
+* `optimizer`
+  * [#1217](https://github.com/ampproject/amp-toolbox/pull/1217) Enable OptimizeAmpBind transformer by default ([@schlessera](https://github.com/schlessera))
   * [#1195](https://github.com/ampproject/amp-toolbox/pull/1195) Add AmpBoilerplateErrorHandler transformer ([@schlessera](https://github.com/schlessera))
   * [#1194](https://github.com/ampproject/amp-toolbox/pull/1194) Add crossorigin=anonymous to nomodule scripts the same as module ones ([@westonruter](https://github.com/westonruter))
   * [#1196](https://github.com/ampproject/amp-toolbox/pull/1196) Prevent SSR for amp-img occurring after second paragraph ([@westonruter](https://github.com/westonruter))
-
-#### :bug: Bug Fix
-* `optimizer`
-  * [#1198](https://github.com/ampproject/amp-toolbox/pull/1198) Improve logic to detect explicitly marked hero images ([@schlessera](https://github.com/schlessera))
-
-#### Committers: 4
-- Alain Schlesser ([@schlessera](https://github.com/schlessera))
-- Jake Fried ([@samouri](https://github.com/samouri))
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- Weston Ruter ([@westonruter](https://github.com/westonruter))
-
-## v2.8.0-canary.16  (2021-04-08)
-
-#### :rocket: Enhancement
-* `optimizer`
   * [#1192](https://github.com/ampproject/amp-toolbox/pull/1192) Filter duplicate extensions by src URL ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :bug: Bug Fix
-* `optimizer`
-  * [#1188](https://github.com/ampproject/amp-toolbox/pull/1188) Make ES modules option consistent ([@schlessera](https://github.com/schlessera))
-
-#### :memo: Documentation
-* `cli`
-  * [#1190](https://github.com/ampproject/amp-toolbox/pull/1190) correct the amp version output ([@rajannpatel](https://github.com/rajannpatel))
-* `optimizer`
-  * [#1188](https://github.com/ampproject/amp-toolbox/pull/1188) Make ES modules option consistent ([@schlessera](https://github.com/schlessera))
-
-#### Committers: 3
-- Alain Schlesser ([@schlessera](https://github.com/schlessera))
-- Rajan Patel ([@rajannpatel](https://github.com/rajannpatel))
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-
-## v2.8.0-canary.15 (2021-03-30)
-
-#### :rocket: Enhancement
-* `optimizer`
   * [#1180](https://github.com/ampproject/amp-toolbox/pull/1180) Add minimal Optimizer Transformer Config ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#1181](https://github.com/ampproject/amp-toolbox/pull/1181) Disable cache warmup on install ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1170](https://github.com/ampproject/amp-toolbox/pull/1170) 👽 Remove postcss deprecation warning ([@lluerich](https://github.com/lluerich))
+  * [#1147](https://github.com/ampproject/amp-toolbox/pull/1147) Add amp-bind optimizer ([@jridgewell](https://github.com/jridgewell))
+  * [#1143](https://github.com/ampproject/amp-toolbox/pull/1143) Add extension scripts in logical order ([@schlessera](https://github.com/schlessera))
 * `core`
   * [#1182](https://github.com/ampproject/amp-toolbox/pull/1182) Use os.tmpDir for file system cache ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :bug: Bug Fix
-* `page-experience`
-  * [#1186](https://github.com/ampproject/amp-toolbox/pull/1186) Skip fonts with a data: URL source from fontPreloading check ([@westonruter](https://github.com/westonruter))
-* `optimizer`
-  * [#1184](https://github.com/ampproject/amp-toolbox/pull/1184) Remove hard-coded isTiny() result for intrinsic layout ([@schlessera](https://github.com/schlessera))
-  * [#1161](https://github.com/ampproject/amp-toolbox/pull/1161) when using module/nomodule make sure to use `modulepreload` instead of `preload` for the priority hint ([@erwinmombay](https://github.com/erwinmombay))
-
-#### Committers: 4
-- Alain Schlesser ([@schlessera](https://github.com/schlessera))
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- Weston Ruter ([@westonruter](https://github.com/westonruter))
-- erwin mombay ([@erwinmombay](https://github.com/erwinmombay))
-
-## v2.8.0-canary.13   (2021-03-22)
-
-#### :rocket: Enhancement
+  * [#1142](https://github.com/ampproject/amp-toolbox/pull/1142) Don't remove sizes for hero images ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1140](https://github.com/ampproject/amp-toolbox/pull/1140) Enable ESM module version of AMP Runtime and Components by default ([@sebastianbenz](https://github.com/sebastianbenz))
 * `page-experience`
   * [#1174](https://github.com/ampproject/amp-toolbox/pull/1174) PX: enable mobile device emulation ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :bug: Bug Fix
-* `page-experience`
   * [#1173](https://github.com/ampproject/amp-toolbox/pull/1173) PX:ignore invinsible elements ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### Committers: 1
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-
-## v2.8.0-canary.12  (2021-03-22)
-
-#### :rocket: Enhancement
-* `page-experience`
   * [#1172](https://github.com/ampproject/amp-toolbox/pull/1172) PX: escape html in suggestions ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### Committers: 1
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-
-## v2.8.0-canary.9 (2021-03-22)
-
-#### :rocket: Enhancement
-* `page-experience`
   * [#1171](https://github.com/ampproject/amp-toolbox/pull/1171) PX: detect hero images ([@sebastianbenz](https://github.com/sebastianbenz))
-* `optimizer`
-  * [#1170](https://github.com/ampproject/amp-toolbox/pull/1170) 👽 Remove postcss deprecation warning ([@lluerich](https://github.com/lluerich))
-
-#### Committers: 2
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- [@lluerich](https://github.com/lluerich)
-
-## v2.8.0-canary.8 (2021-03-19)
-
-#### :rocket: Enhancement
-* `page-experience`
   * [#1168](https://github.com/ampproject/amp-toolbox/pull/1168) Check for early iframes ([@patrickkettner](https://github.com/patrickkettner))
   * [#1169](https://github.com/ampproject/amp-toolbox/pull/1169) Give page specific advice on how to fix fonts ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### Committers: 2
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- patrick kettner ([@patrickkettner](https://github.com/patrickkettner))
-
-## v2.8.0-canary.7  (2021-03-19)
-
-#### :bug: Bug Fix
-* `page-experience`
-  * [#1166](https://github.com/ampproject/amp-toolbox/pull/1166) Move result details to top level ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### Committers: 1
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-
-## v2.8.0-canary.6 (2021-03-18)
-
-#### :rocket: Enhancement
 * `linter`, `page-experience`
   * [#1164](https://github.com/ampproject/amp-toolbox/pull/1164) Add more detailed info to font checks ([@sebastianbenz](https://github.com/sebastianbenz))
 * `linter`
   * [#1165](https://github.com/ampproject/amp-toolbox/pull/1165) Check for latest component versions ([@lluerich](https://github.com/lluerich))
-
-#### Committers: 2
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-- [@lluerich](https://github.com/lluerich)
-
-## v2.8.0-canary.5 (2021-03-12)
-
-#### :rocket: Enhancement
-* `page-experience`
   * [#1160](https://github.com/ampproject/amp-toolbox/pull/1160) Run amp-linter checks as part of this module ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#1156](https://github.com/ampproject/amp-toolbox/pull/1156) Add page experience guide ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :memo: Documentation
-* `optimizer`
-  * [#1154](https://github.com/ampproject/amp-toolbox/pull/1154) Add warning about esmModulesEnabled + amppkg ([@twifkak](https://github.com/twifkak))
-
-#### Committers: 2
-- Devin Mullins ([@twifkak](https://github.com/twifkak))
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-
-## v2.8.0-canary.4 (2021-02-12)
-
-#### :rocket: Enhancement
-* `linter`
   * [#1153](https://github.com/ampproject/amp-toolbox/pull/1153) ♻️ Refactor icon font detection ([@lluerich](https://github.com/lluerich))
   * [#1149](https://github.com/ampproject/amp-toolbox/pull/1149) 🔧 Add icomoon ([@lluerich](https://github.com/lluerich))
   * [#1148](https://github.com/ampproject/amp-toolbox/pull/1148) ♻️ Refine icon font detection ([@lluerich](https://github.com/lluerich))
   * [#1145](https://github.com/ampproject/amp-toolbox/pull/1145) 🚀 Add icon font linter rule ([@lluerich](https://github.com/lluerich))
-* `optimizer`
-  * [#1147](https://github.com/ampproject/amp-toolbox/pull/1147) Add amp-bind optimizer ([@jridgewell](https://github.com/jridgewell))
-  * [#1143](https://github.com/ampproject/amp-toolbox/pull/1143) Add extension scripts in logical order ([@schlessera](https://github.com/schlessera))
 
 #### :bug: Bug Fix
 * `optimizer`
+  * [#1235](https://github.com/ampproject/amp-toolbox/pull/1235) Pull latest component versions from amphtml repo ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1234](https://github.com/ampproject/amp-toolbox/pull/1234) Fix: don't auto import experimental bento components  ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1198](https://github.com/ampproject/amp-toolbox/pull/1198) Improve logic to detect explicitly marked hero images ([@schlessera](https://github.com/schlessera))
+  * [#1188](https://github.com/ampproject/amp-toolbox/pull/1188) Make ES modules option consistent ([@schlessera](https://github.com/schlessera))
   * [#1151](https://github.com/ampproject/amp-toolbox/pull/1151) Show blurredPlaceholders warning only when enabled ([@att55](https://github.com/att55))
   * [#1143](https://github.com/ampproject/amp-toolbox/pull/1143) Add extension scripts in logical order ([@schlessera](https://github.com/schlessera))
-
-#### Committers: 4
-- Alain Schlesser ([@schlessera](https://github.com/schlessera))
-- Atsuto Yamashita ([@att55](https://github.com/att55))
-- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
-- [@lluerich](https://github.com/lluerich)
-
-## v2.8.0-canary.1 (2021-02-12)
-
-#### :bug: Bug Fix
-* `optimizer`
-  * [#1142](https://github.com/ampproject/amp-toolbox/pull/1142) Don't remove sizes for hero images ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### Committers: 1
-- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
-
-## v2.8.0-canary.0 (2021-02-12)
-
-#### :rocket: Enhancement
-* `optimizer`
-  * [#1140](https://github.com/ampproject/amp-toolbox/pull/1140) Enable ESM module version of AMP Runtime and Components by default ([@sebastianbenz](https://github.com/sebastianbenz))
-
-#### :bug: Bug Fix
-* `optimizer`
   * [#1137](https://github.com/ampproject/amp-toolbox/pull/1137) Drop the final width descriptor in a generated srcset. ([@kristoferbaxter](https://github.com/kristoferbaxter))
   * [#1139](https://github.com/ampproject/amp-toolbox/pull/1139) fix missing custom-element attribute from nomodule import ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#1135](https://github.com/ampproject/amp-toolbox/pull/1135) Add missing amp-ad ending tag ([@schlessera](https://github.com/schlessera))
+* `page-experience`
+  * [#1186](https://github.com/ampproject/amp-toolbox/pull/1186) Skip fonts with a data: URL source from fontPreloading check ([@westonruter](https://github.com/westonruter))
+  * [#1184](https://github.com/ampproject/amp-toolbox/pull/1184) Remove hard-coded isTiny() result for intrinsic layout ([@schlessera](https://github.com/schlessera))
+  * [#1161](https://github.com/ampproject/amp-toolbox/pull/1161) when using module/nomodule make sure to use `modulepreload` instead of `preload` for the priority hint ([@erwinmombay](https://github.com/erwinmombay))
+  * [#1166](https://github.com/ampproject/amp-toolbox/pull/1166) Move result details to top level ([@sebastianbenz](https://github.com/sebastianbenz))
 
-#### :house: Internal
-* `linter`, `optimizer`, `update-cache`
-  * [#1141](https://github.com/ampproject/amp-toolbox/pull/1141) Update dependencies ([@sebastianbenz](https://github.com/sebastianbenz))
+#### :memo: Documentation
+* `optimizer`
+  * [#1188](https://github.com/ampproject/amp-toolbox/pull/1188) Make ES modules option consistent ([@schlessera](https://github.com/schlessera))
+  * [#1154](https://github.com/ampproject/amp-toolbox/pull/1154) Add warning about esmModulesEnabled + amppkg ([@twifkak](https://github.com/twifkak))
+* `cli`
+  * [#1190](https://github.com/ampproject/amp-toolbox/pull/1190) correct the amp version output ([@rajannpatel](https://github.com/rajannpatel))
 
-#### Committers: 3
-- Alain Schlesser ([@schlessera](https://github.com/schlessera))
-- Kristofer Baxter ([@kristoferbaxter](https://github.com/kristoferbaxter))
+#### Committers: 1
 - Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Alain Schlesser ([@schlessera](https://github.com/schlessera))
+- Jake Fried ([@samouri](https://github.com/samouri))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- Weston Ruter ([@westonruter](https://github.com/westonruter))
+- Rajan Patel ([@rajannpatel](https://github.com/rajannpatel))
+- erwin mombay ([@erwinmombay](https://github.com/erwinmombay))
+- [@lluerich](https://github.com/lluerich)
+- Devin Mullins ([@twifkak](https://github.com/twifkak))
+- Atsuto Yamashita ([@att55](https://github.com/att55))
+- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
 
 ## v2.7.6 (2021-02-01)
 

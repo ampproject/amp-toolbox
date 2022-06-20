@@ -42,11 +42,15 @@ const fetchRuntimeParameters = require('../lib/fetchRuntimeParameters');
 
   const extensionConfigUrl =
     'https://raw.githubusercontent.com/ampproject/amphtml/main/build-system/compile/bundles.config.extensions.json';
-  const response = await fetch(extensionConfigUrl);
-  if (!response.ok) {
-    throw new Error(`Failed downloading ${extensionConfigUrl} with status ${response.status}`);
+
+  const configResponse = await fetch(extensionConfigUrl);
+  if (!configResponse.ok) {
+    throw new Error(
+      `Failed downloading ${extensionConfigUrl} with status ${configResponse.status}`
+    );
   }
-  const extensionConfig = await response.json();
+
+  const extensionConfig = await configResponse.json();
   fs.writeFile(
     path.join(__dirname, '../lib/extensionConfig.json'),
     JSON.stringify(extensionConfig),
