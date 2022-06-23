@@ -66,14 +66,22 @@ async function handleRequest(event, config) {
 
   let request = event.request;
   const url = new URL(request.url);
+
   if (isReverseProxy(config)) {
     url.hostname = config.proxy.origin;
   }
+
   request = new Request(url.toString(), request);
 
   // Immediately return if not GET.
   if (request.method !== 'GET') {
-    return fetch(request);
+    if (!isReverseProxy(config)) {
+      return fetch(request, {redirect: 'manual'});
+    }
+
+    const response = await fetch(request, {redirect: 'manual'});
+
+    return isRedirect(response) ? rewriteRedirectHeader(response, config) : response;
   }
 
   if (config.enableKVCache) {
@@ -85,7 +93,17 @@ async function handleRequest(event, config) {
     }
   }
 
-  const response = await fetch(request);
+  const response = await fetch(request, {redirect: 'manual'});
+
+  // Redirect based statuses should be returned
+  if (isRedirect(response)) {
+    if (isReverseProxy(config)) {
+      return rewriteRedirectHeader(response, config);
+    }
+
+    return response;
+  }
+
   const clonedResponse = response.clone();
   const {headers, status, statusText} = response;
 
@@ -257,6 +275,44 @@ function getOptimizer(config) {
 
 function resetOptimizerForTesting() {
   ampOptimizer = null;
+}
+
+/**
+ * @description Determine whether {Response} is Redirect style
+ * @param {Response} response
+ * @returns {boolean}
+ */
+function isRedirect(response) {
+  return response.status >= 300 && response.status <= 399;
+}
+
+/**
+ * @param {!Response} response
+ * @param {!ConfigDef} config
+ * @description Rewrites the location header to reflect the worker's hostname
+ */
+function rewriteRedirectHeader(response, config) {
+  const locationHeader = response.headers.get('location');
+
+  if (!locationHeader) {
+    return response;
+  }
+
+  const parsedLocation = new URL(locationHeader);
+
+  if (config.proxy.origin === parsedLocation.hostname) {
+    parsedLocation.hostname = config.proxy.worker;
+    const newHeaders = new Headers(response.headers);
+    newHeaders.set('location', parsedLocation.toString());
+
+    return new Response(response.body, {
+      headers: newHeaders,
+      status: response.status,
+      statusText: response.statusText,
+    });
+  }
+
+  return response;
 }
 
 module.exports = {

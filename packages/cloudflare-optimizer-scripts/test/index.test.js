@@ -30,7 +30,7 @@ const {
   validateConfiguration,
   resetOptimizerForTesting,
 } = require('../src/index');
-const {Request, Response, HTMLRewriter} = require('./builtins');
+const {Request, Response, HTMLRewriter, Headers} = require('./builtins');
 
 beforeEach(() => {
   global.fetch = jest.fn();
@@ -42,6 +42,7 @@ beforeEach(() => {
   global.Request = Request;
   global.Response = Response;
   global.HTMLRewriter = HTMLRewriter;
+  global.Headers = Headers;
 });
 
 describe('handleEvent', () => {
@@ -70,11 +71,31 @@ describe('handleEvent', () => {
     expect(await event.respondWith.mock.calls[0][0]).toBe(incomingResponse);
   });
 
+  it('should rewrite Location header for Redirect in response to Non-Get Requests (Proxy Mode)', async () => {
+    const config = {proxy: {origin: 'test-origin.com', worker: 'test.com'}};
+
+    const originResponse = new Response(undefined, {
+      status: 301,
+      statusText: '',
+      headers: new Headers([['location', 'https://test-origin.com/abc']]),
+    });
+
+    global.fetch.mockImplementation(() => Promise.resolve(originResponse));
+
+    const request = {url: 'http://test.com', method: 'POST'};
+    const event = {request, passThroughOnException: jest.fn(), respondWith: jest.fn()};
+    handleEvent(event, {...defaultConfig, ...config});
+
+    const response = await event.respondWith.mock.calls[0][0];
+    expect(response.status).toBe(301);
+    expect(response.headers.get('location')).toBe('https://test.com/abc');
+  });
+
   it('Should proxy through optimizer failures', async () => {
     const input = `<html amp><body></body></html>`;
     const incomingResponse = getResponse(input);
     global.fetch.mockReturnValue(incomingResponse);
-    AmpOptimizer.transformHtmlSpy.mockReturnValue(Promise.reject('Fail.'));
+    AmpOptimizer.transformHtmlSpy.mockImplementation(() => Promise.reject('Fail.'));
 
     const output = await getOutput('http://text.com');
     expect(output).toBe(input);
@@ -105,11 +126,58 @@ describe('handleEvent', () => {
     expect(output).toBe(`transformed-${input}`);
   });
 
+  it('should passthrough opaque redirects unmodified (non-proxy mode)', async () => {
+    const mockedResponse = new Response('', {
+      status: 302,
+      statusText: '',
+    });
+
+    const event = {
+      request: {method: 'GET', url: 'https://example.com/'},
+      respondWith: jest.fn(),
+      passThroughOnException: jest.fn(),
+    };
+
+    global.fetch.mockImplementation(() => Promise.resolve(mockedResponse));
+
+    handleEvent(event, defaultConfig);
+    expect(await event.respondWith.mock.calls[0][0]).toBe(mockedResponse);
+  });
+
+  it('should rewrite location header for redirects to origin in proxy mode', async () => {
+    const config = {proxy: {worker: 'test.com', origin: 'test-origin.com'}};
+
+    const mockedResponse = new Response('', {
+      status: 302,
+      statusText: '',
+      headers: new Headers([['location', 'https://test-origin.com/abc']]),
+    });
+
+    const event = {
+      request: {method: 'GET', url: 'https://test.com/'},
+      respondWith: jest.fn(),
+      passThroughOnException: jest.fn(),
+    };
+
+    global.fetch.mockImplementation(() => Promise.resolve(mockedResponse));
+
+    handleEvent(event, {...defaultConfig, ...config});
+
+    const response = await event.respondWith.mock.calls[0][0];
+
+    expect(response.status).toBe(mockedResponse.status);
+    expect(response.headers.get('location')).toBe('https://test.com/abc');
+    expect(event.respondWith).toHaveBeenCalledTimes(1);
+  });
+
   it('Should passthrough request to origin in request interceptor mode', async () => {
     const input = `<html amp><body></body></html>`;
     global.fetch.mockReturnValue(getResponse(input));
     await getOutput('http://test.com');
-    expect(global.fetch).toBeCalledWith({url: 'http://test.com/', method: 'GET'});
+    expect(global.fetch).toBeCalledWith(
+      {url: 'http://test.com/', method: 'GET'},
+      {redirect: 'manual'}
+    );
   });
 
   it('Should modify request url for reverse-proxy', async () => {
@@ -118,7 +186,10 @@ describe('handleEvent', () => {
     global.fetch.mockReturnValue(getResponse(input));
 
     await getOutput('http://test.com', config);
-    expect(global.fetch).toBeCalledWith({url: 'http://test-origin.com/', method: 'GET'});
+    expect(global.fetch).toBeCalledWith(
+      {url: 'http://test-origin.com/', method: 'GET'},
+      {redirect: 'manual'}
+    );
   });
 
   it('should call enable passThroughOnException', async () => {
@@ -180,7 +251,7 @@ describe('getAmpOptimizer', () => {
 
 function getResponse(html, {contentType} = {contentType: 'text/html'}) {
   return new Response(html, {
-    headers: {get: () => contentType},
+    headers: new Headers([['content-type', contentType]]),
     status: 200,
     statusText: '200',
   });

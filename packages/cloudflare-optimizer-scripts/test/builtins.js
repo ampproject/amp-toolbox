@@ -45,4 +45,6 @@ class HTMLRewriter {
   }
 }
 
-module.exports = {Response, HTMLRewriter, Request};
+class Headers extends Map {}
+
+module.exports = {Response, HTMLRewriter, Request, Headers};
