@@ -43,15 +43,11 @@
     "css-font-face-src": "1.0.0",
     "postcss": "8.2.8",
     "postcss-safe-parser": "5.0.2",
-    "puppeteer": "14.4.1",
-    "tree-kill": "1.2.2"
+    "puppeteer": "14.4.1"
   },
   "directories": {
     "lib": "lib",
     "bin": "bin"
   },
-  "gitHead": "6103eb57765445355421826791361ac9ed9cf4d8",
-  "jest": {
-    "testTimeout": 60000
-  }
+  "gitHead": "6103eb57765445355421826791361ac9ed9cf4d8"
 }

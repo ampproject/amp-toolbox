@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*global KV,HTMLRewriter,Request,Response*/
+/*global Headers,KV,HTMLRewriter,Request,Response*/
 
 const AmpOptimizer = require('@ampproject/toolbox-optimizer');
 const {DocTagger, LinkRewriter} = require('./rewriters');

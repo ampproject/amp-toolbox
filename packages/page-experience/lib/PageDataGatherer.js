@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 const puppeteer = require('puppeteer');
-const treeKill = require('tree-kill');
 const parseFontfaces = require('./helpers/parseFontface');
 
 // Pixel 5 XL

@@ -35,7 +35,7 @@
     "@ampproject/toolbox-runtime-fetch": "^2.8.0",
     "@ampproject/toolbox-runtime-version": "^2.8.0",
     "@ampproject/toolbox-update-cache": "^2.8.0",
-    "minimist": "1.2.5",
+    "minimist": "1.2.6",
     "minimist-options": "4.1.0",
     "node-fetch": "2.6.7"
   },

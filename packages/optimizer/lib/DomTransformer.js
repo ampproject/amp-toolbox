@@ -150,6 +150,7 @@ const TRANSFORMATIONS_MINIMAL = [
 ];
 
 const DEFAULT_CONFIG = {
+  autoExtensionImport: true,
   cache,
   fetch,
   log,
