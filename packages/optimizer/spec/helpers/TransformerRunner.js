@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const validator = require('amphtml-validator');
+const validator = require('./validatorInstance.js');
 const {basename, join} = require('path');
 const {writeFileContents, getFileContents, getDirectories} = require('../helpers/Utils.js');
 
@@ -52,7 +52,7 @@ module.exports = function (testConfig) {
       }
       it(basename(testDir), async () => {
         let params = TRANSFORMER_PARAMS;
-        const validatorInstance = await validator.getInstance();
+        const validatorInstance = await validator.get();
 
         // parse input and extract params
         let input = getFileContents(join(testDir, 'input.html'));

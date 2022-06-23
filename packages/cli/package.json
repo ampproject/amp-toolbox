@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cli",
-  "version": "3.0.0-canary.2",
+  "version": "2.8.10",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
@@ -11,8 +11,15 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/cli"
   },
-  "keywords": ["amp-toolbox", "cli"],
-  "files": ["index.js", "lib", "bin"],
+  "keywords": [
+    "amp-toolbox",
+    "cli"
+  ],
+  "files": [
+    "index.js",
+    "lib",
+    "bin"
+  ],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -20,17 +27,20 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/cli",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "3.0.0-canary.2",
+    "@ampproject/toolbox-cache-list": "^2.8.0",
     "@ampproject/toolbox-cache-url": "^2.8.0",
-    "@ampproject/toolbox-core": "3.0.0-canary.2",
-    "@ampproject/toolbox-linter": "3.0.0-canary.2",
-    "@ampproject/toolbox-optimizer": "3.0.0-canary.2",
-    "@ampproject/toolbox-runtime-fetch": "3.0.0-canary.2",
-    "@ampproject/toolbox-runtime-version": "3.0.0-canary.2",
-    "@ampproject/toolbox-update-cache": "3.0.0-canary.2",
+    "@ampproject/toolbox-core": "^2.8.0",
+    "@ampproject/toolbox-linter": "2.8.10",
+    "@ampproject/toolbox-optimizer": "2.8.10",
+    "@ampproject/toolbox-runtime-fetch": "^2.8.0",
+    "@ampproject/toolbox-runtime-version": "^2.8.0",
+    "@ampproject/toolbox-update-cache": "^2.8.0",
     "minimist": "1.2.5",
     "minimist-options": "4.1.0",
     "node-fetch": "2.6.7"
   },
-  "gitHead": "2937a3e777701f9cec81b1cc36d1b9927a6b4403"
+  "gitHead": "6103eb57765445355421826791361ac9ed9cf4d8",
+  "jest": {
+    "testTimeout": 60000
+  }
 }

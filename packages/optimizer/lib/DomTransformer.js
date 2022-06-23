@@ -17,10 +17,10 @@
 
 const treeParser = require('./TreeParser');
 const log = require('./log');
-let fetch = require('node-fetch');
+let fetch = require('cross-fetch');
 const RuntimeVersion = require('@ampproject/toolbox-runtime-version/lib/RuntimeVersion');
 const fetchRuntimeParameters = require('./fetchRuntimeParameters');
-const cache = require('./cache.js');
+const cache = require('./cache');
 
 /**
  * AMP Optimizer Configuration only applying AMP validity perserving transformations.
@@ -86,6 +86,10 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
   // This needs to run after AutoExtensionImporter.
   'OptimizeAmpBind',
+  // Applies amp-story related optimizations such as appending a link[rel=stylesheet]
+  // to the amp-story css, server side rendering attributes, and adding css polyfills
+  // and fixes.
+  'AmpStoryCssTransformer',
   // Applies server-side-rendering optimizations
   'ServerSideRendering',
   // Removes ⚡ or 'amp' from the html tag
@@ -113,7 +117,39 @@ const TRANSFORMATIONS_PAIRED_AMP = [
   'AmpScriptCsp',
 ];
 
-const CONFIG_DEFAULT = {
+/**
+ * AMP Optimizer Configuration only applying the minimal set of AMP transformations ensuring maximum performance.
+ */
+const TRANSFORMATIONS_MINIMAL = [
+  // Applies image optimizations, must run before PreloadHeroImage
+  'OptimizeImages',
+  // Detect hero image and preload link rel=preload, needs to run after OptimizeImages
+  'OptimizeHeroImages',
+  // Inject a querySelectorAll query-able i-amphtml-binding attribute on elements with bindings.
+  // This needs to run after AutoExtensionImporter.
+  'OptimizeAmpBind',
+  // Applies amp-story related optimizations such as appending a link[rel=stylesheet]
+  // to the amp-story css, server side rendering attributes, and adding css polyfills
+  // and fixes.
+  'AmpStoryCssTransformer',
+  // Applies server-side-rendering optimizations
+  'ServerSideRendering',
+  // Removes the boilerplate
+  // needs to run after ServerSideRendering
+  'AmpBoilerplateTransformer',
+  // Adds amp-onerror to disable boilerplate early
+  // needs to run after ServerSideRendering
+  'AmpBoilerplateErrorHandler',
+  'RewriteAmpUrls',
+  'GoogleFontsPreconnect',
+  'PruneDuplicateResourceHints',
+  // Optimizes script import order
+  // needs to run after ServerSideRendering
+  'ReorderHeadTransformer',
+  'AddTransformedFlag',
+];
+
+const DEFAULT_CONFIG = {
   cache,
   fetch,
   log,
@@ -126,41 +162,7 @@ const CONFIG_DEFAULT = {
   },
   transformations: TRANSFORMATIONS_AMP_FIRST,
   verbose: false,
-  // keep these enabled for backward compatibility
-  autoAddMandatoryTags: true,
-  autoExtensionImport: true,
-  esmModulesEnabled: true,
-  markdown: true,
-  minify: true,
-  optimizeAmpBind: true,
-  optimizeAmpStory: false,
-  optimizeHeroImages: true,
-  separateKeyframes: true,
 };
-
-const CONFIG_BUILD = Object.assign({}, CONFIG_DEFAULT, {
-  autoAddMandatoryTags: true,
-  autoExtensionImport: true,
-  esmModulesEnabled: true,
-  markdown: true,
-  minify: true,
-  optimizeAmpBind: true,
-  optimizeAmpStory: false,
-  optimizeHeroImages: true,
-  separateKeyframes: true,
-});
-
-const CONFIG_RUNTIME = Object.assign({}, CONFIG_DEFAULT, {
-  autoAddMandatoryTags: false,
-  autoExtensionImport: false,
-  esmModulesEnabled: true,
-  markdown: false,
-  minify: false,
-  optimizeAmpBind: true,
-  optimizeAmpStory: false,
-  optimizeHeroImages: true,
-  separateKeyframes: false,
-});
 
 /**
  * Applies a set of transformations to a DOM tree.
@@ -171,7 +173,7 @@ class DomTransformer {
    * @param {Object} config - The config.
    * @param {Array.<Transformer>} config.transformers - a list of transformers to be applied.
    */
-  constructor(config = CONFIG_DEFAULT) {
+  constructor(config = DEFAULT_CONFIG) {
     this.setConfig(config);
   }
 
@@ -227,7 +229,7 @@ class DomTransformer {
    * @param {Array.<Transformer>} config.transformations - a list of transformers to be applied.
    */
   setConfig(config) {
-    this.config = Object.assign({}, CONFIG_DEFAULT, config);
+    this.config = Object.assign({}, DEFAULT_CONFIG, config);
     if (!this.config.runtimeVersion) {
       // Re-use custom fetch implementation for runtime version provider
       this.config.runtimeVersion = new RuntimeVersion(this.config.fetch);
@@ -255,8 +257,8 @@ class DomTransformer {
 
 module.exports = {
   DomTransformer,
-  CONFIG_BUILD,
-  CONFIG_RUNTIME,
+  DEFAULT_CONFIG,
   TRANSFORMATIONS_AMP_FIRST,
   TRANSFORMATIONS_PAIRED_AMP,
+  TRANSFORMATIONS_MINIMAL,
 };

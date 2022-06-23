@@ -11,9 +11,6 @@
   "author": "The AMPHTML Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "benchmark": "^2.1.4",
-    "cssnano-simple": "^1.2.2",
-    "postcss": "^8.2.10",
-    "postcss-safe-parser": "^5.0.2"
+    "benchmark": "^2.1.4"
   }
 }

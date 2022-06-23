@@ -1,2 +1,3 @@
 .cache
+spec/helpers/validator.js
 lib/runtimeData.json

@@ -1,13 +1,18 @@
 {
   "name": "@ampproject/toolbox-validator-rules",
-  "version": "3.0.0-canary.2",
+  "version": "2.8.0",
   "description": "A library that helps query AMP Validator rules",
   "main": "index.js",
-  "keywords": ["amp"],
+  "keywords": [
+    "amp"
+  ],
   "scripts": {
-    "fetchRules": "curl https://cdn.ampproject.org/v0/validator.json --output validator.json"
+    "fetchRules": "curl https://cdn.ampproject.org/v0/validator_wasm.js --output validator.json"
   },
-  "files": ["index.js", "lib"],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
@@ -18,12 +23,12 @@
   "bugs": {
     "url": "https://github.com/ampproject/amp-toolbox/issues"
   },
+  "dependencies": {
+    "cross-fetch": "3.1.5"
+  },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/validator-rules",
   "directories": {
     "lib": "lib"
   },
-  "gitHead": "9b159391d776396512b01ec250fa76941713c763",
-  "dependencies": {
-    "node-fetch": "2.6.7"
-  }
+  "gitHead": "6103eb57765445355421826791361ac9ed9cf4d8"
 }

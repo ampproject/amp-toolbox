@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-const validator = require('amphtml-validator');
+const validator = require('../helpers/validatorInstance.js');
 const {getFileContents, getResources} = require('../helpers/Utils.js');
 const {join, basename} = require('path');
 const {writeFileSync} = require('fs');
 
 const {DomTransformer} = require('../../lib/DomTransformer.js');
 
-const ampOptimizer = new DomTransformer();
+const ampOptimizer = new DomTransformer({cache: new Map()});
 
 const files = getResources(join(__dirname, 'files')).filter((f) => f.endsWith('.html'));
 
@@ -31,11 +31,11 @@ describe('Optimizer produces valid AMP', () => {
     it(fileName, async () => {
       const contents = getFileContents(filePath);
       const optimizedContents = await ampOptimizer.transformHtml(contents);
-      const validatorInstance = await validator.getInstance();
+      const validatorInstance = await validator.get();
       const result = validatorInstance.validateString(optimizedContents);
       if (result.status !== 'PASS') {
         writeFileSync(join(__dirname, 'tmp', fileName), optimizedContents, 'utf-8');
-        throw new Error(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
+        fail(`Validation errors:\n\n ${JSON.stringify(result.errors, null, 2)}`);
       }
     });
   });

@@ -1,6 +1,7 @@
 **/dist/**/*
 logs
 *.log
+*.swp
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

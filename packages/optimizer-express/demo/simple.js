@@ -19,6 +19,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const AmpOptimizerMiddleware = require('../index.js');
+const minifyHTML = require('express-minify-html');
 
 app.use((req, res, next) => {
   console.log('handling', req.path);
@@ -28,6 +29,21 @@ app.use((req, res, next) => {
 // It's important that the AmpOptimizerMiddleware is added *before* the static middleware.
 // This allows the middleware to intercept the page rendered by static and transform it.
 app.use(AmpOptimizerMiddleware.create());
+
+app.use(
+  minifyHTML({
+    override: true,
+    exception_url: false,
+    htmlMinifier: {
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeEmptyAttributes: true,
+      minifyJS: true,
+    },
+  })
+);
 
 const staticMiddleware = express.static(path.join(__dirname, '/public'));
 app.use(staticMiddleware);

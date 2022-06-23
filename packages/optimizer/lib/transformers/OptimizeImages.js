@@ -27,8 +27,29 @@ const MIN_WIDTH_TO_ADD_SRCSET_IN_RESPONSIVE_LAYOUT = 100;
 
 // All supported srcset widths.
 const SRCSET_WIDTH = [
-  39, 47, 56, 68, 82, 100, 120, 150, 180, 220, 270, 330, 390, 470, 560, 680, 820, 1000, 1200, 1440,
-  1750, 2000, 2500,
+  39,
+  47,
+  56,
+  68,
+  82,
+  100,
+  120,
+  150,
+  180,
+  220,
+  270,
+  330,
+  390,
+  470,
+  560,
+  680,
+  820,
+  1000,
+  1200,
+  1440,
+  1750,
+  2000,
+  2500,
 ];
 
 // Don't generate srcsets for images larger than the supported maximum

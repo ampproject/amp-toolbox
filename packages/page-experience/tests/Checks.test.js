@@ -21,6 +21,7 @@ const PageExperienceGuide = require('../lib/PageExperienceGuide');
 const TEST_DATA_DIR = path.join(__dirname, '../test-data/checks');
 let CREATE_SNAPSHOT = process.env.PAGE_EXPERIENCE_SNAPSHOT;
 
+const testDirs = fs.readdirSync(TEST_DATA_DIR);
 const pageExperienceGuide = new PageExperienceGuide();
 let checks;
 jest.setTimeout(60000);
@@ -31,7 +32,6 @@ beforeAll(async () => {
 });
 
 describe('Checks', () => {
-  const testDirs = fs.readdirSync(TEST_DATA_DIR);
   for (const testDir of testDirs) {
     const testCaseDir = path.join(TEST_DATA_DIR, testDir);
     const testCases = fs.readdirSync(testCaseDir).filter((file) => file.endsWith('.html'));

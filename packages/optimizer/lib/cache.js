@@ -16,12 +16,13 @@
 'use strict';
 
 const {FileSystemCache} = require('@ampproject/toolbox-core');
+const path = require('path');
 const log = require('./log');
 
 // a shared cache implementation
 const cache = FileSystemCache.create({
   log,
-  name: 'amp-optimizer',
+  baseDir: path.join(__dirname, '..', '.cache'),
 });
 
 module.exports = cache;

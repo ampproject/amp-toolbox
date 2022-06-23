@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const isDependencyInstalled = require('../isDependencyInstalled');
+const {minify} = require('terser');
 const {remove} = require('../NodeUtils');
 const normalizeWhitespace = require('normalize-html-whitespace');
 const htmlEscape = require('../htmlEscape');
@@ -131,22 +131,8 @@ class MinifyHtml {
   }
 
   async minifyAmpScript(child) {
-    if (!isDependencyInstalled('terser')) {
-      this.log_.error(
-        'terser needs to be installed via `npm install terser` for minifying inline amp-script'
-      );
-      return;
-    }
     try {
-      const {minify} = require('terser');
-      const result = await minify(child.data, {
-        format: {
-          // Always use the original quotes.
-          quote_style: 3,
-          // Do not wrap function expressions that are passed as arguments in parenthesis.
-          wrap_func_args: false,
-        },
-      });
+      const result = await minify(child.data, {});
       if (result.error) {
         this.log.warn(
           'Could not minify inline amp-script',

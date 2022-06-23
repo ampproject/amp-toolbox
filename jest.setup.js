@@ -1,2 +1,2 @@
-// increase timeout for network requests
-jest.setTimeout(10000); // in milliseconds
+/* Global jest */
+jest.setTimeout(20000);
