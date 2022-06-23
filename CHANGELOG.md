@@ -14,6 +14,8 @@
   * [#1305](https://github.com/ampproject/amp-toolbox/pull/1305) Fix for issue #1304: "SSR: Transforming of nodes with attribute 'heights' fails, if value contains multiple media queries" ([@DK-Stern](https://github.com/DK-Stern))
 
 #### :house: Internal
+* `cache-url`, `cli`, `cloudflare-optimizer-scripts`, `linter`, `optimizer-docker`, `optimizer`, `page-experience`, `update-cache`
+  * [#1331](https://github.com/ampproject/amp-toolbox/pull/1331) Update dependencies to fix critical security issues ([@sebastianbenz](https://github.com/sebastianbenz))
 * `cache-list`, `cache-url`, `cli`, `cloudflare-optimizer-scripts`, `core`, `cors`, `linter`, `optimizer-docker`, `optimizer-express`, `optimizer`, `page-experience`, `runtime-fetch`, `runtime-version`, `script-csp`, `update-cache`, `validator-rules`
   * [#1326](https://github.com/ampproject/amp-toolbox/pull/1326) Reset main branch to v2.8.10 ([@sebastianbenz](https://github.com/sebastianbenz))
 
