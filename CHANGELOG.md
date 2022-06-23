@@ -1,3 +1,30 @@
+## 2.9.0 (2022-06-23)
+
+#### :rocket: Enhancement
+* `cloudflare-optimizer-scripts`
+  * [#1318](https://github.com/ampproject/amp-toolbox/pull/1318) Add support for Opaque redirects ([@abdulhannanali](https://github.com/abdulhannanali))
+* `optimizer`
+  * [#1324](https://github.com/ampproject/amp-toolbox/pull/1324) Implement SSR for amp-audio extension ([@ediamin](https://github.com/ediamin))
+
+#### :bug: Bug Fix
+* `optimizer`
+  * [#1319](https://github.com/ampproject/amp-toolbox/pull/1319) Fix i-amphtml-sizer responsive issue ([@ediamin](https://github.com/ediamin))
+  * [#1312](https://github.com/ampproject/amp-toolbox/pull/1312) More robust auto extension import ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1303](https://github.com/ampproject/amp-toolbox/pull/1303) Fix for issue #1302: "SSR: Duplicated ids in rendered markup, if there are nodes with attributes 'media', 'heights' or 'sizes'" ([@DK-Stern](https://github.com/DK-Stern))
+  * [#1305](https://github.com/ampproject/amp-toolbox/pull/1305) Fix for issue #1304: "SSR: Transforming of nodes with attribute 'heights' fails, if value contains multiple media queries" ([@DK-Stern](https://github.com/DK-Stern))
+
+#### :house: Internal
+* `cache-list`, `cache-url`, `cli`, `cloudflare-optimizer-scripts`, `core`, `cors`, `linter`, `optimizer-docker`, `optimizer-express`, `optimizer`, `page-experience`, `runtime-fetch`, `runtime-version`, `script-csp`, `update-cache`, `validator-rules`
+  * [#1326](https://github.com/ampproject/amp-toolbox/pull/1326) Reset main branch to v2.8.10 ([@sebastianbenz](https://github.com/sebastianbenz))
+
+#### Committers: 6
+- Edi Amin ([@ediamin](https://github.com/ediamin))
+- Hannan Ali ([@abdulhannanali](https://github.com/abdulhannanali))
+- Pascal Birchler ([@swissspidy](https://github.com/swissspidy))
+- Sebastian Benz ([@sebastianbenz](https://github.com/sebastianbenz))
+- [@DK-Stern](https://github.com/DK-Stern)
+- erwin mombay ([@erwinmombay](https://github.com/erwinmombay))
+
 ## v2.8.10
 
 #### :bug: Bug Fix
