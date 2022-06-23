@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-page-experience",
-  "version": "2.8.10",
+  "version": "2.9.0",
   "description": "Optimize your AMP pages for page experiemnce",
   "main": "index.js",
   "scripts": {
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/page-experience",
   "dependencies": {
-    "@ampproject/toolbox-linter": "2.8.10",
+    "@ampproject/toolbox-linter": "2.9.0",
     "cheerio": "1.0.0-rc.5",
     "css-font-face-src": "1.0.0",
     "postcss": "8.2.8",
