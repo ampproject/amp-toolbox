@@ -5,6 +5,7 @@ on: [pull_request, push]
 jobs:
   test:
     name: Test on node ${{ matrix.node }} and ${{ matrix.os }}
+    if: github.repository == 'ampproject/amp-toolbox'
 
     runs-on: ${{ matrix.os }}
 
@@ -14,7 +15,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v2 
+      - uses: actions/checkout@v2
       - name: Use node ${{ matrix.node }}
         uses: actions/setup-node@v2
         with:
