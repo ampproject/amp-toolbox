@@ -12,6 +12,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "console-table-printer": "2.8.2",
-    "performance-leaderboard": "4.1.0"
+    "performance-leaderboard": "10.0.0"
   }
 }
