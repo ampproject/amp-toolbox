@@ -17,7 +17,7 @@
 
 const log = require('@ampproject/toolbox-core').log.tag('AMP Runtime Version');
 
-const AMP_CACHE_HOST = 'https://cdn.ampproject.org';
+const AMP_CACHE_HOST = 'https://ampjs.org';
 const RUNTIME_METADATA_PATH = '/rtv/metadata';
 const VERSION_TXT_PATH = '/version.txt';
 
