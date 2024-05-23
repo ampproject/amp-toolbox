@@ -22,14 +22,10 @@ const MockLogger = require('../helpers/MockLogger');
 describe('runtime-version', () => {
   const mockLogger = new MockLogger();
 
-  it('prints the current amp runtime version', (done) => {
+  it('prints the current amp runtime version', async () => {
     mockLogger.clear();
-    return runtimeVersionCmd({}, mockLogger)
-      .then(() => {
-        const output = mockLogger.getLogs();
-        expect(output.length).toBe(15);
-        done();
-      })
-      .catch((e) => done.fail(e));
+    await runtimeVersionCmd({}, mockLogger);
+    const output = mockLogger.getLogs();
+    expect(output.length).toBe(15);
   });
 });

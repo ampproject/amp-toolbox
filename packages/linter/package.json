@@ -45,7 +45,7 @@
   "devDependencies": {
     "prettier": "2.2.1",
     "tap-parser": "10.1.0",
-    "typescript": "4.2.3"
+    "typescript": "5.4.5"
   },
   "jest": {
     "testTimeout": 60000

@@ -109,7 +109,7 @@ class PageExperienceGuide {
    * Teardown the guide and all running Puppeteer instances.
    */
   async teardown() {
-    return this.pageDataGatherer.shutdown();
+    await this.pageDataGatherer.shutdown();
   }
 
   /**

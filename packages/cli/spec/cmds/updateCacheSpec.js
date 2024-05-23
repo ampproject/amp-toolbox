@@ -26,37 +26,37 @@ describe('update-cache', () => {
     mockLogger.clear();
   });
 
-  it('Display Error if URL is missing', (done) => {
-    return updateCacheCmd({_: []}, mockLogger)
-      .then(() => done(new Error('Expected Promise to be Rejected')))
-      .catch((err) => {
-        expect(err.message).toBe('Missing URL');
-        done();
-      });
+  it('Display Error if URL is missing', async () => {
+    try {
+      await updateCacheCmd({_: []}, mockLogger);
+      throw new Error('Expected Promise to be Rejected');
+    } catch (err) {
+      expect(err.message).toBe('Missing URL');
+    }
   });
 
-  it('Displays an Error if privateKey is unavailable', (done) => {
-    return updateCacheCmd({_: ['', 'https://www.example.com']}, mockLogger)
-      .then(() => done(new Error('Expected Promise to be Rejected')))
-      .catch((err) => {
-        expect(err.message).toBe('./privateKey.pem does not exist');
-        done();
-      });
+  it('Displays an Error if privateKey is unavailable', async () => {
+    try {
+      await updateCacheCmd({_: ['', 'https://www.example.com']}, mockLogger);
+      throw new Error('Expected Promise to be Rejected');
+    } catch (err) {
+      expect(err.message).toBe('./privateKey.pem does not exist');
+    }
   });
 
-  it('Displays an Error if privateKey is invalid', (done) => {
+  it('Displays an Error if privateKey is invalid', async () => {
     const args = {
       _: ['', 'https://www.example.com'],
       privateKey: __dirname + '/invalidKey.pem',
     };
 
-    return updateCacheCmd(args, mockLogger)
-      .then(() => done(new Error('Expected Promise to be Rejected')))
-      .catch((err) => {
-        expect(err.message).toBe(
-          'Error generating cache invalidation URL with init failed:Error: not supported argument'
-        );
-        done();
-      });
+    try {
+      await updateCacheCmd(args, mockLogger);
+      throw new Error('Expected Promise to be Rejected');
+    } catch (err) {
+      expect(err.message).toBe(
+        'Error generating cache invalidation URL with init failed:Error: not supported argument'
+      );
+    }
   });
 });
