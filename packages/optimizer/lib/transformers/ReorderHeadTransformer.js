@@ -191,7 +191,7 @@ class HeadNodes {
       rel === 'prefetch' ||
       rel === 'dns-prefetch' ||
       rel === 'preconnect' ||
-      rel == 'modulepreload'
+      rel === 'modulepreload'
     ) {
       this._resourceHintLinks.push(node);
       return;

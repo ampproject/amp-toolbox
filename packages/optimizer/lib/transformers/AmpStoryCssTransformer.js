@@ -13,7 +13,7 @@ const {
   firstChildByTag,
   appendChild,
 } = require('../NodeUtils');
-const {AMP_CACHE_HOST} = require('../AmpConstants.js');
+const {DEFAULT_AMP_CACHE_HOST} = require('../AmpConstants.js');
 
 // This string should not be modified, even slightly. This string is strictly
 // checked by the validator.
@@ -139,7 +139,7 @@ function appendAmpStoryCssLink(head) {
     'amp-extension': 'amp-story',
     // We rely on the `RewriteAmpUrls` transformer to modify this to
     // the correct LTS or correct rtv path.
-    'href': `${AMP_CACHE_HOST}/v0/amp-story-1.0.css`,
+    'href': `${DEFAULT_AMP_CACHE_HOST}/v0/amp-story-1.0.css`,
   });
   appendChild(head, ampStoryCssLink);
 }

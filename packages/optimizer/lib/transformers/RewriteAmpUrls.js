@@ -23,7 +23,7 @@ const {
   insertBefore,
   remove,
 } = require('../NodeUtils');
-const {AMP_CACHE_HOST} = require('../AmpConstants.js');
+const {AMP_CACHE_HOSTS} = require('../AmpConstants.js');
 const {findMetaViewport} = require('../HtmlDomHelper');
 const {calculateHost} = require('../RuntimeHostHelper');
 
@@ -141,13 +141,15 @@ class RewriteAmpUrls {
 
   _usesAmpCacheUrl(url) {
     if (!url) {
-      return;
+      return false;
     }
-    return url.startsWith(AMP_CACHE_HOST);
+    // check if url starts with one of string array
+    return AMP_CACHE_HOSTS.some((host) => url.startsWith(host));
   }
 
   _replaceUrl(url, host) {
-    return host + url.substring(AMP_CACHE_HOST.length);
+    const existingHost = AMP_CACHE_HOSTS.find((ampCacheHost) => url.startsWith(ampCacheHost));
+    return host + url.substring(existingHost.length);
   }
 
   _addEsm(scriptNode, preloadEnabled) {

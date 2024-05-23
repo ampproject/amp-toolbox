@@ -29,10 +29,11 @@ try {
 }
 
 const {
-  AMP_CACHE_HOST,
+  AMP_CACHE_HOSTS,
   AMP_RUNTIME_CSS_PATH,
   AMP_VALIDATION_RULES_URL,
   appendRuntimeVersion,
+  DEFAULT_AMP_CACHE_HOST,
 } = require('./AmpConstants.js');
 
 const KEY_VALIDATOR_RULES = 'validator-rules';
@@ -214,12 +215,12 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
     version: await config.runtimeVersion.currentVersion({ampUrlPrefix, lts}),
     maxAge: MaxAge.create(AMP_RUNTIME_MAX_AGE).toObject(),
   };
-  if (!ampRuntimeData.version && ampUrlPrefix && ampUrlPrefix !== AMP_CACHE_HOST) {
+  if (!ampRuntimeData.version && ampUrlPrefix && !AMP_CACHE_HOSTS.includes(ampUrlPrefix)) {
     config.log.error(
-      `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${AMP_CACHE_HOST}`
+      `Could not download runtime version from ${ampUrlPrefix}. Falling back to ${DEFAULT_AMP_CACHE_HOST}`
     );
     ampRuntimeData = await fetchLatestRuntimeData_(
-      {config, ampUrlPrefix: AMP_CACHE_HOST, lts},
+      {config, ampUrlPrefix: DEFAULT_AMP_CACHE_HOST, lts},
       versionKey
     );
   } else if (!ampRuntimeData.version) {
@@ -240,15 +241,16 @@ async function fetchLatestRuntimeData_({config, ampUrlPrefix, lts}, versionKey =
 async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
   if (ampUrlPrefix && !isAbsoluteUrl_(ampUrlPrefix)) {
     config.log.warn(
-      `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style. Falling back to latest v0.css on ${AMP_CACHE_HOST}`
+      `AMP runtime styles cannot be fetched from relative ampUrlPrefix, please use the 'ampRuntimeStyles' parameter to provide the correct runtime style. Falling back to latest v0.css on ${DEFAULT_AMP_CACHE_HOST}`
     );
     // Gracefully fallback to latest runtime version
-    ampUrlPrefix = AMP_CACHE_HOST;
+    ampUrlPrefix = DEFAULT_AMP_CACHE_HOST;
     ampRuntimeVersion = ampRuntimeVersion || (await config.runtimeVersion.currentVersion());
   }
   // Construct the AMP runtime CSS download URL, the default is: https://cdn.ampproject.org/rtv/${ampRuntimeVersion}/v0.css
   const runtimeCssUrl =
-    appendRuntimeVersion(ampUrlPrefix || AMP_CACHE_HOST, ampRuntimeVersion) + AMP_RUNTIME_CSS_PATH;
+    appendRuntimeVersion(ampUrlPrefix || DEFAULT_AMP_CACHE_HOST, ampRuntimeVersion) +
+    AMP_RUNTIME_CSS_PATH;
   // Fetch runtime styles
   const styles = await downloadAmpRuntimeStyles_(config, runtimeCssUrl);
   if (!styles) {
@@ -257,7 +259,7 @@ async function fetchAmpRuntimeStyles_(config, ampUrlPrefix, ampRuntimeVersion) {
       // Try to download latest from cdn.ampproject.org instead
       return fetchAmpRuntimeStyles_(
         config,
-        AMP_CACHE_HOST,
+        DEFAULT_AMP_CACHE_HOST,
         await config.runtimeVersion.currentVersion()
       );
     } else {

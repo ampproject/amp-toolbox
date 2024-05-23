@@ -15,9 +15,10 @@
  */
 'use strict';
 
+const {DEFAULT_AMP_CACHE_HOST} = require('../../optimizer/lib/AmpConstants');
+
 const log = require('@ampproject/toolbox-core').log.tag('AMP Runtime Version');
 
-const AMP_CACHE_HOST = 'https://cdn.ampproject.org';
 const RUNTIME_METADATA_PATH = '/rtv/metadata';
 const VERSION_TXT_PATH = '/version.txt';
 
@@ -96,7 +97,9 @@ class RuntimeVersion {
       releaseType = ReleaseType.lts;
     }
 
-    const host = options.ampUrlPrefix ? options.ampUrlPrefix.replace(/\/$/, '') : AMP_CACHE_HOST;
+    const host = options.ampUrlPrefix
+      ? options.ampUrlPrefix.replace(/\/$/, '')
+      : DEFAULT_AMP_CACHE_HOST;
 
     let rtv = await this.getVersionFromRuntimeMetadata_(host, releaseType);
     if (!rtv && releaseType === ReleaseType.prod) {
