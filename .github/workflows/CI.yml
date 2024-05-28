@@ -11,19 +11,17 @@ jobs:
 
     strategy:
       matrix:
-        node: [12, 14, 16]
+        node: [20, 22]
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use node ${{ matrix.node }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           registry-url: https://registry.npmjs.org
-      - name: bootstrap
-        run: npx lerna bootstrap --hoist
-      - name: link
-        run: npx lerna link
+      - name: install
+        run: npm install
       - name: test
         run: npm test

@@ -43,7 +43,7 @@
     "css-font-face-src": "1.0.0",
     "postcss": "8.2.8",
     "postcss-safe-parser": "5.0.2",
-    "puppeteer": "14.4.1"
+    "puppeteer": "22.9.0"
   },
   "directories": {
     "lib": "lib",

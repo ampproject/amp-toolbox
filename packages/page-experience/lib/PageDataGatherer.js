@@ -29,7 +29,7 @@ class PageAnalyzer {
    * @param config.device the viewport size, default Pixel 2XL, see https://github.com/puppeteer/puppeteer/blob/main/src/common/DeviceDescriptors.ts for full list
    */
   constructor(config = {}) {
-    this.device = puppeteer.devices[config.device || DEFAULT_DEVICE];
+    this.device = puppeteer.KnownDevices[config.device || DEFAULT_DEVICE];
     if (!this.device) {
       throw new Error(`Unknown device "${config.device}"`);
     }
