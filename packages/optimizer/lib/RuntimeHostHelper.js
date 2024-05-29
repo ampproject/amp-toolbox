@@ -15,10 +15,10 @@
  */
 'use strict';
 
-const {AMP_CACHE_HOST, appendRuntimeVersion} = require('./AmpConstants.js');
+const {DEFAULT_AMP_CACHE_HOST, appendRuntimeVersion} = require('./AmpConstants.js');
 
 function calculateHost({
-  ampUrlPrefix = AMP_CACHE_HOST,
+  ampUrlPrefix = DEFAULT_AMP_CACHE_HOST,
   ampRuntimeVersion,
   lts = false,
   rtv = false,

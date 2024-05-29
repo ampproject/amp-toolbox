@@ -24,116 +24,10 @@ const {
   createElement,
   firstChildByTag,
 } = require('../NodeUtils');
-const {AMP_FORMATS, AMP_TAGS} = require('../AmpConstants');
+const {AMP_FORMATS, AMP_TAGS, DEFAULT_AMP_CACHE_HOST} = require('../AmpConstants');
 
 const DEFAULT_FORMAT = 'AMP';
 const AUTO_GENERATED_MARKER = 'data-auto';
-
-const BOILERPLATES = {
-  AMP: [
-    {
-      matcher: {
-        tagName: 'meta',
-        attribs: {
-          charset: 'utf-8',
-        },
-      },
-      node: {
-        tagName: 'meta',
-        attribs: {
-          charset: 'utf-8',
-        },
-      },
-    },
-    {
-      matcher: {
-        tagName: 'meta',
-        attribs: {
-          name: 'viewport',
-        },
-      },
-      node: {
-        tagName: 'meta',
-        attribs: {
-          name: 'viewport',
-          content: 'width=device-width,minimum-scale=1,initial-scale=1',
-        },
-      },
-    },
-    {
-      matcher: {
-        tagName: 'noscript',
-      },
-      node: {
-        tagName: 'noscript',
-        children: [
-          {
-            tagName: 'style',
-            attribs: {
-              'amp-boilerplate': '',
-            },
-            // eslint-disable-next-line max-len
-            text:
-              'body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}',
-          },
-        ],
-      },
-    },
-    {
-      matcher: {
-        tagName: 'style',
-        attribs: {
-          'amp-boilerplate': '',
-        },
-      },
-      node: {
-        tagName: 'style',
-        attribs: {
-          'amp-boilerplate': '',
-        },
-        // eslint-disable-next-line max-len
-        text:
-          'body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}',
-      },
-    },
-    {
-      matcher: {
-        tagName: 'script',
-        attribs: {
-          src: /^https:\/\/.+\/v0\.js$/,
-        },
-      },
-      node: {
-        tagName: 'script',
-        attribs: {
-          async: '',
-          src: 'https://cdn.ampproject.org/v0.js',
-        },
-      },
-    },
-    {
-      matcher: {
-        tagName: 'link',
-        attribs: {
-          rel: 'canonical',
-        },
-      },
-      node: {
-        tagName: 'link',
-        attribs: {
-          rel: 'canonical',
-          href: (params, log) => {
-            if (!params.canonical) {
-              log.warn('No canonical param is given. Setting canonical href to `.`');
-              params.canonical = '.';
-            }
-            return params.canonical;
-          },
-        },
-      },
-    },
-  ],
-};
 
 /**
  * AddMandatoryTags - this transformer will automatically add all missing tags required by a valid AMP document.
@@ -164,8 +58,114 @@ class AddMandatoryTags {
       return;
     }
 
+    const boilerplates = {
+      AMP: [
+        {
+          matcher: {
+            tagName: 'meta',
+            attribs: {
+              charset: 'utf-8',
+            },
+          },
+          node: {
+            tagName: 'meta',
+            attribs: {
+              charset: 'utf-8',
+            },
+          },
+        },
+        {
+          matcher: {
+            tagName: 'meta',
+            attribs: {
+              name: 'viewport',
+            },
+          },
+          node: {
+            tagName: 'meta',
+            attribs: {
+              name: 'viewport',
+              content: 'width=device-width,minimum-scale=1,initial-scale=1',
+            },
+          },
+        },
+        {
+          matcher: {
+            tagName: 'noscript',
+          },
+          node: {
+            tagName: 'noscript',
+            children: [
+              {
+                tagName: 'style',
+                attribs: {
+                  'amp-boilerplate': '',
+                },
+                // eslint-disable-next-line max-len
+                text:
+                  'body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}',
+              },
+            ],
+          },
+        },
+        {
+          matcher: {
+            tagName: 'style',
+            attribs: {
+              'amp-boilerplate': '',
+            },
+          },
+          node: {
+            tagName: 'style',
+            attribs: {
+              'amp-boilerplate': '',
+            },
+            // eslint-disable-next-line max-len
+            text:
+              'body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}',
+          },
+        },
+        {
+          matcher: {
+            tagName: 'script',
+            attribs: {
+              src: /^https:\/\/.+\/v0\.js$/,
+            },
+          },
+          node: {
+            tagName: 'script',
+            attribs: {
+              async: '',
+              src: (params.ampUrlPrefix || DEFAULT_AMP_CACHE_HOST) + '/v0.js',
+            },
+          },
+        },
+        {
+          matcher: {
+            tagName: 'link',
+            attribs: {
+              rel: 'canonical',
+            },
+          },
+          node: {
+            tagName: 'link',
+            attribs: {
+              rel: 'canonical',
+              href: (params, log) => {
+                if (!params.canonical) {
+                  log.warn('No canonical param is given. Setting canonical href to `.`');
+                  params.canonical = '.';
+                }
+                return params.canonical;
+              },
+            },
+          },
+        },
+      ],
+    };
+
     // Only supports AMP for websites
-    const boilerplateSpec = BOILERPLATES[this.format];
+    const boilerplateSpec = boilerplates[this.format];
     if (!boilerplateSpec) {
       this.log_.info('Unsupported AMP format', this.format);
       return;

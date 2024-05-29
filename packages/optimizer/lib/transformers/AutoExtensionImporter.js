@@ -23,7 +23,7 @@ const {
   hasAttribute,
 } = require('../NodeUtils');
 const {findMetaViewport, findRuntimeScript} = require('../HtmlDomHelper');
-const {AMP_FORMATS, AMP_CACHE_HOST} = require('../AmpConstants');
+const {AMP_FORMATS, DEFAULT_AMP_CACHE_HOST} = require('../AmpConstants');
 
 const BIND_SHORT_FORM_PREFIX = 'bind';
 const AMP_BIND_DATA_ATTRIBUTE_PREFIX = 'data-amp-bind-';
@@ -188,7 +188,7 @@ class AutoExtensionImporter {
     }
 
     // Use cdn.ampproject.org as default, RewriteUrlTransformer will change this in case of self-hosting
-    const host = AMP_CACHE_HOST;
+    const host = DEFAULT_AMP_CACHE_HOST;
     for (const extensionName of extensionsToImport) {
       if (existingImports.has(extensionName)) {
         continue;
