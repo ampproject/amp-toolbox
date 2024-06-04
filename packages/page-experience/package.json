@@ -39,7 +39,7 @@
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/page-experience",
   "dependencies": {
     "@ampproject/toolbox-linter": "2.9.0",
-    "cheerio": "1.0.0-rc.5",
+    "cheerio": "1.0.0-rc.12",
     "css-font-face-src": "1.0.0",
     "postcss": "8.2.8",
     "postcss-safe-parser": "5.0.2",

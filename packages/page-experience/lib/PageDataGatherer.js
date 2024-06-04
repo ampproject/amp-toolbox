@@ -58,20 +58,16 @@ class PageAnalyzer {
       throw new Error('Puppeteer not running, please call `start` first.');
     }
     const {page, remoteStyles, responsePromise} = await this.setupPage();
-    try {
-      await page.goto(url, {waitUntil: 'load'});
+    await page.goto(url, {waitUntil: 'load'});
 
-      const response = await responsePromise;
-      if (!response) {
-        throw new Error('Failed loading url', url);
-      }
-      const {html, headers} = response;
-      return await this.gatherPageData(page, {remoteStyles, html, headers});
-    } finally {
-      if (page) {
-        page.close();
-      }
+    const response = await responsePromise;
+    if (!response) {
+      throw new Error('Failed loading url', url);
     }
+    const {html, headers} = response;
+    const data = await this.gatherPageData(page, {remoteStyles, html, headers});
+    await page.close();
+    return data;
   }
 
   /**
@@ -80,6 +76,7 @@ class PageAnalyzer {
   async shutdown() {
     try {
       await this.browser.close();
+      this.browser = null;
     } catch (e) {
       console.log(e);
     }

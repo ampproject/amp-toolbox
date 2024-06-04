@@ -17,7 +17,7 @@
     "@ampproject/toolbox-validator-rules": "2.9.0",
     "amphtml-validator": "1.0.35",
     "chalk": "4.1.0",
-    "cheerio": "1.0.0-rc.5",
+    "cheerio": "1.0.0-rc.12",
     "commander": "9.3.0",
     "cross-fetch": "3.1.5",
     "debug": "4.3.1",

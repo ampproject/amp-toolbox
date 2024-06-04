@@ -15,7 +15,7 @@ export class AmpImgUsesSrcSet extends Rule {
       let layout = $(e).attr('layout');
       const srcset = $(e).attr('srcset');
       const parent = $(e).parent();
-      if (parent.prop('tagName').startsWith('AMP-')) {
+      if (parent.prop('tagName')?.startsWith('AMP-')) {
         const parentLayout = $(parent).attr('layout');
         if (parentLayout) {
           layout = parentLayout;

@@ -27,7 +27,7 @@
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "0.27.0",
     "@babel/core": "7.13.10",
-    "@types/cheerio": "0.22.28",
+    "@types/cheerio": "0.22.35",
     "@types/debug": "4.1.5",
     "@types/diff": "5.0.0",
     "@types/escape-html": "1.0.0",
