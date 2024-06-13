@@ -1,3 +1,10 @@
+## 2.10.0 (2024-06-07)
+
+#### :rocket: Enhancement
+* `optimizer'
+  * [#1358](https://github.com/ampproject/amp-toolbox/pull/1358) AMP optimizer to support ampjs.org
+  * Dependency upgrades
+
 ## 2.9.0 (2022-06-23)
 
 #### :rocket: Enhancement
