@@ -15,12 +15,11 @@
  */
 'use strict';
 
-const {DEFAULT_AMP_CACHE_HOST} = require('../../optimizer/lib/AmpConstants');
-
 const log = require('@ampproject/toolbox-core').log.tag('AMP Runtime Version');
 
 const RUNTIME_METADATA_PATH = '/rtv/metadata';
 const VERSION_TXT_PATH = '/version.txt';
+const DEFAULT_AMP_CACHE_HOST = 'https://cdn.ampproject.org';
 
 /**
  * @typedef {number} ReleaseType
