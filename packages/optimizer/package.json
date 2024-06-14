@@ -45,7 +45,7 @@
     "https-proxy-agent": "5.0.0",
     "lru-cache": "6.0.0",
     "normalize-html-whitespace": "1.0.0",
-    "postcss": "8.2.13",
+    "postcss": "8.4.31",
     "postcss-safe-parser": "5.0.2",
     "terser": "5.5.1"
   },
