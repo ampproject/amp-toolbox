@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@ampproject/toolbox-optimizer": "2.5.14",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "through2": "^4.0.2"
   }
 }
