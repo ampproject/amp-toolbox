@@ -1,5 +1,5 @@
 {
-  "name": "@vadimages-ampproject/toolbox-optimizer",
+  "name": "@ampproject/toolbox-optimizer",
   "version": "2.11.0",
   "description": "Server-side rendering for AMPs.",
   "main": "index.js",
