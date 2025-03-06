@@ -72,9 +72,36 @@ class Markdown {
       if (node.tagName === 'img') {
         promises.push(this.transformImg(node, params));
       }
+      if(node.tagName === 'picture') {
+        promises.push(this.transformPicture(node, params));
+      }
       node = tmpNode;
     }
     return Promise.all(promises);
+  }
+
+  async transformPicture(pictureNode, params) {
+    const imgNode = firstChildByTag(pictureNode, 'img');
+    if (!imgNode) {
+      return;
+    }
+
+    const src = imgNode.attribs && imgNode.attribs.src;
+    if (!src) {
+      return;
+    }
+    const resolvedSrc = this.pathResolver.resolve(src, params);
+    let dimensions;
+    try {
+      dimensions = await fetchImageDimensions(resolvedSrc);
+    } catch (error) {
+      this.log.warn(error.message);
+      // don't convert images we cannot resolve
+      return;
+    }
+    const ampImgOrAmpAnim = this.createAmpImgOrAmpAnim(dimensions, imgNode);
+    insertAfter(pictureNode.parent, ampImgOrAmpAnim, pictureNode);
+    remove(pictureNode);
   }
 
   async transformImg(imgNode, params) {
