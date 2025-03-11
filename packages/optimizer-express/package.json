@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/optimizer-express",
   "dependencies": {
-    "@ampproject/toolbox-core": "^2.11.0",
+    "@ampproject/toolbox-core": "2.11.0",
     "@ampproject/toolbox-optimizer": "2.10.1",
-    "@ampproject/toolbox-runtime-version": "^2.11.0",
+    "@ampproject/toolbox-runtime-version": "2.11.0",
     "mime-types": "2.1.29",
     "whatwg-url": "8.4.0"
   },
