@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-cli",
-  "version": "2.10.1",
+  "version": "2.11.0",
   "description": "A Command Line Interface (CLI) for amp-toolbox",
   "main": "index.js",
   "bin": {
@@ -11,15 +11,8 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/cli"
   },
-  "keywords": [
-    "amp-toolbox",
-    "cli"
-  ],
-  "files": [
-    "index.js",
-    "lib",
-    "bin"
-  ],
+  "keywords": ["amp-toolbox", "cli"],
+  "files": ["index.js", "lib", "bin"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -27,14 +20,14 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/cli",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "2.10.1",
-    "@ampproject/toolbox-cache-url": "2.10.1",
-    "@ampproject/toolbox-core": "2.10.1",
-    "@ampproject/toolbox-linter": "2.10.1",
+    "@ampproject/toolbox-cache-list": "2.11.0",
+    "@ampproject/toolbox-cache-url": "2.11.0",
+    "@ampproject/toolbox-core": "2.11.0",
+    "@ampproject/toolbox-linter": "2.11.0",
     "@ampproject/toolbox-optimizer": "2.10.1",
-    "@ampproject/toolbox-runtime-fetch": "2.10.1",
-    "@ampproject/toolbox-runtime-version": "2.10.1",
-    "@ampproject/toolbox-update-cache": "2.10.1",
+    "@ampproject/toolbox-runtime-fetch": "2.11.0",
+    "@ampproject/toolbox-runtime-version": "2.11.0",
+    "@ampproject/toolbox-update-cache": "2.11.0",
     "minimist": "1.2.6",
     "minimist-options": "4.1.0",
     "node-fetch": "2.6.7"

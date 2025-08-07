@@ -1,18 +1,13 @@
 {
   "name": "@ampproject/toolbox-validator-rules",
-  "version": "2.10.1",
+  "version": "2.11.0",
   "description": "A library that helps query AMP Validator rules",
   "main": "index.js",
-  "keywords": [
-    "amp"
-  ],
+  "keywords": ["amp"],
   "scripts": {
     "fetchRules": "curl https://cdn.ampproject.org/v0/validator_wasm.js --output validator.json"
   },
-  "files": [
-    "index.js",
-    "lib"
-  ],
+  "files": ["index.js", "lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ampproject/amp-toolbox.git",

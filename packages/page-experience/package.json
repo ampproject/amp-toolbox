@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-page-experience",
-  "version": "2.10.1",
+  "version": "2.11.0",
   "description": "Optimize your AMP pages for page experiemnce",
   "main": "index.js",
   "scripts": {
@@ -16,21 +16,8 @@
     "url": "git+https://github.com/ampproject/amp-toolbox.git",
     "directory": "packages/page-experience"
   },
-  "keywords": [
-    "amp",
-    "amp-toolbox",
-    "page experience",
-    "core web vitals",
-    "web vitals"
-  ],
-  "files": [
-    "bin",
-    "lib",
-    "index.js",
-    "package.json",
-    "../LICENSE",
-    "README.md"
-  ],
+  "keywords": ["amp", "amp-toolbox", "page experience", "core web vitals", "web vitals"],
+  "files": ["bin", "lib", "index.js", "package.json", "../LICENSE", "README.md"],
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "bugs": {
@@ -38,7 +25,7 @@
   },
   "homepage": "https://github.com/ampproject/amp-toolbox/tree/main/packages/page-experience",
   "dependencies": {
-    "@ampproject/toolbox-linter": "2.10.1",
+    "@ampproject/toolbox-linter": "2.11.0",
     "cheerio": "1.0.0-rc.12",
     "css-font-face-src": "1.0.0",
     "postcss": "8.2.8",
