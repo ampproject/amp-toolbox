@@ -5,6 +5,6 @@
   "description": "AMP Optimizer supports converting Markdown to AMPHTML.",
   "devDependencies": {
     "markdown-it": "11.0.0",
-    "probe-image-size": "5.0.0"
+    "probe-image-size": "7.2.3"
   }
 }
