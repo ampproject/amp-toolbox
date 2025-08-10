@@ -89,7 +89,7 @@ npm run test:node -- packages/optimizer
 
 ### Style & Linting
 
-This codebase adheres to the [Google Javascript Styleguide](https://google.github.io/styleguide/jsguide.html) and is enforced using ESLint. ESLint is run as part of the test suite, but you can also explicity run it via:
+This codebase adheres to the [Google Javascript Styleguide](https://google.github.io/styleguide/jsguide.html) and is enforced using ESLint. ESLint is run as part of the test suite, but you can also explicitly run it via:
 
 ```
 # run ESLint

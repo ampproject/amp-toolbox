@@ -129,7 +129,7 @@
   * [#1140](https://github.com/ampproject/amp-toolbox/pull/1140) Enable ESM module version of AMP Runtime and Components by default ([@sebastianbenz](https://github.com/sebastianbenz))
 * `page-experience`
   * [#1174](https://github.com/ampproject/amp-toolbox/pull/1174) PX: enable mobile device emulation ([@sebastianbenz](https://github.com/sebastianbenz))
-  * [#1173](https://github.com/ampproject/amp-toolbox/pull/1173) PX:ignore invinsible elements ([@sebastianbenz](https://github.com/sebastianbenz))
+  * [#1173](https://github.com/ampproject/amp-toolbox/pull/1173) PX:ignore invincible elements ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#1172](https://github.com/ampproject/amp-toolbox/pull/1172) PX: escape html in suggestions ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#1171](https://github.com/ampproject/amp-toolbox/pull/1171) PX: detect hero images ([@sebastianbenz](https://github.com/sebastianbenz))
   * [#1168](https://github.com/ampproject/amp-toolbox/pull/1168) Check for early iframes ([@patrickkettner](https://github.com/patrickkettner))
@@ -720,7 +720,7 @@
 - `cli`, `download-runtime`
   - [#663](https://github.com/ampproject/amp-toolbox/pull/663) download-runtime: Add tool to download AMP runtime ([@mdmower](https://github.com/mdmower))
 - `cache-url`, `cli`
-  - [#666](https://github.com/ampproject/amp-toolbox/pull/666) Update CURLs hasing algorithm ([@sebastianbenz](https://github.com/sebastianbenz))
+  - [#666](https://github.com/ampproject/amp-toolbox/pull/666) Update CURLs hashing algorithm ([@sebastianbenz](https://github.com/sebastianbenz))
 - `optimizer`
   - [#636](https://github.com/ampproject/amp-toolbox/pull/636) optimizer: Output amp-geo API meta tags ([@mdmower](https://github.com/mdmower))
 
@@ -762,7 +762,7 @@
   - [#649](https://github.com/ampproject/amp-toolbox/pull/649) Encode JSON values ([@sebastianbenz](https://github.com/sebastianbenz))
   - [#618](https://github.com/ampproject/amp-toolbox/pull/618) Fix: auto extension import amp-access-laterpay & amp-subscriptions-google ([@sebastianbenz](https://github.com/sebastianbenz))
 - `linter`
-  - [#626](https://github.com/ampproject/amp-toolbox/pull/626) Test explicitly for existance of value ([@dritter](https://github.com/dritter))
+  - [#626](https://github.com/ampproject/amp-toolbox/pull/626) Test explicitly for existence of value ([@dritter](https://github.com/dritter))
 
 #### :house: Internal
 

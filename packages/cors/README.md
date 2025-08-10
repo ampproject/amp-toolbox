@@ -84,7 +84,7 @@ app.use(ampCors({
 
 ### Logging
 
-For debugging requests, you can enable the verbose loggin mode via the `verbose` option:
+For debugging requests, you can enable the verbose logging mode via the `verbose` option:
 
 ```
 app.use(ampCors({

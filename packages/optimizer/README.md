@@ -244,7 +244,7 @@ Enables hero image optimization. Hero images will either be auto detected or you
 
 The maximum number of hero images that can be marked up using `data-hero` is `2`. This number can be increased using the `maxHeroImageCount` parameter.
 
-Hero images are optimized by server-side rendering the `img` element inside the `amp-img` element. This can siginificantly improve image rendering performance and reduce the [largest contentful paint](https://web.dev/lcp/) (LCP) metric from [Core Web Vitals](https://web.dev/vitals/).
+Hero images are optimized by server-side rendering the `img` element inside the `amp-img` element. This can significantly improve image rendering performance and reduce the [largest contentful paint](https://web.dev/lcp/) (LCP) metric from [Core Web Vitals](https://web.dev/vitals/).
 
 - name: `optimizeHeroImages`
 - valid options: `[true|false]`
