@@ -43,7 +43,11 @@ class OptimizeAmpBind {
     for (let node = html; node !== null; node = nextNode(node)) {
       if (isTemplate(node)) {
         node = skipNodeAndChildren(node);
-        continue;
+        if (node === null) {
+          break;
+        } else {
+          continue;
+        }
       }
 
       const {attribs} = node;
