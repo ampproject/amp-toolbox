@@ -1,3 +1,11 @@
+## 2.11.1 (2025-08-12)
+
+#### :rocket: Enhancement
+* `cache-list`, `cache-url`, `cli`, `cloudflare-optimizer-scripts`, `core`, `cors`, `linter`, `optimizer-docker`, `optimizer-express`, `optimizer`, `page-experience`, `runtime-fetch`, `runtime-version`, `script-csp`, `update-cache`, `validator-rules`
+  * [#1371](https://github.com/ampproject/amp-toolbox/pull/1371) Feature/add picture tag support ([@mihailShumilov](https://github.com/mihailShumilov))
+* `optimizer`, `runtime-version`
+  * [#1358](https://github.com/ampproject/amp-toolbox/pull/1358) amp optimizer to support ampjs.org (not enabled as default) ([@powerivq](https://github.com/powerivq))
+
 ## 2.10.0 (2024-06-07)
 
 #### :rocket: Enhancement
