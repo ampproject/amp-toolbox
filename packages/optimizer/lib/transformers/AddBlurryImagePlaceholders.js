@@ -103,7 +103,7 @@ class AddBlurryImagePlaceholders {
       this.cache_ = new Map();
     } else if (maxCacheSize > 0) {
       const LRU = require('lru-cache');
-      this.log_.debug('using LRU cache for regularily used placeholders', maxCacheSize);
+      this.log_.debug('using LRU cache for regularly used placeholders', maxCacheSize);
       // use a LRU cache otherwise
       this.cache_ = new LRU({
         max: maxCacheSize,

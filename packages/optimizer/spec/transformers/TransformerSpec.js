@@ -21,15 +21,15 @@ log.verbose();
 const {getDirectories} = require('../helpers/Utils.js');
 const createSpec = require('../helpers/TransformerRunner.js');
 
-describe('Transfomers', () => {
+describe('Transformers', () => {
   ['experimental', 'valid'].forEach((subDir) => {
     loadTestConfigs(subDir).forEach(createSpec);
   });
 });
 
 function loadTestConfigs(subDir) {
-  const transfomerTestDirs = getDirectories(join(__dirname, subDir));
-  return transfomerTestDirs.map((testDir) => {
+  const transformerTestDirs = getDirectories(join(__dirname, subDir));
+  return transformerTestDirs.map((testDir) => {
     const transformerName = basename(testDir);
     const transformerPath = join('../../lib/transformers', transformerName + '.js');
 

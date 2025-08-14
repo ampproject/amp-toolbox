@@ -30,7 +30,7 @@ describe('UrlMapping', () => {
       expect(result).toBe(true);
     });
 
-    it('correcty identifies non-AMP urls', () => {
+    it('correctly identifies non-AMP urls', () => {
       const result = urlMapping.isAmpUrl('/page');
       expect(result).toBe(false);
     });

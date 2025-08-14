@@ -37,7 +37,7 @@ const SIZE_DEFINED_LAYOUTS = [
 ];
 const CSS_LENGTH_ONE_PX = cssLength('1', false, false);
 const CSS_LENGTH_AUTO = cssLength('auto', true, false);
-const CSS_LENGTH_FOURTY_FOUR_PX = cssLength('44px', false, false);
+const CSS_LENGTH_FORTY_FOUR_PX = cssLength('44px', false, false);
 const CSS_LENGTH_SIXTY_PX = cssLength('60px', false, false);
 
 function getLayoutClass(layout) {
@@ -62,7 +62,7 @@ function calculateHeight(inputLayout, inputHeight, tagName) {
       case 'amp-pixel':
         return CSS_LENGTH_ONE_PX;
       case 'amp-social-share':
-        return CSS_LENGTH_FOURTY_FOUR_PX;
+        return CSS_LENGTH_FORTY_FOUR_PX;
       default:
     }
   }

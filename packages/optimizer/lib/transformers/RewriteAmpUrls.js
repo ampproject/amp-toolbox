@@ -118,7 +118,7 @@ class RewriteAmpUrls {
       node = node.nextSibling;
     }
 
-    // process preloads later to avoid accidently rewriting the URL
+    // process preloads later to avoid accidentally rewriting the URL
     for (const preload of preloads) {
       if (preload) {
         insertAfter(head, preload, referenceNode);

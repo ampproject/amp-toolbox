@@ -33,7 +33,7 @@ describe('Server integration tests', () => {
     });
   });
 
-  it('should run the provided HTML throught the optimizer', async () => {
+  it('should run the provided HTML through the optimizer', async () => {
     const {body} = await request({body: VALID_REQUEST, query: {canonical: 'http://example.com'}});
     expect(body).toMatch('<!doctype html>');
     expect(body).toMatch('<link data-auto rel="canonical" href="http://example.com">');

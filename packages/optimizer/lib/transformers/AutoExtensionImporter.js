@@ -43,12 +43,12 @@ const manualExtensions = Array.from(manualAttributeToExtensionMapping.values());
  *
  * - use validation rules to map used AMP tags to required AMP extensions.
  * - use validation rules to map used AMP attributes to required AMP extensions.
- * - manually specifiy attribute to extension mappings if this information is not available in the
+ * - manually specify attribute to extension mappings if this information is not available in the
  *   validation rules.
- * - mnullay implement AMP extension detection for a few corner cases.
+ * - manually implement AMP extension detection for a few corner cases.
  *
  * This importer also enables a shortcode `bindtext` instead of `data-amp-bind-text` for specifying
- * AMP bindings when the square bracket notation (`[text]`) is not available. To avoid accidently
+ * AMP bindings when the square bracket notation (`[text]`) is not available. To avoid accidentally
  * rewriting non-AMP attributes, the transformer uses the AMP validation rules to only rename bindable
  * attributes as specified in the validation rules.
  *

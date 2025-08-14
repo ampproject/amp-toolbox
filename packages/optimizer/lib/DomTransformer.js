@@ -23,7 +23,7 @@ const fetchRuntimeParameters = require('./fetchRuntimeParameters');
 const cache = require('./cache');
 
 /**
- * AMP Optimizer Configuration only applying AMP validity perserving transformations.
+ * AMP Optimizer Configuration only applying AMP validity preserving transformations.
  */
 const TRANSFORMATIONS_AMP_FIRST = [
   // Adds missing AMP tags
