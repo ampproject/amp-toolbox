@@ -72,7 +72,7 @@ class Markdown {
       if (node.tagName === 'img') {
         promises.push(this.transformImg(node, params));
       }
-      if(node.tagName === 'picture') {
+      if (node.tagName === 'picture') {
         promises.push(this.transformPicture(node, params));
       }
       node = tmpNode;
