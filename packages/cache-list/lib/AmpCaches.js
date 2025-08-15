@@ -60,7 +60,7 @@ class AmpCaches {
   }
 
   /**
-   * Retrieves the cache instance that maches the cacheId.
+   * Retrieves the cache instance that matches the cacheId.
    *
    * @param {string} cacheId The id of the cache to be retrieved.
    * @returns {Promise<object>} the Cache which the matching id or undefined, if a cache with the

@@ -35,7 +35,7 @@ const MAX_PRELOADED_IMAGES = 5;
  *
  * This transformer supports the following option:
  *
- * * `imagePreloadCount`: specifies the maxinum number of images to preload. The default is 5.
+ * * `imagePreloadCount`: specifies the maximum number of images to preload. The default is 5.
  */
 class PreloadImages {
   transform(root, params) {

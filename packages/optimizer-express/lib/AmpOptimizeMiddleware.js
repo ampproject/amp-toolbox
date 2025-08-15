@@ -40,7 +40,7 @@ class AmpOptimizerMiddleware {
         return;
       }
 
-      // This is a request for the canonical URL. Setup the middelware to transform the
+      // This is a request for the canonical URL. Setup the middleware to transform the
       // response using amp-optimizer.
       const chunks = [];
 
@@ -78,7 +78,7 @@ class AmpOptimizerMiddleware {
           chunks.push(chunk);
         }
 
-        // If end is called withouth any chunks, end the request.
+        // If end is called without any chunks, end the request.
         if (chunks.length === 0) {
           res.end();
           return;
@@ -104,7 +104,7 @@ class AmpOptimizerMiddleware {
    * Javascript or CSS file.
    *
    * @param {Request} req the request to be checked.
-   * @returns {boolean} true if the reqeust is for a resource.
+   * @returns {boolean} true if the request is for a resource.
    */
   static isResourceRequest_(req) {
     // Checks if mime-type for request is text/html. If mime type is unknown, assume text/html,

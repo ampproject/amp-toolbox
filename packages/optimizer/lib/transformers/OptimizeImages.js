@@ -70,7 +70,7 @@ class SrcsetWidth {
   }
 
   /**
-   * Sets the base width, i.e., renderered dimension measured in CSS pixels.
+   * Sets the base width, i.e., rendered dimension measured in CSS pixels.
    * Returns true if srcset is needed, that is, we'll resize the image to at
    * least 2 supported widths (@see SRCSET_WIDTH for a list of supported widths).
    *

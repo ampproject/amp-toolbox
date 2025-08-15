@@ -16,7 +16,7 @@
 
 'use strict';
 
-/* This transfomer has been deprecated, use OptimizeHeroImages.js instead */
+/* This transformer has been deprecated, use OptimizeHeroImages.js instead */
 
 /** @module PreloadHeroImage */
 module.exports = require('./OptimizeHeroImages');

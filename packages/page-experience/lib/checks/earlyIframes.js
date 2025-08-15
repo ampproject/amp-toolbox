@@ -25,7 +25,7 @@ const earlyIframes = (pageData, result) => {
   }
 
   result.warn({
-    title: 'Avoid iframes at the begining of pages',
+    title: 'Avoid iframes at the beginning of pages',
     message:
       'You have iframes at the top of your page - move them below the initial viewport to improve your loading time',
   });

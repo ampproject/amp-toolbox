@@ -276,7 +276,7 @@ class PageAnalyzer {
         request.resourceType() === 'script' &&
         !request.url().startsWith('https://cdn.ampproject.org')
       ) {
-        // Only donwload AMP runtime scripts as they're need for layouting the page
+        // Only download AMP runtime scripts as they're need for layouting the page
         // Once self-hosting is a thing we'll have to change this
         // TODO: investigate whether we could cache these locally
         return request.abort();
