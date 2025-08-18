@@ -1,6 +1,6 @@
 {
   "name": "@ampproject/toolbox-runtime-fetch",
-  "version": "2.11.1",
+  "version": "2.11.2",
   "description": "Download the AMP runtime",
   "main": "index.js",
   "keywords": ["amp", "download", "runtime"],
@@ -13,9 +13,9 @@
   "author": "AMPHTML Team",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ampproject/toolbox-cache-list": "2.11.1",
-    "@ampproject/toolbox-core": "2.11.1",
-    "@ampproject/toolbox-runtime-version": "2.11.1",
+    "@ampproject/toolbox-cache-list": "2.11.2",
+    "@ampproject/toolbox-core": "2.11.2",
+    "@ampproject/toolbox-runtime-version": "2.11.2",
     "at-least-node": "1.0.0",
     "fs-extra": "9.1.0",
     "node-fetch": "2.6.7"

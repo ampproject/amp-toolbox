@@ -1,6 +1,5 @@
 {
   "name": "root",
-  "private": true,
   "scripts": {
     "build": "lerna run build",
     "bootstrap": "npm-run-all bootstrap:lerna build",

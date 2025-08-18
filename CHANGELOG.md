@@ -1,3 +1,6 @@
+## 2.11.2 (2025-08-18)
+- remove "private" field from root package.json
+
 ## 2.11.1 (2025-08-12)
 
 #### :rocket: Enhancement
